@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+
+<config>
+  <core>
+    <creator select="[string]" />
+	<created select=""/>
+    <description select="[string]" />
+    <subject select="[string]" />
+    <title select="[string]" />
+    <category select="[string]" />
+    <version select="[string]" />
+    <revision select="[integer]" />
+  </core>
+  <toc generate="false" style="[valid word style]"/>
+  <toc generate="true" style="[valid word style]">
+    <headings generate="false"/>
+    <headings generate="true" select="1" />
+    <headings generate="true" select="2" />
+    <headings generate="true" select="3" />
+    <headings generate="true" select="4" />
+    <headings generate="true" select="5" />
+    <headings generate="true" select="6" />
+    <headings generate="true" select="7" />
+    <headings generate="true" select="8" />
+    <headings generate="true" select="9" />
+    <headings generate="true" select="1-9" />
+    <outline generate="false"/>
+    <outline generate="true" select="1" />
+    <outline generate="true" select="2" />
+    <outline generate="true" select="3" />
+    <outline generate="true" select="4" />
+    <outline generate="true" select="5" />
+    <outline generate="true" select="6" />
+    <outline generate="true" select="7" />
+    <outline generate="true" select="8" />
+    <outline generate="true" select="9" />
+    <outline generate="true" select="1-9" />
+    <paragraph generate="false"/>
+    <paragraph generate="true">
+      <style value="[valid word style]" indent="[indent level]" />
+    </paragraph>
+  </toc>
+
+  <default>
+    <defaultparagraphstyle wordstyle="[valid word paragraph style]" />
+    <defaultcharacterstyle wordstyle="[valid word character style]" />
+    <comments generate="false" />
+    <comments generate="true" />
+    <mathml generate="true" />
+    <mathml generate="false" />
+    <endnotes generate="true|false" xref-labels=""/>
+    <footnotes generate="true|false" xref-labels=""/>
+  </default>
+
+
+  <elements>
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <block default="none">
+      <label wordstyle="[valid word paragraph style]" value="[valid psml block label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml block label]"/>
+      <ignore label="[valid psml block label]"/>
+    </block>
+    <block default="generate-ps-style">
+      <label wordstyle="[valid word paragraph style]" value="[valid psml block label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml block label]"/>
+      <ignore label="[valid psml block label]"/>
+    </block>
+    <block default="[valid word paragraph style]">
+      <label wordstyle="[valid word paragraph style]" value="[valid psml block label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml block label]"/>
+      <ignore label="[valid psml block label]"/>
+    </block>
+
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <inline default="none">
+      <label wordstyle="[valid word character style]" value="[valid psml inline label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml inline label]"/>
+      <ignore label="[valid psml inline label]"/>
+      <tab label="[valid psml inline label]"/>
+      <fieldcode label="[valid psml inline label]" value="[text to have as a fieldcode]"/>
+    </inline>
+    <inline default="generate-ps-style">
+      <label wordstyle="[valid word character style]" value="[valid psml inline label]"/>
+      <ignore label="[valid psml inline label]"/>
+      <tab label="[valid psml inline label]"/>
+      <fieldcode label="[valid psml inline label]" value="[text to have as a fieldcode]"/>
+    </inline>
+    
+    <inline default="[valid word paragraph style]">
+      <label wordstyle="[valid word character style]" value="[valid psml inline label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml inline label]"/>
+      <ignore label="[valid psml inline label]"/>
+      <tab label="[valid psml inline label]"/>
+      <fieldcode label="[valid psml inline label]" value="[text to have as a fieldcode]"/>
+    </inline>
+
+    <!-- default options:"[existing table style]|TableGrid" -->
+    <tables>
+      <table default="[existing word table style]"/>
+      <table role="[existing table role]" tablestyle="[existing word table style]" />
+    </tables>
+    
+    <preformat wordstyle="[valid word paragraph style]"/>
+    <!-- options:"[existing style name]" -->
+    <heading>
+      <level value="1" wordstyle="[valid word paragraph style]"/>
+      <level value="2" wordstyle="[valid word paragraph style]"/>
+      <level value="3" wordstyle="[valid word paragraph style]"/>
+      <level value="4" wordstyle="[valid word paragraph style]"/>
+      <level value="5" wordstyle="[valid word paragraph style]"/>
+      <level value="6" wordstyle="[valid word paragraph style]">
+        <prefix select="false"/>
+        <prefix select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </prefix>
+        <numbered select="false"/>
+	      <numbered select="true">
+	        <fieldcode regexp="%arabic%" type="SEQ" />
+	      </numbered>
+      </level>
+    </heading>
+    
+    <para>
+      <indent value="0" wordstyle="[valid word paragraph style]"/>
+      <indent value="1" wordstyle="[valid word paragraph style]"/>
+      <indent value="2" wordstyle="[valid word paragraph style]"/>
+      <indent value="3" wordstyle="[valid word paragraph style]"/>
+      <indent value="4" wordstyle="[valid word paragraph style]"/>
+      <indent value="5" wordstyle="[valid word paragraph style]"/>
+      <indent value="6" wordstyle="[valid word paragraph style]">
+        <prefix select="false"/>
+        <prefix select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </prefix>
+        <numbered select="false"/>
+        <numbered select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </numbered>
+      </indent>
+    </para>
+
+    <nlist>
+      <default>
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </default>
+      <role value="[existing list role]">
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </role>
+    </nlist>
+
+    <list>
+      <default>
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </default>
+      <role value="[existing list role]">
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </role>
+    </list>
+  </elements>
+  
+  <elements label="[valid psml document label]">
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <block default="none"/>
+    <block default="generate-ps-style">
+      <label wordstyle="[valid word paragraph style]" value="[valid psml block label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml block label]"/>
+    </block>
+
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <inline default="none"/>
+    <inline default="generate-ps-style">
+      <label wordstyle="[valid word character style]" value="[valid psml inline label]"/>
+      <label wordstyle="generate-ps-style" value="[valid psml inline label]"/>
+    </inline>
+
+    <!-- default options:"[existing table style]|TableGrid" -->
+    <tables default="Table Normal">
+	  <table default="Table Normal">
+	  <width type="pct" value="5000"/>
+		</table>
+      <table role="[existing table role]" tablestyle="[existing word table style]" />
+	  <table role="[existing table role]" tablestyle="[existing word table style]" >
+		<width type="pct" value="5000"/>
+	  </table>
+    </tables>
+
+    <!-- options:"[existing style name]" -->
+    <heading>
+      <level value="1" wordstyle="[valid word paragraph style]"/>
+      <level value="2" wordstyle="[valid word paragraph style]"/>
+      <level value="3" wordstyle="[valid word paragraph style]"/>
+      <level value="4" wordstyle="[valid word paragraph style]"/>
+      <level value="5" wordstyle="[valid word paragraph style]"/>
+      <level value="6" wordstyle="[valid word paragraph style]">
+        <prefix select="false"/>
+        <prefix select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </prefix>
+        <numbered select="false"/>
+        <numbered select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </numbered>
+      </level>
+    </heading>
+    
+    <para>
+      <indent level="0" wordstyle="[valid word paragraph style]"/>
+      <indent level="1" wordstyle="[valid word paragraph style]"/>
+      <indent level="2" wordstyle="[valid word paragraph style]"/>
+      <indent level="3" wordstyle="[valid word paragraph style]"/>
+      <indent level="4" wordstyle="[valid word paragraph style]"/>
+      <indent level="5" wordstyle="[valid word paragraph style]"/>
+      <indent level="6" wordstyle="[valid word paragraph style]">
+        <prefix select="false"/>
+        <prefix select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </prefix>
+        <numbered select="false"/>
+        <numbered select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </numbered>
+      </indent>
+    </para>
+
+    <nlist>
+      <default>
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </default>
+      <role value="[existing list role]">
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </role>
+    </nlist>
+
+    <list>
+      <default>
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </default>
+      <role value="[existing list role]">
+        <level value="1" wordstyle="[valid word paragraph style]" />
+        <level value="2" wordstyle="[valid word paragraph style]" />
+        <level value="3" wordstyle="[valid word paragraph style]" />
+        <level value="4" wordstyle="[valid word paragraph style]" />
+        <level value="5" wordstyle="[valid word paragraph style]" />
+        <level value="6" wordstyle="[valid word paragraph style]" />
+      </role>
+    </list>
+  </elements>
+</config>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Task definitions for this library.
+-->
+<antlib>
+  <taskdef name="import-docx"  classname="org.pageseeder.docx.ant.ImportTask"/>
+  <taskdef name="export-docx"  classname="org.pageseeder.docx.ant.ExportTask"/>
+</antlib>

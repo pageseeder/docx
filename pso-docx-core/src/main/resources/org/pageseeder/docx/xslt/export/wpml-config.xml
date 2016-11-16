@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+
+<config>
+  <!-- =======================SPLIT PROPERTIES======================= -->
+  <core select="Config"> <!-- Manual|Template|Config -->
+    <creator select="Pageseeder" souce="[property label]"/>
+    <description select="Pageseeder"/>
+    <subject select="1"/>
+    <title select="1"/>
+    <category select="1"/>
+    <version select="1"/>
+    <revision select="1"/> <!--  has to be an integer -->
+<!--<created select="Pageseeder"/> currently using calculated values --> 
+  </core>
+  
+  
+  <tab label="NStab"/>
+  
+  <defaultparagraphstyle style="Body Text"/>
+  <defaultcharacterstyle style="Default Paragraph Font"/>
+  <comments generate="false"/>
+  <!-- default options:"generate-ps-style|none" -->
+  <!-- label options:"generate-ps-style|[name of style]" -->  
+  <block default="generate-ps-style" ignore="none">
+<!--     <element label="paralabel" style="name"/> -->
+  </block>
+  
+  <!-- default options:"generate-ps-style|none" -->
+  <!-- label options:"generate-ps-style|[name of style]" -->
+  <inline default="generate-ps-style" ignore="none">
+<!--     <element label="paralabel" style="name"/> -->
+  </inline>
+  
+  <!-- default options:"[existing table style]|TableGrid" -->
+  <tables default="Table Normal">
+  </tables>
+  
+  <!-- options:"[existing style name]" -->
+  <heading>
+    <style level="1" name="heading 1"/>
+    <style level="2" name="heading 2"/>
+    <style level="3" name="heading 3"/>
+    <style level="4" name="heading 4"/>
+    <style level="5" name="heading 5"/>
+    <style level="6" name="heading 6"/>
+  </heading>
+  
+  <title name="heading 1"/>
+  
+  <toc generate="true" style="TOC2">
+    <headings generate="true" select="1-9"/> <!-- 1|1-2|5-9|etc from 1 up to 9-->
+    <outline generate="true" select="1-9"/> <!-- 1|1-2|5-9|etc from 1 up to 9-->
+    <paragraph generate="false">
+      <!-- any paragraph style defined in the document with the corresponding TOC indent level  -->
+      <!-- <type name="" level=""/> -->
+    </paragraph>
+  </toc>
+  
+  <xref default="create-bookmark"/>  
+  
+  
+  <!-- default options:"[existing numbering numid]|0" -->
+  <lists>
+    <list name="default" style="">
+      <level value="1">
+        <left-indent value="720"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="bullet"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="&#x2022;"/>                                                      
+      </level>
+      <level value="2">
+        <left-indent value="1440"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="bullet"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="&#x25E6;"/>      
+      </level>
+      <level value="3">
+        <left-indent value="2160"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="bullet"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="&#x25AA;"/>      
+      </level>
+      <level value="4">
+        <left-indent value="2880"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="bullet"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="&#x2022;"/>      
+      </level>
+      <level value="5">
+        <left-indent value="3600"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="bullet"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type: Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="&#x25E6;"/>      
+      </level>
+      <level value="6">
+        <left-indent value="4320"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="bullet"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type: Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="&#x25AA;"/>      
+      </level>
+    </list>
+    <nlist name="default" style="">
+      <level value="1">
+        <left-indent value="720"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="decimal"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="Heading 1"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="%1."/>                                                      
+      </level>
+      <level value="2">
+        <left-indent value="1440"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="lowerLetter"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="%2."/>      
+      </level>
+      <level value="3">
+        <left-indent value="2160"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="lowerRoman"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="%3."/>      
+      </level>
+      <level value="4">
+        <left-indent value="2880"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="decimal"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="%4."/>      
+      </level>
+      <level value="5">
+        <left-indent value="3600"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="lowerLetter"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type: Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="%5."/>      
+      </level>
+      <level value="6">
+        <left-indent value="4320"/>
+        <right-indent value=""/>
+        <hanging value="360"/>
+        <format value="lowerRoman"/><!-- ST_NumberFormat (Check chapter 2.18.66 of the word specification) i.e. bullet|lowerRoman|decimal|lowerLetter|upperRoman|decimalZero|upperLetter -->
+        <start value="1"/>
+        <paragraphstyle select="false" value="List Paragraph"/>
+        <justification value="left"/> <!-- ST_Jc (Horizontal Alignment Type: Check chapter 2.18.50 of the word specification) i.e. both|center|distribute|left|right --> 
+        <levelText value="%6."/>      
+      </level>
+    </nlist>
+  </lists>
+  
+<!--TODO   <tables> -->
+<!--     <table name="name"> -->
+<!--       <first-column/> -->
+<!--       <last-column/> -->
+<!--       <odd-column/> -->
+<!--       <even-column/> -->
+<!--       <first-row/> -->
+<!--       <last-row> -->
+<!--         <borders> -->
+<!--           <bottom select=""/> -->
+<!--           <top select="content|after-content|before-content"/> -->
+<!--         </borders> -->
+<!--       </last-row> -->
+<!--       <even-row/> -->
+<!--       <odd-row/> -->
+<!--       <top-left/> -->
+<!--       <top-right/> -->
+<!--       <bottom-left/> -->
+<!--       <bottom-right/> -->
+<!--     </table> -->
+<!--   </tables> -->
+</config>

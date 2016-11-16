@@ -1,0 +1,10 @@
+
+description = "Core DOCX API"
+
+dependencies {
+
+  testCompile (
+    'xmlunit:xmlunit:1.6'
+  )
+
+}

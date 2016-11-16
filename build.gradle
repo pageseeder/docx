@@ -1,0 +1,32 @@
+plugins {
+  id "com.jfrog.bintray" version "1.7"
+}
+
+group   = 'org.pageseeder.docx'
+ext {
+  globalVersion = file('version.txt').text
+}
+
+//apply plugin: 'java'
+//apply plugin: 'maven-publish'
+//apply from: 'gradle/publishing.gradle'
+
+allprojects {
+  group   = 'org.pageseeder.docx'
+  version = "$globalVersion"
+
+  apply plugin: 'java'
+  
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  repositories {
+    maven { url 'http://dl.bintray.com/pageseeder/maven' }
+    jcenter()
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '3.1'
+  description 'Generates the Gradle wrapper scripts'
+}
