@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable">
+	<documentinfo>
+		<uri title="empty-configuration-basic-document">
+			<displaytitle>empty-configuration-basic-document</displaytitle>
+		</uri>
+	</documentinfo>
+	<section id="title">
+		<fragment id="title">
+			<para>Test Case 1</para>
+			<preformat>Basic Document without any configuration.</preformat>
+		</fragment>
+	</section>	
+</document>

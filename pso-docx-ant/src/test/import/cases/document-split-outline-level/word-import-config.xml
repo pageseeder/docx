@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<split>
+    <document select="true">
+      <outlinelevel select="0" />
+    </document>
+  </split>
+</config>

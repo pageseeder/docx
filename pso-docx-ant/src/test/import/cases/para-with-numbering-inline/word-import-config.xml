@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="para">
+			<indent value="1" />
+			<numbering select="true" value="inline">
+				<label value="heading1inline"/> 
+			</numbering>
+		</wordstyle>
+	</styles>
+</config>

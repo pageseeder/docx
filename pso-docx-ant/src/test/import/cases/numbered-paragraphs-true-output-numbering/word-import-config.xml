@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<lists>
+	  <convert-to-numbered-paragraphs select="true">
+	    <level value="1" output="numbering"/>
+	  </convert-to-numbered-paragraphs>
+  </lists>
+</config>

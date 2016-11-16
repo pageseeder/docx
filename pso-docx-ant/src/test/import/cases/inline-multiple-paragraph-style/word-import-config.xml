@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="inline">
+			<label value="heading1"/>
+		</wordstyle>
+		<wordstyle name="Heading2" psmlelement="inline">
+			<label value="heading2"/>
+		</wordstyle>
+		<wordstyle name="Heading3" psmlelement="inline">
+			<label value="heading3"/>
+		</wordstyle>
+		<wordstyle name="Heading4" psmlelement="inline">
+			<label value="heading4"/>
+		</wordstyle>
+		<wordstyle name="Heading5" psmlelement="inline">
+			<label value="heading5"/>
+		</wordstyle>
+		<wordstyle name="Heading6" psmlelement="inline">
+			<label value="heading6"/>
+		</wordstyle>
+	</styles>
+</config>

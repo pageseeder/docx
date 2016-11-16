@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<tables>
+			<table  role="tablea" tablestyle="Table Grid 2"/>
+		</tables>
+	</elements>
+</config>

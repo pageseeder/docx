@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config>
+	<lists>
+	  <convert-to-list-roles select="true"/>
+  </lists>
+</config>

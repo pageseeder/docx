@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<config>
+	<lists>
+	  <convert-manual-numbering select="true">
+		<value match="Schedule&#160;[0-9]+">
+	      <prefix />
+	    </value>
+		<value match="Part&#160;[0-9]+">
+	      <prefix />
+	    </value>
+		<value match="\s*[0-9]+\s">
+	      <prefix />
+		</value>
+		<value match="\s*\([0-9A-Z]+\)">
+	      <prefix />
+	    </value>
+		<value match="\s*\([a-z]+\)">
+	      <prefix />
+	    </value>
+	  </convert-manual-numbering> 
+  </lists>
+  <styles>
+	<default>
+      <paragraphStyles value="para" />
+    </default>
+  </styles>
+</config>

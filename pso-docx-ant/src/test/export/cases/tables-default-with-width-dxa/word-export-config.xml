@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<tables>
+			<table  default="Table Grid">
+				<width type="dxa" value="2000"/>
+			</table>
+		</tables>
+	</elements>
+</config>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config>
+	<split>
+		<document select="false">
+			<outlinelevel select="0" />
+			<outlinelevel select="1" />
+			<wordstyle  select="Heading1" />
+			<wordstyle  select="Heading2" />
+		</document>
+	</split>
+	<lists>
+		<add-numbering-to-document-titles select="false"/>
+	</lists>
+</config>

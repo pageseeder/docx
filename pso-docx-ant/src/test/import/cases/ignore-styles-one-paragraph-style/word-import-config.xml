@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<ignore>
+			<wordstyle value="Heading1" />
+		</ignore>
+	</styles>
+</config>

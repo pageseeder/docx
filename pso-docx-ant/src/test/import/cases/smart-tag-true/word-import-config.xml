@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<default>
+			<smart-tag keep="true" />
+		</default>
+	</styles>
+</config>

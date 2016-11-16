@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<config>
+	<split>
+    <document select="true">
+      <wordstyle  select="Heading1" >
+		<type>heading1</type>
+	  </wordstyle>
+      <wordstyle  select="Heading2" >
+		<type>heading2</type>
+	  </wordstyle>
+    </document>
+  </split>
+</config>

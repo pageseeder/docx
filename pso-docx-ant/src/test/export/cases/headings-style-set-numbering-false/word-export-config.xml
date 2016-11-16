@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<heading>
+			<level value="1" wordstyle="heading 1">
+				<numbered select="false"/>
+			</level>
+			<level value="2" wordstyle="heading 2">
+				<numbered select="false"/>
+			</level>
+			<level value="3" wordstyle="heading 3">
+				<numbered select="false"/>
+			</level>
+			<level value="4" wordstyle="heading 4">
+				<numbered select="false"/>
+			</level>
+			<level value="5" wordstyle="heading 5">
+				<numbered select="false"/>
+			</level>
+			<level value="6" wordstyle="heading 6">
+				<numbered select="false"/>
+			</level>
+		</heading>
+	</elements>
+</config>

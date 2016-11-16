@@ -1,0 +1,17 @@
+<document id="186970" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable"><documentinfo><uri id="186970" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/Inline_Labels.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Inline_Labels.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:31:11+11:00" title="Inline Labels"><displaytitle>Inline Labels</displaytitle></uri><reversexrefs><reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455325" title="Test Files" type="none" forwardtype="embed"/></reversexrefs></documentinfo><fragmentinfo><locator id="103141" fragment="title" editid="455415" modified="2013-01-29T16:23:59+11:00"/><locator id="103130" fragment="1" editid="455569" modified="2013-02-04T10:19:20+11:00"/></fragmentinfo><section id="title"><fragment id="title">
+         <heading level="1">Inline labels</heading>
+      </fragment></section><section id="1"><fragment id="1">
+			<para>Inline Label examples:</para>
+			<para>
+				<inline label="Test1">One inlinelabel</inline>
+			</para>
+			<para>
+				<inline label="Test2">Another inlineLabel</inline>
+			</para>
+			<para>
+				<inline label="Test3">And </inline> <inline label="Test2">another</inline><inline label="Test3"> inlineLabel</inline>
+			</para>
+			<para>
+				<inline label="Test1">And </inline><inline label="Test2">another </inline><inline label="Test3">inlinelabel</inline><inline label="Test2"> of another</inline><inline label="Test1"> inlinelabel</inline>
+			</para>
+		</fragment></section></document>

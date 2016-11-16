@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="heading">
+			<level value="1" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
+		<wordstyle name="Heading2" psmlelement="heading">
+			<level value="2" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
+		<wordstyle name="Heading3" psmlelement="heading">
+			<level value="3" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
+		<wordstyle name="Heading4" psmlelement="heading">
+			<level value="4" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
+		<wordstyle name="Heading5" psmlelement="heading">
+			<level value="5" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
+		<wordstyle name="Heading6" psmlelement="heading">
+			<level value="6" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
+	</styles>
+</config>

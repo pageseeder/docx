@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<default>
+			<paragraphStyles value="something else" />
+		</default>
+	</styles>
+</config>

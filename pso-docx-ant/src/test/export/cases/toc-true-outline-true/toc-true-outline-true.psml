@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable">
+	<documentinfo>
+		<uri title="empty-configuration-basic-document">
+			<displaytitle>empty-configuration-basic-document</displaytitle>
+		</uri>
+	</documentinfo>
+	<toc/>
+	<section id="title">
+		<fragment id="title">
+			<para>Test Case 1</para>
+			<para>Basic Document without any configuration.</para>
+		</fragment>
+	</section>	
+</document>

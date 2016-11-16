@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<tables>
+			<table  default="Table Grid"/>
+			<table  role="tablea" tablestyle="Normal Table "/>
+			<table  role="tableb" tablestyle="Table Grid 2"/>
+		</tables>
+	</elements>
+</config>

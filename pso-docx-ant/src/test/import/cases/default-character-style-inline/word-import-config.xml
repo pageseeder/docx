@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<default>
+			<characterStyles value="inline" />
+		</default>
+	</styles>
+</config>

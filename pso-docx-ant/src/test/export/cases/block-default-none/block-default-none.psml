@@ -1,0 +1,44 @@
+<document id="186971" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable">
+	<documentinfo>
+		<uri id="186971" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/Para_labels.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Para_labels.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:31:24+11:00" title="Para labels">
+			<displaytitle>Para labels</displaytitle>
+		</uri>
+		<reversexrefs>
+			<reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455326" title="Test Files" type="none" forwardtype="embed"/>
+		</reversexrefs>
+	</documentinfo>
+	<fragmentinfo>
+		<locator id="103143" fragment="1" editid="466356" modified="2013-04-22T16:49:29+10:00"/>
+		<locator id="103145" fragment="title"/>
+	</fragmentinfo>
+	<section id="title">
+		<fragment id="title">
+			<heading level="1">Para labels</heading>
+		</fragment>
+	</section>
+	<section id="1">
+		<fragment id="1">
+			<block label="TestPara1">
+				<para>Text of a paralabel (TestPara1)</para>
+			</block>
+			<block label="TestPara2">
+				<para>And another</para>
+				<para>test paralabel</para>
+				<para>surrounding 3 paragraphs (TestPara2)</para>
+			</block>
+			<block label="TestPara1">
+				<para>Nested paralabels. This text is in the main paralabel (TestPara1) and it is a container for the following paralabel TestPara2. The TestPara2 then is a container for a TestPara1 and and TestPara3.</para>
+				<block label="TestPara2">
+					<para>Here is the TestPara2. This paralabel is a container for the following separate paralabels TestPara1 and then a TestPara2.</para>
+					<block label="TestPara1">
+						<para>This is the TestPara1.</para>
+					</block>
+					<block label="TestPara3">
+						<para>This is the TestPara2.</para>
+					</block>
+				</block>
+			</block>
+			<para> </para>
+		</fragment>
+	</section>
+</document>

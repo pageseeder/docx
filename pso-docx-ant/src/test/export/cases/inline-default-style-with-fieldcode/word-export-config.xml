@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+	<inline default="Title Char">
+		<fieldcode label="Test3"  value=" MACROBUTTON  ac_OnHelp [complete/delete]"/>
+	</inline>
+	</elements>
+</config>

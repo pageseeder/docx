@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<toc generate="true" style="TOC1">
+	<paragraph generate="true">
+      <style value="List Number" indent="1" />
+    </paragraph>
+  </toc>
+</config>

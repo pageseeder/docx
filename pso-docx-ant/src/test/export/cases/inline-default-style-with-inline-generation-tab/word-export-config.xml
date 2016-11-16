@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+	<inline default="Title Char">
+		<label wordstyle="annotation reference" value="Test3"/>
+		<tab label="Test2"/>
+	</inline>
+	</elements>
+</config>

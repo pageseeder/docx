@@ -237,7 +237,7 @@ public final class ExportTask extends Task {
     
     // 4. Unnest the files
     log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("com/pageseeder/ant/docx/xslt/export/unnest.xsl");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export/unnest.xsl");
     File sourceDocument = this.source;
     File newSourceDocument = new File(this.working, "unnested/document-unnested.psml");
     newSourceDocument.getParentFile().mkdir();
@@ -249,7 +249,7 @@ public final class ExportTask extends Task {
     log("Process with XSLT");
 
     // Parse templates
-    Templates templates = XSLT.getTemplatesFromResource("com/pageseeder/ant/docx/xslt/export.xsl");
+    Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export.xsl");
 
     // Initiate parameters
     Map<String, String> parameters = new HashMap<String, String>();
@@ -305,7 +305,7 @@ public final class ExportTask extends Task {
     File tmp = new File(working, "default.dotx");
     try {
       ClassLoader loader = ExportTask.class.getClassLoader();
-      InputStream in = loader.getResourceAsStream("com/pageseeder/ant/docx/resource/default.dotx");
+      InputStream in = loader.getResourceAsStream("org/pageseeder/docx/resource/default.dotx");
       try {
         FileOutputStream out = new FileOutputStream(tmp);
         try {

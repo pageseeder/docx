@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config>
+	<toc generate="true" style="TOC1">
+    <outline generate="true" select="1" />
+  </toc>
+</config>

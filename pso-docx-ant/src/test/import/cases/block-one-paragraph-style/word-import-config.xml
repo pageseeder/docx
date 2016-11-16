@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="block">
+			<label value="heading1block"/>
+		</wordstyle>
+	</styles>
+</config>

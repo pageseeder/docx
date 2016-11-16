@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<block default="none">
+			<label wordstyle="ListNumber" value="TestPara1"/>
+			<ignore label="TestPara3"/>
+		</block>
+	</elements>
+</config>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+	<split>
+    <document select="true">
+      <outlinelevel select="0" />
+      <outlinelevel select="1" />
+    </document>
+  </split>
+</config>

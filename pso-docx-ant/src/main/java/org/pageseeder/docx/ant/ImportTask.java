@@ -205,7 +205,7 @@ public final class ImportTask extends Task {
 
     // 4. Unnest
     log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("com/pageseeder/ant/docx/xslt/import/unnest.xsl");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
     File document = new File(unpacked, "word/document.xml");
     File newDocument = new File(unpacked, "word/new-document.xml");
     Map<String, String> noParameters = Collections.emptyMap();
@@ -226,7 +226,7 @@ public final class ImportTask extends Task {
     log("Process with XSLT (this may take several minutes)");
 
     // Parse templates
-    Templates templates = XSLT.getTemplatesFromResource("com/pageseeder/ant/docx/xslt/import.xsl");
+    Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
 
     // Initiate parameters

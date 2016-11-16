@@ -10,4 +10,15 @@ dependencies {
     'org.apache.ant:ant:1.8.1'
   )
 
+  testCompile (
+    'xmlunit:xmlunit:1.6',
+    'junit:junit:4+'
+  )
+
+  testRuntime (
+    'org.pageseeder.schematron:pso-schematron:1.2.+',
+    'org.pageseeder.cobble:pso-cobble:0.2.0',
+    'net.sf.saxon:Saxon-HE:9.7.0-2'
+  )
+
 }

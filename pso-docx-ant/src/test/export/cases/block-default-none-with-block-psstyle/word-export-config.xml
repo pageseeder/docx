@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<block default="none">
+			<label wordstyle="generate-ps-style" value="TestPara1"/>
+		</block>
+	</elements>
+</config>

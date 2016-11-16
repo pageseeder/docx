@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<config>
+	<lists>
+	  <convert-manual-numbering select="true">
+		<value match="Schedule\s[0-9]+">
+	      <inline label="numbering-schedule" />
+	    </value>
+		<value match="Part\s[0-9]+">
+	      <inline label="numbering-part" />
+	    </value>
+		<value match="\s*[0-9]+\s">
+	      <inline label="numbering-subdivision" />
+	    </value>
+		<value match="\s*\([0-9]+[A-Z]+\)">
+	      <inline label="numbering-firstlevel" />
+	    </value>
+		<value match="\s*\([a-z]+\)">
+	      <inline label="numbering-secondlevel" />
+	    </value>
+	  </convert-manual-numbering> 
+  </lists>
+</config>

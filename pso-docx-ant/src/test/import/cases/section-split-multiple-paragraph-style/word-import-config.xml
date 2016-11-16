@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+	<split>
+		<section select="true">
+			<wordstyle  select="Heading1" />
+			<wordstyle  select="Heading2" />
+		</section>
+	</split>
+</config>

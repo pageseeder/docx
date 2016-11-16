@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+
+<config>
+  
+   <core select="Config"> <!-- Manual|Template|Config -->
+    <creator select="Pageseeder"/>
+    <description select="Pageseeder"/>
+    <subject select="subject change"/>
+    <title select="Normal title"/>
+    <category select="new category"/>
+    <version select="1.5"/>
+    <revision select="1"/>
+<!--<created select="Pageseeder"/> currently using calculated values --> 
+  </core>
+  
+  <toc generate="true" style="TOC2">
+    <headings generate="true" select="1-9"/> <!-- 1|1-2|5-9|etc from 1 up to 9-->
+    <outline generate="true" select="1-9"/> <!-- 1|1-2|5-9|etc from 1 up to 9-->
+    <paragraph generate="false">
+    <style value="[word style]" indent="[indent level]"/>
+      <!-- any paragraph style defined in the document with the corresponding TOC indent level  -->
+    </paragraph>
+  </toc>
+  
+  <default>
+	  <defaultparagraphstyle wordstyle="Body Text"/>
+	  <defaultcharacterstyle wordstyle="Default Paragraph Font"/>
+	  <comments generate="false"/>
+  </default>
+  
+  
+  <elements>
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->  
+    <block default="generate-ps-style">
+    <ignore label="[value of label to ignore]"/>
+    <label value="Abstract" wordstyle="Instructions"/>
+    <label value="Guidance" wordstyle="Instructions"/>
+    <label value="Optional" wordstyle="OptionalNormal"/>
+    <label value="Prompt"   wordstyle="Prompt"/>
+    </block>
+    
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <inline default="generate-ps-style">
+	    <ignore   label="[value of label to ignore]"/>
+	    <tab    label="NStab"/>
+	    <fieldcode  label="n" value="LISTNUM  LegalDefault \\l 1 \\s 2 "/>
+	    <label    value="Optional" wordstyle="OptionalNormal"/>
+    </inline>
+    
+    <!-- default options:"[existing table style]|TableGrid" -->
+    <tables default="Table Normal">
+    <table role="[role attribute]" wordstyle="[word table style]"/>
+    <!--TODO   <tables> -->
+<!--     <table name="name"> -->
+<!--       <first-column/> -->
+<!--       <last-column/> -->
+<!--       <odd-column/> -->
+<!--       <even-column/> -->
+<!--       <first-row/> -->
+<!--       <last-row> -->
+<!--         <borders> -->
+<!--           <bottom select=""/> -->
+<!--           <top select="content|after-content|before-content"/> -->
+<!--         </borders> -->
+<!--       </last-row> -->
+<!--       <even-row/> -->
+<!--       <odd-row/> -->
+<!--       <top-left/> -->
+<!--       <top-right/> -->
+<!--       <bottom-left/> -->
+<!--       <bottom-right/> -->
+<!--     </table> -->
+<!--   </tables> -->
+    </tables>
+    
+    <!-- options:"[existing style name]" -->
+    <heading>
+	    <level value="1" wordstyle="heading 1">
+	      <prefix select="true" output="filedcode"/> <!-- ['text' or 'fieldcode'] -->
+	    </level>
+	    <level value="2" wordstyle="heading 2">
+	      <prefix select="true" output="filedcode"/>
+	    </level>
+	    <level value="3" wordstyle="heading 3">
+	      <prefix select="true" output="filedcode"/>
+	    </level>
+	    <level value="4" wordstyle="heading 4">
+	      <prefix select="true" output="filedcode"/>
+	    </level>
+	    <level value="5" wordstyle="heading 5">
+	      <prefix select="true" output="filedcode"/>
+	    </level>
+	    <level value="6" wordstyle="heading 6">
+	      <prefix select="true" output="filedcode"/>
+	    </level>
+    </heading>
+    
+    <para>
+      <indent level="0" wordstyle="List Continue" >
+        <prefix select="true" output="filedcode"/>
+      </indent>
+      <indent level="1" wordstyle="List Continue" >
+	      <prefix select="true" output="filedcode"/>
+	    </indent>
+      <indent level="2" wordstyle="List Continue" >
+	      <prefix select="true" output="filedcode"/>
+	    </indent>
+      <indent level="3" wordstyle="List Continue" >
+	      <prefix select="true" output="filedcode"/>
+	    </indent>
+      <indent level="4" wordstyle="List Continue" >
+	      <prefix select="true" output="filedcode"/>
+	    </indent>
+      <indent level="5" wordstyle="List Continue" >
+	      <prefix select="true" output="filedcode"/>
+	    </indent>
+      <indent level="6" wordstyle="List Continue" >
+	      <prefix select="true" output="filedcode"/>
+	    </indent>
+    </para>
+    
+    <title wordstyle="heading 1"/>
+    
+    <nlist>
+	    <default>
+	      <level value="1" wordstyle="List Number"/>
+	      <level value="2" wordstyle="List Number 2"/>
+	      <level value="3" wordstyle="List Number 3"/>
+	      <level value="4" wordstyle="List Number 4"/>
+	      <level value="5" wordstyle="List Number 5"/>
+	      <level value="6" wordstyle="List Number 6"/>
+	    </default>
+    <role value="[value of role]" wordstyle="[word style]"/>
+    </nlist>
+    
+    <list>
+	    <default>
+	      <level value="1" wordstyle="List Bullet"/>
+	      <level value="2" wordstyle="List Bullet 2"/>
+	      <level value="3" wordstyle="List Bullet 3"/>
+	      <level value="4" wordstyle="List Bullet 4"/>
+	      <level value="5" wordstyle="List Bullet 5"/>
+	      <level value="6" wordstyle="List Bullet 6"/>
+	    </default>
+    <role value="[value of role]" wordstyle="[word style]"/>
+    </list>
+    
+  </elements>
+  
+  <elements label="warranty">
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->  
+    <block default="generate-ps-style">
+    <ignore label="[value of label to ignore]"/>
+    <label value="Abstract" wordstyle="Instructions"/>
+    <label value="Guidance" wordstyle="Instructions"/>
+    <label value="Optional" wordstyle="OptionalNormal"/>
+    <label value="Prompt"   wordstyle="Prompt"/>
+    </block>
+    
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <inline default="generate-ps-style" ignore="none">
+    <ignore   label="[value of label to ignore]"/>
+    <tab    label="NStab"/>
+    <fieldcode  label="n" fieldcode="LISTNUM  LegalDefault \\l 1 \\s 2 "/>
+    <label    value="Optional" wordstyle="OptionalNormal"/>
+    </inline>
+    
+    <!-- default options:"[existing table style]|TableGrid" -->
+    <tables default="Table Normal">
+    <table role="[role attribute]" style="[word table style]"/>
+    <!--TODO   -->
+<!--     <table role="name"> -->
+<!--       <first-column/> -->
+<!--       <last-column/> -->
+<!--       <odd-column/> -->
+<!--       <even-column/> -->
+<!--       <first-row/> -->
+<!--       <last-row> -->
+<!--         <borders> -->
+<!--           <bottom select=""/> -->
+<!--           <top select="content|after-content|before-content"/> -->
+<!--         </borders> -->
+<!--       </last-row> -->
+<!--       <even-row/> -->
+<!--       <odd-row/> -->
+<!--       <top-left/> -->
+<!--       <top-right/> -->
+<!--       <bottom-left/> -->
+<!--       <bottom-right/> -->
+<!--     </table> -->
+    </tables>
+    
+    <!-- options:"[existing style name]" -->
+    <heading>
+    <level value="1" wordstyle="heading 1"/>
+    <level value="2" wordstyle="heading 2"/>
+    <level value="3" wordstyle="heading 3"/>
+    <level value="4" wordstyle="heading 4"/>
+    <level value="5" wordstyle="heading 5"/>
+    <level value="6" wordstyle="heading 6"/>
+    </heading>
+    
+    <title wordstyle="heading 1"/>
+    
+    
+  </elements>
+  
+  <!-- =======================SPLIT PROPERTIES======================= -->
+  
+  
+  
+
+</config>

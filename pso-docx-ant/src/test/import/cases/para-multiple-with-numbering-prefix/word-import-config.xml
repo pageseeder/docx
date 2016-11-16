@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="para">
+			<indent value="1" />
+			<numbering select="true" value="prefix"/>
+		</wordstyle>
+		<wordstyle name="Heading2" psmlelement="para">
+			<indent value="2" />
+			<numbering select="true" value="prefix"/>
+		</wordstyle>
+		<wordstyle name="Heading3" psmlelement="para">
+			<indent value="3" />
+			<numbering select="true" value="prefix"/>
+		</wordstyle>
+		<wordstyle name="Heading4" psmlelement="para">
+			<indent value="4" />
+			<numbering select="true" value="prefix"/>
+		</wordstyle>
+		<wordstyle name="Heading5" psmlelement="para">
+			<indent value="5" />
+			<numbering select="true" value="prefix"/>
+		</wordstyle>
+		<wordstyle name="Heading6" psmlelement="para">
+			<indent value="6" />
+			<numbering select="true" value="prefix"/>
+		</wordstyle>
+	</styles>
+</config>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<heading>
+			<level value="1" wordstyle="heading 1"/>
+			<level value="2" wordstyle="heading 2"/>
+			<level value="3" wordstyle="heading 3"/>
+			<level value="4" wordstyle="heading 4"/>
+			<level value="5" wordstyle="heading 5"/>
+			<level value="6" wordstyle="heading 6"/>
+		</heading>
+	</elements>
+</config>

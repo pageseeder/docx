@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<ignore>
+			<wordstyle value="Bodytext" />
+		</ignore>
+	</styles>
+</config>

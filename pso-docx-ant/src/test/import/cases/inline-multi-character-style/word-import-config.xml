@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Emphasis" psmlelement="inline">
+			<label value="emphasisinline"/>
+		</wordstyle>
+		<wordstyle name="Strong" psmlelement="inline">
+			<label value="stronginline"/>
+		</wordstyle>
+	</styles>
+</config>

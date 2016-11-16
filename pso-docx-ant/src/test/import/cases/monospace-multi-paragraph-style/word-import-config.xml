@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="monospace">
+		</wordstyle>
+		<wordstyle name="Heading2" psmlelement="monospace">
+		</wordstyle>
+		<wordstyle name="Index1" psmlelement="monospace">
+		</wordstyle>
+	</styles>
+</config>

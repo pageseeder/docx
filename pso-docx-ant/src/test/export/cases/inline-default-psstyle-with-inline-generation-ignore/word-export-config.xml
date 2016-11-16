@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+	<inline default="generate-ps-style">
+		<label wordstyle="annotation reference" value="Test3"/>
+		<ignore label="Test2"/>
+	</inline>
+	</elements>
+</config>

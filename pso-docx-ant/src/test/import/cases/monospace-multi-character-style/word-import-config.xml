@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Emphasis" psmlelement="monospace">
+		</wordstyle>
+		<wordstyle name="Strong" psmlelement="monospace">
+		</wordstyle>
+	</styles>
+</config>

@@ -4,7 +4,8 @@ description = "Core DOCX API"
 dependencies {
 
   testCompile (
-    'xmlunit:xmlunit:1.6'
+    'xmlunit:xmlunit:1.6',
+    'junit:junit:4+'
   )
 
 }

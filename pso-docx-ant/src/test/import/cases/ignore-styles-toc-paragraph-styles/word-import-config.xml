@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<ignore>
+			<wordstyle value="TOC1" />
+			<wordstyle value="TOC2" />
+			<wordstyle value="TOC3" />
+			<wordstyle value="TOC4" />
+			<wordstyle value="TOC5" />
+			<wordstyle value="TOC6" />
+			<wordstyle value="TOC7" />
+			<wordstyle value="TOC8" />
+			<wordstyle value="TOC9" />
+		</ignore>
+	</styles>
+</config>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config>
+	<lists>
+	  <convert-to-numbered-paragraphs select="true">
+	    <level value="0" output="prefix"/>
+		<level value="1" output="prefix"/> <!-- prefix or numbering or inline=[label] or text -->
+	    <level value="2" output="prefix"/>
+	    <level value="3" output="numbering"/>
+	    <level value="4" output="numbering"/>
+	    <level value="5" output="numbering"/>
+	    <level value="6" output="numbering"/>
+	  </convert-to-numbered-paragraphs>
+  </lists>
+</config>

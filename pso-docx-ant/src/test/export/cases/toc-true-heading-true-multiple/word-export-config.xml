@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config>
+	<toc generate="true" style="TOC1">
+   <headings generate="true" select="1-9" />
+  </toc>
+</config>
