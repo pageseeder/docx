@@ -59,11 +59,11 @@ bintray {
 
   pkg {
     repo       = 'maven'
-    name       = "${gitName}"
+    name       = "$gitName"
     userOrg    = 'pageseeder'
-    desc       = "$description"
+    desc       = "$project.description"
     websiteUrl = "$website"
-    vcsUrl     = "https://github.com/pageseeder/${gitName}.git"
+    vcsUrl     = "https://github.com/pageseeder/docx.git"
     licenses   = ['Apache-2.0']
     labels     = "$labels".split(',')
     githubRepo = "pageseeder/${gitName}"
@@ -89,7 +89,3 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
   from javadoc.destinationDir
 }
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '3.1'
-  description 'Generates the Gradle wrapper scripts'
-}
