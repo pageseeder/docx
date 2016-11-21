@@ -44,32 +44,36 @@ public final class ZipUtils {
     try {
       ZipEntry entry;
       ZipFile zip = new ZipFile(src);
-      for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements();) {
-        entry = e.nextElement();
-        String name = entry.getName();
-        // Ensure that the folder exists
-        if (name.indexOf('/') > 0) {
-          String folder = name.substring(0, name.lastIndexOf('/'));
-          File dir = new File(dest, folder);
-          if (!dir.exists()) {
-            dir.mkdirs();
+      try {
+        for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements();) {
+          entry = e.nextElement();
+          String name = entry.getName();
+          // Ensure that the folder exists
+          if (name.indexOf('/') > 0) {
+            String folder = name.substring(0, name.lastIndexOf('/'));
+            File dir = new File(dest, folder);
+            if (!dir.exists()) {
+              dir.mkdirs();
+            }
+          }
+          // Only process files
+          if (!entry.isDirectory()) {
+            BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
+            int count;
+            byte[] data = new byte[BUFFER];
+            File f = new File(dest, name);
+            FileOutputStream fos = new FileOutputStream(f);
+            BufferedOutputStream out = new BufferedOutputStream(fos, BUFFER);
+            while ((count = is.read(data, 0, BUFFER)) != -1) {
+              out.write(data, 0, count);
+            }
+            out.flush();
+            out.close();
+            is.close();
           }
         }
-        // Only process files
-        if (!entry.isDirectory()) {
-          BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-          int count;
-          byte[] data = new byte[BUFFER];
-          File f = new File(dest, name);
-          FileOutputStream fos = new FileOutputStream(f);
-          BufferedOutputStream out = new BufferedOutputStream(fos, BUFFER);
-          while ((count = is.read(data, 0, BUFFER)) != -1) {
-            out.write(data, 0, count);
-          }
-          out.flush();
-          out.close();
-          is.close();
-        }
+      } finally {
+        zip.close();
       }
     } catch (IOException ex) {
       ex.printStackTrace();
