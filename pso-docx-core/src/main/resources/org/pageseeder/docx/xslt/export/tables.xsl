@@ -108,7 +108,7 @@
             </xsl:for-each>
 					<xsl:copy-of select="./col" />
           <xsl:if test="$max-columns != count(col)">
-            <xsl:for-each select="count(col) to $max-columns">
+            <xsl:for-each select="count(col) to xs:integer($max-columns)">
               <col value="0" type="auto"/>
             </xsl:for-each>
           </xsl:if>
