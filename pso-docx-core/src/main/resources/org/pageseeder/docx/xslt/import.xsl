@@ -140,9 +140,15 @@
 
 	<xsl:output method="xml" version="1.0" indent="no" encoding="UTF-8" />
 
+
+<!-- Dummy template to ignore warning issued by Saxon -->
+  <xsl:template match="ct:Dummy"/>
+  
 <!--
   The root node of "[content_types].xml"
 -->
+ 
+  
 	<xsl:template match="/">
 <!--        <xsl:if test="$config-doc/config/split/mathml[@select='true']/@output = 'generate-files'"> -->
 <!--          <xsl:apply-templates select="document($main)//(m:oMath[not(ancestor::m:oMathPara)]|m:oMathPara)" mode="mathml" /> -->
