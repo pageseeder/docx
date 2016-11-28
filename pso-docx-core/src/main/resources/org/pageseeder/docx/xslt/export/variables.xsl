@@ -3333,7 +3333,7 @@
   -->
    <xsl:variable name="all-type-lists" as="node()">
     <lists>
-    <xsl:for-each select=".//nlist[@type !='' or descendant::nlist/@type !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
+    <xsl:for-each select=".//nlist[@role !='' or descendant::nlist/@role !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
       <xsl:variable name="max-abstract-num"
       select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
 <!--       <xsl:message select="$max-abstract-num"></xsl:message> -->

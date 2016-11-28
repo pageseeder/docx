@@ -160,10 +160,10 @@
 		</w:r>
 	</xsl:template>
 	
-  <xsl:template match="metadata[not(*)]" mode="content"/>
+  <xsl:template match="metadata" mode="content"/>
   
   <!-- Template to match properties fragment and transform it into a table -->
-	<xsl:template match="properties-fragment | metadata[*]" mode="content">
+	<xsl:template match="properties-fragment" mode="content">
 	 <w:tbl>
 	 <w:tblPr>
       <w:tblBorders>
