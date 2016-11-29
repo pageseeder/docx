@@ -179,7 +179,7 @@ Template to handle creation of files referenced by content_types.xml file
           <xsl:if test="$manual-master = 'true'">
             <xsl:for-each select="//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']">
               <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + position()))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument"
-                Target="{concat(@uriid,'.docx')}"  TargetMode="External"/>
+                Target="{if ($master-select = 'uriid') then concat(@uriid,'.docx') else @urititle}"  TargetMode="External"/>
             </xsl:for-each>
           </xsl:if>
           <xsl:for-each select="//image">

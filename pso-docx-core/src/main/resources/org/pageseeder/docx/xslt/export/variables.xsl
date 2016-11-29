@@ -913,6 +913,27 @@
   </xsl:variable>
   
   <!--
+  Returns the naming of docx files on export master.
+  
+  @return type of export
+  -->         
+  <xsl:variable name="master-select" as="xs:string">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/default/master/@select = 'uriid'">
+        <xsl:value-of select="'uriid'" />
+      </xsl:when>
+      <xsl:when
+        test="$config-doc/config/default/master/@select = 'urititle'">
+        <xsl:value-of select="'urititle'" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="'uriid'" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  <!--
   Returns the confirmation of creation of comments.
   
   @return true or false
