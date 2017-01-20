@@ -24,11 +24,11 @@
 		<xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
 		<xsl:variable name="alt" >
       <xsl:choose>
-        <xsl:when test="wp:inline/wp:docPr/@descr != ''">
-          <xsl:value-of select="wp:inline/wp:docPr/@descr"/>
-        </xsl:when>
         <xsl:when test="wp:inline/wp:docPr/@title != ''">
           <xsl:value-of select="wp:inline/wp:docPr/@title"/>
+        </xsl:when>
+        <xsl:when test="wp:inline/wp:docPr/@descr != ''">
+          <xsl:value-of select="wp:inline/wp:docPr/@descr"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="substring-after($target,'media/')"/>

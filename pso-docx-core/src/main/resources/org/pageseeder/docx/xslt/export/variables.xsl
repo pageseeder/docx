@@ -775,6 +775,26 @@
     </xsl:choose> 
   </xsl:function>
   
+  <xsl:function name="fn:table-set-width-value">
+    <xsl:param name="node"/>
+    <xsl:choose>
+      <xsl:when test="$node/@width">
+        <xsl:analyze-string regex="(\d+)(.*)" select="$node/@width">
+          <xsl:matching-substring>
+            <xsl:attribute name="w:w" select="if(regex-group(2) = '%') then number(regex-group(1)) * 50 else number(regex-group(1)) * 15"/>
+            <xsl:attribute name="w:type" select="if(regex-group(2) = '%') then 'pct' else 'dxa'"/>
+          </xsl:matching-substring>
+          <xsl:non-matching-substring>
+          </xsl:non-matching-substring>
+        </xsl:analyze-string>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="value" select="0"/>
+        <xsl:attribute name="type" select="'auto'"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
   <!--
   Returns the confirmation of creation a table of contents or not at ps:toc level.
   
@@ -791,6 +811,37 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+  
+  <!--
+  Returns the confirmation of creation a table of contents or not at ps:toc level.
+  
+  @return true or false
+  -->
+  <xsl:variable name="use-protectedsections" as="xs:boolean">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/default/protectedsection[@select = 'true']">
+        <xsl:value-of select="true()" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  <xsl:variable name="protectedsection-id">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/default/protectedsection[@select = 'true']">
+        <xsl:value-of select="$config-doc/config/default/protectedsection/@id" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="''" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  
   
   <!--
   Returns the confirmation of creation a table of contents with headings or not.

@@ -43,6 +43,30 @@
 		</xsl:choose>
 	</xsl:variable>
   
+  <xsl:variable name="use-protectedsections" as="xs:boolean">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/split/section/protectedsection[@select = 'true']">
+        <xsl:value-of select="true()" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  <xsl:variable name="protectedsection-id">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/split/section/protectedsection[@select = 'true']">
+        <xsl:value-of select="$config-doc/config/split/section/protectedsection/@id" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="''" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
   <!-- location of the numbering file from the input docx -->
 	<xsl:variable name="numbering" select="concat($_rootfolder,'/word/numbering.xml')" as="xs:string?"/>
   
@@ -1073,6 +1097,18 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
+  
+  <xsl:function name="fn:matches-section-split-protectedsection" as="xs:boolean">
+    <xsl:param name="current" as="node()" />
+    <xsl:choose>
+      <xsl:when test="$current[w:pPr/w:sectPr][w:bookmarkStart[starts-with(@w:name,$protectedsection-id)]][not(fn:matches-ignore-paragraph-match-list(.))]">
+        <xsl:value-of select="true()" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
   
   <!--
   Returns the boolean if the current node matches a outline level section break or not.

@@ -3,7 +3,7 @@
 <config>
   <core>
     <creator select="[string]" />
-	<created select=""/>
+	  <created select=""/>
     <description select="[string]" />
     <subject select="[string]" />
     <title select="[string]" />
@@ -51,6 +51,7 @@
     <endnotes generate="true|false" xref-labels=""/>
     <footnotes generate="true|false" xref-labels=""/>
     <master select="uriid|urititle"/>
+    <protectedsection select="true|false" id="test"/>
   </default>
 
 
@@ -199,14 +200,14 @@
     </inline>
 
     <!-- default options:"[existing table style]|TableGrid" -->
-    <tables default="Table Normal">
-	  <table default="Table Normal">
-	  <width type="pct" value="5000"/>
-		</table>
+    <tables>
+  	  <table default="Table Normal">
+  	   <width type="pct" value="5000"/>
+  		</table>
       <table role="[existing table role]" tablestyle="[existing word table style]" />
-	  <table role="[existing table role]" tablestyle="[existing word table style]" >
-		<width type="pct" value="5000"/>
-	  </table>
+  	  <table role="[existing table role]" tablestyle="[existing word table style]" >
+  		<width type="pct" value="5000"/>
+  	  </table>
     </tables>
 
     <!-- options:"[existing style name]" -->

@@ -163,6 +163,8 @@
 <!--     <xsl:message select="doc-available($endnotes-file)"></xsl:message> -->
 <!--     <xsl:message select="$convert-endnotes"></xsl:message> -->
 		<xsl:apply-templates select="document($main)" mode="content" />
+    
+<!--     <xsl:apply-templates select="document($main)" mode="bookmarks" /> -->
 <!-- 		  	<xsl:if test="$configDoc/config/number-paragraphs/styles-to-roles/@generate-css='true'"> -->
 		  	 <!-- currently not being used: will be done to generate automatic CSS from the word numbering -->
 <!-- 		  	</xsl:if> -->

@@ -30,26 +30,66 @@
 					<xsl:when test="fn:table-roles-with-document-label($labels,@role) != ''">
 						<w:tblStyle w:val="{fn:table-roles-with-document-label(@role,$labels)}" />
 						<xsl:if test="fn:table-roles-with-document-label-type($labels,@role) != ''">
-						   <w:tblW w:w="{fn:table-roles-with-document-label-type-value($labels,@role)}" w:type="{fn:table-roles-with-document-label-type($labels,@role)}" />
+              <w:tblW>
+                <xsl:choose>
+                  <xsl:when test="fn:table-roles-with-document-label-type-value($labels,@role) != ''">
+                    <xsl:attribute name="w:w" select="fn:table-roles-with-document-label-type-value($labels,@role)"/>
+                    <xsl:attribute name="w:type" select="fn:table-roles-with-document-label-type($labels,@role)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:sequence select="fn:table-set-width-value(.)"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </w:tblW>
 						</xsl:if>
 					</xsl:when>
 					<xsl:when test="fn:default-table-style-with-document-label($labels) != ''">
 						<w:tblStyle w:val="{fn:default-table-style-with-document-label($labels)}" />
 						<xsl:if test="fn:default-table-style-with-document-label-type($labels) != ''">
-               <w:tblW w:w="{fn:default-table-style-with-document-label-type-value($labels)}" w:type="{fn:default-table-style-with-document-label-type($labels)}" />
+              <w:tblW>
+                <xsl:choose>
+                  <xsl:when test="fn:default-table-style-with-document-label-type-value($labels) != ''">
+                    <xsl:attribute name="w:w" select="fn:default-table-style-with-document-label-type-value($labels)"/>
+                    <xsl:attribute name="w:type" select="fn:default-table-style-with-document-label-type($labels)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:sequence select="fn:table-set-width-value(.)"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </w:tblW>
             </xsl:if>
 					</xsl:when>
           <xsl:when test="fn:default-table-roles(@role) != ''">
             <w:tblStyle w:val="{fn:default-table-roles(@role)}" />
             <xsl:if test="fn:default-table-roles-type(@role) != ''">
-               <w:tblW w:w="{fn:default-table-roles-type-value(@role)}" w:type="{fn:default-table-roles-type(@role)}" />
+               <w:tblW>
+                <xsl:choose>
+                  <xsl:when test="fn:default-table-roles-type-value(@role) != ''">
+                    <xsl:attribute name="w:w" select="fn:default-table-roles-type-value(@role)"/>
+                    <xsl:attribute name="w:type" select="fn:default-table-roles-type(@role)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:sequence select="fn:table-set-width-value(.)"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </w:tblW>
             </xsl:if>
           </xsl:when>
 					<xsl:when test="fn:default-table-style() != ''">
 <!--             <xsl:message select="fn:default-table-style()"></xsl:message> -->
 						<w:tblStyle w:val="{fn:default-table-style()}" />
 						<xsl:if test="fn:default-table-style-type() != ''">
-               <w:tblW w:w="{fn:default-table-style-type-value()}" w:type="{fn:default-table-style-type()}" />
+              <w:tblW>
+                <xsl:choose>
+                  <xsl:when test="fn:default-table-style-type-value() != ''">
+                    <xsl:attribute name="w:w" select="fn:default-table-style-type-value()"/>
+                    <xsl:attribute name="w:type" select="fn:default-table-style-type()"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:sequence select="fn:table-set-width-value(.)"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </w:tblW>
             </xsl:if>
 					</xsl:when>
 					<xsl:otherwise>
@@ -61,7 +101,9 @@
 							<w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto" />
 							<w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
 						</w:tblBorders>
-						<w:tblW w:w="0" w:type="auto" />
+						<w:tblW>
+               <xsl:sequence select="fn:table-set-width-value(.)"/>
+            </w:tblW>
 					</xsl:otherwise>
 				</xsl:choose>
         <xsl:if test="caption">
@@ -70,7 +112,6 @@
         <xsl:if test="@summary">
           <w:tblDescription w:val="{@summary}"/>
         </xsl:if>
-        
         <w:tblLook w:val="05E0" w:firstRow="{if(row[1][@part = 'header']) then 1 else 0}" w:lastRow="{if(row[last()][@part = 'footer']) then 1 else 0}" w:firstColumn="{if(col[1][@part = 'header']) then 1 else 0}" w:lastColumn="{if(col[last()][@part = 'footer']) then 1 else 0}"/>
 			</w:tblPr>
 			<xsl:variable name="max-columns" select="count(row[1]/*[name() = 'cell' or 'hcell'][not(@colspan)]) + sum(row[1]/*[name() = 'cell' or 'hcell'][@colspan]/@colspan)" />
