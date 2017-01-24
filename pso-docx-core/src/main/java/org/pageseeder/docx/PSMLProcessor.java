@@ -116,22 +116,12 @@ public final class PSMLProcessor {
     log("Copy media");
     String mediaFolderName = (String) (this._builder.media() == null ? name + "_files" : this._builder.media());
     copyMedia(unpacked, folder, mediaFolderName);
-
-    // 4. Unnest
-    log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
-    File document = new File(unpacked, "word/document.xml");
-    File newDocument = new File(unpacked, "word/new-document.xml");
-    Map<String, String> noParameters = Collections.emptyMap();
-    XSLT.transform(document, newDocument, unnest, noParameters);
-
-    // 5. Process the files
-    log("Process with XSLT (this may take several minutes)");
+    
 
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
-
+    
     // Initiate parameters
     Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("_rootfolder", unpacked.toURI().toString());
@@ -144,7 +134,18 @@ public final class PSMLProcessor {
 
     // Add custom parameters
     parameters.putAll(this._builder.params());
+    
+    //log(parameters.toString());
+    // 4. Unnest
+    log("Unnest");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
+    File document = new File(unpacked, "word/document.xml");
+    File newDocument = new File(unpacked, "word/new-document.xml");
+//    Map<String, String> noParameters = Collections.emptyMap();
+    XSLT.transform(document, newDocument, unnest, parameters);
 
+    // 5. Process the files
+    log("Process with XSLT (this may take several minutes)");
     // Transform
     XSLT.transform(contentTypes, new File(folder, name + ".psml"), templates, parameters);
 

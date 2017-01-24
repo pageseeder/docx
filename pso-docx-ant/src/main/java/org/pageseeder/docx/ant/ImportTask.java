@@ -202,29 +202,7 @@ public final class ImportTask extends Task {
     log("Copy media");
     String mediaFolderName = this.mediaFolder == null? filename+"_files" : this.mediaFolder;
     copyMedia(unpacked, folder, mediaFolderName);
-
-    // 4. Unnest
-    log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
-    File document = new File(unpacked, "word/document.xml");
-    File newDocument = new File(unpacked, "word/new-document.xml");
-    Map<String, String> noParameters = Collections.emptyMap();
-    XSLT.transform(document, newDocument, unnest, noParameters);
     
-    //4.1 Unnest Endnotes file if it exists
-    File endnotes = new File(unpacked, "word/endnotes.xml");
-    if(endnotes.canRead()){
-    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, noParameters);
-    }
-    //4.1 Unnest Footnotes file if it exists
-    File footnotes = new File(unpacked, "word/footnotes.xml");
-    if(footnotes.canRead()){
-    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, noParameters);
-    }
-    
-    // 5. Process the files
-    log("Process with XSLT (this may take several minutes)");
-
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
@@ -244,6 +222,32 @@ public final class ImportTask extends Task {
     for (Parameter p : this.params) {
       parameters.put(p.getName(), p.getValue());
     }
+    
+//    log(parameters.toString());
+    
+    // 4. Unnest
+    log("Unnest");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
+    File document = new File(unpacked, "word/document.xml");
+    File newDocument = new File(unpacked, "word/new-document.xml");
+    //Map<String, String> noParameters = Collections.emptyMap();
+    XSLT.transform(document, newDocument, unnest, parameters);
+    
+    //4.1 Unnest Endnotes file if it exists
+    File endnotes = new File(unpacked, "word/endnotes.xml");
+    if(endnotes.canRead()){
+    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters);
+    }
+    //4.1 Unnest Footnotes file if it exists
+    File footnotes = new File(unpacked, "word/footnotes.xml");
+    if(footnotes.canRead()){
+    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
+    }
+    
+    // 5. Process the files
+    log("Process with XSLT (this may take several minutes)");
+
+    
 
     // Transform
     XSLT.transform(contentTypes, new File(folder, filename+".psml"), templates, parameters);

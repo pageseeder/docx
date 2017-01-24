@@ -52,7 +52,7 @@
           <caption><xsl:value-of select="preceding-sibling::*[1][name() = 'w:p']//text()"/></caption>
       </xsl:if>
       
-      <xsl:variable name="number-of-columns" select="count(w:tr[1]/w:tc)"/>
+      <xsl:variable name="number-of-columns" select="count(w:tr[1]/w:tc[not(w:tcPr/w:gridSpan)]) +  + sum(w:tr[1]/w:tc/w:tcPr/w:gridSpan/@w:val)"/>
       
       <xsl:variable name="current-table" select="current()"/>
       <xsl:for-each select="1 to $number-of-columns">
