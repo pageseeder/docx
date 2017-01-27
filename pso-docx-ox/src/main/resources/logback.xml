@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file contains the default logback configuration for this project.
+  It can be overridden by mode specific files, in which case it is only used BEFORE Berlioz is initialised.
+-->
+<configuration debug="false">
+  <contextName>docx-ox</contextName>
+  <root level="WARN" />
+</configuration>

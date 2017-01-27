@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<config>
+
+  <core>
+    <creator select="Pageseeder"/>
+    <description select="Pageseeder"/>
+    <subject select="1"/>
+    <title select="1"/>
+    <category select="1"/>
+    <version select="1"/>
+    <revision select="1"/> <!--  has to be an integer -->
+    <!-- currently using calculated values -->
+    <created select="Pageseeder"/>
+  </core>
+
+  <!-- =======================SPLIT PROPERTIES======================= -->
+  <default>
+    <defaultparagraphstyle wordstyle="Normal"/>
+    <defaultcharacterstyle wordstyle="Default Paragraph Font"/>
+    <comments generate="false"/>
+  </default>
+
+
+  <!-- default options:"generate-ps-style|none" -->
+  <!-- label options:"generate-ps-style|[name of style]" -->
+  <elements>
+
+    <block default="generate-ps-style">
+      <label wordstyle="Normal Indent"              value="NormalIndent1"/>
+
+
+      <label wordstyle="Normal Indent 2"            value="NormalIndent2"/>
+      <label wordstyle="Instructions"               value="Abstract"/>
+      <label wordstyle="Instructions indent"        value="AbstractIndent1"/>
+      <label wordstyle="Instructions indent 2"      value="AbstractIndent2"/>
+      <label wordstyle="Instructions"               value="Guidance"/>
+      <label wordstyle="Instructions Heading 4"     value="GuidanceHeading4"/>
+      <label wordstyle="Instructions indent"        value="GuidanceIndent1"/>
+      <label wordstyle="Guidance table text"        value="GuidanceTable"/>
+      <label wordstyle="Instructions indent 2"      value="GuidanceIndent2"/>
+      <label wordstyle="Optional Heading 3"         value="OptionalHeading3"/>
+      <label wordstyle="Optional Heading 4"         value="OptionalHeading4"/>
+      <label wordstyle="Optional Normal"            value="Optional"/>
+      <label wordstyle="Optional Normal Indent"     value="OptionalIndent1"/>
+      <label wordstyle="Optional Normal Indent 2"   value="OptionalIndent2"/>
+      <label wordstyle="Optional Table title"       value="OptionalTabletitle"/>
+      <label wordstyle="Optional Table text"        value="OptionalTabletext"/>
+      <label wordstyle="Prompt"                     value="Prompt"/>
+      <label wordstyle="Prompt indent"              value="PromptIndent1"/>
+      <label wordstyle="Prompt indent 2"            value="PromptIndent2"/>
+      <!-- FIXME - don't support >= level 3 -->
+      <label wordstyle="Prompt indent 2"            value="PromptIndent3"/>
+      <label wordstyle="Standard 1"                 value="Standard1"/>
+      <label wordstyle="Standard 2"                 value="Standard2"/>
+      <label wordstyle="Table title"                value="Tabletitle"/>
+      <label wordstyle="Table text"                 value="Tabletext"/>
+      <!-- NATsource related -->
+      <label wordstyle="Heading-1"                  value="NSheading1"/>
+      <label wordstyle="Heading-2"                  value="NSheading2"/>
+      <label wordstyle="Standard1"                  value="NSstandard1"/>
+      <label wordstyle="Standard2"                  value="NSstandard2"/>
+      <label wordstyle="Abstract1"                  value="NSabstract1"/>
+      <label wordstyle="Abstract2"                  value="NSabstract2"/>
+      
+      <!-- TOC related styles  -->
+      <label wordstyle="TOC1"                       value="TOC1"/>
+    </block>
+
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <inline default="generate-ps-style">
+      <tab label="NStab"/>
+      <label wordstyle="Hyperlink"                  value="Hyperlink"/>
+      <label wordstyle="insert"                     value="insert"/>
+      <label wordstyle="delete"                     value="delete"/>
+      <!-- NATsource related -->
+      <label wordstyle="Standard1 Char8"            value="NSdesignation1"/>
+      <label wordstyle="Standard1 Char8"            value="NSyear1"/>
+      <label wordstyle="Standard1 Char8"            value="NStitle1"/>
+      <label wordstyle="Standard2 Char"             value="NSdesignation2"/>
+      <label wordstyle="Standard2 Char"             value="NSyear2"/>
+      <label wordstyle="Standard2 Char"             value="NStitle2"/>
+      <label wordstyle="Abstract1 Char"             value="NSabstract1"/>
+      <label wordstyle="Abstract2 Char"             value="NSabstract2"/>
+      <label wordstyle="Standards Char 7pt"         value="NSNCC1"/>
+
+      <fieldcode label="NSPrompt"                   value=" MACROBUTTON  ac_OnHelp [complete/delete]"/>
+      
+      
+
+    </inline>
+
+    <!-- default options:"[existing table style]|TableGrid" -->
+    <tables>
+      <table default="NATSPEC Table">
+        <width type="pct" value="5000"/>
+      </table>
+      <table role="guidance-table" tablestyle="Empty table">
+        <width type="pct" value="5000"/>
+      </table>
+    </tables>
+
+    <!-- options:"[existing style name]" -->
+    <heading>
+      <level value="1" numbered="true" wordstyle="heading 1"/>
+      <level value="2" numbered="true" wordstyle="heading 2"/>
+      <level value="3" numbered="true" wordstyle="heading 3"/>
+      <level value="4" numbered="true" wordstyle="heading 4"/>
+      <level value="5" numbered="true" wordstyle="heading 5"/>
+      <level value="6" numbered="true" wordstyle="heading 6"/>
+    </heading>
+
+  </elements>
+
+</config>
