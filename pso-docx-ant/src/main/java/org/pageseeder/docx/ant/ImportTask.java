@@ -4,12 +4,14 @@
 package org.pageseeder.docx.ant;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.xml.transform.Templates;
 
@@ -243,6 +245,40 @@ public final class ImportTask extends Task {
     if(footnotes.canRead()){
     	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
     }
+    Templates renameImages = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-images.xsl");
+    File imageList = new File(this.working, "image-list.txt");
+    XSLT.transform(newDocument, imageList, renameImages, parameters);
+    parameters.put("_imagelist", imageList.toURI().toString());
+    
+		
+		Scanner in;
+		try {
+			in = new Scanner(imageList);
+			while(in.hasNextLine()){
+				String line = in.nextLine();
+				String[] params = line.split("###");
+				if(params.length == 3){
+					File imageFile = new File(unpacked, "word/" + params[0]);
+					imageFile.renameTo(new File(unpacked, "word/" + params[2]));
+					imageFile.delete();
+				}
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	// 3. copy the media files
+    log("Copy media");
+    
+    copyMedia(unpacked, folder, mediaFolderName);
+    
+    Templates renameRels = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-rels.xsl");
+    File rels = new File(unpacked, "word/_rels/document.xml.rels");
+    File newRels = new File(unpacked, "word/_rels/new-document.xml.rels");
+    XSLT.transform(rels, newRels, renameRels, parameters);
+    
     
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");

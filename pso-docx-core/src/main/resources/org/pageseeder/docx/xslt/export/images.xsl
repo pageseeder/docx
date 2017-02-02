@@ -118,7 +118,7 @@ Template to create image
             currently descr is read by the docxcreator to find the target
             image in the image folder
           -->
-          <wp:docPr id="{$id}" name="Picture {$id}" descr="" title="{$alt}"/>
+          <wp:docPr id="{$id}" name="{substring-before(@src,'.')}" descr="" title="{$alt}"/>
           <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
             <a:graphicData
               uri="http://schemas.openxmlformats.org/drawingml/2006/picture">

@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.xml.transform.Templates;
 
@@ -112,16 +113,10 @@ public final class PSMLProcessor {
     if (!contentTypes.exists()) throw new DOCXException("Not a valid DOCX: unable to find [Content_Types].xml");
     if (!relationships.exists()) throw new DOCXException("Not a valid DOCX: unable to find _rels/.rels");
 
-    // 3. copy the media files
-    log("Copy media");
-    String mediaFolderName = (String) (this._builder.media() == null ? name + "_files" : this._builder.media());
-    copyMedia(unpacked, folder, mediaFolderName);
-    
-
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
-    
+    String mediaFolderName = (String) (this._builder.media() == null ? name + "_files" : this._builder.media());
     // Initiate parameters
     Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("_rootfolder", unpacked.toURI().toString());
@@ -131,11 +126,9 @@ public final class PSMLProcessor {
     if (this._builder.config() != null) {
       parameters.put("_configfileurl", this._builder.config().toURI().toString());
     }
-
     // Add custom parameters
     parameters.putAll(this._builder.params());
     
-    //log(parameters.toString());
     // 4. Unnest
     log("Unnest");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
@@ -143,12 +136,52 @@ public final class PSMLProcessor {
     File newDocument = new File(unpacked, "word/new-document.xml");
 //    Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(document, newDocument, unnest, parameters);
-
+    
+    //4.1 Unnest Endnotes file if it exists
+    File endnotes = new File(unpacked, "word/endnotes.xml");
+    if(endnotes.canRead()){
+    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters);
+    }
+    //4.1 Unnest Footnotes file if it exists
+    File footnotes = new File(unpacked, "word/footnotes.xml");
+    if(footnotes.canRead()){
+    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
+    }
+    
+    Templates renameImages = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-images.xsl");
+    File imageList = new File(this._builder.working(), "image-list.txt");
+    XSLT.transform(newDocument, imageList, renameImages, parameters);
+    parameters.put("_imagelist", imageList.toURI().toString());
+    
+		
+		Scanner in = new Scanner(imageList);
+		while(in.hasNextLine()){
+			String line = in.nextLine();
+			String[] params = line.split("###");
+			if(params.length == 3){
+				File imageFile = new File(unpacked, "word/" + params[0]);
+				imageFile.renameTo(new File(unpacked, "word/" + params[2]));
+				imageFile.delete();
+			}
+		}
+		in.close();
+		
+	// 3. copy the media files
+    log("Copy media");
+    
+    copyMedia(unpacked, folder, mediaFolderName);
+    
+    Templates renameRels = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-rels.xsl");
+    File rels = new File(unpacked, "word/_rels/document.xml.rels");
+    File newRels = new File(unpacked, "word/_rels/new-document.xml.rels");
+    XSLT.transform(rels, newRels, renameRels, parameters);
+    
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
     // Transform
     XSLT.transform(contentTypes, new File(folder, name + ".psml"), templates, parameters);
-
+    
+    
   }
 
   // Helpers
