@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE pipelines PUBLIC "-//PageSeeder//DTD::OX model 1.0//EN"
+                            "http://www.pageseeder.org/schema/ox/model-1.0.dtd">
+<pipelines>
+
+  <pipeline name="sample-pipeline" accepts="application/zip">
+  
+    <!-- decompress uploaded file  -->
+    <step id="decompress-file" name="decompresss file" class="org.pageseeder.ox.step.Decompression">
+      <parameter name="output" value="myoutput"/>
+    </step>
+    
+     <!-- produce nothing  -->
+    <step id="produce-nothing" class="org.pageseeder.ox.step.NOPStep"/>
+    
+  </pipeline>
+
+</pipelines>
