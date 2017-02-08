@@ -15,6 +15,7 @@
 	xmlns:dcterms="http://purl.org/dc/terms/" xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
   xmlns:ps="http://www.pageseeder.com/editing/2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="#all">
 
+  <xsl:output encoding="utf-8" method="text"/> 
 <!--
   template to generate w:drawing as pageseeder image; Assumas that images will be inside 'media' folder 
 

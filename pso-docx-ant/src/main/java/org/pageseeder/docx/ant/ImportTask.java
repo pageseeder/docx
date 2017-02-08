@@ -200,10 +200,7 @@ public final class ImportTask extends Task {
     if (!contentTypes.exists()) throw new BuildException("Not a valid DOCX: unable to find [Content_Types].xml");
     if (!relationships.exists()) throw new BuildException("Not a valid DOCX: unable to find _rels/.rels");
 
-    // 3. copy the media files
-    log("Copy media");
     String mediaFolderName = this.mediaFolder == null? filename+"_files" : this.mediaFolder;
-    copyMedia(unpacked, folder, mediaFolderName);
     
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
