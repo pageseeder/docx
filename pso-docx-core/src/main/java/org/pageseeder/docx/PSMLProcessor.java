@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -117,6 +116,7 @@ public final class PSMLProcessor {
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
     String mediaFolderName = (String) (this._builder.media() == null ? name + "_files" : this._builder.media());
+    
     // Initiate parameters
     Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("_rootfolder", unpacked.toURI().toString());
@@ -233,7 +233,7 @@ public final class PSMLProcessor {
     /**
      * The media files folder location.
      */
-    private File media;
+    private String media;
 
     /**
      * List of custom parameters specified that can be specified from the command-line
@@ -291,8 +291,8 @@ public final class PSMLProcessor {
     /**
      * @return the media folder
      */
-    private File media() {
-      if (this.media != null && this.media.exists() && this.media.isDirectory()) {
+    private String media() {
+      if (this.media != null) {        
         return this.media;
       } else {
         return null;
@@ -358,7 +358,7 @@ public final class PSMLProcessor {
      * @param media the media folder
      * @return {@link Builder}
      */
-    public Builder media(File media) {
+    public Builder media(String media) {
       this.media = media;
       return this;
     }
