@@ -91,7 +91,8 @@ public class DOCXToPSML implements Step {
 
     // the parameters
     Map<String, String> params = new HashMap<String, String>();
-    params.put("manual-core", info.getParameter("manual-core", ""));
+    params.putAll(info.parameters());
+/*    params.put("manual-core", info.getParameter("manual-core", ""));
     params.put("manual-creator", info.getParameter("manual-creator", ""));
     params.put("manual-revision", info.getParameter("manual-revision", ""));
     params.put("manual-created", info.getParameter("manual-created", ""));
@@ -99,7 +100,7 @@ public class DOCXToPSML implements Step {
     params.put("manual-category", info.getParameter("manual-category", ""));
     params.put("manual-title", info.getParameter("manual-title", ""));
     params.put("manual-subject", info.getParameter("manual-subject", ""));
-    params.put("manual-description", info.getParameter("manual-description", ""));
+    params.put("manual-description", info.getParameter("manual-description", ""));*/
 
     LOGGER.debug("input {} output {}", input, output);
     try {
