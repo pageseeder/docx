@@ -111,6 +111,7 @@ public class DOCXToPSML implements Step {
           .config(getFile(config, model, data))
           .media(data.getFile(media))
           .params(params)
+          .working(data.directory())
           .log(new PrintWriter(System.out))
           .build();
       processor.process();

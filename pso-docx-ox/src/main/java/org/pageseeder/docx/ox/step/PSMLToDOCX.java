@@ -104,6 +104,7 @@ public class PSMLToDOCX implements Step {
           .config(model.getFile(config))
           .media(data.getFile(media))
           .params(params)
+          .working(data.directory())
           .log(new PrintWriter(System.out))
           .build();
       processor.process();
