@@ -490,11 +490,11 @@
 <xsl:function name="f:key-for-run" as="xs:string">
   <xsl:param name="r"/>
   <xsl:choose>
-    <xsl:when test="$r[self::w:r]/w:rPr/w:rStyle"><xsl:value-of select="$r/w:rPr/w:rStyle/@w:val"/></xsl:when>
-    <xsl:when test="$r[self::w:r]/w:rPr">
+    <xsl:when test="$r[self::w:r]/w:rPr/*[name() != 'w:rStyle']">
       <xsl:variable name="serialised"><xsl:apply-templates select="$r/w:rPr" mode="serialize"/></xsl:variable>
       <xsl:value-of select="$serialised"/>
     </xsl:when>
+    <xsl:when test="$r[self::w:r]/w:rPr/w:rStyle"><xsl:value-of select="$r/w:rPr/w:rStyle/@w:val"/></xsl:when>
     <xsl:when test="$r/self::w:r">{}</xsl:when>
     <xsl:otherwise>--</xsl:otherwise>
   </xsl:choose>
