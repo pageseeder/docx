@@ -32,14 +32,6 @@ import org.slf4j.LoggerFactory;
  *  <li><var>config</var> the config file for processing docx.</li>
  *  <li><var>dotx</var> the doct template.<li>
  *  <li><var>media</var> the media folder, where is a relative path of packaged data.<li>
- *  <li><var>manual-core</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-creator</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-revision</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-created</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-category</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-title</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-subject</var> The parameters feed into docx transformation.<li>
- *  <li><var>manual-description</var> The parameters feed into docx transformation.<li>
  * </ul>
  *
  * @author Ciber Cai
@@ -76,6 +68,9 @@ public class PSMLToDOCX implements Step {
     // the media folder
     String media = info.getParameter("media");
 
+    
+    
+    
     if (input == null) throw new NullPointerException("input haven't defined.");
     if (output == null) throw new NullPointerException("output haven't defined.");
     if (config == null) throw new NullPointerException("config haven't defined.");
@@ -83,15 +78,15 @@ public class PSMLToDOCX implements Step {
 
     // the parameters
     Map<String, String> params = new HashMap<String, String>();
-    params.put("manual-core", info.getParameter("manual-core", ""));
-    params.put("manual-creator", info.getParameter("manual-creator", ""));
-    params.put("manual-revision", info.getParameter("manual-revision", ""));
-    params.put("manual-created", info.getParameter("manual-created", ""));
-    params.put("manual-version", info.getParameter("manual-version", ""));
-    params.put("manual-category", info.getParameter("manual-category", ""));
-    params.put("manual-title", info.getParameter("manual-title", ""));
-    params.put("manual-subject", info.getParameter("manual-subject", ""));
-    params.put("manual-description", info.getParameter("manual-description", ""));
+    params.putAll(info.parameters());
+    
+
+    //Creating media directory
+    File mediaDirectory = null;
+    if (media != null && !media.isEmpty()) {
+      mediaDirectory = data.getFile(media);
+      mediaDirectory.mkdirs();      
+    }
 
     LOGGER.debug("input {} output {}", input, output);
     ProduceDOCXResult result = new ProduceDOCXResult(model, data, input, output, dotx, config);
@@ -102,7 +97,7 @@ public class PSMLToDOCX implements Step {
           .destination(data.getFile(output))
           .dotx(getFile(dotx, model, data))
           .config(model.getFile(config))
-          .media(data.getFile(media))
+          .media(mediaDirectory)
           .params(params)
           .working(data.directory())
           .log(new PrintWriter(System.out))

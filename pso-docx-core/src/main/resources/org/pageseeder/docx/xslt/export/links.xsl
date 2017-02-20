@@ -22,7 +22,7 @@
     -->
   <!--##xref##-->
   <xsl:template match="xref" mode="content">
-      <xsl:variable name="referenced-document" select="document(@href)" />
+      
     <xsl:choose>
       <xsl:when test="$generate-cross-references">
         <w:r>
@@ -54,9 +54,9 @@
           <w:fldChar w:fldCharType="separate" />
         </w:r>
         <w:r>
-          <w:rPr>
-            <xsl:call-template name="apply-style" />
-          </w:rPr>
+<!--           <w:rPr> -->
+<!--             <xsl:call-template name="apply-style" /> -->
+<!--           </w:rPr> -->
           <w:t>
             <xsl:value-of select="." />
           </w:t>
@@ -70,6 +70,7 @@
       
       <xsl:when test="starts-with(@href,'_external/')">
         <!-- External xref: choose to copy or not based on type and config -->
+        <xsl:variable name="referenced-document" select="document(@href)" />
         <xsl:choose>
           <xsl:when test="$referenced-document//section/media-fragment[@mediatype='application/mathml+xml'] and $generate-mathml">
             <xsl:variable name="mathml">
