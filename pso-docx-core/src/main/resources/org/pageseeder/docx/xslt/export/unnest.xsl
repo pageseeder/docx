@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/" xmlns:log="http://www.allette.com.au/log" exclude-result-prefixes="saxon log">
   <xsl:strip-space
-    elements="toc uri labels displaytitle properties-fragment root description property section body document documentinfo fragment list block cell hcell xref-fragment blockxref locator notes note content" />
+    elements="toc uri labels displaytitle properties-fragment root description property section body document documentinfo fragment list xref-fragment blockxref locator notes note content" />
   <xsl:output encoding="UTF-8" method="xml" indent="no" />
 
   <xsl:template match="/">
@@ -82,7 +82,7 @@
         group-adjacent="if  (self::list or self::nlist or self::para or self::item
                           or self::block or self::table or self::blockxref  or self::preformat
                           or self::heading 
-                          or self::text()[normalize-space(.) = '']) 
+                          ) 
                         then 2 
                         else 1">
         <xsl:choose>
