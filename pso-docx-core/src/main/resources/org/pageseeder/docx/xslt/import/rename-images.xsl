@@ -29,7 +29,7 @@
     <xsl:for-each select=".//w:drawing|.//w:pict">
       <xsl:sort select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed|.//v:shape/v:imagedata/@r:id"/>
       <xsl:choose>
-        <xsl:when test="matches(wp:inline/wp:docPr/@name,'$\d+^')">
+        <xsl:when test="matches(wp:inline/wp:docPr/@name,'^\d+$')">
           <xsl:variable name="rid" select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed" />
           <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
           <xsl:variable name="type" select="substring-after($target,'.')" />
