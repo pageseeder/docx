@@ -488,7 +488,7 @@
     <xsl:param name="in-link" />
     <xsl:param name="in-hyperlink" />
     <xsl:param name="current" />
-<!--     <xsl:message select="$in-link"></xsl:message> -->
+<!--     <xsl:message select="$text"></xsl:message> -->
 <!--     <xsl:message select="$in-hyperlink"></xsl:message> -->
     <xsl:choose>
       <xsl:when test="$in-hyperlink = 'true'">
