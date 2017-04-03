@@ -17,8 +17,8 @@ Template to handle creation of content_types.xml file from Template and input do
     <xsl:param name="current-document" />
     <xsl:variable name="current-default-extention">
       <xsl:choose>
-        <xsl:when test="Types/Default">
-          <xsl:for-each select="Types/Default/@Extension">
+        <xsl:when test="*[name() = 'Types']/*[name() = 'Default']">
+          <xsl:for-each select="*[name() = 'Types']/*[name() = 'Default']/@Extension">
             <xsl:choose>
               <xsl:when test="position() = last()">
                 <xsl:value-of select="concat('^',upper-case(.),'$')" />
