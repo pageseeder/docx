@@ -15,7 +15,7 @@
   xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:ps="http://www.pageseeder.com/editing/2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
  
-
+  <!-- TODO -->
   <!-- apply templates to smart Tags:
   transform them into inline labels or just keep them as text, according to the option set on the configuration document -->
   <xsl:key name="math-checksum-id" match="@checksum-id" use="." />

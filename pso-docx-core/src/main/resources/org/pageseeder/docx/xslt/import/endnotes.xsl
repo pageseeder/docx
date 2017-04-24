@@ -16,7 +16,7 @@
   xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
  
 
-
+  <!-- TODO -->
   <xsl:template match="w:endnotes" mode="endnotes">
     <xsl:result-document href="{concat($_outputfolder,'endnotes/endnotes.psml')}">
       <document level="portable">

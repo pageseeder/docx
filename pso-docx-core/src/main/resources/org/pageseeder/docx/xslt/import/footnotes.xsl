@@ -20,6 +20,7 @@
   transform them into inline labels or just keep them as text, according to the option set on the configuration document -->
   <xsl:key name="math-checksum-id" match="@checksum-id" use="." />
 
+  <!-- TODO -->
   <xsl:template match="w:footnotes" mode="footnotes">
     <xsl:result-document href="{concat($_outputfolder,'footnotes/footnotes.psml')}">
       <document level="portable">
