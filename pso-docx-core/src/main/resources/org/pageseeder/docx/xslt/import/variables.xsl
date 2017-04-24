@@ -43,6 +43,7 @@
 		</xsl:choose>
 	</xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="use-protectedsections" as="xs:boolean">
     <xsl:choose>
       <xsl:when
@@ -55,6 +56,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="protectedsection-id">
     <xsl:choose>
       <xsl:when
@@ -85,12 +87,16 @@
   <!-- document node of the main document.xml file of the docx input document  -->
 	<xsl:variable name="maindocument" select="document($main)" as="node()"/>
   
+  <!-- TODO -->
   <xsl:variable name="footnotes-file" select="concat($_rootfolder,'/word/new-footnotes.xml')"/>
   
+  <!-- TODO -->
   <xsl:variable name="footnotes" select="document($footnotes-file)"/>
   
+  <!-- TODO -->
   <xsl:variable name="endnotes-file" select="concat($_rootfolder,'/word/new-endnotes.xml')"/>
   
+  <!-- TODO -->
   <xsl:variable name="endnotes" select="document($endnotes-file)"/>
 
   <!-- Variable that defines name of the tile for the main document -->
@@ -170,10 +176,12 @@
 		</w:body>
 	</xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="footnote-format" as="xs:string?">
     <xsl:value-of select="($maindocument//w:sectPr[w:footnotePr]/w:footnotePr/w:numFmt/@w:val)[last()]"/>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="endnote-format" as="xs:string?">
     <xsl:value-of select="($maindocument//w:sectPr[w:endnotePr]/w:endnotePr/w:numFmt/@w:val)[last()]"/>
   </xsl:variable>
@@ -234,6 +242,7 @@
     </w:body>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="generate-mathml-files" as="xs:boolean">
     <xsl:choose>
       <xsl:when test="$config-doc/config/split/mathml[@select= 'true'][@output= 'generate-files']">
@@ -245,6 +254,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="convert-omml-to-mml" as="xs:boolean">
     <xsl:choose>
       <xsl:when test="$config-doc/config/split/mathml[@select= 'true'][@convert-to-mml= 'true']">
@@ -256,6 +266,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="convert-footnotes" as="xs:boolean">
     <xsl:choose>
       <xsl:when test="$config-doc/config/split/footnotes[@select= 'true']">
@@ -267,6 +278,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="convert-footnotes-type" as="xs:string?">
     <xsl:choose>
       <xsl:when test="$config-doc/config/split/footnotes[@select= 'true'][@output='generate-files']">
@@ -281,6 +293,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="convert-endnotes" as="xs:boolean">
     <xsl:choose>
       <xsl:when test="$config-doc/config/split/endnotes[@select= 'true']">
@@ -292,6 +305,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="convert-endnotes-type" as="xs:string?">
     <xsl:choose>
       <xsl:when test="$config-doc/config/split/endnotes[@select= 'true'][@output='generate-files']">
@@ -336,6 +350,7 @@
 				</xsl:for-each>
 			</xsl:variable>
 
+			<!-- TODO -->
 			<xsl:variable name="document-title">
 				<xsl:choose>
 					<xsl:when test="contains(fn:get-index-text(.,'XE'),':')">
@@ -1098,6 +1113,7 @@
 		</xsl:choose>
 	</xsl:function>
   
+  <!-- TODO -->
   <xsl:function name="fn:matches-section-split-protectedsection" as="xs:boolean">
     <xsl:param name="current" as="node()" />
     <xsl:choose>

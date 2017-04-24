@@ -42,7 +42,8 @@
       </document>
     </xsl:result-document>
   </xsl:template>
-
+  
+  <!-- TODO -->
   <xsl:template match="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-fragments">
     <fragment id="{@w:id}">
       <heading level="4"><xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(count(preceding-sibling::w:endnote[not(@w:id='-1')][not(@w:id='0')]) + 1,'endnote'),']')"/></heading>
@@ -50,6 +51,7 @@
     </fragment>
   </xsl:template>
   
+  <!-- TODO -->
   <xsl:template match="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-files">
     <blockxref href="{concat('endnotes',@w:id,'.psml')}" frag="default"><xsl:value-of select="concat('Endnote ',@w:id)" /></blockxref>
     <xsl:result-document href="{concat($_outputfolder,'endnotes/endnotes',@w:id,'.psml')}">
