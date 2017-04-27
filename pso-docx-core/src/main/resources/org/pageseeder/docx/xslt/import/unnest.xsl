@@ -44,6 +44,8 @@
   <xsl:output encoding="UTF-8" method="xml" indent="no" />
 
   <xsl:variable name="stylesdocument" select="document('styles.xml')"/>  
+ 
+ <!-- TODO --> 
  <xsl:template match="/">
   <xsl:sequence select="f:purge(f:consolidate(f:purge(f:simplify(node()))))"/>
 </xsl:template>
@@ -218,6 +220,7 @@
 <xsl:template match="w:snapToGrid    [$remove-paragraph-properties = 'true']" mode="simplify"/>
 <xsl:template match="w:mirrorIndents [$remove-paragraph-properties = 'true']" mode="simplify"/>
  
+<!-- TODO -->
 <xsl:template match="w:p" mode="simplify">
   <w:p>
     <xsl:for-each-group select="*" group-starting-with="w:r[w:fldChar[@w:fldCharType='begin']]">
@@ -263,8 +266,11 @@
   <xsl:apply-templates select="$data" mode="purge"/>
 </xsl:function>
 
+<!-- TODO -->
 <xsl:template match="w:r[not(*)]"   mode="purge" />
+<!-- TODO -->
 <xsl:template match="w:rPr[not(*)]" mode="purge" />
+<!-- TODO -->
 <xsl:template match="w:pPr[not(*)]" mode="purge" />
 
 
@@ -280,6 +286,7 @@
   <xsl:apply-templates select="$data" mode="consolidate"/>
 </xsl:function>
 
+<!-- TODO -->
 <xsl:template match="w:pPr" mode="consolidate">
   <xsl:element name="{./name()}">
     <xsl:copy-of select="@*"/>
@@ -292,6 +299,7 @@
   </xsl:element>
 </xsl:template>
 
+<!-- TODO -->
 <xsl:template match="w:p|w:hyperlink|w:sdt|w:smartTag" mode="consolidate">
 <xsl:element name="{./name()}">
   <xsl:copy-of select="@*"/>
@@ -490,11 +498,11 @@
 <xsl:function name="f:key-for-run" as="xs:string">
   <xsl:param name="r"/>
   <xsl:choose>
-    <xsl:when test="$r[self::w:r]/w:rPr/w:rStyle"><xsl:value-of select="$r/w:rPr/w:rStyle/@w:val"/></xsl:when>
-    <xsl:when test="$r[self::w:r]/w:rPr">
+    <xsl:when test="$r[self::w:r]/w:rPr/*[name() != 'w:rStyle']">
       <xsl:variable name="serialised"><xsl:apply-templates select="$r/w:rPr" mode="serialize"/></xsl:variable>
       <xsl:value-of select="$serialised"/>
     </xsl:when>
+    <xsl:when test="$r[self::w:r]/w:rPr/w:rStyle"><xsl:value-of select="$r/w:rPr/w:rStyle/@w:val"/></xsl:when>
     <xsl:when test="$r/self::w:r">{}</xsl:when>
     <xsl:otherwise>--</xsl:otherwise>
   </xsl:choose>
@@ -539,16 +547,21 @@
     <xsl:value-of select="concat('&lt;',name(),'>')"
       disable-output-escaping="yes" />
   </xsl:template>
+  
+  <!-- TODO -->
   <xsl:template match="*[not(node())]" mode="encode">
     <xsl:value-of select="concat('&lt;',name())"
       disable-output-escaping="yes" />
     <xsl:apply-templates select="@*" mode="encode" />
     <xsl:text>/></xsl:text>
   </xsl:template>
+  
+  <!-- TODO -->
   <xsl:template match="@*" mode="encode">
     <xsl:value-of select="concat(' ',name(),'=&quot;',.,'&quot;')" />
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="*[not(text()|*)]" mode="xml">
     <xsl:text>&lt;</xsl:text>
     <xsl:value-of select="name()" />
@@ -556,6 +569,7 @@
     <xsl:text>/&gt;</xsl:text>
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="*[text()|*]" mode="xml">
     <xsl:text>&lt;</xsl:text>
     <xsl:value-of select="name()" />
@@ -567,10 +581,12 @@
     <xsl:text>&gt;</xsl:text>
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="text()" mode="xml">
     <xsl:value-of select="." />
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="@*" mode="xml" priority="1">
     <xsl:text> </xsl:text>
     <xsl:value-of select="name()" />

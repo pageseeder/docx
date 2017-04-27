@@ -93,6 +93,7 @@
           </xsl:call-template>
         </xsl:when>
 
+          <!-- TODO -->
         <xsl:when test="current()/name() = 'w:t' and ancestor::*[name() = 'w:hyperlink']">
           <xsl:call-template name="apply-wr-style">
             <xsl:with-param name="style" select="$character-style-name" />
@@ -488,7 +489,7 @@
     <xsl:param name="in-link" />
     <xsl:param name="in-hyperlink" />
     <xsl:param name="current" />
-<!--     <xsl:message select="$in-link"></xsl:message> -->
+<!--     <xsl:message select="$text"></xsl:message> -->
 <!--     <xsl:message select="$in-hyperlink"></xsl:message> -->
     <xsl:choose>
       <xsl:when test="$in-hyperlink = 'true'">

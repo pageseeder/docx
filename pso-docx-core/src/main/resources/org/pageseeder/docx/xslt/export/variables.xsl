@@ -775,6 +775,7 @@
     </xsl:choose> 
   </xsl:function>
   
+   <!-- TODO -->
   <xsl:function name="fn:table-set-width-value">
     <xsl:param name="node"/>
     <xsl:choose>
@@ -829,6 +830,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="protectedsection-id">
     <xsl:choose>
       <xsl:when
@@ -1001,6 +1003,7 @@
     </xsl:choose>
   </xsl:variable>
   
+  <!-- TODO -->
   <xsl:variable name="generate-cross-references" as="xs:boolean">
     <xsl:choose>
       <xsl:when

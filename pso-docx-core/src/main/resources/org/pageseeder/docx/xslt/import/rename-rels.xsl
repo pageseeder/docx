@@ -21,10 +21,11 @@
 -->
   
   <xsl:param name="_imagelist" select="'root'" as="xs:string"/>
+  
   <xsl:variable name="imagelistdocument" select="unparsed-text($_imagelist,'UTF-8')"/>
   
   
-  <xsl:variable name="lines" select="tokenize($imagelistdocument, '\n')" as="xs:string+" />
+  <xsl:variable name="lines" select="if($imagelistdocument) then tokenize($imagelistdocument, '\n') else 'NONE'" as="xs:string+" />
   
   <xsl:variable name="lines-element">
     <lines>
@@ -46,6 +47,7 @@
     </lines>
   </xsl:variable>
   
+  <!-- TODO -->
  <xsl:template match="/">
     <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
       <xsl:for-each select=".//*[name() = 'Relationship']">
@@ -61,6 +63,7 @@
     </Relationships>
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*" />
