@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.pageseeder.docx.PSMLProcessor;
 import org.pageseeder.ox.OXErrors;
@@ -62,24 +61,29 @@ public class DOCXToPSML implements Step {
     // the media folder
     String media = info.getParameter("media", "media");
     
- // input file
+    // input file
     String input = info.getParameter("input", info.input());
-    if (input.startsWith("${") && input.endsWith("}")) {
-      String properties = info.getParameter("info-properties");
-      Properties p = model.getProperties(properties);
-      input = p.getProperty("input");
-    }
     
     File finput = data.getFile(input);
     if (finput.isDirectory()) {
       for (String filenane:finput.list()){
         if(filenane.endsWith(".docx")) {
-          input = filenane;
+          input += "/" + filenane;
           break;
         }
       }
     }
 
+    File fConfig = data.getFile(config);
+    if (fConfig.isDirectory()) {
+      for (String filenane:fConfig.list()){
+        if(filenane.endsWith(".docx")) {
+          config += "/" + filenane;
+          break;
+        }
+      }
+    }
+    
     DocxToPsmlXResult result = new DocxToPsmlXResult(data, model, input, output, config);
 
     if (input == null) throw new NullPointerException("source must be defined.");
