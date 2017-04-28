@@ -10,16 +10,16 @@ import java.io.PrintWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DOCXProcessorTest {
+public class TestPSMLProcessor {
 
   @Test
-  public void testProcess() {
+  public void TestProcess() {
     File source = new File("test/source/sample-1.psml");
     File media = new File("test/source/media");
 
     System.out.println("source exist " + source.exists());
 
-    File destination = new File(TestConstants.OUTPUT + "test/sample-1.docx");
+    File destination = new File("test/destination/sample-1.docx");
     if (!destination.getParentFile().exists()) {
       destination.getParentFile().mkdirs();
     }
