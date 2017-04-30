@@ -64,25 +64,11 @@ public class DOCXToPSML implements Step {
     // input file
     String input = info.getParameter("input", info.input());
     
-    File finput = data.getFile(input);
-    if (finput.isDirectory()) {
-      for (String filenane:finput.list()){
-        if(filenane.endsWith(".docx")) {
-          input += "/" + filenane;
-          break;
-        }
-      }
-    }
-
-    File fConfig = data.getFile(config);
-    if (fConfig.isDirectory()) {
-      for (String filenane:fConfig.list()){
-        if(filenane.endsWith(".docx")) {
-          config += "/" + filenane;
-          break;
-        }
-      }
-    }
+   
+    //Put value to input
+    input = getFile(data,input,".docx");
+    //Put value to config
+    config = getFile(data,config,".xml");
     
     DocxToPsmlXResult result = new DocxToPsmlXResult(data, model, input, output, config);
 
@@ -177,6 +163,19 @@ private File getFile(String path, Model model, PackageData data) {
       }
     }
     return file;
+  }
+
+  public String getFile(PackageData data, String fromFolder, String extension){
+    File folder = data.getFile(fromFolder);
+    if (folder.isDirectory()) {
+      for (String filenane:folder.list()){
+        if(filenane.endsWith(extension)) {
+          fromFolder += "/" + filenane;
+          break;
+        }
+      }
+    }
+    return fromFolder;
   }
 
   /**
