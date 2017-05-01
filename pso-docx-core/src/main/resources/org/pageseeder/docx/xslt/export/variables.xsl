@@ -817,6 +817,82 @@
   
   @return true or false
   -->
+  <xsl:variable name="create-endnotes" as="xs:boolean">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/default/endnotes[@generate = 'true']">
+        <xsl:value-of select="true()" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  <xsl:function name="fn:endnote-labels">
+    <xsl:choose>
+      <xsl:when test="$create-endnotes">
+        <xsl:for-each select="tokenize($config-doc/config/default/endnotes/@xref-labels,',')">
+          <xsl:choose>
+            <xsl:when test="position() = last()">
+              <xsl:value-of select="concat('^',.,'$')" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat('^',.,'$','|')" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('^','No Selected Value','$')" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
+  
+  <!--
+  Returns the confirmation of creation a table of contents or not at ps:toc level.
+  
+  @return true or false
+  -->
+  <xsl:variable name="create-footnotes" as="xs:boolean">
+    <xsl:choose>
+      <xsl:when
+        test="$config-doc/config/default/footnotes[@generate = 'true']">
+        <xsl:value-of select="true()" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  
+  <xsl:function name="fn:footnote-labels">
+    <xsl:choose>
+      <xsl:when test="$create-footnotes">
+        <xsl:for-each select="tokenize($config-doc/config/default/footnotes/@xref-labels,',')">
+          <xsl:choose>
+            <xsl:when test="position() = last()">
+              <xsl:value-of select="concat('^',.,'$')" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat('^',.,'$','|')" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('^','No Selected Value','$')" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
+  <!--
+  Returns the confirmation of creation a table of contents or not at ps:toc level.
+  
+  @return true or false
+  -->
   <xsl:variable name="use-protectedsections" as="xs:boolean">
     <xsl:choose>
       <xsl:when
