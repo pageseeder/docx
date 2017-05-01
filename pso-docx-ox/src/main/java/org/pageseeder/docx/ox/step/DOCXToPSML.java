@@ -54,15 +54,22 @@ public class DOCXToPSML implements Step {
   public Result process(Model model, PackageData data, StepInfo info) {
     if (data == null) throw new NullPointerException("PackageDate is null");
 
-    // input file
-    String input = info.getParameter("input", info.input());
     // output file
     String output = info.getParameter("output", info.output());
     // the config
     String config = info.getParameter("config");
     // the media folder
     String media = info.getParameter("media", "media");
-
+    
+    // input file
+    String input = info.getParameter("input", info.input());
+    
+   
+    //Put value to input
+    input = getFile(data,input,".docx");
+    //Put value to config
+    config = getFile(data,config,".xml");
+    
     DocxToPsmlXResult result = new DocxToPsmlXResult(data, model, input, output, config);
 
     if (input == null) throw new NullPointerException("source must be defined.");
@@ -156,6 +163,19 @@ private File getFile(String path, Model model, PackageData data) {
       }
     }
     return file;
+  }
+
+  public String getFile(PackageData data, String fromFolder, String extension){
+    File folder = data.getFile(fromFolder);
+    if (folder.isDirectory()) {
+      for (String filenane:folder.list()){
+        if(filenane.endsWith(extension)) {
+          fromFolder += "/" + filenane;
+          break;
+        }
+      }
+    }
+    return fromFolder;
   }
 
   /**

@@ -4,16 +4,19 @@
     elements="toc uri labels displaytitle properties-fragment root description property section body document documentinfo fragment list xref-fragment blockxref locator notes note content" />
   <xsl:output encoding="UTF-8" method="xml" indent="no" />
 
+  <!-- TODO -->
   <xsl:template match="/">
     <xsl:apply-templates select="element()|text()|comment()|processing-instruction()" />
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="attribute()|comment()|processing-instruction()">
     <xsl:copy>
       <xsl:apply-templates select="comment()|processing-instruction()" />
     </xsl:copy>
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="element()">
     <xsl:copy>
       <xsl:copy-of select="@*" />
@@ -99,6 +102,7 @@
     </block>
   </xsl:template>
 
+  <!-- TODO -->
   <xsl:template match="text()">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1]/name() = 'br' and substring(replace(.,'[\s]+',' '),1,1) = ' '">
@@ -112,7 +116,8 @@
 
   </xsl:template>
 
-  <xsl:template match="text()[. != '&#10;'][parent::preformat]">
+  <!-- TODO -->
+ <xsl:template match="text()[. != '&#10;'][parent::preformat]">
     <xsl:for-each select="tokenize(.,'&#10;')">
       <xsl:sequence select="." />
       <xsl:if test="not(position() eq last())">
