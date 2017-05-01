@@ -3,6 +3,7 @@
  */
 package org.pageseeder.docx.ox.step;
 
+import org.pageseeder.ox.util.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,18 +68,16 @@ public class PSMLToDOCX implements Step {
 
     // the media folder
     String media = info.getParameter("media");
+   
+    //Verify the extension .psml
+    input = FileUtils.getFileByExtension(data, input,".psml");
 
-    //Put value to input
-    input = getFile(data,input,".psml");
-    //Put value to input
-    String temp = dotx;
-    dotx = getFile(data,dotx,".dotx");
-    if (dotx.equals(temp)) {
-      dotx = getFile(data,dotx,".docx");
-    }
-    //Put value to config
-    config = getFile(data,config,".xml");
-        
+    //Verify the extension .docx or dotx
+    dotx = FileUtils.getFileByExtension(data, dotx,".dotx",".docx");
+    
+    //Verify the extension .xml
+    config = FileUtils.getFileByExtension(data, config,".xml");
+
     if (input == null) throw new NullPointerException("input haven't defined.");
     if (output == null) throw new NullPointerException("output haven't defined.");
     if (config == null) throw new NullPointerException("config haven't defined.");
@@ -154,19 +153,6 @@ public class PSMLToDOCX implements Step {
     return file;
   }
   
-  public String getFile(PackageData data, String fromFolder, String extension){
-    File folder = data.getFile(fromFolder);
-    if (folder.isDirectory()) {
-      for (String filenane:folder.list()){
-        if(filenane.endsWith(extension)) {
-          fromFolder += "/" + filenane;
-          break;
-        }
-      }
-    }
-    return fromFolder;
-  }
-
   /**
    * The Class ProduceDOCXResult.
    */

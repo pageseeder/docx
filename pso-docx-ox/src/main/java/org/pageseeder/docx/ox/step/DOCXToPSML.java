@@ -18,6 +18,7 @@ import org.pageseeder.ox.api.StepInfo;
 import org.pageseeder.ox.core.Model;
 import org.pageseeder.ox.core.PackageData;
 import org.pageseeder.ox.tool.ResultBase;
+import org.pageseeder.ox.util.FileUtils;
 import org.pageseeder.xmlwriter.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,11 +65,13 @@ public class DOCXToPSML implements Step {
     // input file
     String input = info.getParameter("input", info.input());
     
-   
-    //Put value to input
-    input = getFile(data,input,".docx");
-    //Put value to config
-    config = getFile(data,config,".xml");
+
+    //Verify the extension .psml
+    input = FileUtils.getFileByExtension(data, input,".psml");
+
+    //Verify the extension .xml
+    config = FileUtils.getFileByExtension(data, config,".xml");
+
     
     DocxToPsmlXResult result = new DocxToPsmlXResult(data, model, input, output, config);
 
@@ -163,19 +166,6 @@ private File getFile(String path, Model model, PackageData data) {
       }
     }
     return file;
-  }
-
-  public String getFile(PackageData data, String fromFolder, String extension){
-    File folder = data.getFile(fromFolder);
-    if (folder.isDirectory()) {
-      for (String filenane:folder.list()){
-        if(filenane.endsWith(extension)) {
-          fromFolder += "/" + filenane;
-          break;
-        }
-      }
-    }
-    return fromFolder;
   }
 
   /**
