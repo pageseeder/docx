@@ -66,6 +66,7 @@ public class DOCXToPSML implements Step {
     String input = info.getParameter("input", info.input());
     
 
+    
     //Verify the extension .psml
     input = FileUtils.getFileByExtension(data, input,".psml");
 
