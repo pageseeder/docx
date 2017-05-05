@@ -68,7 +68,7 @@ public class DOCXToPSML implements Step {
 
     
     //Verify the extension .psml
-    input = FileUtils.getFileByExtension(data, input,".psml");
+    input = FileUtils.getFileByExtension(data, input,".docx");
 
     //Verify the extension .xml
     config = FileUtils.getFileByExtension(data, config,".xml");
