@@ -97,8 +97,10 @@ public final class DOCXProcessor {
     log("Checking DOTX");
     File contentTypes = new File(dotx, "[Content_Types].xml");
     File relationships = new File(dotx, "_rels/.rels");
+    File numbering = new File(dotx, "word/numbering.xml");
     if (!contentTypes.exists()) { throw new DOCXException("Not a valid DOTX: unable to find [Content_Types].xml"); }
     if (!relationships.exists()) { throw new DOCXException("Not a valid DOTX: unable to find _rels/.rels"); }
+    if (!numbering.exists()) { throw new DOCXException("Not a valid DOTX: unable to find word/numbering.xml"); }
 
     // 3. Preparing the output
     File prepacked = new File(this._builder.working(), "prepacked");
