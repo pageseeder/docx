@@ -12,7 +12,7 @@
   <xsl:variable name="StrUCAlphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
   <xsl:variable name="StrLCAlphabet">abcdefghijklmnopqrstuvwxyz</xsl:variable>
 
-<!-- TODO -->
+<!-- initial match to mathml -->
 <xsl:template match="m:math">
       <m:oMath>
           <xsl:apply-templates mode="mml"/>
@@ -184,7 +184,7 @@
       </xsl:if>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template mode="mml"
                  match="mi[not(child::mglyph)] | mn[not(child::mglyph)] | mo[not(child::mglyph)] | ms[not(child::mglyph)] | mtext[not(child::mglyph)]">
 
@@ -1085,7 +1085,7 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="FBar">
       <xsl:param name="sLineThickness"/>
       <xsl:variable name="sLowerLineThickness"
@@ -2869,12 +2869,12 @@
       </xsl:choose>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template mode="mml" match="mtd">
       <xsl:apply-templates mode="mml"/>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateEmptyElmt">
       <xsl:param name="cEmptyMtd"/>
       <xsl:if test="$cEmptyMtd &gt; 0">
@@ -2885,7 +2885,7 @@
       </xsl:if>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CountMaxElmtsInRow">
       <xsl:param name="ndCur"/>
       <xsl:param name="cMaxElmtsInRow" select="0"/>
@@ -2935,12 +2935,12 @@
       </xsl:choose>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template mode="mml" match="mglyph">
       <xsl:call-template name="CreateMglyph"/>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template mode="mml"
                  match="mi[child::mglyph] | mn[child::mglyph] | mo[child::mglyph] | ms[child::mglyph] | mtext[child::mglyph]">
       <xsl:if test="string-length(normalize-space(.)) &gt; 0">
@@ -3053,7 +3053,7 @@
       </xsl:for-each>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="FGlyphIndexOk">
       <xsl:param name="index"/>
       <xsl:if test="$index != ''">
@@ -3066,7 +3066,7 @@
       </xsl:if>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateMglyph">
       <xsl:param name="ndCur"/>
       <m:r>
@@ -3313,7 +3313,7 @@
       </m:r>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="ConvertDecToHex">
       <xsl:param name="index"/>
       <xsl:if test="$index &gt; 0">
@@ -3339,7 +3339,7 @@
       </xsl:if>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="FStrContainsNonZeroDigit">
       <xsl:param name="s"/>
 
@@ -3352,7 +3352,7 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="FStrContainsDigits">
       <xsl:param name="s"/>
 
@@ -3534,7 +3534,7 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template mode="mml" match="mpadded">
       <xsl:choose>
          <xsl:when test="count(parent::mphantom)=1 and count(preceding-sibling::*)=0 and count(following-sibling::*)=0">
@@ -3604,7 +3604,7 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template mode="mml" match="mphantom">
       <m:phant>
          <xsl:call-template name="CreatePhantProperties">
@@ -3617,14 +3617,14 @@
       </m:phant>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="isNaryOper">
       <xsl:param name="sNdCur"/>
       <xsl:value-of select="($sNdCur = '∫' or $sNdCur = '∬' or $sNdCur = '∭' or $sNdCur = '∮' or $sNdCur = '∯' or $sNdCur = '∰' or $sNdCur = '∲' or $sNdCur = '∳' or $sNdCur = '∱' or $sNdCur = '∩' or $sNdCur = '∪' or $sNdCur = '∏' or $sNdCur = '∐' or $sNdCur = '∑')"/>
   </xsl:template>
 
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="isNary">
     <!-- ndCur is the element around the nAry operator -->
     <xsl:param name="ndCur"/>
@@ -3695,7 +3695,7 @@
       </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateNaryProp">
       <xsl:param name="chr"/>
       <xsl:param name="sMathmlType"/>
@@ -3749,6 +3749,6 @@
       </m:naryPr>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="mathrRpHook"/>
 </xsl:stylesheet>

@@ -8,7 +8,8 @@
   xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
   xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
   xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-  xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types" xmlns:fn="http://www.pageseeder.com/function" xmlns:dec="java:java.net.URLDecoder" exclude-result-prefixes="#all">
+  xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types" xmlns:fn="http://www.pageseeder.com/function" xmlns:dec="java:java.net.URLDecoder" exclude-result-prefixes="#all">
 
 <!-- 
 Template to handle creation of content_types.xml file from Template and input document
@@ -40,11 +41,17 @@ Template to handle creation of content_types.xml file from Template and input do
         <xsl:if test="$generate-comments">
           <Override PartName="/word/comments.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml" />
         </xsl:if>
+        <xsl:if test="$create-endnotes">
+          <Override PartName="/word/endnotes.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.endnotes+xml" />
+        </xsl:if>
+        <xsl:if test="$create-footnotes">
+          <Override PartName="/word/footnotes.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml" />
+        </xsl:if>
         <xsl:for-each select="*">
           <xsl:if test=".[name() = 'Default']">
             <xsl:copy-of select="." />
           </xsl:if>
-          <xsl:if test=".[name() = 'Override'][@PartName != '/word/document.xml'][@PartName != '/word/comments.xml']">
+          <xsl:if test=".[name() = 'Override'][@PartName != '/word/document.xml'][@PartName != '/word/comments.xml'][@PartName != '/word/endnotes.xml'][@PartName != '/word/footnotes.xml']">
             <xsl:copy-of select="." />
           </xsl:if>
         </xsl:for-each>
@@ -76,7 +83,7 @@ Template to handle creation of files referenced by content_types.xml file
     <xsl:for-each select="document($_content-types-template)/ct:Types/ct:Override">
 <!--       <xsl:message select="@PartName"/> -->
       <xsl:choose>
-        <xsl:when test="matches(@PartName,'(/word/document.xml|/word/numbering.xml|/word/styles.xml|/word/comments.xml|word/_rels/comments.xml.rels)')">
+        <xsl:when test="matches(@PartName,'(/word/document.xml|/word/numbering.xml|/word/styles.xml|/word/comments.xml|/word/footnotes.xml|/word/endnotes.xml|word/_rels/comments.xml.rels)')">
         </xsl:when>
         <xsl:when test="matches(@PartName,'/docProps/core.xml')">
           <xsl:result-document href="{concat($_outputfolder,@PartName)}">
@@ -176,6 +183,14 @@ Template to handle creation of files referenced by content_types.xml file
             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"
               Target="comments.xml" />
           </xsl:if>
+<!--           <xsl:if test="$create-footnotes"> -->
+<!--             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes" -->
+<!--               Target="footnotes.xml" /> -->
+<!--           </xsl:if> -->
+<!--           <xsl:if test="$create-endnotes"> -->
+<!--             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 3))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes" -->
+<!--               Target="endnotes.xml" /> -->
+<!--           </xsl:if> -->
           <xsl:if test="$manual-master = 'true'">
             <xsl:for-each select="//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']">
               <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + position()))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument"

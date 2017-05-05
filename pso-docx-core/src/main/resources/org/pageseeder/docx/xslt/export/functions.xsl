@@ -34,7 +34,7 @@
     </xsl:choose>
   </xsl:function>
   
-  <!-- TODO -->
+  <!-- function that returns the current word cell alignment -->
   <xsl:function name="fn:return-word-cell-alignment">
     <xsl:param name="pageseeder-cell-alignment" />
     <xsl:choose>

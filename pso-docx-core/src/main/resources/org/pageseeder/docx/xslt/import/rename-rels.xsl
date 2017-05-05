@@ -47,7 +47,7 @@
     </lines>
   </xsl:variable>
   
-  <!-- TODO -->
+  <!-- template to rename all images if needed -->
  <xsl:template match="/">
     <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
       <xsl:for-each select=".//*[name() = 'Relationship']">
@@ -63,7 +63,7 @@
     </Relationships>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- recursevely copy -->
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*" />

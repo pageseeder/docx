@@ -16,7 +16,7 @@
   xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
  
 
-  <!-- TODO -->
+  <!-- Template to match endnote root element and generate endnote file -->
   <xsl:template match="w:endnotes" mode="endnotes">
     <xsl:result-document href="{concat($_outputfolder,'endnotes/endnotes.psml')}">
       <document level="portable">
@@ -43,7 +43,7 @@
     </xsl:result-document>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- Template to match each endnote and generate a heading for it and it's content for each fragment-->
   <xsl:template match="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-fragments">
     <fragment id="{@w:id}">
       <heading level="4"><xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(count(preceding-sibling::w:endnote[not(@w:id='-1')][not(@w:id='0')]) + 1,'endnote'),']')"/></heading>
@@ -51,7 +51,7 @@
     </fragment>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- Template to match each endnote and generate a haeding for it and it's content for each document-->
   <xsl:template match="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-files">
     <blockxref href="{concat('endnotes',@w:id,'.psml')}" frag="default"><xsl:value-of select="concat('Endnote ',@w:id)" /></blockxref>
     <xsl:result-document href="{concat($_outputfolder,'endnotes/endnotes',@w:id,'.psml')}">

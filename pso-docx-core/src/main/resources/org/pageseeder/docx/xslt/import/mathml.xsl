@@ -20,7 +20,7 @@
   transform them into inline labels or just keep them as text, according to the option set on the configuration document -->
   <xsl:key name="math-checksum-id" match="@checksum-id" use="." />
   
-  <!-- TODO -->
+  <!-- template to generate mathml objects in pageseeder -->
   <xsl:template match="w:body" mode="mathml">
     <xsl:for-each select="distinct-values(m:math/@checksum-id)">
       <xsl:variable name="current" select="."/>
@@ -39,7 +39,7 @@
     
   </xsl:template>
   
-   <!-- TODO --> 
+   <!-- generate links to corresponding math ml object --> 
   <xsl:template match="m:oMath[not(ancestor::m:oMathPara)][$generate-mathml-files]|m:oMath[ancestor::m:oMathPara and ancestor::w:p][$generate-mathml-files]" mode="content">
     <xsl:variable name="current">
       <xsl:apply-templates select="." mode="xml"/>
@@ -69,7 +69,7 @@
         </para>
   </xsl:template>
 
-   <!-- TODO -->     
+   <!-- copy recursively each mathml node -->     
   <xsl:template match="@*|node()" mode="mathml">
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="mathml" />
