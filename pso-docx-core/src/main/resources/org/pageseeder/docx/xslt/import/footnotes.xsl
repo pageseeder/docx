@@ -20,7 +20,7 @@
   transform them into inline labels or just keep them as text, according to the option set on the configuration document -->
   <xsl:key name="math-checksum-id" match="@checksum-id" use="." />
 
-  <!-- TODO -->
+  <!-- Template to match footnotes root element and generate footnotes file -->
   <xsl:template match="w:footnotes" mode="footnotes">
     <xsl:result-document href="{concat($_outputfolder,'footnotes/footnotes.psml')}">
       <document level="portable">
@@ -47,7 +47,7 @@
     </xsl:result-document>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- Template to match each footnote and generate a heading for it and it's content for each fragment-->
   <xsl:template match="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-fragments">
     <fragment id="{@w:id}">
       <heading level="4"><xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(count(preceding-sibling::w:footnote[not(@w:id='-1')][not(@w:id='0')]) + 1,'footnote'),']')"/></heading>
@@ -55,7 +55,7 @@
     </fragment>
   </xsl:template>
  
-   <!-- TODO --> 
+  <!-- Template to match each footnote and generate a heading for it and it's content for each document-->
   <xsl:template match="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-files">
     <blockxref href="{concat('footnotes',@w:id,'.psml')}" frag="default"><xsl:value-of select="concat('Footnote ',@w:id)" /></blockxref>
     <xsl:result-document href="{concat($_outputfolder,'footnotes/footnotes',@w:id,'.psml')}">

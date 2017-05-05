@@ -60,7 +60,6 @@ Function to return the corresponding Abstract Number Id from word, from the inpu
       
 <!--       <xsl:when test="$numbering-document//w:abstractNum[@w:abstractNumId = $numbering-document//w:num[@w:numId = $styles-document//w:style[@w:type='numbering']/w:pPr/w:numPr/w:numId/@w:val]/w:abstractNumId/@w:val][w:lvl/w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]"> -->
       
-      <!--  TODO -->
 <!--         <xsl:value-of select="$numbering-document//w:num[@w:numId = $current/w:pPr/w:numPr/w:numId/@w:val]/w:abstractNumId/@w:val" /> -->
 <!--       </xsl:when> -->
       <xsl:otherwise>
@@ -209,7 +208,13 @@ Function to return the corresponding Abstract Number Id from word, from the inpu
     <xsl:value-of select="$numbering-document//w:num[w:abstractNumId/@w:val = $abstract-num-id][not(w:lvlOverride)][1]/@w:numId" />
   </xsl:function>
 
-  <!-- TODO -->
+  <!--
+  Returns the temp numId from the value of the abstractNumId.
+
+  @param num-id the current abstractNumId
+
+  @return the temp corresponding numId
+-->
   <xsl:function name="fn:get-abstract-num-id-from-num-id" as="xs:string?">
     <xsl:param name="num-id" />
     <xsl:variable name="temp-abstract-num-id">
@@ -513,7 +518,7 @@ Function to return the corresponding Abstract Number Id from word, from the inpu
     </xsl:choose>
   </xsl:function>
   
-    <!-- TODO -->
+    <!-- returns the number formated value for footnotes and endnotes numbering -->
   <xsl:function name="fn:get-formated-footnote-endnote-value" as="xs:string">
     <xsl:param name="position" />
     <xsl:param name="type" />
@@ -687,7 +692,7 @@ Function to return the corresponding Abstract Number Id from word, from the inpu
     </xsl:choose>
   </xsl:function>
   
-    <!-- TODO -->
+    <!-- Returns the numbering format for the current numbered item -->
   <xsl:function name="fn:return-pageseeder-numbering-style">
     <xsl:param name="abstract-id" />
     <xsl:param name="level" />
@@ -842,14 +847,14 @@ Function to return the corresponding Abstract Number Id from word, from the inpu
     </xsl:choose>
   </xsl:function>
   
-    <!-- TODO -->
+    <!-- Checksum function to generate a unique value -->
   <xsl:function name="fn:checksum" as="xs:integer">
         <xsl:param name="str" as="xs:string"/>
         <xsl:variable name="codepoints" select="string-to-codepoints($str)"/>
         <xsl:value-of select="fn:fletcher16($codepoints, count($codepoints), 1, 0, 0)"/>
     </xsl:function>
 
-  <!-- TODO -->
+  <!-- Function that uses fletcher16 to generate value -->
     <xsl:function name="fn:fletcher16">
         <xsl:param name="str" as="xs:integer*"/>
         <xsl:param name="len" as="xs:integer" />

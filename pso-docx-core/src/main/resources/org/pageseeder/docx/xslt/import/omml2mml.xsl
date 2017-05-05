@@ -154,21 +154,21 @@
 
   <!-- Templates -->
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="/" mode="mml">
     <m:math>
       <xsl:apply-templates select="*"  mode="mml"/>
     </m:math>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:math" mode="mml">
     <m:math>
       <xsl:apply-templates select="*"  mode="mml"/>
     </m:math>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:borderBox" mode="mml">
 
     <!-- Get Lowercase versions of properties -->
@@ -260,7 +260,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="*" mode="mml">
     <xsl:apply-templates select="*"  mode="mml"/>
   </xsl:template>
@@ -334,7 +334,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:acc" mode="mml">
     <m:mover>
       <xsl:attribute name="accent">true</xsl:attribute>
@@ -383,7 +383,7 @@
     </m:mover>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="OutputScript">
     <xsl:param name="ndCur" select="." />
     <xsl:choose>
@@ -400,7 +400,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:sPre" mode="mml">
     <m:mmultiscripts>
       <m:mrow>
@@ -416,7 +416,7 @@
     </m:mmultiscripts>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:m" mode="mml">
     <m:mtable>
       <xsl:call-template name="CreateMathMLMatrixAttr">
@@ -434,7 +434,7 @@
     </m:mtable>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateMathMLMatrixAttr">
     <xsl:param name="mcJc" />
     <xsl:variable name="sLowerCaseMcjc" select="translate($mcJc, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
@@ -449,7 +449,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:phant" mode="mml">
     <xsl:variable name="sLowerCaseZeroWidVal" select="translate(m:phantPr[last()]/m:zeroWid[last()]/@m:val, 
 		                                                       'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
@@ -548,7 +548,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateMpaddedAttributes">
     <xsl:param name="fZeroWid" />
     <xsl:param name="fZeroAsc" />
@@ -565,7 +565,7 @@
     </xsl:if>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:rad" mode="mml">
     <xsl:variable name="fDegHide">
       <xsl:choose>
@@ -598,7 +598,7 @@
     </xsl:choose>
   </xsl:template>
 
-   <!-- TODO -->
+   <!-- office internal mathml template -->
   <xsl:template name="OutputNaryMo">
     <xsl:param name="ndCur" select="." />
     <xsl:param name="fGrow" select="0" />
@@ -797,7 +797,7 @@
     </m:mrow>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:limLow" mode="mml">
     <m:munder>
       <m:mrow>
@@ -809,7 +809,7 @@
     </m:munder>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:limUpp" mode="mml">
     <m:mover>
       <m:mrow>
@@ -821,7 +821,7 @@
     </m:mover>
   </xsl:template>
 
-   <!-- TODO -->
+   <!-- office internal mathml template -->
   <xsl:template match="m:sSub" mode="mml">
     <m:msub>
       <m:mrow>
@@ -833,7 +833,7 @@
     </m:msub>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:sSup" mode="mml">
     <m:msup>
       <m:mrow>
@@ -845,7 +845,7 @@
     </m:msup>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:sSubSup" mode="mml">
     <m:msubsup>
       <m:mrow>
@@ -860,7 +860,7 @@
     </m:msubsup>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:groupChr" mode="mml">
     <xsl:variable name="ndLastGroupChrPr" select="m:groupChrPr[last()]" />
     <xsl:variable name="sLowerCasePos" select="translate($ndLastGroupChrPr/m:pos/@m:val, 
@@ -935,14 +935,14 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="fName">
     <xsl:for-each select="m:fName/*">
       <xsl:apply-templates select="."  mode="mml"/>
     </xsl:for-each>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:func" mode="mml">
     <m:mrow>
       <m:mrow>
@@ -1048,7 +1048,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:bar" mode="mml">
     <xsl:variable name="sLowerCasePos" select="translate(m:barPr/m:pos/@m:val, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
 		                                                                       'abcdefghijklmnopqrstuvwxyz')" />
@@ -1133,7 +1133,7 @@
     </m:mfenced>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template match="m:r" mode="mml">
     <xsl:variable name="fNor">
       <xsl:choose>
@@ -1167,7 +1167,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateTokenAttributes">
     <xsl:param name="scr" />
     <xsl:param name="sty" />
@@ -1246,7 +1246,7 @@
     </xsl:choose>
   </xsl:template>
 
-   <!-- TODO -->
+   <!-- office internal mathml template -->
   <xsl:template match="m:eqArr" mode="mml">
     <m:mtable>
       <xsl:for-each select="m:e">
@@ -1283,7 +1283,7 @@
     </m:mtable>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- office internal mathml template -->
   <xsl:template name="CreateEqArrRow">
     <xsl:param name="align" />
     <xsl:param name="ndCur" />
@@ -1331,7 +1331,7 @@
     </xsl:if>
   </xsl:template>
 
-   <!-- TODO -->
+   <!-- office internal mathml template -->
   <xsl:template name="CountAmp">
     <xsl:param name="sAllMt" />
     <xsl:param name="cAmp" />

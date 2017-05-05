@@ -21,7 +21,8 @@
   xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
   xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
   xmlns:dfx="http://www.topologi.com/2005/Diff-X" xmlns:del="http://www.topologi.com/2005/Diff-X/Delete" xmlns:ins="http://www.topologi.com/2005/Diff-X/Insert" xmlns:diffx="java:com.topologi.diffx.Extension"
-  xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
+  xmlns:fn="http://www.pageseeder.com/function"  xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" dcterms:W3CDTF="http://purl.org/dc/terms/W3CDTF"
+  xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exclude-result-prefixes="#all">
 
   <xsl:output method="xml" indent="no" />
   <xsl:strip-space elements="root section body document fragment item list nlist block cell hcell xref-fragment blockxref properties-fragment" />

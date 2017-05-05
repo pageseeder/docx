@@ -41,7 +41,7 @@
 <!--         <xsl:message><xsl:apply-templates select="$all-type-lists/*" mode="xml"/></xsl:message> -->
 <!--         <xsl:comment><xsl:apply-templates select="$all-type-lists/*" mode="xml"/></xsl:comment> -->
         <xsl:copy-of select="$all-type-lists/*"/>
-        <!-- TODO create abstractnum from default and other lists -->
+      
         <xsl:apply-templates select="*[name() = 'w:num']"
         mode="numbering" />
         <xsl:variable name="max-num-id"

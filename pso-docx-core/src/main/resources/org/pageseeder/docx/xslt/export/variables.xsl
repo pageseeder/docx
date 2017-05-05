@@ -23,6 +23,8 @@
   xmlns:rs="http://schemas.openxmlformats.org/package/2006/relationships"
   xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
   xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xmlns:ps="http://www.pageseeder.com/editing/2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
   xmlns:fn="http://www.pageseeder.com/function"
@@ -775,7 +777,7 @@
     </xsl:choose> 
   </xsl:function>
   
-   <!-- TODO -->
+   <!-- specify table width of a table -->
   <xsl:function name="fn:table-set-width-value">
     <xsl:param name="node"/>
     <xsl:choose>
@@ -906,7 +908,7 @@
     </xsl:choose>
   </xsl:variable>
   
-  <!-- TODO -->
+  <!-- protected section id -->
   <xsl:variable name="protectedsection-id">
     <xsl:choose>
       <xsl:when
@@ -1079,7 +1081,7 @@
     </xsl:choose>
   </xsl:variable>
   
-  <!-- TODO -->
+  <!-- boolean variable to generate cross references or not -->
   <xsl:variable name="generate-cross-references" as="xs:boolean">
     <xsl:choose>
       <xsl:when

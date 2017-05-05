@@ -93,7 +93,6 @@
           </xsl:call-template>
         </xsl:when>
 
-          <!-- TODO -->
         <xsl:when test="current()/name() = 'w:t' and ancestor::*[name() = 'w:hyperlink']">
           <xsl:call-template name="apply-wr-style">
             <xsl:with-param name="style" select="$character-style-name" />

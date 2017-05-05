@@ -4,19 +4,19 @@
     elements="toc uri labels displaytitle properties-fragment root description property section body document documentinfo fragment list xref-fragment blockxref locator notes note content" />
   <xsl:output encoding="UTF-8" method="xml" indent="no" />
 
-  <!-- TODO -->
+  <!-- match root element -->
   <xsl:template match="/">
     <xsl:apply-templates select="element()|text()|comment()|processing-instruction()" />
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- generic copy -->
   <xsl:template match="attribute()|comment()|processing-instruction()">
     <xsl:copy>
       <xsl:apply-templates select="comment()|processing-instruction()" />
     </xsl:copy>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- generic copy  -->
   <xsl:template match="element()">
     <xsl:copy>
       <xsl:copy-of select="@*" />
@@ -24,7 +24,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <!--comment ID: 302792, fixed mixed content in item -->
+  <!--unnest items -->
   <xsl:template match="item">
     <item>
       <xsl:for-each-group select="node()"
@@ -53,7 +53,7 @@
 
   </xsl:template>
 
-  <!--comment ID: 302792, fixed mixed content in table cell -->
+  <!--unnest cells and hcells  -->
   <xsl:template match="cell|hcell">
     <xsl:copy>
       <xsl:copy-of select="@*" />
@@ -77,7 +77,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <!--comment ID: 302792, fixed mixed content in block -->
+  <!--unnest blocks -->
   <xsl:template match="block">
     <block>
       <xsl:copy-of select="@*" />
@@ -102,7 +102,7 @@
     </block>
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- check fir breaks in text and handle whitespace-->
   <xsl:template match="text()">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1]/name() = 'br' and substring(replace(.,'[\s]+',' '),1,1) = ' '">
@@ -116,7 +116,7 @@
 
   </xsl:template>
 
-  <!-- TODO -->
+  <!-- match test inside of preformat -->
  <xsl:template match="text()[. != '&#10;'][parent::preformat]">
     <xsl:for-each select="tokenize(.,'&#10;')">
       <xsl:sequence select="." />

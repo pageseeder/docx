@@ -182,7 +182,7 @@
     </xsl:choose>
   </xsl:template>
   
-  <!-- TODO -->
+  <!-- Template to handle a w:p inide of a list -->
   <xsl:template match="w:p" mode="insidelist">
     <xsl:variable name="level" select="fn:get-level-from-element(.)" />
     <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
