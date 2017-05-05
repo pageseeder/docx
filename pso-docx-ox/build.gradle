@@ -15,7 +15,7 @@ dependencies {
     'org.slf4j:slf4j-api:1.7.12',
     
     //Ox 
-    'org.pageseeder.ox:pso-ox-core:2.2.0',   
+    'org.pageseeder.ox:pso-ox-core:2.2.6-beta.2',   
     
     //XML
     'org.pageseeder.xmlwriter:pso-xmlwriter:1.0.2',   
@@ -24,7 +24,7 @@ dependencies {
   runtime (
     'org.pageseeder.schematron:pso-schematron:1.2.+',
     'org.pageseeder.cobble:pso-cobble:0.3.1',
-    'net.sf.saxon:Saxon-HE:9.7.0-2'
+    'net.sf.saxon:Saxon-HE:9.7.0-18'
   )
   
   testCompile (
@@ -37,7 +37,7 @@ dependencies {
   testRuntime (
     'org.pageseeder.schematron:pso-schematron:1.2.+',
     'org.pageseeder.cobble:pso-cobble:0.3.1',
-    'net.sf.saxon:Saxon-HE:9.7.0-2'   
+    'net.sf.saxon:Saxon-HE:9.7.0-18'   
   )
 
 }
