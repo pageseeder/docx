@@ -103,7 +103,7 @@ public class PSMLToDOCX implements Step {
           .source(data.getFile(input))
           .destination(data.getFile(output))
           .dotx(getFile(dotx, model, data))
-          .config(model.getFile(config))
+          .config(getFile(config, model, data))
           .media(mediaDirectory)
           .params(params)
           .working(data.directory())
