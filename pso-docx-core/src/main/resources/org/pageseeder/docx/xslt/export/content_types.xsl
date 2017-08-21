@@ -41,17 +41,19 @@ Template to handle creation of content_types.xml file from Template and input do
         <xsl:if test="$generate-comments">
           <Override PartName="/word/comments.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml" />
         </xsl:if>
+        <!-- 
         <xsl:if test="$create-endnotes">
           <Override PartName="/word/endnotes.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.endnotes+xml" />
         </xsl:if>
         <xsl:if test="$create-footnotes">
           <Override PartName="/word/footnotes.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml" />
         </xsl:if>
+         -->
         <xsl:for-each select="*">
           <xsl:if test=".[name() = 'Default']">
             <xsl:copy-of select="." />
           </xsl:if>
-          <xsl:if test=".[name() = 'Override'][@PartName != '/word/document.xml'][@PartName != '/word/comments.xml'][@PartName != '/word/endnotes.xml'][@PartName != '/word/footnotes.xml']">
+          <xsl:if test=".[name() = 'Override'][@PartName != '/word/document.xml'][@PartName != '/word/comments.xml']"> <!-- [@PartName != '/word/endnotes.xml'][@PartName != '/word/footnotes.xml'] -->
             <xsl:copy-of select="." />
           </xsl:if>
         </xsl:for-each>
