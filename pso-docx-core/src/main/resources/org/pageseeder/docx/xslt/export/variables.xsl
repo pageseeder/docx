@@ -890,39 +890,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
-  
-  <!--
-  Returns the confirmation of creation a table of contents or not at ps:toc level.
-  
-  @return true or false
-  -->
-  <xsl:variable name="use-protectedsections" as="xs:boolean">
-    <xsl:choose>
-      <xsl:when
-        test="$config-doc/config/default/protectedsection[@select = 'true']">
-        <xsl:value-of select="true()" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="false()" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  
-  <!-- protected section id -->
-  <xsl:variable name="protectedsection-id">
-    <xsl:choose>
-      <xsl:when
-        test="$config-doc/config/default/protectedsection[@select = 'true']">
-        <xsl:value-of select="$config-doc/config/default/protectedsection/@id" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  
-  
-  
+ 
   <!--
   Returns the confirmation of creation a table of contents with headings or not.
   

@@ -59,44 +59,12 @@
 					</w:body>
 				</w:document>
 			</xsl:when>
-      <xsl:when test="$use-protectedsections">
-        <w:p>
-          <w:pPr>
-            <w:rPr>
-              <w:vanish/>
-            </w:rPr>
-            <w:sectPr>
-              <w:type w:val="continuous"/>
-            </w:sectPr>
-          </w:pPr>
-          <w:bookmarkStart w:name="{replace(@id,'\W','_')}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>        
-        </w:p>
-        <xsl:apply-templates mode="content" >
-          <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
-        </xsl:apply-templates>
-        <w:p>
-          <w:pPr>
-            <w:rPr>
-              <w:vanish/>
-            </w:rPr>
-            <w:sectPr>
-              <w:type w:val="continuous"/>
-              <w:formProt w:val="0"/> 
-            </w:sectPr>
-          </w:pPr>
-          <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />
-        </w:p>
-      </xsl:when>
 			<xsl:otherwise>
-			  <w:bookmarkStart w:name="{concat('psid',replace(@id,'\W','_'))}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0)) - 1}"/>
-        <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0)) - 1}" />
-      
-        <w:bookmarkStart w:name="{replace(@id,'\W','_')}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>
+        <w:bookmarkStart w:name="{replace(@id,'\W','_')}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>
         <xsl:apply-templates mode="content" >
           <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
         </xsl:apply-templates>
-				<w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />
-        
+				<w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />        
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -171,55 +139,10 @@
         </w:r>
        <w:commentRangeEnd w:id="{$id}"/>
       </w:p>
-      </xsl:if>
-      
-      <xsl:choose>
-        <xsl:when test="$use-protectedsections">
-        <w:p>
-          <w:pPr>
-            <w:rPr>
-              <w:vanish/>
-            </w:rPr>
-            <w:sectPr>
-              <w:type w:val="continuous"/>
-            </w:sectPr>
-          </w:pPr>
-          <w:r>
-            <w:rPr>
-              <w:vanish/>
-            </w:rPr>
-            <w:t><xsl:value-of select="@id"/></w:t>
-          </w:r>
-          <w:bookmarkStart w:name="{concat($protectedsection-id,replace(@id,'\W','_'))}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>        
-        </w:p>
-        <xsl:apply-templates mode="content" />
-        <w:p>
-          <w:pPr>
-            <w:rPr>
-              <w:vanish/>
-            </w:rPr>
-            <w:sectPr>
-              <w:type w:val="continuous"/>
-              <w:formProt w:val="0"/> 
-            </w:sectPr>
-          </w:pPr>
-          <w:r>
-            <w:rPr>
-              <w:vanish/>
-            </w:rPr>
-            <w:t><xsl:value-of select="@id"/></w:t>
-          </w:r>
-          <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />
-        </w:p>
-      </xsl:when>
-      <xsl:otherwise>
-        <w:bookmarkStart w:name="{concat('psid',replace(@id,'\W','_'))}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0)) - 1}"/>
-        <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))-1}" /> 
-        <w:bookmarkStart w:name="{replace(@id,'\W','_')}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>
-        <xsl:apply-templates mode="content" />
-        <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + (count(preceding::fragment)*2) + (count(ancestor::fragment)*2) +count(preceding::xref) + (count(preceding::document)*2) + (count(ancestor::document)*2) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />
-      </xsl:otherwise>
-    </xsl:choose>
+      </xsl:if>     
+      <w:bookmarkStart w:name="{replace(@id,'\W','_')}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>
+      <xsl:apply-templates mode="content" />
+      <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />
 	</xsl:template>
 
     <!--  If could not match any, print this error message -->

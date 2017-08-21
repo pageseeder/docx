@@ -22,24 +22,6 @@
     <xsl:param name="document-level" tunnel="yes" />
     <xsl:variable name="current" select="current()" />
     <xsl:choose>
-      <xsl:when test="$use-protectedsections">
-        <section id="content">
-          <xsl:for-each-group select="*" group-starting-with="w:p[w:bookmarkStart[starts-with(@w:name,$protectedsection-id)]]">
-            <xsl:variable name="doc-frag-id" select="substring-after(current-group()//w:bookmarkStart/@w:name,$protectedsection-id)"/>
-            <xsl:message select="$doc-frag-id"/>
-            <xsl:variable name="frag-id" select="if (contains($doc-frag-id,'_')) then substring-after($doc-frag-id,'_') else $doc-frag-id"/>
-            <xsl:message select="$frag-id"/>
-            <fragment id="{if(translate($frag-id,'_','-') != '') then translate($frag-id,'_','-') else concat('new-',position()) }">
-            <xsl:if test="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
-              <xsl:attribute name="type" select="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
-            </xsl:if>
-            <xsl:apply-templates select="current-group()" mode="content">
-              <xsl:with-param name="document-level" select="$document-level" tunnel="yes" />
-            </xsl:apply-templates>
-            </fragment>
-          </xsl:for-each-group>
-        </section>
-      </xsl:when>
       <xsl:when test="$split-by-sections">
         <xsl:variable name="is-multi-valued-group" as="xs:boolean">
           <xsl:variable name="group-value">
