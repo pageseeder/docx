@@ -78,6 +78,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testBlockWhitespace() throws IOException, SAXException {
+    testIndividual("block-whitespace");
+  }
+
+  @Test
   public void testCommentsFalse() throws IOException, SAXException {
     testIndividual("comments-false");
   }
@@ -268,8 +273,19 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testListItemWhitespace() throws IOException, SAXException {
+    testIndividual("list-item-whitespace");
+  }
+
+  @Test
   public void testPreformatSet() throws IOException, SAXException {
     testIndividual("preformat-set");
+  }
+
+
+  @Test
+  public void testTableCellWhitespace() throws IOException, SAXException {
+    testIndividual("table-cell-whitespace");
   }
 
   @Test
@@ -434,6 +450,13 @@ public final class ExportTaskTest {
     task.setConfig(new File(test, "word-export-config.xml"));
     task.setWordTemplate(new File(test, "word-export-template.dotx"));
     task.setDest(new File(result, test.getName() + ".docx"));
+    File working = new File(result, "working");
+    if (working.exists()) deleteDir(working);
+    //task.setWorking(working);
+    File media = new File(test, "media");
+    if (media.exists()) {
+      task.setMedia(media);
+    }
 
     Parameter parameter = task.createParam();
     parameter.setName("generate-processed-psml");
@@ -441,6 +464,16 @@ public final class ExportTaskTest {
     task.execute();
 
     return new File(result, "document.xml");
+  }
+
+  private static void deleteDir(File file) {
+    File[] contents = file.listFiles();
+    if (contents != null) {
+        for (File f : contents) {
+            deleteDir(f);
+        }
+    }
+    file.delete();
   }
 
   private static void assertXMLEqual(File expected, File actual) throws IOException, SAXException {

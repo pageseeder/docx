@@ -1,0 +1,43 @@
+<document id="186971" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable">
+  <documentinfo>
+    <uri id="186971" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/Para_labels.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Para_labels.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:31:24+11:00" title="Item whitespace">
+      <displaytitle>Item whitespace</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455326" title="Test Files" type="none" forwardtype="embed"/>
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103143" fragment="1" editid="466356" modified="2013-04-22T16:49:29+10:00"/>
+    <locator id="103145" fragment="title"/>
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Item whitespace</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <list>
+        <item>Some text 1</item>
+        <item>
+          <para>Some text 2</para>
+        </item>
+        <item>Some <bold>bold</bold> <italic>text</italic> 3</item>
+        <item><preformat>pre</preformat>Some <bold>bold</bold> <italic>text</italic> 4</item>
+        <item>
+          <preformat>pre</preformat>Some <bold>bold</bold> <italic>text</italic><preformat>pre</preformat> and <underline>more</underline> 4</item>
+        <item> <bold> </bold> <italic> </italic> </item>
+        <item>
+          <bold>Some text 5</bold>
+        </item>
+        <item>  </item>
+        <item><image src="ico-url.png" width="20" height="20"/></item>
+        <item>
+          <para>Some text 6</para>
+          <para>Some text 7</para>
+        </item>
+      </list>
+    </fragment>
+  </section>
+</document>

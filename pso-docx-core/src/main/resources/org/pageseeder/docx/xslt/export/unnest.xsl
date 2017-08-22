@@ -24,28 +24,25 @@
     </xsl:copy>
   </xsl:template>
 
-  <!--unnest items -->
+  <!-- wrap item content in para -->
   <xsl:template match="item">
     <item>
+      <!-- inline elements and image must be wrapped -->
       <xsl:for-each-group select="node()"
-        group-adjacent="if  (self::bold or self::xref or self::italic 
-                        or self::sup or self::sub or self::underline
-                        or self::monospace or self::link or self::br or self::inline or self::image or self::text()) 
-                      then 2 
-                      else 1">
+        group-adjacent="if  (self::list or self::nlist or self::para
+                          or self::block or self::table or self::blockxref or self::preformat) 
+                        then 2 
+                        else 1">
         <xsl:choose>
-          <xsl:when test="current-grouping-key()=1">
-
-            <xsl:apply-templates select="current-group()" />
-
-          </xsl:when>
-          <xsl:when test="current-grouping-key()=2 and normalize-space(.) = ''">
-<!--             <xsl:apply-templates select="current-group()" /> -->
-          </xsl:when>
-          <xsl:otherwise>
+          <!-- wrap adjacent nodes if they have elements or non-whitespace -->
+          <xsl:when test="current-grouping-key()=1 and
+              (current-group()/self::* or normalize-space(string-join(current-group(), ' ')) != '')">
             <para>
               <xsl:apply-templates select="current-group()" />
             </para>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="current-group()" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each-group>
@@ -53,18 +50,20 @@
 
   </xsl:template>
 
-  <!--unnest cells and hcells  -->
+  <!-- wrap cell and hcell content in para  -->
   <xsl:template match="cell|hcell">
     <xsl:copy>
       <xsl:copy-of select="@*" />
+      <!-- inline elements and image must be wrapped -->
       <xsl:for-each-group select="node()"
-        group-adjacent="if  (self::list or self::nlist or self::para or self::item
-                          or self::block or self::table or self::blockxref or self::preformat
-                          ) 
+        group-adjacent="if  (self::list or self::nlist or self::para
+                          or self::block or self::table or self::blockxref or self::preformat) 
                         then 2 
                         else 1">
         <xsl:choose>
-          <xsl:when test="current-grouping-key()=1">
+          <!-- wrap adjacent nodes if they have elements or non-whitespace -->
+          <xsl:when test="current-grouping-key()=1 and
+              (current-group()/self::* or normalize-space(string-join(current-group(), ' ')) != '')">
             <para>
               <xsl:apply-templates select="current-group()" />
             </para>
@@ -77,19 +76,20 @@
     </xsl:copy>
   </xsl:template>
 
-  <!--unnest blocks -->
+  <!-- wrap block content in para -->
   <xsl:template match="block">
     <block>
       <xsl:copy-of select="@*" />
       <xsl:for-each-group select="node()"
-        group-adjacent="if  (self::list or self::nlist or self::para or self::item
+        group-adjacent="if  (self::list or self::nlist or self::para
                           or self::block or self::table or self::blockxref  or self::preformat
-                          or self::heading 
-                          ) 
+                          or self::heading or self::image) 
                         then 2 
                         else 1">
         <xsl:choose>
-          <xsl:when test="current-grouping-key()=1">
+          <!-- wrap adjacent nodes if they have elements or non-whitespace -->
+          <xsl:when test="current-grouping-key()=1 and
+              (current-group()/self::* or normalize-space(string-join(current-group(), ' ')) != '')">
             <para>
               <xsl:apply-templates select="current-group()" />
             </para>
