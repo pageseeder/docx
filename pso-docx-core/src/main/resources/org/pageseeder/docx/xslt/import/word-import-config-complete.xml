@@ -122,7 +122,6 @@ in brackets [] are all of the options that have no defined value. Below is a qui
       <bookmark select="[valid string]" >
         <type>[name of type]</type>
       </bookmark>
-      <protectedsection select="true|false" id="test"/>
 		</section>
 	</split>
 

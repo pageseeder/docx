@@ -48,10 +48,11 @@
     <comments generate="true" />
     <mathml generate="true" />
     <mathml generate="false" />
+    <!-- 
     <endnotes generate="true|false" xref-labels=""/>
     <footnotes generate="true|false" xref-labels=""/>
+     -->
     <master select="uriid|urititle"/>
-    <protectedsection select="true|false" id="test"/>
   </default>
 
 
