@@ -496,6 +496,7 @@ public final class ExportTaskTest {
       copyToSystemErr(actual);
       System.err.println();
       Files.copy(expected, new File(result, "document-expected.xml"));
+      Files.copy(actual, new File(result, "document-actual.xml"));
       throw error;
     }
   }
