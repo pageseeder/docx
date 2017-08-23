@@ -792,8 +792,8 @@
         </xsl:analyze-string>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:attribute name="value" select="0"/>
-        <xsl:attribute name="type" select="'auto'"/>
+        <xsl:attribute name="w:w" select="0"/>
+        <xsl:attribute name="w:type" select="'auto'"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>

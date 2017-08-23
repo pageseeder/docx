@@ -9,6 +9,7 @@ import java.io.InputStream;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Assert;
 import org.junit.Test;
+import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 
 import junit.framework.AssertionFailedError;
@@ -411,20 +412,26 @@ public final class ExportTaskTest {
   public void testAll() throws IOException, SAXException {
     File[] tests = CASES.listFiles();
     for (File test : tests) {
-      testIndividual(test);
+      testIndividual(test, false);
     }
   }
 
   public void testIndividual(String folderName) throws IOException, SAXException {
-    testIndividual(new File(CASES, folderName));
+    testIndividual(new File(CASES, folderName), false);
   }
 
-  public void testIndividual(File dir) throws IOException, SAXException {
+  public void testIndividual(String folderName, boolean saveWorking) throws IOException, SAXException {
+    testIndividual(new File(CASES, folderName), saveWorking);
+  }
+
+  public void testIndividual(File dir, boolean saveWorking) throws IOException, SAXException {
     if (dir.isDirectory()) {
 
       if (new File(dir, dir.getName() + ".psml").exists()) {
         System.out.println(dir.getName());
-        File actual = process(dir);
+        File result = new File(RESULTS, dir.getName());
+        result.mkdirs();
+        File actual = process(dir, result, saveWorking);
         File expected = new File(dir, "document.xml");
 
         // Check that the files exist
@@ -433,7 +440,7 @@ public final class ExportTaskTest {
 
         Assert.assertTrue(actual.length() > 0);
         Assert.assertTrue(expected.length() > 0);
-        assertXMLEqual(expected, actual);
+        assertXMLEqual(expected, actual, result);
       } else {
         System.out.println("Unable to find PSML file for test:" + dir.getName());
       }
@@ -441,18 +448,18 @@ public final class ExportTaskTest {
   }
 
 
-  private File process(File test) {
-    File result = new File(RESULTS, test.getName());
-    result.mkdirs();
+  private File process(File test, File result, boolean saveWorking) {
 
     ExportTask task = new ExportTask();
     task.setSrc(new File(test, test.getName() + ".psml"));
     task.setConfig(new File(test, "word-export-config.xml"));
     task.setWordTemplate(new File(test, "word-export-template.dotx"));
     task.setDest(new File(result, test.getName() + ".docx"));
-    File working = new File(result, "working");
-    if (working.exists()) deleteDir(working);
-    //task.setWorking(working);
+    if (saveWorking) {
+      File working = new File(result, "working");
+      if (working.exists()) deleteDir(working);
+      task.setWorking(working);
+    }
     File media = new File(test, "media");
     if (media.exists()) {
       task.setMedia(media);
@@ -476,7 +483,7 @@ public final class ExportTaskTest {
     file.delete();
   }
 
-  private static void assertXMLEqual(File expected, File actual) throws IOException, SAXException {
+  private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
     FileReader exp = new FileReader(expected);
     FileReader got = new FileReader(actual);
     try {
@@ -488,6 +495,7 @@ public final class ExportTaskTest {
       System.err.println("Actual:");
       copyToSystemErr(actual);
       System.err.println();
+      Files.copy(expected, new File(result, "document-expected.xml"));
       throw error;
     }
   }
