@@ -9,6 +9,7 @@ import java.io.InputStream;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Assert;
 import org.junit.Test;
+import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 
 import junit.framework.AssertionFailedError;
@@ -565,7 +566,9 @@ public class ImportTaskTest {
 
       if (new File(dir, dir.getName() + ".docx").exists()) {
         System.out.println(dir.getName());
-        File actual = process(dir);
+        File result = new File(RESULTS, dir.getName());
+        result.mkdirs();
+        File actual = process(dir, result);
         File expected = new File(dir, "expected.psml");
 
         // Check that the files exist
@@ -574,17 +577,14 @@ public class ImportTaskTest {
 
         Assert.assertTrue(actual.length() > 0);
         Assert.assertTrue(expected.length() > 0);
-        assertXMLEqual(expected, actual);
+        assertXMLEqual(expected, actual, result);
       } else {
         System.out.println("Unable to find DOCX file for test:" + dir.getName());
       }
     }
   }
 
-  private File process(File test) {
-    File result = new File(RESULTS, test.getName());
-    result.mkdirs();
-
+  private File process(File test, File result) {
     ImportTask task = new ImportTask();
     task.setSrc(new File(test, test.getName() + ".docx"));
     task.setConfig(new File(test, "word-import-config.xml"));
@@ -597,7 +597,7 @@ public class ImportTaskTest {
     return new File(result, test.getName() + ".psml");
   }
 
-  private static void assertXMLEqual(File expected, File actual) throws IOException, SAXException {
+  private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
     FileReader exp = new FileReader(expected);
     FileReader got = new FileReader(actual);
     try {
@@ -609,6 +609,8 @@ public class ImportTaskTest {
       System.err.println("Actual:");
       copyToSystemErr(actual);
       System.err.println();
+      Files.copy(expected, new File(result, "expected-" + actual.getName()));
+      Files.copy(actual, new File(result, "actual-" + actual.getName()));
       throw error;
     }
   }

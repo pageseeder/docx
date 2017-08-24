@@ -495,8 +495,8 @@ public final class ExportTaskTest {
       System.err.println("Actual:");
       copyToSystemErr(actual);
       System.err.println();
-      Files.copy(expected, new File(result, "document-expected.xml"));
-      Files.copy(actual, new File(result, "document-actual.xml"));
+      Files.copy(expected, new File(result, "expected-" + actual.getName()));
+      Files.copy(actual, new File(result, "actual-" + actual.getName()));
       throw error;
     }
   }
