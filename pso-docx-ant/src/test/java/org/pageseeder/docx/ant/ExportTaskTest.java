@@ -130,7 +130,7 @@ public final class ExportTaskTest {
 
   @Test
   public void testEmptyConfigurationDefaultLists() throws IOException, SAXException {
-    testIndividual("empty-configuration-default-lists");
+    testIndividual("empty-configuration-default-lists", "document,numbering");
   }
 
   @Test
@@ -155,7 +155,7 @@ public final class ExportTaskTest {
 
   @Test
   public void testEmptyConfigurationLists() throws IOException, SAXException {
-    testIndividual("empty-configuration-lists");
+    testIndividual("empty-configuration-lists", "document,numbering");
   }
 
   @Test
@@ -349,6 +349,11 @@ public final class ExportTaskTest {
     testIndividual("tables-role-with-width-pct");
   }
 
+  //@Test
+  //public void testTemplateLists() throws IOException, SAXException {
+  //  testIndividual("template-lists", "document,numbering");
+  //}
+
   @Test
   public void testTocFalse() throws IOException, SAXException {
     testIndividual("toc-false");
@@ -412,35 +417,43 @@ public final class ExportTaskTest {
   public void testAll() throws IOException, SAXException {
     File[] tests = CASES.listFiles();
     for (File test : tests) {
-      testIndividual(test, false);
+      testIndividual(test, "document", false);
     }
   }
 
   public void testIndividual(String folderName) throws IOException, SAXException {
-    testIndividual(new File(CASES, folderName), false);
+    testIndividual(new File(CASES, folderName), "document", false);
   }
 
   public void testIndividual(String folderName, boolean saveWorking) throws IOException, SAXException {
-    testIndividual(new File(CASES, folderName), saveWorking);
+    testIndividual(new File(CASES, folderName), "document", saveWorking);
   }
 
-  public void testIndividual(File dir, boolean saveWorking) throws IOException, SAXException {
+  public void testIndividual(String folderName, String filenames) throws IOException, SAXException {
+    testIndividual(new File(CASES, folderName), filenames, true);
+  }
+
+  public void testIndividual(File dir, String filenames, boolean saveWorking) throws IOException, SAXException {
     if (dir.isDirectory()) {
 
       if (new File(dir, dir.getName() + ".psml").exists()) {
         System.out.println(dir.getName());
         File result = new File(RESULTS, dir.getName());
         result.mkdirs();
-        File actual = process(dir, result, saveWorking);
-        File expected = new File(dir, "document.xml");
+        process(dir, result, saveWorking);
+        String[] names = filenames.split(",");
+        for (String name : names) {
+          File actual = new File(result, (!"document".equals(name) ? "working/prepacked/word/" : "") + name + ".xml");
+          File expected = new File(dir, name + ".xml");
 
-        // Check that the files exist
-        Assert.assertTrue(actual.exists());
-        Assert.assertTrue(expected.exists());
+          // Check that the files exist
+          Assert.assertTrue(actual.exists());
+          Assert.assertTrue(expected.exists());
 
-        Assert.assertTrue(actual.length() > 0);
-        Assert.assertTrue(expected.length() > 0);
-        assertXMLEqual(expected, actual, result);
+          Assert.assertTrue(actual.length() > 0);
+          Assert.assertTrue(expected.length() > 0);
+          assertXMLEqual(expected, actual, result);
+        }
       } else {
         System.out.println("Unable to find PSML file for test:" + dir.getName());
       }
@@ -448,12 +461,16 @@ public final class ExportTaskTest {
   }
 
 
-  private File process(File test, File result, boolean saveWorking) {
+  private void process(File test, File result, boolean saveWorking) {
 
     ExportTask task = new ExportTask();
     task.setSrc(new File(test, test.getName() + ".psml"));
     task.setConfig(new File(test, "word-export-config.xml"));
-    task.setWordTemplate(new File(test, "word-export-template.dotx"));
+    File template = new File(test, "word-export-template.dotx");
+    if (!template.exists()) {
+      template = new File(test, "word-export-template.docx");
+    }
+    task.setWordTemplate(template);
     task.setDest(new File(result, test.getName() + ".docx"));
     if (saveWorking) {
       File working = new File(result, "working");
@@ -470,7 +487,7 @@ public final class ExportTaskTest {
     parameter.setValue("true");
     task.execute();
 
-    return new File(result, "document.xml");
+    return;
   }
 
   private static void deleteDir(File file) {
@@ -489,14 +506,16 @@ public final class ExportTaskTest {
     try {
       XMLAssert.assertXMLEqual(exp, got);
     } catch (AssertionFailedError error) {
-      System.err.println("Expected:");
-      copyToSystemErr(expected);
-      System.err.println();
-      System.err.println("Actual:");
-      copyToSystemErr(actual);
-      System.err.println();
-      Files.copy(expected, new File(result, "expected-" + actual.getName()));
-      Files.copy(actual, new File(result, "actual-" + actual.getName()));
+      File expfile = new File(result, "expected-" + actual.getName());
+      File actfile = new File(result, "actual-" + actual.getName());
+      System.err.println("Expected: " + expfile.getCanonicalPath());
+      //copyToSystemErr(expected);
+      //System.err.println();
+      System.err.println("Actual: " + actfile.getCanonicalPath());
+      //copyToSystemErr(actual);
+      //System.err.println();
+      Files.copy(expected, expfile);
+      Files.copy(actual, actfile);
       throw error;
     }
   }

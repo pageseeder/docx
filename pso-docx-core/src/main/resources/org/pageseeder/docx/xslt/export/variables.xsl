@@ -3291,7 +3291,7 @@
   -->
   <xsl:variable name="all-different-lists" as="node()">
   <lists>
-    <xsl:for-each select=".//nlist[not(@type) and not(descendant::nlist/@type)][(not(ancestor::*[name() = 'list' or name() = 'nlist'])) or @role or @start]">
+    <xsl:for-each select=".//nlist[not(@type) and not(descendant::nlist/@type)][not(ancestor::*[name() = 'list' or name() = 'nlist'])]"> <!--  or @role or @start] -->
         <xsl:variable name="role" select="fn:get-style-from-role(@role,.)"/>
         <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
         <xsl:variable name="list-type" select="./name()"/>

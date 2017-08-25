@@ -66,14 +66,14 @@
                 </w:pStyle>
               </xsl:otherwise>
             </xsl:choose>
-             <xsl:variable name="max-num-id">
-		            <xsl:choose>
-		              <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
-		                <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
-		              </xsl:when>
-		              <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
-		            </xsl:choose>
-		          </xsl:variable>
+            <xsl:variable name="max-num-id">
+	            <xsl:choose>
+	              <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
+	                <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
+	              </xsl:when>
+	              <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
+	            </xsl:choose>
+		        </xsl:variable>
 <!-- 		      <xsl:message>precedingsbling:<xsl:value-of select="count(preceding-sibling::item)"/></xsl:message>     -->
 <!--           <xsl:if test="count(preceding-sibling::item) = 0"> -->
             <w:numPr>

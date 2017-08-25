@@ -42,13 +42,12 @@
 <!--         <xsl:comment><xsl:apply-templates select="$all-type-lists/*" mode="xml"/></xsl:comment> -->
         <xsl:copy-of select="$all-type-lists/*"/>
       
-        <xsl:apply-templates select="*[name() = 'w:num']"
-        mode="numbering" />
+        <xsl:apply-templates select="*[name() = 'w:num']" mode="numbering" />
         <xsl:variable name="max-num-id"
           select="max(//w:num/number(@w:numId))" />
 		    <xsl:variable name="max-abstract-num"
 		      select="max(//w:abstractNum/number(@w:abstractNumId))" />
-		       <xsl:for-each select="$all-different-lists/*[@list-type-select = '']">
+		       <xsl:for-each select="$all-different-lists/*"> <!-- [not(@list-type-select)] -->
 		         <xsl:variable name="start-number" select="if (@start != '') then @start else '1'"/>
 		         <w:num w:numId="{$max-num-id + position()}">
 		           <w:abstractNumId w:val="{if (. != '') then . else 1}" />
@@ -70,10 +69,10 @@
 		           </xsl:for-each>
 		         </w:num>
 		       </xsl:for-each>
-           
-           <xsl:for-each select="$all-different-lists/*[@list-type-select != '']">
+           <!-- 
+           <xsl:for-each select="$all-different-lists/*[@list-type-select]">
              <xsl:variable name="start-number" select="if (@start != '') then @start else '1'"/>
-             <w:num w:numId="{$max-num-id + count($all-different-lists/*[@list-type-select = false()]) + position()}">
+             <w:num w:numId="{$max-num-id + count($all-different-lists/*[not(@list-type-select)]) + position()}">
                <w:abstractNumId w:val="{if (. != '') then . else 1}" />
                <xsl:variable name="current-level" select="@level"/>
                <xsl:variable name="levels" select="'0,1,2,3,4,5,6,7,8'"/>
@@ -93,7 +92,7 @@
                </xsl:for-each>
              </w:num>
            </xsl:for-each>
-		       
+		        -->
 <!-- 		    </xsl:copy> -->
     
     
