@@ -43,6 +43,8 @@
         
 				<w:document>
 					<w:body>
+            <w:bookmarkStart w:name="{replace(@id,'\W','_')}" w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}"/>
+            <w:bookmarkEnd  w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name] + (if($generate-comments) then count(//fragment) else 0))}" />        
 						<xsl:apply-templates mode="content" select="section|toc">
               <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
             </xsl:apply-templates>

@@ -25,6 +25,7 @@
   <xsl:template match="xref" mode="content">
       
     <xsl:choose>
+      <!-- TODO check requirements for generate cross references -->
       <xsl:when test="$generate-cross-references">
         <w:r>
           <w:fldChar w:fldCharType="begin"/>
@@ -36,6 +37,7 @@
           <w:fldChar w:fldCharType="separate"/>
         </w:r>
         <w:r>
+          <xsl:call-template name="apply-run-style" />
           <w:t><xsl:value-of select="."/></w:t>
         </w:r>
         <w:r>
@@ -55,21 +57,16 @@
           <w:fldChar w:fldCharType="separate" />
         </w:r>
         <w:r>
-<!--           <w:rPr> -->
-<!--             <xsl:call-template name="apply-style" /> -->
-<!--           </w:rPr> -->
-          <w:t>
-            <xsl:value-of select="." />
-          </w:t>
+          <xsl:call-template name="apply-run-style" />
+          <w:t><xsl:value-of select="." /></w:t>
         </w:r>
         <w:r>
           <w:fldChar w:fldCharType="end" />
         </w:r>
       </xsl:when>
       
-      
-      
-      <xsl:when test="starts-with(@href,'_external/')">
+      <!-- TODO check requirements for mathml processing -->
+      <xsl:when test="starts-with(@href,'_external/') and $generate-mathml">
         <!-- External xref: choose to copy or not based on type and config -->
         <xsl:variable name="referenced-document" select="document(@href)" />
         <xsl:choose>
@@ -82,73 +79,15 @@
             <xsl:apply-templates select="$mathml//m:math"/>
           </xsl:when>
           <xsl:otherwise>
-          <w:r>
-            <w:t><xsl:value-of select="." /></w:t>
+            <w:r>
+              <xsl:call-template name="apply-run-style" />
+              <w:t><xsl:value-of select="." /></w:t>
             </w:r>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       
-      <xsl:when test="@frag != 'default' and @frag != ''">
-        <xsl:variable name="internal-reference" select="concat(@uriid,'-',@frag)" />
-        <w:hyperlink w:anchor="{replace($internal-reference,'\W','_')}" w:history="1">
-        <w:r>
-          <w:rPr>
-            <xsl:choose>
-              <xsl:when test="$xref-style != ''">
-                <w:rStyle w:val="{$xref-style}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <w:color w:val="0000FF"/>
-                <w:u w:val="single"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </w:rPr>
-          <w:t><xsl:value-of select="." /></w:t>
-        </w:r>
-      </w:hyperlink>
-      </xsl:when>
-      <xsl:when test="@frag = 'default'">
-        <xsl:variable name="internal-reference" select="@uriid" />
-        <w:hyperlink w:anchor="{replace($internal-reference,'\W','_')}" w:history="1">
-        <w:r>
-           <w:rPr>
-            <xsl:choose>
-              <xsl:when test="$xref-style != ''">
-                <w:rStyle w:val="{$xref-style}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <w:color w:val="0000FF"/>
-                <w:u w:val="single"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </w:rPr>
-          <w:t><xsl:value-of select="." /></w:t>
-        </w:r>
-      </w:hyperlink>
-      </xsl:when>
-      <xsl:when test="@href[contains(.,'#')]">
-        <xsl:variable name="internal-reference" select="replace(substring-after(@href,'#'),'\W','_')" />
-        <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
-        <w:r>
-          <w:rPr>
-            <xsl:choose>
-              <xsl:when test="$xref-style != ''">
-                <w:rStyle w:val="{$xref-style}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <w:color w:val="0000FF"/>
-                <w:u w:val="single"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </w:rPr>
-          <w:t><xsl:value-of select="." /></w:t>
-        </w:r>
-      </w:hyperlink>
-      </xsl:when>
-      
       <xsl:when test="@href[not(contains(.,'#'))][not(ends-with(.,'.psml'))]">
-                <!-- only process internal link-->
         <w:hyperlink w:anchor="{@href}" w:history="1">
           <w:r>
             <w:rPr>
@@ -167,27 +106,28 @@
         </w:hyperlink>
       </xsl:when>
       <xsl:when test="@href[not(contains(.,'#'))]">
-                <!-- only process internal link-->
-          <xsl:variable name="content">
-			      <xsl:choose>
-			        <xsl:when test="@title!=''">
-			          <xsl:value-of select="@title" />
-			        </xsl:when>
-			        <xsl:otherwise>
-			          <xsl:value-of select="@urititle" />
-			        </xsl:otherwise>
-			      </xsl:choose>
-			    </xsl:variable>
-			    <w:r>
-			      <w:t>
-			        <xsl:value-of select="$content" />
-			      </w:t>
-			    </w:r>
+        <!-- only process internal link-->
+			  <w:r>
+          <xsl:call-template name="apply-run-style" />
+			    <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
+			  </w:r>
       </xsl:when>
       <xsl:otherwise>
-        <w:bookmarkStart w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name]) + (if($generate-comments) then count(//fragment) else 0)}"
-          w:name="{concat('_a',string(count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name]) + (if($generate-comments) then count(//fragment) else 0)))}" />
-        <w:bookmarkEnd w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name]) + (if($generate-comments) then count(//fragment) else 0)}" />
+        <w:hyperlink w:anchor="{replace(substring-after(@href,'#'),'\W','_')}" w:history="1">
+          <w:r>
+            <xsl:choose>
+              <xsl:when test="$xref-style != ''">
+                <w:rPr>
+                  <w:rStyle w:val="{$xref-style}"/>
+                </w:rPr>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="apply-run-style" />
+              </xsl:otherwise>
+            </xsl:choose>
+            <w:t><xsl:value-of select="." /></w:t>
+          </w:r>
+        </w:hyperlink>
       </xsl:otherwise>
     </xsl:choose>
     

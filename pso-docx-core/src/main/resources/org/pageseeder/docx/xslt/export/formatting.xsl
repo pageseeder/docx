@@ -116,63 +116,7 @@
        
       <xsl:otherwise>
         <w:r>
-          <w:rPr>
-           <!--##inlineLabel##-->
-            <xsl:if test="ancestor::inline">
-                <!-- if parent is an inline -->
-              <xsl:choose>
-                <xsl:when test="matches(ancestor::inline[1]/@label,fn:inline-fieldcode-labels-with-document-label($labels))">
-
-                </xsl:when>
-                <xsl:when test="matches(ancestor::inline[1]/@label,fn:default-inline-fieldcode-labels())">
-
-                </xsl:when>
-                <xsl:when test="matches(ancestor::inline[1]/@label,fn:inline-index-labels-with-document-label($labels))">
-
-                </xsl:when>
-                <xsl:when test="matches(ancestor::inline[1]/@label,fn:default-inline-index-labels())">
-
-                </xsl:when>
-                <xsl:when
-                  test="ancestor::inline[@label]">
-                  <xsl:call-template name="apply-style" />
-                </xsl:when>
-                <xsl:otherwise>
-                    <!-- otherwise, inherit style from paragraph -->
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:if>
-            <!--##monospace##-->
-            <xsl:if test="ancestor::monospace">
-              <w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/>
-            </xsl:if>
-            <!--##sup##-->
-            <xsl:if test="ancestor::sup">
-              <w:vertAlign w:val="superscript" />
-            </xsl:if>
-            <!--##sub##-->
-            <xsl:if test="ancestor::sub">
-              <w:vertAlign w:val="subscript" />
-            </xsl:if>
-            <!--##bold##-->
-            <xsl:if test="ancestor::bold">
-              <w:b />
-            </xsl:if>
-            <!--##italic##-->
-            <xsl:if test="ancestor::italic ">
-              <w:i />
-            </xsl:if>
-            <!--##underline##-->
-            <xsl:if test="ancestor::underline">
-              <w:u w:val="single" />
-            </xsl:if>
-<!--             <xsl:if test="ancestor::dfx:del"> -->
-<!--               <w:highlight w:val="red"/> -->
-<!--             </xsl:if> -->
-<!--             <xsl:if test="ancestor::dfx:ins"> -->
-<!--               <w:highlight w:val="yellow"/> -->
-<!--             </xsl:if> -->
-          </w:rPr>
+          <xsl:call-template name="apply-run-style" />
           <xsl:choose>
             <xsl:when test="ancestor::dfx:del">
             <w:delText xml:space="preserve"><xsl:value-of select="$text" /></w:delText>

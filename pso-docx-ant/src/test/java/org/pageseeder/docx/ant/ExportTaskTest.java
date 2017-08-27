@@ -414,6 +414,11 @@ public final class ExportTaskTest {
     testIndividual("toc-true-paragraph-true-multiple");
   }
 
+  @Test
+  public void testXrefStyle() throws IOException, SAXException {
+    testIndividual("xref-style");
+  }
+
   public void testAll() throws IOException, SAXException {
     File[] tests = CASES.listFiles();
     for (File test : tests) {

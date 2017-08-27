@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+  <elements>
+    <block default="none">
+      <label wordstyle="Heading1" value="example9"/>
+    </block>
+    <inline default="none">
+      <label wordstyle="Heading1Char" value="example10"/>
+    </inline>
+  </elements>	
+</config>
