@@ -196,7 +196,7 @@
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:for-each select="$config-doc/config//inline/label[@wordstyle = 'generate-ps-style']">
+        <xsl:for-each select="$config-doc/config/elements/inline/label[@wordstyle = 'generate-ps-style']">
           <label name="{@value}"/>
         </xsl:for-each>
       </xsl:otherwise>
@@ -275,6 +275,9 @@
         </xsl:for-each>
      </xsl:when>
       <xsl:otherwise>
+        <xsl:for-each select="$config-doc/config/elements/block/label[@wordstyle = 'generate-ps-style']">
+          <label name="{@value}"/>
+        </xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
     </blocklabels>
