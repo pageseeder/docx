@@ -134,7 +134,7 @@ public final class DOCXProcessor {
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export.xsl");
 
     // Initiate parameters
-    Map<String, String> parameters = new HashMap<String, String>();
+    Map<String, String> parameters = new HashMap<>();
     parameters.put("_outputfolder", prepacked.toURI().toString());
     parameters.put("_dotxfolder", dotx.toURI().toString());
     parameters.put("_docxfilename", this._builder.destination().getName());
@@ -149,6 +149,7 @@ public final class DOCXProcessor {
     XSLT.transform(newSourceDocument, document, templates, parameters);
 
     // 6. Zip the generator content
+    // TODO is this a good name and behavior for the parameter?
     if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
       log("Debug Mode");
       File newDestinationDocument = new File(this._builder.destination().getParentFile() + "/document.xml");
@@ -292,7 +293,7 @@ public final class DOCXProcessor {
      */
     private Map<String, String> params() {
       if (this.params == null) {
-        this.params = new HashMap<String, String>();
+        this.params = new HashMap<>();
       }
       return this.params;
     }

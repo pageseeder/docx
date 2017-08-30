@@ -254,6 +254,7 @@
 <!--       <xsl:when test="fn:element-type(name())='br'" > -->
 <!--         <w:pStyle w:val="{$all-styles/w:styles/w:style[w:name[@w:val=$config-doc/config/defaultparagraphstyle/@style]]/@w:styleId}"/> -->
 <!--       </xsl:when> -->
+      <!-- TODO check if this toc code is used -->
       <xsl:when test="name()='toc' and $style-name != ''" >
         <w:pStyle w:val="{$style-name}"/>
       </xsl:when>

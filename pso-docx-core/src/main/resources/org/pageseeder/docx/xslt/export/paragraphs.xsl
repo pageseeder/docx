@@ -45,6 +45,7 @@
           </xsl:when>
         </xsl:choose>
 			</w:pPr>
+      <!-- TODO check how prefixes work -->
 			<xsl:if test="@prefix">
 				<xsl:choose>
 					<xsl:when test="fn:heading-prefix-select-for-document-label($labels,@level,@numbered)">

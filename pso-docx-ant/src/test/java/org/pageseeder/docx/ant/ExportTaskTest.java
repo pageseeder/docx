@@ -93,6 +93,22 @@ public final class ExportTaskTest {
     testIndividual("comments-true");
   }
 
+
+  @Test
+  public void testCustomTemplateHeadings() throws IOException, SAXException {
+    testIndividual("custom-template-headings");
+  }
+
+  @Test
+  public void testCustomTemplateLists() throws IOException, SAXException {
+    testIndividual("custom-template-lists", "document,numbering");
+  }
+
+  @Test
+  public void testCustomTemplateTables() throws IOException, SAXException {
+    testIndividual("custom-template-tables");
+  }
+
   @Test
   public void testDefaultcharacterstyleNone() throws IOException, SAXException {
     testIndividual("defaultcharacterstyle-none");
@@ -164,8 +180,8 @@ public final class ExportTaskTest {
   }
 
   @Test
-  public void testEmptyConfigurationNumberedParagraphStyles() throws IOException, SAXException {
-    testIndividual("empty-configuration-numbered-paragraph-styles");
+  public void testParagraphIndentStylesSet() throws IOException, SAXException {
+    testIndividual("paragraph-indent-style-set");
   }
 
   @Test
@@ -271,6 +287,11 @@ public final class ExportTaskTest {
   @Test
   public void testInlineDefaultStyleWithInlinePSStyle() throws IOException, SAXException {
     testIndividual("inline-default-style-with-inline-psstyle");
+  }
+
+  // TODO fix roles so this test passes
+  public void testListDefaultWithRoleSet() throws IOException, SAXException {
+    testIndividual("list-default-with-role-set", "document,numbering");
   }
 
   @Test
@@ -521,6 +542,8 @@ public final class ExportTaskTest {
       //System.err.println();
       Files.copy(expected, expfile);
       Files.copy(actual, actfile);
+      // uncomment the following to bulk update expected files for changes effecting all documents
+      //Files.copy(actual, expected);
       throw error;
     }
   }

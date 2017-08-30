@@ -119,23 +119,37 @@
       <list>
         <item>
           Bananas
-          <br />
           <list>
             <item>
               Strawberries
               <list>
                 <item>
                   Apples
-                  <br />
                   <list>
                     <item>
                       Oranges
-                      <br />
                       <list>
                         <item>
                           Pineapples
                           <list>
-                            <item>Mangoes</item>
+                            <item>
+                              Mangoes 6
+                              <list>
+                                <item>
+                                  Oranges 7
+                                  <list>
+                                    <item>
+                                      Pineapples 8
+                                      <list>
+                                        <item>
+                                          Mangoes 9
+                                        </item>
+                                      </list>
+                                    </item>
+                                  </list>
+                                </item>
+                              </list>
+                            </item>
                           </list>
                         </item>
                       </list>
@@ -154,23 +168,37 @@
       <nlist>
         <item>
           One
-          <br />
           <nlist>
             <item>
               Two
               <nlist>
                 <item>
                   Three
-                  <br />
                   <nlist>
                     <item>
                       Four
-                      <br />
                       <nlist>
                         <item>
                           Five
                           <nlist>
-                            <item>Six</item>
+                            <item>
+                              Six
+                              <nlist>
+                                <item>
+                                  Seven
+                                  <nlist>
+                                    <item>
+                                      Eight
+                                      <nlist>
+                                        <item>
+                                          Nine
+                                        </item>
+                                      </nlist>
+                                    </item>
+                                  </nlist>
+                                </item>
+                              </nlist>
+                            </item>
                           </nlist>
                         </item>
                       </nlist>

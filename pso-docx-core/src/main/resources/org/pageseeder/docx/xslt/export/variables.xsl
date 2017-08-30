@@ -1632,6 +1632,7 @@
       </xsl:when>
       <xsl:when
         test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/numbered/@select = 'false'">
+        <!-- TODO check logic for @select = 'false' here and in all code below -->
         <xsl:value-of select="true()" />
       </xsl:when>
       <xsl:otherwise>
@@ -3125,13 +3126,43 @@
           </xsl:otherwise>
           </xsl:choose>
       </xsl:when>
-      <xsl:otherwise>
+      <xsl:when test="$list-level = 6">
         <xsl:choose>
           <xsl:when test="$list-type = 'nlist'">
             <xsl:value-of select="'List Number 6'" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="'List Bullet 6'" />  
+          </xsl:otherwise>
+          </xsl:choose>
+      </xsl:when>
+      <xsl:when test="$list-level = 7">
+        <xsl:choose>
+          <xsl:when test="$list-type = 'nlist'">
+            <xsl:value-of select="'List Number 7'" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'List Bullet 7'" />  
+          </xsl:otherwise>
+          </xsl:choose>
+      </xsl:when>
+      <xsl:when test="$list-level = 8">
+        <xsl:choose>
+          <xsl:when test="$list-type = 'nlist'">
+            <xsl:value-of select="'List Number 8'" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'List Bullet 8'" />  
+          </xsl:otherwise>
+          </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="$list-type = 'nlist'">
+            <xsl:value-of select="'List Number 9'" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'List Bullet 9'" />  
           </xsl:otherwise>
           </xsl:choose>
       </xsl:otherwise>
@@ -3181,18 +3212,16 @@
     <xsl:param name="indent-level"/>
     <xsl:param name="numbered"/>
     <xsl:param name="prefix"/>
+    <!-- TODO check how prefixes work (removed [if($prefix) then prefix else not(prefix)] from all xpaths) -->
     
-    <xsl:variable name="numbering" select="if($numbered) then true() else false()"></xsl:variable>
-<!--     <xsl:message><xsl:value-of select="$numbering"/></xsl:message> -->
     <xsl:choose>
       <xsl:when
-        test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][if($prefix) then prefix else not(prefix)][@level='0']/@wordstyle">
-        <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][if($prefix) then prefix else not(prefix)][@level='0']/@wordstyle" />
+        test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle">
+        <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle" />
       </xsl:when>
       <xsl:when
-        test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][if($prefix) then prefix else not(prefix)][@level=$indent-level]/@wordstyle">
-<!--           <xsl:message><xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle" /></xsl:message> -->
-        <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][if($prefix) then prefix else not(prefix)][@level=$indent-level]/@wordstyle" />
+        test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle">
+        <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="''" />
@@ -3455,6 +3484,7 @@
   
   @return a node() with all of the w:abstractNum values
   -->
+  <!-- TODO fix list role not working -->
    <xsl:variable name="all-type-lists" as="node()">
     <lists>
     <xsl:for-each select=".//nlist[@role !='' or descendant::nlist/@role !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">

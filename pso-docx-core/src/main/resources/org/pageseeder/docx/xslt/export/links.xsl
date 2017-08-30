@@ -87,7 +87,7 @@
         </xsl:choose>
       </xsl:when>
       
-      <xsl:when test="@href[not(contains(.,'#'))][not(ends-with(.,'.psml'))]">
+      <xsl:when test="@href[not(starts-with(.,'#'))][not(ends-with(.,'.psml'))]">
         <w:hyperlink w:anchor="{@href}" w:history="1">
           <w:r>
             <w:rPr>
@@ -105,7 +105,7 @@
           </w:r>
         </w:hyperlink>
       </xsl:when>
-      <xsl:when test="@href[not(contains(.,'#'))]">
+      <xsl:when test="@href[not(starts-with(.,'#'))]">
         <!-- only process internal link-->
 			  <w:r>
           <xsl:call-template name="apply-run-style" />
@@ -113,7 +113,7 @@
 			  </w:r>
       </xsl:when>
       <xsl:otherwise>
-        <w:hyperlink w:anchor="{replace(substring-after(@href,'#'),'\W','_')}" w:history="1">
+        <w:hyperlink w:anchor="{concat('fragment-',substring-after(@href,'#'))}" w:history="1">
           <w:r>
             <xsl:choose>
               <xsl:when test="$xref-style != ''">
@@ -175,6 +175,7 @@ checks also for document labels so that styles are applied accordingly through t
         </xsl:apply-templates>
       </xsl:when>
       <xsl:otherwise>
+        <!-- TODO generate internal link if target is internal -->
         <xsl:variable name="content"
           select="if (@title != '')  then @title else @urititle" />
         <w:p>
@@ -199,8 +200,8 @@ checks also for document labels so that styles are applied accordingly through t
   <!--##link##-->
   <xsl:template match="link" mode="content">
     <xsl:choose>
-      <xsl:when test="@href[contains(.,'#')]">
-        <xsl:variable name="internal-reference" select="substring-after(@href,'#')" />
+      <xsl:when test="@href[starts-with(.,'#')]">
+        <xsl:variable name="internal-reference" select="concat('anchor-',substring-after(@href,'#'))" />
         <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
           <w:r>
             <w:rPr>
@@ -212,8 +213,8 @@ checks also for document labels so that styles are applied accordingly through t
           </w:r>
         </w:hyperlink>
       </xsl:when>
-      <xsl:when test="@href[not(contains(.,'#'))]">
-                <!-- only process internal link-->
+      <xsl:when test="@href[not(starts-with(.,'#'))]">
+        <!-- only process internal link-->
         <w:r>
           <w:fldChar w:fldCharType="begin" />
         </w:r>
@@ -240,15 +241,12 @@ checks also for document labels so that styles are applied accordingly through t
         <xsl:apply-templates mode="content"/>
       </xsl:when>
       <xsl:when test="@name">
-        <w:bookmarkStart w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name]) + (if($generate-comments) then count(//fragment) else 0)}"
-          w:name="{@name}" />
-        <w:bookmarkEnd w:id="{count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name]) + (if($generate-comments) then count(//fragment) else 0)}" />
-      
-     </xsl:when>
+        <w:bookmarkStart w:name="anchor-{@name}" w:id="{count(preceding::*)}" />
+        <w:bookmarkEnd  w:id="{count(preceding::*)}" />      
+      </xsl:when>
       <xsl:otherwise>
-          <xsl:apply-templates mode="content"/>
-      
-        </xsl:otherwise>
+        <xsl:apply-templates mode="content"/>      
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

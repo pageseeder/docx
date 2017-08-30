@@ -39,6 +39,7 @@
     
 <!--     <xsl:message><xsl:value-of select="$level"/>::<xsl:value-of select="$role"/>::<xsl:value-of select="$list-type"/></xsl:message> -->
     <xsl:choose>
+      <!--  TODO check if this can ever happen as all item character content is wrapped in <para> -->
       <xsl:when test="text() or link or bold or italic or sup or sub or xref or inline or image or monospace">
         <w:p>
           <w:pPr>

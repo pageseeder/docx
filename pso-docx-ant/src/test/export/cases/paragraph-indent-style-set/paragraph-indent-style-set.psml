@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable">
+  <documentinfo>
+    <uri title="block-multiple-paragraph-styles">
+      <displaytitle>block-multiple-paragraph-styles</displaytitle>
+    </uri>
+  </documentinfo>
+  <section id="title">
+    <fragment id="title">
+      <para>Test Case 9</para>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <para indent="1">Heading 1.1</para>
+      <para indent="2">Heading 2</para>
+      <para>Text</para>
+      <para indent="1">Heading 1.2</para>
+      <para indent="2">Heading 2</para>
+      <para>More text</para>
+      <para indent="1">Heading 1.3</para>
+      <para indent="1">Heading 1.4</para>
+      <para indent="1">Outline Level 1 – Index 1</para>
+      <para>text</para>
+      <para indent="2">Outline level 2 – Index 2</para>
+      <para>text</para>
+      <para indent="3">Outline level 3 – Index 3</para>
+      <para>text</para>
+      <para indent="1">Outline level 1 – Index 1</para>
+      <para>text</para>
+      <para indent="1">Outline level 1 – Index 1</para>
+      <para>text</para>
+      <para indent="2">Outline level 2 – Index 2</para>
+      <para>text</para>
+      <para>Numbered:</para>
+      <para indent="1" numbered="true">Outline Level 1 – Index 1</para>
+      <para>text</para>
+      <para indent="2" numbered="true">Outline level 2 – Index 2</para>
+      <para>text</para>
+      <para indent="3" numbered="true">Outline level 3 – Index 3</para>
+      <para>text</para>
+      <para indent="1" numbered="true">Outline level 1 – Index 1</para>
+      <para>text</para>
+      <para indent="1" numbered="true">Outline level 1 – Index 1</para>
+      <para>text</para>
+      <para indent="2" numbered="true">Outline level 2 – Index 2</para>
+      <para>text</para>
+    </fragment>
+  </section>
+</document>
