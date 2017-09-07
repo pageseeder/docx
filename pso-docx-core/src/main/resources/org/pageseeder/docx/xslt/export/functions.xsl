@@ -244,7 +244,7 @@
 	</xsl:analyze-string>
 </xsl:function>
 
-<!-- TODO Move these `mode="xml"` to appropriate file
+<!-- TODO Move these `mode="xml"` to appropriate file -->
 
 <!--
   template to generate xml tree as text; used for debugging purposes
