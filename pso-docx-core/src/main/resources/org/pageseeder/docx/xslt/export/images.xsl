@@ -1,23 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  XSLT module for processing PSML images
+
+  @author Christophe Lauret
+  @author Philip Rutherford
+  @author Hugo Inacio
+-->
 <xsl:stylesheet version="2.0"
-                  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                  xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:o="urn:schemas-microsoft-com:office:office"
+                  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                   xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-                  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                  xmlns:v="urn:schemas-microsoft-com:vml"
                   xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-                  xmlns:w10="urn:schemas-microsoft-com:office:word"
                   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                  xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
                   xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
                   xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-                  xmlns:fn="http://www.pageseeder.com/function" xmlns:dec="java:java.net.URLDecoder"
+                  xmlns:fn="http://www.pageseeder.com/function"
                   exclude-result-prefixes="#all">
 
 <!--
   Template to create image
 -->
-<xsl:template match="image" xmlns:file="java.io.File" mode="content">
+<xsl:template match="image" mode="content">
   <xsl:variable name="src" select="@src" />
   <xsl:variable name="filename">
     <xsl:choose>
@@ -123,8 +125,7 @@
         <wp:docPr id="{$id}" name="{substring-before(@src,'.')}" descr="" title="{$alt}"/>
         <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
           <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
-            <pic:pic
-              xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+            <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
               <pic:nvPicPr>
                 <!-- name here is not essential  -->
                 <pic:cNvPr id="0" name="whatever" />

@@ -1,8 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-    xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  XSLT module to apply the Word styles based on common PSML elements
+
+  @author Christophe Lauret
+  @author Philip Rutherford
+  @author Hugo Inacio
+-->
+<xsl:stylesheet version="2.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
 
 <!--
   Template to handle word style creation from:

@@ -1,44 +1,22 @@
 <!--
-  This is the default template to export PSML as DOCX
+  Main XSLT module to export PSML as DOCX
 
   Current functionalities:
-  
+
   1) Default options:
       a) Default Character Style: used to define all character styles that are not set
       b) Default Paragraph Style: used to define all paragraph styles that are not set
-      
-  2) Fragments/Sections - create bookmarks for each fragment
-  
 
+  2) Fragments/Sections - create bookmarks for each fragment
+
+  @author Hugo Inacio
   @author Christophe Lauret
   @author Philip Rutherford
-
-  @version 0.5.26
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:o="urn:schemas-microsoft-com:office:office"
-                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-                xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                xmlns:v="urn:schemas-microsoft-com:vml"
-                xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-                xmlns:w10="urn:schemas-microsoft-com:office:word"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-                xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
-                xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
-                xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-                xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
-                xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
-                xmlns:dfx="http://www.topologi.com/2005/Diff-X" xmlns:del="http://www.topologi.com/2005/Diff-X/Delete"
-                xmlns:ins="http://www.topologi.com/2005/Diff-X/Insert" xmlns:diffx="java:com.topologi.diffx.Extension"
-                xmlns:fn="http://www.pageseeder.com/function" xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:fn="http://www.pageseeder.com/function"
                 xmlns:dcterms="http://purl.org/dc/terms/" dcterms:W3CDTF="http://purl.org/dc/terms/W3CDTF"
-                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 exclude-result-prefixes="#all">
 
 <!-- XML format: No indent to avoid affecting white-spaces -->

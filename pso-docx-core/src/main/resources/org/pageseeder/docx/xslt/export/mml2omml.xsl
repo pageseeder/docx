@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Beta Version 070708 -->
+<!--
+  XSLT module for processing MathML
+
+  NB Beta Version 070708
+
+  @author Christophe Lauret
+  @author Philip Rutherford
+  @author Hugo Inacio
+-->
 <xsl:stylesheet xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mml="http://www.w3.org/1998/Math/MathML"

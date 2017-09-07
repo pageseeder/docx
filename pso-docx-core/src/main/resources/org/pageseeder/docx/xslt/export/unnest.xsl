@@ -1,4 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  XSLT module to rationalise nested block-level elements
+
+  @author Christophe Lauret
+  @author Philip Rutherford
+  @author Hugo Inacio
+-->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:saxon="http://saxon.sf.net/"
                 xmlns:log="http://www.allette.com.au/log" exclude-result-prefixes="saxon log">
