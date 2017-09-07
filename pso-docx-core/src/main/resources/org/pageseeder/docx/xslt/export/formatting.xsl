@@ -135,7 +135,6 @@
 -->
 <xsl:template match="inline" mode="content">
   <xsl:param name="labels" tunnel="yes"/>
-  <xsl:variable name="id" select="concat(@label, '-', generate-id())" />
   <xsl:choose>
     <xsl:when test="parent::block and fn:has-block-elements(parent::block)='true'">
       <w:p>

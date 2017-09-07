@@ -21,19 +21,17 @@
   <!-- default options:"generate-ps-style|none" -->
   <!-- label options:"generate-ps-style|[name of style]" -->  
   <block default="generate-ps-style" ignore="none">
-<!--     <element label="paralabel" style="name"/> -->
   </block>
-  
+
   <!-- default options:"generate-ps-style|none" -->
   <!-- label options:"generate-ps-style|[name of style]" -->
   <inline default="generate-ps-style" ignore="none">
-<!--     <element label="paralabel" style="name"/> -->
   </inline>
-  
+
   <!-- default options:"[existing table style]|TableGrid" -->
   <tables default="Table Normal">
   </tables>
-  
+
   <!-- options:"[existing style name]" -->
   <heading>
     <style level="1" name="heading 1"/>

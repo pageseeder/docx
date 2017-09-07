@@ -1869,7 +1869,7 @@ Automates the creation of a prefix for a heading defined by the expression set i
       </xsl:when>
       <xsl:otherwise>
         <w:r>
-          <w:t xml:space="preserve"></w:t>
+          <w:t xml:space="preserve"/>
         </w:r>
       </xsl:otherwise>
     </xsl:choose>
@@ -2089,7 +2089,7 @@ Automates the creation of a prefix for a heading defined by the expression set i
       </xsl:when>
       <xsl:otherwise>
         <w:r>
-          <w:t xml:space="preserve"></w:t>
+          <w:t xml:space="preserve"/>
         </w:r>
       </xsl:otherwise>
     </xsl:choose>
@@ -2109,10 +2109,6 @@ Automates the creation of a numbered value for a heading defined by the expressi
   <xsl:param name="heading-level"/>
   <xsl:param name="current" as="node()"/>
   <xsl:param name="numbered"/>
-<!--     <xsl:message>indent-level:<xsl:value-of select="number($indent-level)"/></xsl:message> -->
-<!--     <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--     <xsl:message>precedingparavalue:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]"/></xsl:message> -->
-<!--     <xsl:message>precedingparaindent:<xsl:value-of select="number($current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]/@indent)"/></xsl:message> -->
   <xsl:choose>
      <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered[@select = 'true']/fieldcode">
         <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@type"/>
@@ -2311,7 +2307,7 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
       </xsl:when>
       <xsl:otherwise>
         <w:r>
-          <w:t xml:space="preserve"></w:t>
+          <w:t xml:space="preserve"/>
         </w:r>
       </xsl:otherwise>
     </xsl:choose>
@@ -2464,10 +2460,6 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-<!--     <xsl:message>indent-level:<xsl:value-of select="number($indent-level)"/></xsl:message> -->
-<!--     <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--     <xsl:message>precedingparavalue:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]"/></xsl:message> -->
-<!--     <xsl:message>precedingparaindent:<xsl:value-of select="number($current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]/@indent)"/></xsl:message> -->
   <xsl:choose>
      <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']/fieldcode">
         <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@type"/>
@@ -2481,12 +2473,6 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
             [number(@indent) &lt;= number($current-indent)][1]
             [number(@indent) = number($current-indent)]/@prefix != ''">
               <xsl:variable name="precedingparavalue" select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($current-indent)][1][@indent = number($current-indent)]/@prefix"/>
-<!--                 <xsl:message>indent-level:<xsl:value-of select="$indent-level"/></xsl:message> -->
-<!--                 <xsl:message>preceding-heading-level:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1]/@level"/></xsl:message> -->
-<!--                 <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--                 <xsl:message>precedingparavalue:<xsl:value-of select="$precedingparavalue"/></xsl:message> -->
-<!--                 <xsl:message>1:<xsl:value-of select="fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)"/></xsl:message> -->
-<!--                 <xsl:message>2:<xsl:value-of select="fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression)"/></xsl:message> -->
               <xsl:choose>
                 <xsl:when test="number(fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
                   <xsl:value-of select="'\n'"/>
@@ -2505,11 +2491,8 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
           <xsl:choose>
             <xsl:when test="substring-before($regexp,'%') !=''">
               <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
-<!--                <xsl:message>regexp-before:<xsl:value-of select="$regexp-before"/></xsl:message> -->
-<!--                <xsl:message>$current/@prefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
               <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
                  <xsl:matching-substring>
-<!--                    <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
                    <xsl:value-of select="regex-group(2)"/>
                  </xsl:matching-substring>
                </xsl:analyze-string>
@@ -2528,7 +2511,6 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
               <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
               <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
                  <xsl:matching-substring>
-          <!--         <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
                    <xsl:value-of select="regex-group(2)"/>
                  </xsl:matching-substring>
                </xsl:analyze-string>
@@ -2564,20 +2546,20 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
       </xsl:when>
       <xsl:otherwise>
         <w:r>
-          <w:t xml:space="preserve"></w:t>
+          <w:t xml:space="preserve"/>
         </w:r>
       </xsl:otherwise>
     </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a numbered value for a ps:para defined by the expression set in configuration for prefix documents.
+  Automates the creation of a numbered value for a ps:para defined by the expression set in configuration for prefix documents.
 
-@param indent-level the value of the current para indent
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param indent-level the value of the current para indent
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:para-numbered-value-for-default-document" >
   <xsl:param name="indent-level"/>
@@ -2594,10 +2576,6 @@ Automates the creation of a numbered value for a ps:para defined by the expressi
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-<!--     <xsl:message>indent-level:<xsl:value-of select="number($indent-level)"/></xsl:message> -->
-<!--     <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--     <xsl:message>precedingparavalue:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]"/></xsl:message> -->
-<!--     <xsl:message>precedingparaindent:<xsl:value-of select="number($current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]/@indent)"/></xsl:message> -->
   <xsl:choose>
      <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered[@select = 'true']/fieldcode">
         <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@type"/>
@@ -2630,13 +2608,10 @@ Automates the creation of a numbered value for a ps:para defined by the expressi
         <xsl:variable name="string-before-regexp">
           <xsl:choose>
             <xsl:when test="substring-before($regexp,'%') !=''">
-<!--                 <xsl:message>substring-before($regexp,'%')</xsl:message> -->
               <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
                  <xsl:matching-substring>
-<!--                     <xsl:message>here</xsl:message> -->
                       <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
                       </w:fldSimple>
-<!--                    <xsl:message>regex1:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
                       <xsl:if test="regex-group(4) != ''">
                       <w:r>
                         <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
@@ -2659,7 +2634,6 @@ Automates the creation of a numbered value for a ps:para defined by the expressi
                  <xsl:matching-substring>
                       <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
                       </w:fldSimple>
-<!--                    <xsl:message>regex2:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
                       <xsl:if test="regex-group(4) != ''">
                       <w:r>
                         <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
@@ -2746,7 +2720,7 @@ Generates the field code formula based on params
           <xsl:variable name="flags" select="'\c'"/>
           <xsl:value-of select="concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)"/>
         </xsl:when>
-        <xsl:otherwise></xsl:otherwise>
+        <xsl:otherwise/>
       </xsl:choose>
     </xsl:when>
     <xsl:otherwise>
@@ -2784,95 +2758,91 @@ Generates the field code formula based on params
           <xsl:variable name="flags" select="'\c'"/>
           <xsl:value-of select="concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)"/>
         </xsl:when>
-        <xsl:otherwise></xsl:otherwise>
+        <xsl:otherwise/>
       </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 
 <!--
-Returns the numeric value of a regular expression variable
+  Returns the numeric value of a regular expression variable
 
-@param prefix the prefix value
-@param user-regexp the user defined regular expression
-@param real-regexp the real valiue of the regular expression
+  @param prefix the prefix value
+  @param user-regexp the user defined regular expression
+  @param real-regexp the real valiue of the regular expression
 
-@return the numeric value
+  @return the numeric value
 -->
 <xsl:function name="fn:get-number-from-regexp">
- <xsl:param name="prefix" />
- <xsl:param name="user-regexp" />
- <xsl:param name="real-regexp" />
-
-<!--    <xsl:message>prefix:<xsl:value-of select="$prefix"/></xsl:message> -->
-<!--    <xsl:message>real-regexp:<xsl:value-of select="$real-regexp"/></xsl:message> -->
- <xsl:variable name="prefix-value">
-  <xsl:analyze-string regex="({$real-regexp})" select="replace($prefix,'&#160;',' ')">
-     <xsl:matching-substring>
-<!--         <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-       <xsl:value-of select="regex-group(2)"/>
-     </xsl:matching-substring>
-   </xsl:analyze-string>
- </xsl:variable>
- <xsl:choose>
-   <xsl:when test="matches($user-regexp,'arabic')">
-     <xsl:value-of select="$prefix-value"/>
-   </xsl:when>
-   <xsl:when test="matches($user-regexp,'upperletter|lowerletter')">
-     <xsl:value-of select="fn:alpha-to-integer($prefix-value,1)"/>
-   </xsl:when>
-   <xsl:when test="matches($user-regexp,'lowerroman|upperroman')">
-     <xsl:value-of select="fn:roman-to-integer($prefix-value,1)"/>
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="''" />
-   </xsl:otherwise>
- </xsl:choose>
+  <xsl:param name="prefix" />
+  <xsl:param name="user-regexp" />
+  <xsl:param name="real-regexp" />
+  <xsl:variable name="prefix-value">
+    <xsl:analyze-string regex="({$real-regexp})" select="replace($prefix,'&#160;',' ')">
+      <xsl:matching-substring>
+        <xsl:value-of select="regex-group(2)"/>
+      </xsl:matching-substring>
+    </xsl:analyze-string>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="matches($user-regexp,'arabic')">
+      <xsl:value-of select="$prefix-value"/>
+    </xsl:when>
+    <xsl:when test="matches($user-regexp,'upperletter|lowerletter')">
+      <xsl:value-of select="fn:alpha-to-integer($prefix-value,1)"/>
+    </xsl:when>
+    <xsl:when test="matches($user-regexp,'lowerroman|upperroman')">
+      <xsl:value-of select="fn:roman-to-integer($prefix-value,1)"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Returns the roman value of a numeric value
+  Returns the roman value of a numeric value
 
-@param roman-number the roman number to convert value
-@param index the current integer value
+  @param roman-number the roman number to convert value
+  @param index the current integer value
 
-@return the numeric value
+  @return the numeric value
 -->
 <xsl:function name="fn:roman-to-integer">
- <xsl:param name="roman-number" />
- <xsl:param name="index" />
- <xsl:variable name="temp">
-   <xsl:value-of select="fn:to-roman($index)"/>
- </xsl:variable>
- <xsl:choose>
-   <xsl:when test="$temp = $roman-number">
-     <xsl:value-of select="$index" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="fn:roman-to-integer($roman-number,$index + 1)" />
-   </xsl:otherwise>
- </xsl:choose>
+  <xsl:param name="roman-number" />
+  <xsl:param name="index" />
+  <xsl:variable name="temp">
+    <xsl:value-of select="fn:to-roman($index)"/>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="$temp = $roman-number">
+      <xsl:value-of select="$index" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="fn:roman-to-integer($roman-number,$index + 1)" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Returns the roman value of a numeric value
+  Returns the roman value of a numeric value
 
-@param value the current integer value
+  @param value the current integer value
 
-@return the roman value
+  @return the roman value
 -->
 <xsl:function name="fn:to-roman">
- <xsl:param name="value"/>
- <xsl:number value="$value" format="I"/>
+  <xsl:param name="value"/>
+  <xsl:number value="$value" format="I"/>
 </xsl:function>
 
 <!--
-Returns the alpha value of a numeric value
+  Returns the alpha value of a numeric value
 
-@param alpha-number the alpha number to convert value
-@param index the current integer value
+  @param alpha-number the alpha number to convert value
+  @param index the current integer value
 
-@return the numeric value
+  @return the numeric value
 -->
 <xsl:function name="fn:alpha-to-integer">
  <xsl:param name="alpha-number" />
@@ -2891,29 +2861,28 @@ Returns the alpha value of a numeric value
 </xsl:function>
 
 <!--
-Returns the alpha value of a numeric value
+  Returns the alpha value of a numeric value
 
-@param value the current integer value
+  @param value the current integer value
 
-@return the alpha value
+  @return the alpha value
 -->
 <xsl:function name="fn:to-alpha">
- <xsl:param name="value"/>
- <xsl:number value="$value" format="A"/>
+  <xsl:param name="value"/>
+  <xsl:number value="$value" format="A"/>
 </xsl:function>
 
 <!--
-Returns the configured ps:title w:style for document label specific documents
+  Returns the configured ps:title w:style for document label specific documents
 
-@param document-label the current document label
+  @param document-label the current document label
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:title-wordstyle-for-document-label">
   <xsl:param name="document-label"/>
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/title/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/title/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/title/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
@@ -2923,14 +2892,13 @@ Returns the configured ps:title w:style for document label specific documents
 </xsl:function>
 
 <!--
-Returns the configured ps:title w:style for default documents
+  Returns the configured ps:title w:style for default documents
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:title-wordstyle-for-default-document">
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/title/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/title/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/title/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
@@ -2940,14 +2908,14 @@ Returns the configured ps:title w:style for default documents
 </xsl:function>
 
 <!--
-Returns the configured ps:list w:style for document label specific documents
+  Returns the configured ps:list w:style for document label specific documents
 
-@param document-label the current document label
-@param list-role the current list role
-@param list-level the current list level
-@param list-type list or nlist
+  @param document-label the current document label
+  @param list-role the current list role
+  @param list-level the current list level
+  @param list-type list or nlist
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:list-wordstyle-for-document-label">
   <xsl:param name="document-label"/>
@@ -2955,12 +2923,10 @@ Returns the configured ps:list w:style for document label specific documents
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
   <xsl:choose>
-    <xsl:when
-      test="$list-role != '' and $config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/role[@value=$list-role]/@wordstyle">
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/role[@value=$list-role]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/role[@value=$list-role]/@wordstyle" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
@@ -2970,31 +2936,23 @@ Returns the configured ps:list w:style for document label specific documents
 </xsl:function>
 
 <!--
-Returns the configured ps:list w:style for default documents
+  Returns the configured ps:list w:style for default documents
 
-@param list-role the current list role
-@param list-level the current list level
-@param list-type list or nlist
+  @param list-role the current list role
+  @param list-level the current list level
+  @param list-type list or nlist
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:list-wordstyle-for-default-document">
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
-
-<!--     <xsl:message><xsl:value-of select="$list-level"/></xsl:message> -->
-<!--     <xsl:message><xsl:value-of select="$list-type"/></xsl:message> -->
-<!--     <xsl:message><xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle"/></xsl:message> -->
   <xsl:choose>
-    <xsl:when
-      test="$list-role != '' and $config-doc/config/elements[not(@label)]/*[name() = $list-type]/role[@value=$list-role]/@wordstyle">
-
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[not(@label)]/*[name() = $list-type]/role[@value=$list-role]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/role[@value=$list-role]/@wordstyle" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle">
-
+    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/level[@value=$list-level]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
@@ -3004,19 +2962,16 @@ Returns the configured ps:list w:style for default documents
 </xsl:function>
 
 <!--
-Returns the default ps:list w:style
+  Returns the default ps:list w:style
 
-@param list-level the current list level
-@param list-type list or nlist
+  @param list-level the current list level
+  @param list-type list or nlist
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:default-list-wordstyle">
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
-
-<!--      <xsl:message><xsl:value-of select="$list-type"/>:<xsl:value-of select="$list-level"/></xsl:message> -->
-
   <xsl:choose>
     <xsl:when test="$list-level = 1">
       <xsl:choose>
@@ -3026,7 +2981,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="$list-level = 2">
       <xsl:choose>
@@ -3036,7 +2991,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 2'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="$list-level = 3">
       <xsl:choose>
@@ -3046,7 +3001,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 3'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="$list-level = 4">
       <xsl:choose>
@@ -3066,7 +3021,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 5'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="$list-level = 6">
       <xsl:choose>
@@ -3076,7 +3031,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 6'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="$list-level = 7">
       <xsl:choose>
@@ -3086,7 +3041,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 7'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="$list-level = 8">
       <xsl:choose>
@@ -3096,7 +3051,7 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 8'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:when>
     <xsl:otherwise>
       <xsl:choose>
@@ -3106,27 +3061,25 @@ Returns the default ps:list w:style
         <xsl:otherwise>
           <xsl:value-of select="'List Bullet 9'" />
         </xsl:otherwise>
-        </xsl:choose>
+      </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 
 <!--
-Returns the configured ps:para w:style for a specific document label
+  Returns the configured ps:para w:style for a specific document label
 
-@param document-label the current document label
-@param indent-level the current ps:para indent level
-@param numbered the @ps:numbered attribute of the ps:para
+  @param document-label the current document label
+  @param indent-level the current ps:para indent level
+  @param numbered the @ps:numbered attribute of the ps:para
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:para-wordstyle-for-document-label">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-<!--     <xsl:message>1:<xsl:value-of select="$document-label" /></xsl:message> -->
-<!--     <xsl:message>2:<xsl:value-of select="$indent-level" /></xsl:message> -->
   <xsl:choose>
     <xsl:when
       test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(numbered)][if($prefix) then prefix else not(prefix)][@level='0']/@wordstyle">
@@ -3143,12 +3096,12 @@ Returns the configured ps:para w:style for a specific document label
 </xsl:function>
 
 <!--
-Returns the configured ps:para w:style for a default document
+  Returns the configured ps:para w:style for a default document
 
-@param indent-level the current ps:para indent level
-@param numbered the @ps:numbered attribute of the ps:para
+  @param indent-level the current ps:para indent level
+  @param numbered the @ps:numbered attribute of the ps:para
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:para-wordstyle-for-default-document">
   <xsl:param name="indent-level"/>
@@ -3157,12 +3110,10 @@ Returns the configured ps:para w:style for a default document
   <!-- TODO check how prefixes work (removed [if($prefix) then prefix else not(prefix)] from all xpaths) -->
 
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle">
+    <xsl:when test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
@@ -3172,56 +3123,45 @@ Returns the configured ps:para w:style for a default document
 </xsl:function>
 
 <!--
-Returns the configured ps:(n)list w:style for a specific role
+  Returns the configured ps:(n)list w:style for a specific role
 
-@param role the current list role
-@param current the current node
+  @param role the current list role
+  @param current the current node
 
-@return the w:style
+  @return the w:style
 -->
  <xsl:function name="fn:get-style-from-role">
   <xsl:param name="role"/>
   <xsl:param name="current" as="node()"/>
-<!--      <xsl:message>Role::<xsl:value-of select="$role"/></xsl:message> -->
   <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
   <xsl:variable name="list-type" select="$current/name()"/>
-<!--      <xsl:message><xsl:value-of select="$list-type"/></xsl:message> -->
   <xsl:variable name="level" select="count($current/ancestor::*[name() = 'nlist' or name() = 'list']) + 1"/>
   <xsl:choose>
-    <xsl:when
-      test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
+    <xsl:when test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/@wordstyle" />
-<!--        <xsl:message><xsl:value-of select="'1'"/></xsl:message> -->
     </xsl:when>
-    <xsl:when
-      test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
+    <xsl:when test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle" />
-<!--        <xsl:message><xsl:value-of select="'2'"/></xsl:message> -->
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/@wordstyle" />
-<!--        <xsl:message><xsl:value-of select="'3'"/></xsl:message> -->
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle" />
-<!--        <xsl:message><xsl:value-of select="'4'"/></xsl:message> -->
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
-<!--        <xsl:message><xsl:value-of select="'5'"/></xsl:message> -->
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 
 <!--
-Returns the configured ps:(n)list w:lvl for a specific role
+  Returns the configured ps:(n)list w:lvl for a specific role
 
-@param role the current list role
-@param current the current node
+  @param role the current list role
+  @param current the current node
 
-@return the w:lvl
+  @return the w:lvl
 -->
 <xsl:function name="fn:get-level-from-role">
   <xsl:param name="role"/>
@@ -3229,39 +3169,29 @@ Returns the configured ps:(n)list w:lvl for a specific role
   <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
   <xsl:variable name="list-type" select="$current/parent::*/name()"/>
   <xsl:variable name="level" select="count($current/ancestor::*[name() = 'nlist' or name() = 'list']) + 1"/>
-<!--     <xsl:message>list-type:<xsl:value-of select="$list-type"/>| role:<xsl:value-of select="$role"/></xsl:message> -->
   <xsl:choose>
-    <xsl:when
-      test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
+    <xsl:when test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
       <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/@wordstyle]/preceding-sibling::w:lvl)" />
-<!--         <xsl:message><xsl:value-of select="'1'"/></xsl:message> -->
     </xsl:when>
-    <xsl:when
-      test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
+    <xsl:when test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
       <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle]/preceding-sibling::w:lvl)" />
-<!--         <xsl:message><xsl:value-of select="'2'"/></xsl:message> -->
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/@wordstyle">
       <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/@wordstyle]/preceding-sibling::w:lvl)" />
-<!--         <xsl:message><xsl:value-of select="'3'"/></xsl:message> -->
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
       <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle]/preceding-sibling::w:lvl)" />
-<!--         <xsl:message><xsl:value-of select="'4'"/></xsl:message> -->
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
-<!--         <xsl:message><xsl:value-of select="'5'"/></xsl:message> -->
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 
 <!--
-List of all individual ps:lists
+  List of all individual ps:lists
 
-@return a node() witl all of the ps:list and ps:nlist values
+  @return a node() witl all of the ps:list and ps:nlist values
 -->
 <xsl:variable name="all-different-lists" as="node()">
 <lists>
@@ -3269,7 +3199,6 @@ List of all individual ps:lists
       <xsl:variable name="role" select="fn:get-style-from-role(@role,.)"/>
       <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
       <xsl:variable name="list-type" select="./name()"/>
-<!--         <xsl:variable name="list-type-select" select="if (@type !='') then @type else if (descendant::nlist/@type !='') then descendant::nlist/@type"/> -->
       <xsl:variable name="labels">
         <xsl:choose>
           <xsl:when test="ancestor::document[1]/documentinfo/uri/labels">
@@ -3281,36 +3210,36 @@ List of all individual ps:lists
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="paragraph-style" >
-      <xsl:choose>
-            <xsl:when test="$role != ''">
-              <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $role]/@w:styleId"/>
-            </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-              <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
-            </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-              <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
-            </xsl:otherwise>
-          </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="$role != ''">
+            <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $role]/@w:styleId"/>
+          </xsl:when>
+          <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
+            <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+          </xsl:when>
+          <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
+            <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:variable>
       <xsl:variable name="paragraph-style-name" >
-      <xsl:choose>
-            <xsl:when test="$role != ''">
-              <xsl:value-of select="$role"/>
-            </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-              <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
-            </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-              <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
-            </xsl:otherwise>
-          </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="$role != ''">
+            <xsl:value-of select="$role"/>
+          </xsl:when>
+          <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
+            <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+          </xsl:when>
+          <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
+            <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:variable>
 
       <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/>
@@ -3321,15 +3250,14 @@ List of all individual ps:lists
             <xsl:attribute name="level">
                 <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
             </xsl:attribute>
-<!--               <xsl:attribute name="list-type-select" select="$list-type-select"/> -->
             <xsl:attribute name="role" select="$role"/>
             <xsl:attribute name="labels" select="$labels"/>
             <xsl:attribute name="level1" select="$level"/>
             <xsl:attribute name="pstylename">
-                <xsl:value-of select="$paragraph-style-name"/>
+              <xsl:value-of select="$paragraph-style-name"/>
             </xsl:attribute>
             <xsl:attribute name="pstyle">
-                <xsl:value-of select="$paragraph-style"/>
+              <xsl:value-of select="$paragraph-style"/>
             </xsl:attribute>
             <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
           </nlist>
@@ -3337,16 +3265,16 @@ List of all individual ps:lists
         <xsl:otherwise>
           <list>
             <xsl:attribute name="level">
-                <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
+              <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
             </xsl:attribute>
             <xsl:attribute name="role" select="$role"/>
             <xsl:attribute name="labels" select="$labels"/>
             <xsl:attribute name="level1" select="$level"/>
             <xsl:attribute name="pstylename">
-                <xsl:value-of select="$paragraph-style-name"/>
+              <xsl:value-of select="$paragraph-style-name"/>
             </xsl:attribute>
             <xsl:attribute name="pstyle">
-                <xsl:value-of select="$paragraph-style"/>
+              <xsl:value-of select="$paragraph-style"/>
             </xsl:attribute>
             <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
           </list>
@@ -3354,93 +3282,25 @@ List of all individual ps:lists
       </xsl:choose>
 
     </xsl:for-each>
-<!--       <xsl:for-each select=".//list[(not(ancestor::*[name() = 'list' or name() = 'nlist'])) or @role]"> -->
-<!--         <xsl:variable name="role" select="fn:get-style-from-role(@role,.)"/> -->
-<!--         <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/> -->
-<!--         <xsl:variable name="list-type" select="'list'"/> -->
-<!--         <xsl:variable name="labels"> -->
-<!--           <xsl:choose> -->
-<!--             <xsl:when test="ancestor::document[1]/documentinfo/uri/labels"> -->
-<!--               <xsl:value-of select="ancestor::document[1]/documentinfo/uri/labels"/> -->
-<!--             </xsl:when> -->
-<!--             <xsl:otherwise> -->
-<!--               <xsl:value-of select="''"/> -->
-<!--             </xsl:otherwise> -->
-<!--           </xsl:choose> -->
-<!--         </xsl:variable> -->
-<!--         <xsl:variable name="paragraph-style-name" > -->
-<!--         <xsl:choose> -->
-<!--               <xsl:when test="$role != ''"> -->
-<!--                 <xsl:value-of select="$role"/> -->
-<!--               </xsl:when> -->
-<!--               <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''"> -->
-<!--                 <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/> -->
-<!--               </xsl:when> -->
-<!--               <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''"> -->
-<!--                 <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/> -->
-<!--               </xsl:when> -->
-<!--               <xsl:otherwise> -->
-<!--                 <xsl:value-of select="'List Paragraph'"/> -->
-<!--               </xsl:otherwise> -->
-<!--             </xsl:choose> -->
-<!--         </xsl:variable> -->
+  </lists>
+</xsl:variable>
 
-<!--         <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/> -->
+<!--
+  List of all type of individual ps:lists
 
-<!--         <xsl:message>name:<xsl:value-of select="./name()"/>:<xsl:value-of select="fn:get-style-from-role(@role,.)"/></xsl:message> -->
-<!--         <xsl:choose> -->
-<!--           <xsl:when test="name()='nlist'"> -->
-<!--             <nlist start="{@start}" > -->
-<!--               <xsl:attribute name="level"> -->
-<!--                   <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $role]/preceding::w:lvl)"/> -->
-<!--               </xsl:attribute> -->
-<!--               <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $role]/@w:abstractNumId"/> -->
-<!--             </nlist> -->
-<!--           </xsl:when> -->
-<!--           <xsl:when test="name()='list'"> -->
-<!--             <list> -->
-<!--               <xsl:attribute name="level"> -->
-<!--                   <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/> -->
-<!--               </xsl:attribute> -->
-<!--               <xsl:attribute name="role" select="$role"/> -->
-<!--               <xsl:attribute name="labels" select="$labels"/> -->
-<!--               <xsl:attribute name="level1" select="$level"/> -->
-<!--               <xsl:attribute name="pstylename"> -->
-<!--                   <xsl:value-of select="$paragraph-style-name"/> -->
-<!--               </xsl:attribute> -->
-<!--               <xsl:attribute name="pstyle"> -->
-<!--                   <xsl:value-of select="$paragraph-style"/> -->
-<!--               </xsl:attribute> -->
-<!--               <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/> -->
-<!--             </list> -->
-<!--           </xsl:when> -->
-<!--         </xsl:choose> -->
-<!--       </xsl:for-each> -->
-    </lists>
-
-
- </xsl:variable>
-
- <!--
-List of all type of individual ps:lists
-
-@return a node() with all of the w:abstractNum values
+  @return a node() with all of the w:abstractNum values
 -->
 <!-- TODO fix list role not working -->
- <xsl:variable name="all-type-lists" as="node()">
+<xsl:variable name="all-type-lists" as="node()">
   <lists>
   <xsl:for-each select=".//nlist[@role !='' or descendant::nlist/@role !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
-    <xsl:variable name="max-abstract-num"
-    select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
-<!--       <xsl:message select="$max-abstract-num"></xsl:message> -->
+    <xsl:variable name="max-abstract-num" select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
     <w:abstractNum w:abstractNumId="{$max-abstract-num + position()}">
       <w:multiLevelType w:val="multilevel"/>
       <w:styleLink w:val="{concat('pageseeder list style',position())}"/>
       <xsl:variable name="current-list" select="current()" as="node()"/>
       <xsl:variable name="levels" select="'0,1,2,3,4,5,6,7,8'"/>
        <xsl:for-each select="tokenize($levels, ',')">
-
-
         <xsl:variable name="current-nlist-level-type" as="xs:string">
           <xsl:choose>
             <xsl:when test="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) != NaN]/@type">
@@ -3483,10 +3343,6 @@ List of all type of individual ps:lists
           </xsl:choose>
         </xsl:variable>
 
-<!--           <xsl:message><xsl:apply-templates select="$current-list/*" mode="xml"/></xsl:message> -->
-<!--           <xsl:message select="$current-list//*[name() = 'nlist' or name='list']/count(ancestor::*[name() = 'list' or name() = 'nlist']) + 1"></xsl:message> -->
-<!--           <xsl:message select="number(.)"></xsl:message> -->
-<!--           <xsl:message select="$current-nlist-level-type"></xsl:message> -->
         <xsl:choose>
           <xsl:when test="$current-nlist-level-type != ''">
             <w:lvl w:ilvl="{.}">
@@ -3533,30 +3389,16 @@ List of all type of individual ps:lists
        </xsl:choose>
        </xsl:for-each>
      </w:abstractNum>
-<!--        <xsl:variable name="max-num-id" select="max(document(concat($_dotxfolder,$numbering-template))//w:num/number(@w:numId))" /> -->
-<!--        <xsl:message>$max-num-id <xsl:value-of select="$max-num-id"/></xsl:message> -->
-<!--        <xsl:message>count($all-different-lists/*) <xsl:value-of select="count($all-different-lists/*)"/></xsl:message> -->
-<!--        <xsl:message>position() <xsl:value-of select="position()"/></xsl:message> -->
-<!--        <w:num w:numId="{$max-num-id + count($all-different-lists/*) + position()}"> -->
-<!--           <w:abstractNumId w:val="{$max-abstract-num + position()}"/> -->
-<!--         </w:num> -->
     </xsl:for-each>
 
-
     <xsl:for-each select=".//nlist[@type !='' or descendant::nlist/@type !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
-    <xsl:variable name="max-abstract-num"
-    select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
-     <xsl:variable name="max-num-id" select="max(document(concat($_dotxfolder,$numbering-template))//w:num/number(@w:numId))" />
-<!--        <xsl:message>$max-num-id <xsl:value-of select="$max-num-id"/></xsl:message> -->
-<!--        <xsl:message>count($all-different-lists/*) <xsl:value-of select="count($all-different-lists/*)"/></xsl:message> -->
-<!--        <xsl:message>position() <xsl:value-of select="position()"/></xsl:message> -->
-     <w:num w:numId="{$max-num-id + count($all-different-lists/*) + position()}">
+      <xsl:variable name="max-abstract-num" select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
+      <xsl:variable name="max-num-id" select="max(document(concat($_dotxfolder,$numbering-template))//w:num/number(@w:numId))" />
+      <w:num w:numId="{$max-num-id + count($all-different-lists/*) + position()}">
         <w:abstractNumId w:val="{$max-abstract-num + position()}"/>
       </w:num>
     </xsl:for-each>
-    </lists>
-
-
- </xsl:variable>
+  </lists>
+</xsl:variable>
 
 </xsl:stylesheet>

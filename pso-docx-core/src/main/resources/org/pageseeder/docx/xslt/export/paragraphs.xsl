@@ -92,10 +92,6 @@
 		<!--
 			if paraLabel contains only inline elements or text, create w:p here,
 		-->
-  <!-- TODO Useless code -->
-  <xsl:if test="@label = 'caption'">
-  </xsl:if>
-	<xsl:variable name="id" select="concat(@label, '-', generate-id())" />
 	<xsl:choose>
 		<!-- when containing other block elements, including mixed content -->
     <!-- will not create w:p here -->
@@ -178,28 +174,13 @@
           <xsl:variable name="role" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/@role"/>
           <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist)"/>
           <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
-          <xsl:variable name="item-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/@type"/>
-          <!-- TODO Suspicious overloaded variable -->
           <xsl:choose>
           <xsl:when test="position()=1">
             <xsl:choose>
-<!-- 	              <xsl:when test="ancestor::item/parent::*[@role]"> -->
-<!-- 	                <xsl:message>1</xsl:message> -->
-<!-- 	                <w:pStyle w:val="{ancestor::item/parent::*/@role}"/> -->
-<!-- 	              </xsl:when> -->
-<!--                 <xsl:when test="$item-type != ''"> -->
-
-<!--                 </xsl:when> -->
               <xsl:when test="fn:list-wordstyle-for-document-label($labels,$role,$level,$list-type) != ''">
-<!--                 <w:pStyle> -->
-<!--                 <xsl:attribute name="w:val"><xsl:value-of select="fn:list-wordstyle-for-document-label($labels,$role,$level,$list-type)"/></xsl:attribute> -->
-<!--                 </w:pStyle> -->
                 <xsl:call-template name="apply-style" />
               </xsl:when>
               <xsl:when test="fn:list-wordstyle-for-default-document($role,$level,$list-type) != ''">
-<!--                 <w:pStyle> -->
-<!--                 <xsl:attribute name="w:val"><xsl:value-of select="fn:list-wordstyle-for-default-document($role,$level,$list-type)"/></xsl:attribute> -->
-<!--                 </w:pStyle> -->
                 <xsl:call-template name="apply-style" />
               </xsl:when>
               <xsl:otherwise>
@@ -235,8 +216,7 @@
             <xsl:variable name="current-num-id">
               <xsl:choose>
                 <xsl:when test="ancestor::nlist[@type !='']">
-                  <xsl:variable name="current-numid" select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))"/>
-                 <!-- all lists inside the template + all normal lists inside psml document + preceding lists with @type + itself -->
+                  <!-- all lists inside the template + all normal lists inside psml document + preceding lists with @type + itself -->
                   <xsl:value-of select="$max-num-id + count($all-different-lists/*) + count(preceding::nlist[@type]) + 1"/>
                 </xsl:when>
                 <xsl:when test="ancestor::list and document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl/w:pStyle/@w:val = $current-pstyle">
@@ -277,9 +257,6 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="apply-style" />
-<!-- 		        <xsl:if test="string(@indent) != '' and @indent castable as xs:integer"> -->
-<!-- 		          <w:ind w:left="{720*number(@indent)}" /> -->
-<!-- 		        </xsl:if> -->
         </xsl:otherwise>
       </xsl:choose>
 

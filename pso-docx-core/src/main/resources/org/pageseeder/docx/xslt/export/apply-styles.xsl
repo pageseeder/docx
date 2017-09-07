@@ -29,7 +29,6 @@
 
       <!-- Paragraphs within blocks -->
       <xsl:when test="(name()='para' and parent::block)">
-        <xsl:variable name="block-label" select="parent::block/@label"/>
         <xsl:choose>
           <xsl:when test="fn:block-wordstyle-for-document-label($labels, parent::block/@label)='generate-ps-style'">
             <xsl:value-of select="concat('psblock',parent::block/@label)"/>
@@ -64,7 +63,6 @@
       <!-- TODO The block of code below is a copy of the above with different context -->
       <!-- Block labels -->
       <xsl:when test="name()='block'">
-        <xsl:variable name="block-label" select="@label"/>
         <xsl:choose>
           <xsl:when test="fn:block-wordstyle-for-document-label($labels, @label)='generate-ps-style'">
             <xsl:value-of select="concat('psblock', @label)"/>
@@ -119,7 +117,6 @@
             <xsl:value-of select="concat('psinline', ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="fn:inline-wordstyle-for-document-label($labels, ancestor::inline[1]/@label)!=''">
-            <xsl:variable name="name"><xsl:value-of select="ancestor::inline[1]/@label"/></xsl:variable>
             <xsl:value-of select="fn:inline-wordstyle-for-document-label($labels, ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="fn:inline-default-wordstyle-for-document-label($labels) = 'generate-ps-style'">
@@ -132,7 +129,6 @@
             <xsl:value-of select="concat('psinline', ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="fn:inline-wordstyle-for-default-document(ancestor::inline[1]/@label)!=''">
-            <xsl:variable name="name"><xsl:value-of select="ancestor::inline[1]/@label"/></xsl:variable>
             <xsl:value-of select="fn:inline-wordstyle-for-default-document(ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="fn:inline-default-wordstyle-for-default-document() = 'generate-ps-style'">

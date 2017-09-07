@@ -23,7 +23,7 @@
 -->
 <xsl:template match="/" mode="content-types">
   <xsl:param name="current-document" />
-  <xsl:variable name="current-default-extention">
+  <xsl:variable name="current-default-extension">
     <xsl:choose>
       <xsl:when test="*[name() = 'Types']/*[name() = 'Default']">
         <xsl:for-each select="*[name() = 'Types']/*[name() = 'Default']/@Extension">
@@ -65,7 +65,7 @@
         </xsl:if>
       </xsl:for-each>
       <xsl:for-each select="distinct-values($current-document//image/upper-case(substring-after(@src,'.')))">
-        <xsl:if test="not(matches(.,$current-default-extention))">
+        <xsl:if test="not(matches(.,$current-default-extension))">
           <Default ContentType="{concat('image/',.)}" Extension="{.}" />
         </xsl:if>
       </xsl:for-each>
@@ -97,7 +97,6 @@
         <xsl:result-document href="{concat($_outputfolder,@PartName)}">
           <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
                              xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"
-                             xmlns:dcmitype="http://purl.org/dc/dcmitype/"
                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <xsl:choose>
               <xsl:when test="$manual-core = ''">
@@ -178,7 +177,7 @@
     <xsl:result-document href="{concat($_outputfolder,'word/_rels/document.xml.rels')}">
       <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
         <xsl:for-each select="document($_document-relationship)//*">
-          <xsl:copy-of select=".[name() = 'Relationship'][@Target!='comments.xml']"></xsl:copy-of>
+          <xsl:copy-of select=".[name() = 'Relationship'][@Target!='comments.xml']"/>
         </xsl:for-each>
         <xsl:if test="$generate-comments">
           <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"

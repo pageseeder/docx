@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <!--
-    This xslt creates numbering.xml
-    @cvsid $Id: numbering.xsl,v 1.1 2010/04/13 04:30:09 yfeng Exp $ 
-    @author Christine Feng 
+  This XSLT module creates `numbering.xml`
+
+  @author Christine Feng
+  @author Christophe Lauret
+  @author Philip Rutherford
+  @author Hugo Inacio
 -->
 <xsl:stylesheet version="2.0"
 								xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 								exclude-result-prefixes="#all">
-
 
 <!-- matches root of the numbering.xml from the template -->
 <xsl:template match="/" mode="numbering">
@@ -17,10 +19,6 @@
 
 <!-- copies numbering definitions from numbering.xml and creates new numbering definitions according to the existing lists in the pageseeder document -->
 <xsl:template match="w:numbering" mode="numbering">
-	<xsl:variable name="max-abstract-num" select="max(w:abstractNum/number(@w:abstractNumId))" />
-	<xsl:variable name="max-num" select="max(w:num/number(@w:numId))" />
-<!-- 	  <xsl:variable name="nlistconfig" select="$config-doc/config/lists/nlist" as="element()"/> -->
-<!-- 	  <xsl:variable name="listconfig" select="$config-doc/config/lists/list" as="element()"/> -->
 	<xsl:copy>
 		<xsl:copy-of select="@*" />
 		<xsl:comment><xsl:apply-templates select="$all-different-lists" mode="xml"/></xsl:comment>
@@ -28,8 +26,7 @@
 		<xsl:copy-of select="$all-type-lists/*"/>
 		<xsl:apply-templates select="*[name() = 'w:num']" mode="numbering" />
 		<xsl:variable name="max-num-id" select="max(//w:num/number(@w:numId))" />
-		<xsl:variable name="max-abstract-num" select="max(//w:abstractNum/number(@w:abstractNumId))" />
-		<xsl:for-each select="$all-different-lists/*"> <!-- [not(@list-type-select)] -->
+		<xsl:for-each select="$all-different-lists/*">
 			<xsl:variable name="start-number" select="if (@start != '') then @start else '1'"/>
 			<w:num w:numId="{$max-num-id + position()}">
 				<w:abstractNumId w:val="{if (. != '') then . else 1}" />

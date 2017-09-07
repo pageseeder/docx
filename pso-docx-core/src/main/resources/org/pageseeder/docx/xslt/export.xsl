@@ -103,9 +103,7 @@
   The root node of the psml file
 -->
 <xsl:template match="/">
-  <!-- TODO Variable below is never used -->
-  <xsl:variable name="maincontext" select="current()" />
-  <xsl:result-document href="{concat($_outputfolder,'../','output/numbering.xml')}">
+  <xsl:result-document href="{concat($_outputfolder, '../output/numbering.xml')}">
     <lists>
       <xsl:for-each select=".//nlist[@start]">
         <xsl:variable name="role" select="fn:get-style-from-role(@role, .)" />

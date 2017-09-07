@@ -11,7 +11,6 @@
                 xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
                 xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
                 exclude-result-prefixes="#all">
 
 
@@ -19,7 +18,6 @@
   Inline cross-references
 -->
 <xsl:template match="xref" mode="content">
-
   <xsl:choose>
     <!-- TODO check requirements for generate cross references -->
     <xsl:when test="$generate-cross-references">
@@ -148,31 +146,13 @@
         </w:pPr>
         <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])))}"/>
       </w:p>
-
     </xsl:when>
     <xsl:when test="document | fragment">
-      <xsl:variable name="base" select="concat(fn:string-before-last-delimiter(base-uri(),'/'),'/')"/>
-<!--         <xsl:message select="concat($base,@href)"/> -->
-      <xsl:variable name="currentDocument" select="document(concat($base,@href))"/>
-<!--         <xsl:variable name="labels"> -->
-<!--           <xsl:choose> -->
-<!--             <xsl:when test="document/documentinfo/uri/labels"> -->
-<!--               <xsl:value-of select="document/documentinfo/uri/labels"/> -->
-<!--             </xsl:when> -->
-<!--             <xsl:otherwise> -->
-<!--               <xsl:value-of select="''"/> -->
-<!--             </xsl:otherwise> -->
-<!--           </xsl:choose> -->
-<!--         </xsl:variable> -->
-
-      <xsl:apply-templates mode="content">
-<!--           <xsl:with-param name="labels" select="$labels" tunnel="yes"/> -->
-      </xsl:apply-templates>
+      <xsl:apply-templates mode="content"/>
     </xsl:when>
     <xsl:otherwise>
       <!-- TODO generate internal link if target is internal -->
-      <xsl:variable name="content"
-        select="if (@title != '')  then @title else @urititle" />
+      <xsl:variable name="content" select="if (@title != '') then @title else @urititle" />
       <w:p>
         <w:r>
           <w:rPr>

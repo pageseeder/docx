@@ -73,29 +73,9 @@
 </xsl:template>
 
 <!--
-  Match displaytitle of pageseeder document (do nothing)
+  Elements which are ignored by default.
 -->
-<xsl:template match="displaytitle" mode="content"/>
-
-<!--
-  Match documentinfo of pageseeder document (do nothing)
--->
-<xsl:template match="documentinfo" mode="content"/>
-
-<!--
-  Match uri of pageseeder document (do nothing)
--->
-<xsl:template match="uri" mode="content"/>
-
-<!--
-  Match `reversexrefs` of pageseeder document (do nothing)
--->
-<xsl:template match="reversexrefs" mode="content"/>
-
-<!--
-  Match `fragmentinfo` of pageseeder document (do nothing)
--->
-<xsl:template match="fragmentinfo" mode="content"/>
+<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo" mode="content"/>
 
 <!--
   Match section of pageseeder document;

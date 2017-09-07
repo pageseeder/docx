@@ -77,9 +77,6 @@
 -->
 <xsl:template name="create-pict">
   <xsl:param name="src" />
-  <xsl:variable name="rid">
-        <xsl:value-of select="generate-id()" />
-  </xsl:variable>
   <xsl:variable name="id" select="count(preceding::image) + 1" />
   <xsl:variable name="alt" select="if (@alt) then @alt else ''" />
   <xsl:variable name="width">

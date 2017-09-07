@@ -6,9 +6,7 @@
   @author Philip Rutherford
   @author Hugo Inacio
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:saxon="http://saxon.sf.net/"
-                xmlns:log="http://www.allette.com.au/log" exclude-result-prefixes="saxon log">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- TODO This list is more comprehensive than the list in the global export -->
 <xsl:strip-space elements="toc uri labels displaytitle properties-fragment root description property section body document documentinfo fragment list xref-fragment blockxref locator notes note content"/>
@@ -127,8 +125,8 @@
 </xsl:template>
 
 <!-- match test inside of preformat -->
-<xsl:template match="text()[. != '&#10;'][parent::preformat]">
-  <xsl:for-each select="tokenize(.,'&#10;')">
+<xsl:template match="preformat/text()[. != '&#xA;']">
+  <xsl:for-each select="tokenize(.,'&#xA;')">
     <xsl:sequence select="."/>
     <xsl:if test="not(position() eq last())">
       <br/>

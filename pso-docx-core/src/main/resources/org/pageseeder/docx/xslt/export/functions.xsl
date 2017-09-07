@@ -19,18 +19,18 @@
 <!--
   Returns type of Word numbering style based on the current pageseeder list style.
 
-  @param string the PSML list style
+  @param list-style the PSML list style
 
   @return the corresponding Word list style
 -->
 <xsl:function name="fn:return-word-numbering-style" as="xs:string">
-	<xsl:param name="style" />
+	<xsl:param name="list-style" />
 	<xsl:choose>
-		<xsl:when test="$style = 'lowerroman'">lowerRoman</xsl:when>
-		<xsl:when test="$style = 'upperroman'">upperRoman</xsl:when>
-		<xsl:when test="$style = 'arabic'">decimal</xsl:when>
-		<xsl:when test="$style = 'loweralpha'">lowerLetter</xsl:when>
-		<xsl:when test="$style = 'upperalpha'">upperLetter</xsl:when>
+		<xsl:when test="$list-style = 'lowerroman'">lowerRoman</xsl:when>
+		<xsl:when test="$list-style = 'upperroman'">upperRoman</xsl:when>
+		<xsl:when test="$list-style = 'arabic'">decimal</xsl:when>
+		<xsl:when test="$list-style = 'loweralpha'">lowerLetter</xsl:when>
+		<xsl:when test="$list-style = 'upperalpha'">upperLetter</xsl:when>
 		<xsl:otherwise>decimal</xsl:otherwise>
 	</xsl:choose>
 </xsl:function>
@@ -38,38 +38,17 @@
 <!--
   Returns the current Word cell alignment from the PSML cell alignment
 
-  @param string the PSML cell alignment
+  @param cell-alignment the PSML cell alignment
 
   @return the corresponding Word cell alignment
 -->
 <xsl:function name="fn:return-word-cell-alignment" as="xs:string?">
-	<xsl:param name="pageseeder-cell-alignment" />
+	<xsl:param name="cell-alignment" />
 	<xsl:choose>
-		<xsl:when test="$pageseeder-cell-alignment = 'right'">right</xsl:when>
-		<xsl:when test="$pageseeder-cell-alignment = 'justify'">both</xsl:when>
-		<xsl:when test="$pageseeder-cell-alignment = 'center'">center</xsl:when>
+		<xsl:when test="$cell-alignment = 'right'">right</xsl:when>
+		<xsl:when test="$cell-alignment = 'justify'">both</xsl:when>
+		<xsl:when test="$cell-alignment = 'center'">center</xsl:when>
 		<xsl:otherwise/>
-	</xsl:choose>
-</xsl:function>
-
-<!--
-  Returns type of Word numbering style based on the current pageseeder list style.
-
-  @param string the current 
-
-  @return the corresponding word list style
--->
-<xsl:function name="fn:return-default-pageseeder-numebring-style">
-	<!-- TODO Fix typo, check usage and comment -->
-	<xsl:param name="string" />
-	<xsl:choose>
-		<xsl:when test="$string = '1'">decimal</xsl:when>
-		<xsl:when test="$string = '2'">lowerLetter</xsl:when>
-		<xsl:when test="$string = '3'">lowerRoman</xsl:when>
-		<xsl:when test="$string = '4'">lowerRoman</xsl:when>
-		<xsl:when test="$string = '5'">lowerRoman</xsl:when>
-		<xsl:when test="$string = '6'">lowerRoman</xsl:when>
-		<xsl:otherwise>decimal</xsl:otherwise>
 	</xsl:choose>
 </xsl:function>
 
@@ -202,7 +181,7 @@
 
   @param string the input string
   @param delimiter the delimiter to check for
-  @return the substring after the delimeter.
+  @return the substring after the delimiter.
 -->
 <xsl:function name="fn:string-after-last-delimiter">
 	<xsl:param name="string" />
@@ -219,7 +198,7 @@
 
   @return the current date in format.
 -->
-<xsl:function name="fn:get-current-date">
+<xsl:function name="fn:get-current-date" as="xs:string">
 	<!-- TODO Use date formatter!!! -->
 	<xsl:value-of select="concat(year-from-dateTime(current-dateTime()),'-',format-number(number(month-from-dateTime(current-dateTime())), '00'),'-',format-number(number(day-from-dateTime(current-dateTime())), '00'),'T',format-number(number(hours-from-dateTime(current-dateTime())), '00'),':',format-number(number(minutes-from-dateTime(current-dateTime())), '00'),':00')"/>
 </xsl:function>
@@ -229,7 +208,7 @@
 
   @param string the input string
   @param delimiter the delimiter to check for
-  @return the substring before the delimeter.
+  @return the substring before the delimiter.
 -->
 <xsl:function name="fn:string-before-last-delimiter">
 	<xsl:param name="string" />
