@@ -3,29 +3,23 @@
  */
 package org.pageseeder.docx;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.transform.Templates;
-
 import org.pageseeder.docx.util.Files;
 import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
 
+import javax.xml.transform.Templates;
+import java.io.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * <p> The docx processor is extract from {@link ExportTask} in the future implementation should merge the
+ * <p>The docx processor is extract from {@link ExportTask} in the future implementation should merge the
  * {@link DOCXProcessor} with the ExportTask. </p>
  *
- *
  * @author Ciber Cai
- * @version 06 November 2014
+ * @author Christophe Lauret
+ * @version 0.6
  */
 public final class DOCXProcessor {
 
@@ -392,8 +386,7 @@ public final class DOCXProcessor {
       File tmp = new File(working, "default.dotx");
       try {
         ClassLoader loader = DOCXProcessor.class.getClassLoader();
-        InputStream in = loader.getResourceAsStream("org/pageseeder/docx/resource/default.dotx");
-        try {
+        try (InputStream in = loader.getResourceAsStream("org/pageseeder/docx/resource/default.dotx")) {
           FileOutputStream out = new FileOutputStream(tmp);
           try {
             final byte[] buffer = new byte[1024];
@@ -404,8 +397,6 @@ public final class DOCXProcessor {
           } finally {
             out.close();
           }
-        } finally {
-          in.close();
         }
       } catch (IOException ex) {
         throw new DOCXException("Unable to extract default word template", ex);

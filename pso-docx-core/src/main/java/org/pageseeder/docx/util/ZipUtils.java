@@ -3,18 +3,13 @@
  */
 package org.pageseeder.docx.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.pageseeder.docx.DOCXException;
+
+import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-
-import org.pageseeder.docx.DOCXException;
 
 
 /**
@@ -43,9 +38,8 @@ public final class ZipUtils {
   public static void unzip(File src, File dest) {
     try {
       ZipEntry entry;
-      ZipFile zip = new ZipFile(src);
-      try {
-        for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements();) {
+      try (ZipFile zip = new ZipFile(src)) {
+        for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements(); ) {
           entry = e.nextElement();
           String name = entry.getName();
           // Ensure that the folder exists
@@ -72,8 +66,6 @@ public final class ZipUtils {
             is.close();
           }
         }
-      } finally {
-        zip.close();
       }
     } catch (IOException ex) {
       ex.printStackTrace();
@@ -96,8 +88,11 @@ public final class ZipUtils {
 
       } else {
         // Source is directory
-        for (File f : src.listFiles()) {
-          addToZip(f, out, null);
+        File[] children = src.listFiles();
+        if (children != null) {
+          for (File f : children) {
+            addToZip(f, out, null);
+          }
         }
       }
 
@@ -120,8 +115,10 @@ public final class ZipUtils {
     // Directory
     if (file.isDirectory()) {
       File[] files = file.listFiles();
-      for (File f : files) {
-        addToZip(f, out, (folder != null? folder + file.getName() : file.getName())+"/");
+      if (files != null) {
+        for (File f : files) {
+          addToZip(f, out, (folder != null ? folder + file.getName() : file.getName()) + "/");
+        }
       }
 
     // File

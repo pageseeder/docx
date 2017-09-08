@@ -3,6 +3,11 @@
  */
 package org.pageseeder.docx;
 
+import org.pageseeder.docx.util.Files;
+import org.pageseeder.docx.util.XSLT;
+import org.pageseeder.docx.util.ZipUtils;
+
+import javax.xml.transform.Templates;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -10,12 +15,6 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.xml.transform.Templates;
-
-import org.pageseeder.docx.util.Files;
-import org.pageseeder.docx.util.XSLT;
-import org.pageseeder.docx.util.ZipUtils;
 
 /**
  * <p> The psml processor is extract from {@link ImportTask} in the future implementation should merge the
@@ -78,8 +77,8 @@ public final class PSMLProcessor {
     }
 
     // The name of the presentation
-    File folder = null;
-    String name = null;
+    File folder;
+    String name;
     if (this._builder.destination().isFile()) {
       folder = this._builder.destination().getParentFile();
       name = this._builder.destination().getName();
@@ -115,10 +114,10 @@ public final class PSMLProcessor {
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
-    String mediaFolderName = (String) (this._builder.media() == null ? name + "_files" : this._builder.media());
-    
+    String mediaFolderName = this._builder.media() == null ? name + "_files" : this._builder.media();
+
     // Initiate parameters
-    Map<String, String> parameters = new HashMap<String, String>();
+    Map<String, String> parameters = new HashMap<>();
     parameters.put("_rootfolder", unpacked.toURI().toString());
     parameters.put("_outputfolder", outuri);
     parameters.put("_docxfilename", this._builder.source().getName());
@@ -197,8 +196,11 @@ public final class PSMLProcessor {
     File mediaOut = new File(to, folder);
     try {
       Files.ensureDirectoryExists(mediaOut);
-      for (File m : media.listFiles()) {
-        Files.copy(m, new File(mediaOut, m.getName()));
+      File[] files = media.listFiles();
+      if (files != null) {
+        for (File m : files) {
+          Files.copy(m, new File(mediaOut, m.getName()));
+        }
       }
     } catch (IOException ex) {
       // TODO clean up files
@@ -304,7 +306,7 @@ public final class PSMLProcessor {
      */
     private Map<String, String> params() {
       if (this.params == null) {
-        this.params = new HashMap<String, String>();
+        this.params = new HashMap<>();
       }
       return this.params;
     }

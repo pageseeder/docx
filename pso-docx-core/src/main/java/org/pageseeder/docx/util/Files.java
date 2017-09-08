@@ -1,18 +1,18 @@
 package org.pageseeder.docx.util;
 
+import org.pageseeder.docx.DOCXException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import org.pageseeder.docx.DOCXException;
-
 /**
  * A bunch of IO utility functions.
  *
  * @author Christophe Lauret
- * @version 28 February 2013
+ * @version 0.6
  */
 public class Files {
 
@@ -52,7 +52,7 @@ public class Files {
    *
    * @param directory The directory to check
    *
-   * @throws BuildException if the directory could not created.
+   * @throws DOCXException if the directory could not created.
    */
   public static void ensureDirectoryExists(File directory) throws DOCXException {
     if (!directory.exists()) {
@@ -75,8 +75,10 @@ public class Files {
         target.mkdir();
       }
       String[] children = source.list();
-      for (int i = 0; i < children.length; i++) {
-        copyDirectory(new File(source, children[i]), new File(target, children[i]));
+      if (children != null) {
+        for (String aChildren : children) {
+          copyDirectory(new File(source, aChildren), new File(target, aChildren));
+        }
       }
     } else {
       copy(source, target);

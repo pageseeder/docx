@@ -3,44 +3,30 @@
  */
 package org.pageseeder.docx.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.pageseeder.docx.DOCXException;
+
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.pageseeder.docx.DOCXException;
 
 
 /**
  * A utility class for common XSLT functions.
  *
  * @author Christophe Lauret
- * @version 18 February 2013
+ * @version 0.6
  */
 public final class XSLT {
 
   /**
    * Maps XSLT templates to their URL as a string for easy retrieval.
    */
-  private static final Map<String, Templates> CACHE = new Hashtable<String, Templates>();
+  private static final Map<String, Templates> CACHE = new Hashtable<>();
 
   /** Utility class. */
   private XSLT() {
@@ -55,7 +41,7 @@ public final class XSLT {
    *
    * @return the corresponding XSLT templates object or <code>null</code> if the URL was <code>null</code>.
    *
-   * @throws BuildException If XSLT templates could not be loaded from the specified URL.
+   * @throws DOCXException If XSLT templates could not be loaded from the specified URL.
    */
   public static Templates getTemplates(URL url) {
     if (url == null) return null;
@@ -79,7 +65,7 @@ public final class XSLT {
    * @return the corresponding XSLT templates object;
    *         or <code>null</code> if the resource could not be found.
    *
-   * @throws BuildException If the loading fails.
+   * @throws DOCXException If the loading fails.
    */
   public static Templates getTemplatesFromResource(String resource) {
     ClassLoader loader = XSLT.class.getClassLoader();
@@ -99,7 +85,7 @@ public final class XSLT {
    * @param templates  The XSLT templates to use.
    * @param parameters Parameters to transmit to the transformer for use by the stylesheet (optional)
    *
-   * @throws BuildException For XSLT Transformation errors or XSLT configuration errors
+   * @throws DOCXException For XSLT Transformation errors or XSLT configuration errors
    */
   public static void transform(File source, File result, Templates templates, Map<String, String> parameters) {
     try (InputStream in = new FileInputStream(source);
@@ -126,7 +112,7 @@ public final class XSLT {
    * @param templates  The XSLT templates to use.
    * @param parameters Parameters to transmit to the transformer for use by the stylesheet (optional)
    *
-   * @throws BuildException For XSLT Transformation errors or XSLT configuration errors
+   * @throws DOCXException For XSLT Transformation errors or XSLT configuration errors
    */
   public static void transform(Source source, Result result, Templates templates, Map<String, String> parameters) {
     try {
@@ -158,7 +144,7 @@ public final class XSLT {
    *
    * @return the corresponding XSLT templates object
    *
-   * @throws BuildException If the loading fails.
+   * @throws DOCXException If the loading fails.
    */
   private static Templates toTemplates(File stylepath) throws DOCXException {
     // load the templates from the source file
@@ -180,12 +166,12 @@ public final class XSLT {
    *
    * @return the corresponding XSLT templates object or <code>null</code> if the URL was <code>null</code>.
    *
-   * @throws BuildException If XSLT templates could not be loaded from the specified URL.
+   * @throws DOCXException If XSLT templates could not be loaded from the specified URL.
    */
   private static Templates toTemplates(URL url) {
     if (url == null) return null;
     // load the templates from the source URL
-    Templates templates = null;
+    Templates templates;
     try (InputStream in = url.openStream()) {
       Source source = new StreamSource(in);
       source.setSystemId(url.toString());
