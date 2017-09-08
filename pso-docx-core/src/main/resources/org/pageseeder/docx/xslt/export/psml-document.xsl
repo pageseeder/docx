@@ -75,7 +75,7 @@
 <!--
   Elements which are ignored by default.
 -->
-<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo" mode="content"/>
+<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator" mode="content"/>
 
 <!--
   Match section of pageseeder document;

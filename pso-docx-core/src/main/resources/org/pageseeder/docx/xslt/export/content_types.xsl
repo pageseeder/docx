@@ -310,7 +310,4 @@
   </xsl:if>
 </xsl:template>
 
-<!-- ignore any locator -->
-<xsl:template match="locator" mode="content" />
-
 </xsl:stylesheet>
