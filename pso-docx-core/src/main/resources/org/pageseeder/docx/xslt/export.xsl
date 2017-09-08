@@ -76,7 +76,6 @@
 <xsl:param name="_configfileurl"/>
 
 <xsl:include href="export/variables.xsl" />
-<xsl:include href="export/document.xsl" />
 <xsl:include href="export/footer.xsl" />
 <xsl:include href="export/header.xsl" />
 <xsl:include href="export/numbering.xsl" />
@@ -84,14 +83,20 @@
 <xsl:include href="export/apply-styles.xsl" />
 <xsl:include href="export/functions.xsl" />
 <xsl:include href="export/mml2omml.xsl" />
-<xsl:include href="export/tables.xsl" />
-<xsl:include href="export/images.xsl" />
-<xsl:include href="export/links.xsl" />
-<xsl:include href="export/lists.xsl" />
-<xsl:include href="export/paragraphs.xsl" />
-<xsl:include href="export/formatting.xsl" />
+
+<!-- Handling PSML elements -->
+<xsl:include href="export/psml-document.xsl" />
+<xsl:include href="export/psml-image.xsl" />
+<xsl:include href="export/psml-link.xsl" />
+<xsl:include href="export/psml-list.xsl" />
+<xsl:include href="export/psml-table.xsl" />
+<xsl:include href="export/psml-text-block.xsl" />
+<xsl:include href="export/psml-text-inline.xsl" />
+<xsl:include href="export/psml-toc.xsl" />
+
+
 <xsl:include href="export/styles.xsl" />
-<xsl:include href="export/toc.xsl" />
+
 
 
 
