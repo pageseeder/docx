@@ -13,13 +13,12 @@
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 exclude-result-prefixes="#all">
 
-
 <!--
   Inline cross-references
 -->
 <xsl:template match="xref" mode="content">
   <xsl:choose>
-    <!-- TODO check requirements for generate cross references -->
+    <!-- TODO check requirements for generate-cross-references -->
     <xsl:when test="$generate-cross-references">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
@@ -39,13 +38,13 @@
       </w:r>
     </xsl:when>
 
+    <!-- Cross-reference to a URL -->
     <xsl:when test="@external = 'true'">
       <w:r>
         <w:fldChar w:fldCharType="begin" />
       </w:r>
       <w:r>
-        <w:instrText xml:space="preserve"><xsl:text> HYPERLINK "</xsl:text><xsl:value-of
-          select="@href" /><xsl:text>" </xsl:text></w:instrText>
+        <w:instrText xml:space="preserve"> HYPERLINK "<xsl:value-of select="@href" />" </w:instrText>
       </w:r>
       <w:r>
         <w:fldChar w:fldCharType="separate" />
@@ -60,7 +59,7 @@
     </xsl:when>
 
     <!-- TODO check requirements for mathml processing -->
-    <xsl:when test="starts-with(@href,'_external/') and $generate-mathml">
+    <xsl:when test="starts-with(@href, '_external/') and $generate-mathml">
       <!-- External xref: choose to copy or not based on type and config -->
       <xsl:variable name="referenced-document" select="document(@href)" />
       <xsl:choose>
@@ -81,7 +80,8 @@
       </xsl:choose>
     </xsl:when>
 
-    <xsl:when test="@href[not(starts-with(.,'#'))][not(ends-with(.,'.psml'))]">
+    <!-- Cross-reference to a non PSML document -->
+    <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
       <w:hyperlink w:anchor="{@href}" w:history="1">
         <w:r>
           <w:rPr>
@@ -99,15 +99,18 @@
         </w:r>
       </w:hyperlink>
     </xsl:when>
-    <xsl:when test="@href[not(starts-with(.,'#'))]">
-      <!-- only process internal link-->
+
+    <!-- Cross-reference to a PSML document -->
+    <xsl:when test="@href[not(starts-with(., '#'))]">
       <w:r>
         <xsl:call-template name="apply-run-style" />
         <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
       </w:r>
     </xsl:when>
+
+    <!-- Internal cross-reference (i.e. to another fragment) -->
     <xsl:otherwise>
-      <w:hyperlink w:anchor="{concat('fragment-',substring-after(@href,'#'))}" w:history="1">
+      <w:hyperlink w:anchor="{concat('fragment-', substring-after(@href, '#'))}" w:history="1">
         <w:r>
           <xsl:choose>
             <xsl:when test="$xref-style != ''">
@@ -137,12 +140,12 @@
     <xsl:when test="@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' and $manual-master = 'true'">
       <w:p>
         <w:pPr>
-          <xsl:copy-of select="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]"/>
+          <xsl:copy-of select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
         </w:pPr>
       </w:p>
       <w:p>
         <w:pPr>
-          <xsl:copy-of select="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]"/>
+          <xsl:copy-of select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
         </w:pPr>
         <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])))}"/>
       </w:p>
@@ -175,7 +178,7 @@
 <xsl:template match="link" mode="content">
   <xsl:choose>
     <xsl:when test="@href[starts-with(.,'#')]">
-      <xsl:variable name="internal-reference" select="concat('anchor-',substring-after(@href,'#'))" />
+      <xsl:variable name="internal-reference" select="concat('anchor-', substring-after(@href,'#'))" />
       <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
         <w:r>
           <w:rPr>

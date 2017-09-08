@@ -5,38 +5,36 @@
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
+
+  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 exclude-result-prefixes="#all">
 
 <!--
-  Match root of pageseeder document
+  Document element of a PSML document.
+
+  This is typically the entry point for processing the PSML, but it could also be transcluded content!
 -->
 <xsl:template match="document" mode="content">
-  <xsl:variable name="labels">
-    <xsl:choose>
-      <xsl:when test="documentinfo/uri/labels">
-        <xsl:value-of select="documentinfo/uri/labels"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="labels" select="string(documentinfo/uri/labels)" as="xs:string"/>
   <xsl:choose>
     <xsl:when test="not(ancestor::document)">
       <w:document>
         <w:body>
+          <!-- TODO Suspicious use of the `fragment-[id]` for a document, use `document-[id]` and update `psml-link.xsl` when fragment is default -->
           <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-          <w:bookmarkEnd  w:id="{count(preceding::*)}" />
-          <xsl:apply-templates mode="content" select="section|toc">
+          <w:bookmarkEnd w:id="{count(preceding::*)}" />
+          <xsl:apply-templates select="section|toc" mode="content">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
           </xsl:apply-templates>
+          <xsl:variable name="section-properties" select="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]"/>
           <xsl:choose>
-            <xsl:when test="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]">
-              <xsl:copy-of select="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]"/>
+            <xsl:when test="$section-properties">
+              <xsl:copy-of select="$section-properties"/>
             </xsl:when>
             <xsl:otherwise>
               <w:sectPr/>
@@ -56,33 +54,12 @@
 </xsl:template>
 
 <!--
-  Match xref-fragment of pageseeder document
--->
-<xsl:template match="xref-fragment" mode="content">
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-    <xsl:apply-templates mode="content" />
-  <w:bookmarkEnd  w:id="{count(preceding::*)}" />
-</xsl:template>
-
-<!--
-  Match media-fragment of pageseeder document
--->
-<xsl:template match="media-fragment" mode="content">
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-  <w:bookmarkEnd  w:id="{count(preceding::*)}" />
-</xsl:template>
-
-<!--
-  Elements which are ignored by default.
--->
-<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator" mode="content"/>
-
-<!--
   Match section of pageseeder document;
   Has the option to create comments to reference back to pageseeder comments
 -->
 <xsl:template match="section" mode="content">
-  <xsl:apply-templates mode="content" select="*" />
+  <!-- TODO Add a bookmark? -->
+  <xsl:apply-templates select="*" mode="content"/>
 </xsl:template>
 
 <!--
@@ -109,22 +86,24 @@
   <w:bookmarkEnd  w:id="{count(preceding::*)}" />
 </xsl:template>
 
-<!--  If could not match any, print this error message -->
-<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item ]" mode="content" priority="-1">
-  <w:r>
-    <w:rPr>
-      <w:color w:val="991111" /><!-- TODO Magic number? -->
-    </w:rPr>
-    <w:t>
-      Error unprocessed element:
-      <xsl:value-of select="name(.)" />
-    </w:t>
-  </w:r>
+<!--
+  Match xref-fragment of pageseeder document
+-->
+<xsl:template match="xref-fragment" mode="content">
+  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
+  <xsl:apply-templates mode="content" />
+  <w:bookmarkEnd w:id="{count(preceding::*)}" />
 </xsl:template>
 
-<xsl:template match="metadata" mode="content"/>
+<!--
+  Match media-fragment of pageseeder document
+-->
+<xsl:template match="media-fragment" mode="content">
+  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
+  <w:bookmarkEnd w:id="{count(preceding::*)}" />
+</xsl:template>
 
-<!-- Template to match properties fragment and transform it into a table -->
+  <!-- Template to match properties fragment and transform it into a table -->
 <xsl:template match="properties-fragment" mode="content">
   <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
   <w:tbl>
@@ -153,15 +132,7 @@
       <w:p>
         <w:r>
           <w:t>
-            <!-- TODO Simplify code -->
-            <xsl:choose>
-              <xsl:when test="@title">
-                <xsl:value-of select="@title"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="@name"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="if (@title) then @title else @name"/>
           </w:t>
         </w:r>
       </w:p>
@@ -211,6 +182,21 @@
       </xsl:choose>
     </w:tc>
   </w:tr>
+</xsl:template>
+
+<!--
+  Elements which are ignored by default.
+-->
+<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator|metadata" mode="content"/>
+
+<!-- If could not match any, print this error message -->
+<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item ]" mode="content" priority="-1">
+  <w:r>
+    <w:rPr>
+      <w:color w:val="991111" /><!-- TODO Magic number? -->
+    </w:rPr>
+    <w:t> Error unprocessed element: <xsl:value-of select="name(.)" /></w:t>
+  </w:r>
 </xsl:template>
 
 </xsl:stylesheet>

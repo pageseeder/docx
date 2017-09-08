@@ -5,10 +5,7 @@
                 xmlns:fn="http://www.pageseeder.com/function"
                 exclude-result-prefixes="#all">
 
-<!--
-  Match anchor element;
-  Currently ignores this 
- -->
+<!-- Anchor elements are ignored -->
 <xsl:template match="anchor" mode="content"/>
 
 <!-- Match text which is only a space -->
@@ -44,17 +41,17 @@
         </w:r>
       </w:p>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label,fn:tab-inline-labels-document($labels))">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:tab-inline-labels-document($labels))">
       <w:r>
         <w:tab/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label,fn:default-tab-inline-labels())">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:default-tab-inline-labels())">
       <w:r>
         <w:tab/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label,fn:inline-index-labels-with-document-label($labels))">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:inline-index-labels-with-document-label($labels))">
       <xsl:variable name="quote">"</xsl:variable>
       <w:r>
         <w:t><xsl:value-of select="$text"/></w:t>
@@ -64,7 +61,7 @@
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label,fn:default-inline-index-labels())">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:default-inline-index-labels())">
       <xsl:variable name="quote">"</xsl:variable>
       <w:r>
         <w:t><xsl:value-of select="$text"/></w:t>
@@ -74,16 +71,16 @@
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label,fn:inline-fieldcode-labels-with-document-label($labels)) and fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label,$labels) != ''">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:inline-fieldcode-labels-with-document-label($labels)) and fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label,$labels) != ''">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
-        <w:instrText xml:space="preserve"><xsl:value-of select="fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label,$labels)" /></w:instrText>
+        <w:instrText xml:space="preserve"><xsl:value-of select="fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels)" /></w:instrText>
         <w:fldChar w:fldCharType="separate"/>
         <w:t xml:space="preserve"><xsl:value-of select="$text" /></w:t>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label,fn:default-inline-fieldcode-labels()) and fn:get-default-inline-fieldcode-value(ancestor::inline[1]/@label) !=''">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:default-inline-fieldcode-labels()) and fn:get-default-inline-fieldcode-value(ancestor::inline[1]/@label) !=''">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
         <w:instrText xml:space="preserve"><xsl:value-of select="fn:get-default-inline-fieldcode-value(ancestor::inline[1]/@label)" /></w:instrText>
@@ -136,7 +133,7 @@
 <xsl:template match="inline" mode="content">
   <xsl:param name="labels" tunnel="yes"/>
   <xsl:choose>
-    <xsl:when test="parent::block and fn:has-block-elements(parent::block)='true'">
+    <xsl:when test="parent::block and fn:has-block-elements(parent::block)">
       <w:p>
         <xsl:apply-templates mode="content" />
       </w:p>
@@ -194,14 +191,13 @@
 <!-- Match deleted content: only used when diffx is applied -->
 <xsl:template match="dfx:del" mode="content">
   <w:del w:author="Pageseeder" w:date="fn:get-current-date()">
-  <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
-  <xsl:apply-templates mode="content"/>
+    <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
+    <xsl:apply-templates mode="content"/>
   </w:del>
 </xsl:template>
 
 <!--
-  Matches line breaks;
-  create paragraph if not inside a block element
+  Matches line breaks; create paragraph if not inside a block element
 -->
 <xsl:template match="br" mode="content">
   <xsl:choose>
@@ -228,11 +224,6 @@
       </w:r>
     </xsl:otherwise>
   </xsl:choose>
-</xsl:template>
-
-<!-- Caption is handled inside table -->
-<xsl:template match="caption" mode="content">
-  <xsl:apply-templates mode="content"/>
 </xsl:template>
 
 </xsl:stylesheet>

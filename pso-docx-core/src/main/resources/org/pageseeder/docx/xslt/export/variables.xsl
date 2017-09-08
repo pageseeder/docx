@@ -1640,12 +1640,12 @@ Returns if the configured w:style for ps:heading element for default documents s
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:heading element for label specific documents should handle the @ps:numbering.
+  Returns if the configured w:style for ps:heading element for label specific documents should handle the @ps:numbering.
 
-@param document-label the current document label
-@param indent-level the current indent level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param document-label the current document label
+  @param indent-level the current indent level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:heading-numbered-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
@@ -2917,7 +2917,7 @@ Generates the field code formula based on params
 
   @return the w:style
 -->
-<xsl:function name="fn:list-wordstyle-for-document-label">
+<xsl:function name="fn:list-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
@@ -2944,7 +2944,7 @@ Generates the field code formula based on params
 
   @return the w:style
 -->
-<xsl:function name="fn:list-wordstyle-for-default-document">
+<xsl:function name="fn:list-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
@@ -2969,10 +2969,11 @@ Generates the field code formula based on params
 
   @return the w:style
 -->
-<xsl:function name="fn:default-list-wordstyle">
+<xsl:function name="fn:default-list-wordstyle" as="xs:string">
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
   <xsl:choose>
+    <!-- TODO Simplify code!! <xsl:value-of select="concat('List ', if ($list-type = 'nlist') then 'Number' else 'Bullet', if ($list-level gt 1) then format-number($list-level, ' #') else '')"/> -->
     <xsl:when test="$list-level = 1">
       <xsl:choose>
         <xsl:when test="$list-type = 'nlist'">

@@ -39,25 +39,18 @@
     <xsl:when test="text() or link or bold or italic or sup or sub or xref or inline or image or monospace">
       <w:p>
         <w:pPr>
-          <!-- TODO Simplify code for attribute values -->
           <xsl:choose>
             <xsl:when test="parent::*[@role]">
               <w:pStyle w:val="{parent::*/@role}"/>
             </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-document-label($labels,$role,$level,$list-type) != ''">
-              <w:pStyle>
-              <xsl:attribute name="w:val"><xsl:value-of select="fn:list-wordstyle-for-document-label($labels,$role,$level,$list-type)"/></xsl:attribute>
-              </w:pStyle>
+            <xsl:when test="fn:list-wordstyle-for-document-label($labels ,$role, $level, $list-type) != ''">
+              <w:pStyle w:val="{fn:list-wordstyle-for-document-label($labels, $role, $level, $list-type)}"/>
             </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-default-document($role,$level,$list-type) != ''">
-              <w:pStyle>
-              <xsl:attribute name="w:val"><xsl:value-of select="fn:list-wordstyle-for-default-document($role,$level,$list-type)"/></xsl:attribute>
-              </w:pStyle>
+            <xsl:when test="fn:list-wordstyle-for-default-document($role, $level, $list-type) != ''">
+              <w:pStyle w:val="{fn:list-wordstyle-for-default-document($role, $level, $list-type)}"/>
             </xsl:when>
             <xsl:otherwise>
-              <w:pStyle>
-                <xsl:attribute name="w:val"><xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/></xsl:attribute>
-              </w:pStyle>
+              <w:pStyle w:val="{fn:default-list-wordstyle($level, $list-type)}"/>
             </xsl:otherwise>
           </xsl:choose>
           <xsl:variable name="max-num-id">
@@ -65,21 +58,21 @@
               <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
                 <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
               </xsl:when>
-              <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
+              <xsl:otherwise>0</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
           <w:numPr>
-            <xsl:variable name="level">
+            <xsl:variable name="adjusted-level">
               <xsl:choose>
                 <xsl:when test="parent::*[@role]">
-                  <xsl:value-of select="fn:get-level-from-role(parent::*/@role,.)"/>
+                  <xsl:value-of select="fn:get-level-from-role(parent::*/@role, .)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="count(ancestor::list)+count(ancestor::nlist) - 1"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
-            <w:ilvl w:val="{$level}" />
+            <w:ilvl w:val="{$adjusted-level}" />
             <xsl:variable name="current-num-id">
               <xsl:choose>
                 <xsl:when test="parent::*[@role]">
@@ -98,6 +91,7 @@
         <!-- Process all possible inline elements that can be included in the paragraph -->
         <xsl:apply-templates select="text() | link | bold | italic | sup | sub | xref | inline | image | monospace"  mode="content"/>
       </w:p>
+      <!-- Sub-lists outside the para -->
       <xsl:apply-templates select="list|nlist" mode="content"/>
     </xsl:when>
     <xsl:otherwise>

@@ -31,7 +31,7 @@
 		<xsl:copy-of select="@*" />
 		<xsl:apply-templates mode="styles"/>
 		<xsl:for-each select="$inline-labels/label">
-		 <xsl:variable name="id" select="concat('psinline',@name)"/>
+		 <xsl:variable name="id" select="concat('psinline', @name)"/>
 			<w:style w:type="character" w:styleId="{$id}">
 				<w:name w:val="{$id}" />
 				<w:basedOn w:val="Normal" />
