@@ -6,17 +6,17 @@
                 exclude-result-prefixes="#all">
 
 <!-- Anchor elements are ignored -->
-<xsl:template match="anchor" mode="content"/>
+<xsl:template match="anchor" mode="psml"/>
 
 <!-- Match text which is only a space -->
-<xsl:template match="text()[. = '&#10;']" mode="content"/>
+<xsl:template match="text()[. = '&#10;']" mode="psml"/>
 <!-- TODO: Not a space a new line seems quite specific, what's the reason? -->
 
 <!--
   Match any text in pageseeder;
   Creates a text run in word for each text found in pageseeder and handles conversion of parent inline elements to character styles
 -->
-<xsl:template match="text()" mode="content">
+<xsl:template match="text()" mode="psml">
   <xsl:param name="labels" tunnel="yes"/>
   <!-- no mixed content, create a run instead -->
   <xsl:variable name="text">
@@ -109,7 +109,7 @@
 <!--
   Match code element
 -->
-<xsl:template match="code" mode="content">
+<xsl:template match="code" mode="psml">
   <w:p>
     <w:pPr>
       <xsl:call-template name="apply-style" />
@@ -130,18 +130,18 @@
   Matches inline labels, and creates a paragraph if they are not inside of a block element;
   processing is done inside of text
 -->
-<xsl:template match="inline" mode="content">
+<xsl:template match="inline" mode="psml">
   <xsl:param name="labels" tunnel="yes"/>
   <xsl:choose>
     <xsl:when test="parent::block and fn:has-block-elements(parent::block)">
       <w:p>
-        <xsl:apply-templates mode="content" />
+        <xsl:apply-templates mode="psml" />
       </w:p>
     </xsl:when>
     <xsl:when test="matches(@label,fn:inline-ignore-labels-with-document-label($labels))"/>
     <xsl:when test="matches(@label,fn:default-inline-ignore-labels())"/>
     <xsl:otherwise>
-      <xsl:apply-templates mode="content" />
+      <xsl:apply-templates mode="psml" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
@@ -151,55 +151,55 @@
 <!--
   Matches bold elements; processing is done inside of text
 -->
-<xsl:template match="bold" mode="content">
-  <xsl:apply-templates mode="content" />
+<xsl:template match="bold" mode="psml">
+  <xsl:apply-templates mode="psml" />
 </xsl:template>
 
 <!-- Matches underline elements; processing is done inside of text -->
-<xsl:template match="underline" mode="content">
-  <xsl:apply-templates mode="content"/>
+<xsl:template match="underline" mode="psml">
+  <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
 <!-- Matches sub elements; processing is done inside of text -->
-<xsl:template match="sub" mode="content">
-  <xsl:apply-templates mode="content"/>
+<xsl:template match="sub" mode="psml">
+  <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
 <!-- Matches sup elements; processing is done inside of text -->
-<xsl:template match="sup" mode="content">
-  <xsl:apply-templates mode="content"/>
+<xsl:template match="sup" mode="psml">
+  <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
 <!-- Matches italic elements; processing is done inside of text -->
-<xsl:template match="italic" mode="content">
-  <xsl:apply-templates mode="content"/>
+<xsl:template match="italic" mode="psml">
+  <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
 <!-- Matches monospace elements; processing is done inside of text -->
-<xsl:template match="monospace" mode="content">
-  <xsl:apply-templates mode="content"/>
+<xsl:template match="monospace" mode="psml">
+  <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
 <!-- Match inserted content: only used when diffx is applied -->
-<xsl:template match="dfx:ins" mode="content">
+<xsl:template match="dfx:ins" mode="psml">
 <w:ins w:author="Pageseeder" w:date="fn:get-current-date()">
   <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
-  <xsl:apply-templates mode="content"/>
+  <xsl:apply-templates mode="psml"/>
   </w:ins>
 </xsl:template>
 
 <!-- Match deleted content: only used when diffx is applied -->
-<xsl:template match="dfx:del" mode="content">
+<xsl:template match="dfx:del" mode="psml">
   <w:del w:author="Pageseeder" w:date="fn:get-current-date()">
     <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
-    <xsl:apply-templates mode="content"/>
+    <xsl:apply-templates mode="psml"/>
   </w:del>
 </xsl:template>
 
 <!--
   Matches line breaks; create paragraph if not inside a block element
 -->
-<xsl:template match="br" mode="content">
+<xsl:template match="br" mode="psml">
   <xsl:choose>
     <xsl:when test="preceding-sibling::*[fn:is-block-element(.)='true'] or following-sibling::*[fn:is-block-element(.)='true']">
       <w:p>

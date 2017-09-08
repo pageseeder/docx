@@ -20,7 +20,7 @@
 <!--
   Template to create image
 -->
-<xsl:template match="image" mode="content">
+<xsl:template match="image" mode="psml">
   <xsl:choose>
     <xsl:when test="parent::fragment or (parent::block and fn:has-block-elements(parent::block))">
       <!-- We need to wrap in paragraph -->

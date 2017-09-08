@@ -16,7 +16,7 @@
 <!--
   Inline cross-references
 -->
-<xsl:template match="xref" mode="content">
+<xsl:template match="xref" mode="psml">
   <xsl:choose>
     <!-- TODO check requirements for generate-cross-references -->
     <xsl:when test="$generate-cross-references">
@@ -134,7 +134,7 @@
   handles blockxref transformations;
   checks also for document labels so that styles are applied accordingly through the configuration
 -->
-<xsl:template match="blockxref" mode="content">
+<xsl:template match="blockxref" mode="psml">
   <xsl:param name="word-documents" tunnel="yes"/>
   <xsl:choose>
     <xsl:when test="@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' and $manual-master = 'true'">
@@ -151,7 +151,7 @@
       </w:p>
     </xsl:when>
     <xsl:when test="document | fragment">
-      <xsl:apply-templates mode="content"/>
+      <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:otherwise>
       <!-- TODO generate internal link if target is internal -->
@@ -175,7 +175,7 @@
 
   Implementation note: currently only support external link
 -->
-<xsl:template match="link" mode="content">
+<xsl:template match="link" mode="psml">
   <xsl:choose>
     <xsl:when test="@href[starts-with(.,'#')]">
       <xsl:variable name="internal-reference" select="concat('anchor-', substring-after(@href,'#'))" />
@@ -215,14 +215,14 @@
       </w:r>
     </xsl:when>
     <xsl:when test="not(@href) and not(@name)">
-      <xsl:apply-templates mode="content"/>
+      <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:when test="@name">
       <w:bookmarkStart w:name="anchor-{@name}" w:id="{count(preceding::*)}" />
       <w:bookmarkEnd  w:id="{count(preceding::*)}" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:apply-templates mode="content"/>
+      <xsl:apply-templates mode="psml"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>

@@ -19,8 +19,8 @@
 
   Note: indenting information is in numbering.xml and determined by list level
 -->
-<xsl:template match="nlist | list" mode="content">
-  <xsl:apply-templates mode="content" />
+<xsl:template match="nlist | list" mode="psml">
+  <xsl:apply-templates mode="psml" />
 </xsl:template>
 
 <!--
@@ -28,7 +28,7 @@
 
   The styles are defined by list role, type or style definition
 -->
-<xsl:template match="item" mode="content">
+<xsl:template match="item" mode="psml">
   <xsl:param name="labels" tunnel="yes"/>
   <!-- level of a list item is the number of ancestor list or nlist-->
   <xsl:variable name="level"     select="count(ancestor::list)+count(ancestor::nlist)"/>
@@ -89,13 +89,13 @@
           </w:numPr>
         </w:pPr>
         <!-- Process all possible inline elements that can be included in the paragraph -->
-        <xsl:apply-templates select="text() | link | bold | italic | sup | sub | xref | inline | image | monospace"  mode="content"/>
+        <xsl:apply-templates select="text() | link | bold | italic | sup | sub | xref | inline | image | monospace"  mode="psml"/>
       </w:p>
       <!-- Sub-lists outside the para -->
-      <xsl:apply-templates select="list|nlist" mode="content"/>
+      <xsl:apply-templates select="list|nlist" mode="psml"/>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:apply-templates  mode="content"/>
+      <xsl:apply-templates  mode="psml"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>

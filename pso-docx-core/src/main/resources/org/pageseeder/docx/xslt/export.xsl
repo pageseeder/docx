@@ -136,7 +136,7 @@
   <xsl:call-template name="create-documents" >
     <xsl:with-param name="word-documents" select="$word-documents" tunnel="yes"/>
   </xsl:call-template>
-  <xsl:apply-templates mode="content" >
+  <xsl:apply-templates mode="psml">
     <xsl:with-param name="word-documents" select="$word-documents" tunnel="yes"/>
   </xsl:apply-templates>
 </xsl:template>

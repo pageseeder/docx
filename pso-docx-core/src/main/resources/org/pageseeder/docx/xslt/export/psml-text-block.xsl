@@ -15,12 +15,12 @@
   Section title is imported as normal text,
   applying the default word heading styles
 -->
-<xsl:template match="title" mode="content">
+<xsl:template match="title" mode="psml">
   <w:p>
     <w:pPr>
       <xsl:call-template name="apply-style" />
     </w:pPr>
-    <xsl:apply-templates mode="content" />
+    <xsl:apply-templates mode="psml" />
   </w:p>
 </xsl:template>
 
@@ -29,7 +29,7 @@
 
   The style is mapped from element name.
 -->
-<xsl:template match="heading" mode="content">
+<xsl:template match="heading" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
   <w:p>
     <w:pPr>
@@ -70,14 +70,14 @@
         </xsl:when>
       </xsl:choose>
     </xsl:if>
-    <xsl:apply-templates mode="content" />
+    <xsl:apply-templates mode="psml" />
   </w:p>
 </xsl:template>
 
 <!--
   A block is imported as a normal paragraph
 -->
-<xsl:template match="block" mode="content">
+<xsl:template match="block" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
   <xsl:param name="cell-align" tunnel="yes" />
     <!--
@@ -89,7 +89,7 @@
     <xsl:when test="matches(@label, fn:block-ignore-labels-with-document-label($labels))"/>
     <xsl:when test="matches(@label, fn:default-block-ignore-labels())"/>
     <xsl:when test="fn:has-block-elements(.)">
-      <xsl:apply-templates mode="content" />
+      <xsl:apply-templates mode="psml" />
     </xsl:when>
     <xsl:otherwise>
       <!-- when containing only inline elements or text()-->
@@ -121,7 +121,7 @@
             </xsl:choose>
           </xsl:if>
         </w:pPr>
-        <xsl:apply-templates mode="content" />
+        <xsl:apply-templates mode="psml" />
       </w:p>
     </xsl:otherwise>
   </xsl:choose>
@@ -130,7 +130,7 @@
 <!--
   PSML para are treated as normal Word paragraphs
 -->
-<xsl:template match="para" mode="content">
+<xsl:template match="para" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
   <xsl:param name="cell-align" tunnel="yes" />
   <w:p>
@@ -263,14 +263,14 @@
         </xsl:choose>
       </xsl:if>
     </w:pPr>
-    <xsl:apply-templates mode="content" />
+    <xsl:apply-templates mode="psml" />
   </w:p>
 </xsl:template>
 
 <!--
   Preformat elements are currently imported as normal paragraphs
 -->
-<xsl:template match="preformat" mode="content">
+<xsl:template match="preformat" mode="psml">
   <xsl:param name="cell-align" tunnel="yes" />
   <w:p>
     <w:pPr>
@@ -279,7 +279,7 @@
       </xsl:if>
       <xsl:call-template name="apply-style" />
     </w:pPr>
-    <xsl:apply-templates mode="content" />
+    <xsl:apply-templates mode="psml" />
   </w:p>
 </xsl:template>
 

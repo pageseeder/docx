@@ -19,7 +19,7 @@
 
   This is typically the entry point for processing the PSML, but it could also be transcluded content!
 -->
-<xsl:template match="document" mode="content">
+<xsl:template match="document" mode="psml">
   <xsl:variable name="labels" select="string(documentinfo/uri/labels)" as="xs:string"/>
   <xsl:choose>
     <xsl:when test="not(ancestor::document)">
@@ -28,7 +28,7 @@
           <!-- TODO Suspicious use of the `fragment-[id]` for a document, use `document-[id]` and update `psml-link.xsl` when fragment is default -->
           <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
           <w:bookmarkEnd w:id="{count(preceding::*)}" />
-          <xsl:apply-templates select="section|toc" mode="content">
+          <xsl:apply-templates select="section|toc" mode="psml">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
           </xsl:apply-templates>
           <xsl:variable name="section-properties" select="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]"/>
@@ -45,7 +45,7 @@
     </xsl:when>
     <xsl:otherwise>
       <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-      <xsl:apply-templates mode="content" >
+      <xsl:apply-templates mode="psml" >
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
       <w:bookmarkEnd w:id="{count(preceding::*)}" />
@@ -57,16 +57,16 @@
   Match section of pageseeder document;
   Has the option to create comments to reference back to pageseeder comments
 -->
-<xsl:template match="section" mode="content">
+<xsl:template match="section" mode="psml">
   <!-- TODO Add a bookmark? -->
-  <xsl:apply-templates select="*" mode="content"/>
+  <xsl:apply-templates select="*" mode="psml"/>
 </xsl:template>
 
 <!--
   Match fragment of pageseeder document;
   Creates bookmarks for each of the sections
  -->
-<xsl:template match="fragment" mode="content">
+<xsl:template match="fragment" mode="psml">
   <!-- TODO generate comments for other xref-fragment, properties-fragment, media-fragment -->
   <xsl:if test="$generate-comments">
     <xsl:variable name="id" select="count(preceding::fragment) + 1"/>
@@ -82,29 +82,29 @@
     </w:p>
   </xsl:if>
   <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-    <xsl:apply-templates mode="content" />
+    <xsl:apply-templates mode="psml" />
   <w:bookmarkEnd  w:id="{count(preceding::*)}" />
 </xsl:template>
 
 <!--
   Match xref-fragment of pageseeder document
 -->
-<xsl:template match="xref-fragment" mode="content">
+<xsl:template match="xref-fragment" mode="psml">
   <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-  <xsl:apply-templates mode="content" />
+  <xsl:apply-templates mode="psml" />
   <w:bookmarkEnd w:id="{count(preceding::*)}" />
 </xsl:template>
 
 <!--
   Match media-fragment of pageseeder document
 -->
-<xsl:template match="media-fragment" mode="content">
+<xsl:template match="media-fragment" mode="psml">
   <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
   <w:bookmarkEnd w:id="{count(preceding::*)}" />
 </xsl:template>
 
   <!-- Template to match properties fragment and transform it into a table -->
-<xsl:template match="properties-fragment" mode="content">
+<xsl:template match="properties-fragment" mode="psml">
   <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
   <w:tbl>
     <w:tblPr>
@@ -117,13 +117,13 @@
         <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
       </w:tblBorders>
     </w:tblPr>
-    <xsl:apply-templates mode="content" />
+    <xsl:apply-templates mode="psml" />
   </w:tbl>
   <w:bookmarkEnd w:id="{count(preceding::*)}" />
 </xsl:template>
 
 <!-- Template to handle each `property` -->
-<xsl:template match="property" mode="content">
+<xsl:template match="property" mode="psml">
   <w:tr>
     <w:tc>
       <w:tcPr>
@@ -159,7 +159,7 @@
         </xsl:when>
         <xsl:when test="@datatype = 'xref'">
           <w:p>
-            <xsl:apply-templates mode="content"/>
+            <xsl:apply-templates mode="psml"/>
           </w:p>
         </xsl:when>
         <xsl:when test="@datatype = 'string'">
@@ -187,10 +187,10 @@
 <!--
   Elements which are ignored by default.
 -->
-<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator|metadata" mode="content"/>
+<xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator|metadata" mode="psml"/>
 
 <!-- If could not match any, print this error message -->
-<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item ]" mode="content" priority="-1">
+<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item ]" mode="psml" priority="-1">
   <w:r>
     <w:rPr>
       <w:color w:val="991111" /><!-- TODO Magic number? -->

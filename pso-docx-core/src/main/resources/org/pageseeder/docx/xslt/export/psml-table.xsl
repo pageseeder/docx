@@ -12,7 +12,7 @@
                 xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
 
 <!-- Template to match table. It calls a named template to create each row -->
-<xsl:template match="table[.//row]" mode="content">
+<xsl:template match="table[.//row]" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
   <!-- Caption goes before the table in WordProcessingML-->
   <xsl:if test="caption">
@@ -20,7 +20,7 @@
       <w:pPr>
         <w:pStyle w:val="Tablecaption" />
       </w:pPr>
-      <xsl:apply-templates select="caption" mode="content" />
+      <xsl:apply-templates select="caption" mode="psml" />
     </w:p>
   </xsl:if>
 
@@ -215,7 +215,7 @@
             <xsl:choose>
               <!-- when contains mixed content -->
               <xsl:when test="para or block or preformat or nlist or list or heading">
-                <xsl:apply-templates mode="content">
+                <xsl:apply-templates mode="psml">
                    <xsl:with-param name="cell-align" select="fn:return-word-cell-alignment(@align)" tunnel="yes"/>
                 </xsl:apply-templates>
               </xsl:when>
@@ -224,7 +224,7 @@
                 <w:p />
               </xsl:when>
               <xsl:otherwise>
-                <xsl:apply-templates mode="content" >
+                <xsl:apply-templates mode="psml" >
                    <xsl:with-param name="cell-align" select="fn:return-word-cell-alignment(@align)" tunnel="yes"/>
                 </xsl:apply-templates>
               </xsl:otherwise>
@@ -286,7 +286,7 @@
                       <xsl:choose>
                         <!-- when contains mixed content -->
                         <xsl:when test="para or block or preformat or nlist or list or heading">
-                          <xsl:apply-templates mode="content"  >
+                          <xsl:apply-templates mode="psml"  >
                             <xsl:with-param name="cell-align" select="fn:return-word-cell-alignment(@align)" tunnel="yes"/>
                           </xsl:apply-templates>
                         </xsl:when>
@@ -295,7 +295,7 @@
                           <w:p />
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:apply-templates mode="content"  >
+                          <xsl:apply-templates mode="psml"  >
                             <xsl:with-param name="cell-align" select="fn:return-word-cell-alignment(@align)" tunnel="yes"/>
                           </xsl:apply-templates>
                         </xsl:otherwise>
@@ -473,8 +473,8 @@
 </xsl:template>
 
 <!-- Caption is handled inside table -->
-<xsl:template match="caption" mode="content">
-  <xsl:apply-templates mode="content"/>
+<xsl:template match="caption" mode="psml">
+  <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
 </xsl:stylesheet>
