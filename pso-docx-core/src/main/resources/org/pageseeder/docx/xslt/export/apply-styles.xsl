@@ -28,7 +28,7 @@
       <!-- TODO The code below should be implemented using a specific mode so that it is more extensible and easier to document -->
 
       <!-- Paragraphs within blocks -->
-      <xsl:when test="(name()='para' and parent::block)">
+      <xsl:when test="self::para and parent::block">
         <xsl:choose>
           <xsl:when test="fn:block-wordstyle-for-document-label($labels, parent::block/@label)='generate-ps-style'">
             <xsl:value-of select="concat('psblock',parent::block/@label)"/>
@@ -62,7 +62,7 @@
 
       <!-- TODO The block of code below is a copy of the above with different context -->
       <!-- Block labels -->
-      <xsl:when test="name()='block'">
+      <xsl:when test="self::block">
         <xsl:choose>
           <xsl:when test="fn:block-wordstyle-for-document-label($labels, @label)='generate-ps-style'">
             <xsl:value-of select="concat('psblock', @label)"/>
@@ -95,7 +95,7 @@
       </xsl:when>
 
       <!-- pre-formatted text -->
-      <xsl:when test="(name()='preformat')">
+      <xsl:when test="self::preformat">
         <xsl:choose>
           <xsl:when test="fn:preformat-wordstyle-for-document-label($labels) != ''">
             <xsl:value-of select="fn:preformat-wordstyle-for-document-label($labels)"/>
@@ -110,7 +110,7 @@
       </xsl:when>
 
       <!-- Inline label or content within inline label -->
-      <xsl:when test="./ancestor::inline or name() = 'inline'">
+      <xsl:when test="self::inline or ancestor::inline">
         <!-- TODO Use a variable for label attribute -->
         <xsl:choose>
           <xsl:when test="fn:inline-wordstyle-for-document-label($labels, ancestor::inline[1]/@label)='generate-ps-style'">
@@ -144,7 +144,7 @@
       </xsl:when>
 
       <!-- Heading -->
-      <xsl:when test="name()='heading'">
+      <xsl:when test="self::heading">
         <xsl:choose>
           <xsl:when test="fn:heading-wordstyle-for-document-label($labels,@level,@numbered) != ''">
             <xsl:value-of select="fn:heading-wordstyle-for-document-label($labels,@level,@numbered)"/>
@@ -159,7 +159,7 @@
       </xsl:when>
 
       <!-- Section titles -->
-      <xsl:when test="name()='title'">
+      <xsl:when test="self::title">
         <xsl:choose>
           <xsl:when test="fn:title-wordstyle-for-document-label($labels) != ''">
             <xsl:value-of select="fn:title-wordstyle-for-document-label($labels)"/>
@@ -196,7 +196,7 @@
         <xsl:value-of select="'monospace'"/>
       </xsl:when>
 
-      <xsl:when test="name()='para'">
+      <xsl:when test="self::para">
         <xsl:choose>
           <xsl:when test="fn:para-wordstyle-for-document-label($labels,./@indent, ./@numbered, ./@prefix) != ''">
             <xsl:value-of select="fn:para-wordstyle-for-document-label($labels, ./@indent, ./@numbered, ./@prefix)"/>
@@ -210,7 +210,7 @@
         </xsl:choose>
       </xsl:when>
 
-      <xsl:when test="name()='br'">
+      <xsl:when test="self::br">
         <xsl:value-of select="$default-paragraph-style"/>
       </xsl:when>
 
@@ -228,7 +228,7 @@
 <!--       <xsl:when test="fn:element-type(name())='br'" > -->
 <!--         <w:pStyle w:val="{$all-styles/w:styles/w:style[w:name[@w:val=$config-doc/config/defaultparagraphstyle/@style]]/@w:styleId}"/> -->
 <!--       </xsl:when> -->
-    <!-- TODO check if this toc code is used -->
+    <!-- TODO This code does not appear to be used (not referenced from toc) -->
     <xsl:when test="name()='toc' and $style-name != ''" >
       <w:pStyle w:val="{$style-name}"/>
     </xsl:when>
