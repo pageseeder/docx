@@ -5,6 +5,8 @@
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
+
+  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -35,7 +37,7 @@
     <w:pPr>
       <xsl:call-template name="apply-style" />
       <xsl:choose>
-        <xsl:when test="fn:labels-keep-heading-with-next($labels,@level, @numbered)">
+        <xsl:when test="fn:labels-keep-heading-with-next($labels, @level, @numbered)">
           <w:rPr>
             <w:vanish/>
             <w:specVanish/>

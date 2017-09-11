@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  XSLT modules handling inline and text styling PSML elements such as bold, italic, code as well as inline labels
+
+  @author Christophe Lauret
+  @author Philip Rutherford
+  @author Hugo Inacio
+
+  @version 0.6.0
+-->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -56,7 +66,7 @@
       <w:r>
         <w:t><xsl:value-of select="$text"/></w:t>
         <w:fldChar w:fldCharType="begin"/>
-        <w:instrText><xsl:value-of select="concat(' XE ',$quote,$text,$quote,' ')"/></w:instrText>
+        <w:instrText><xsl:value-of select="concat(' XE ', $quote,$text,$quote, ' ')"/></w:instrText>
         <w:fldChar w:fldCharType="separate"/>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
@@ -66,12 +76,13 @@
       <w:r>
         <w:t><xsl:value-of select="$text"/></w:t>
         <w:fldChar w:fldCharType="begin"/>
-        <w:instrText><xsl:value-of select="concat(' XE ',$quote,$text,$quote,' ')"/></w:instrText>
+        <w:instrText><xsl:value-of select="concat(' XE ', $quote, $text, $quote, ' ')"/></w:instrText>
         <w:fldChar w:fldCharType="separate"/>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:inline-fieldcode-labels-with-document-label($labels)) and fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label,$labels) != ''">
+    <xsl:when test="matches(ancestor::inline[1]/@label, fn:inline-fieldcode-labels-with-document-label($labels))
+                and fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels) != ''">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
         <w:instrText xml:space="preserve"><xsl:value-of select="fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels)" /></w:instrText>
@@ -146,37 +157,10 @@
   </xsl:choose>
 </xsl:template>
 
-<!-- TODO Template below can be consolidated -->
-
 <!--
-  Matches bold elements; processing is done inside of text
+  Other inline elements: just keep processing
 -->
-<xsl:template match="bold" mode="psml">
-  <xsl:apply-templates mode="psml" />
-</xsl:template>
-
-<!-- Matches underline elements; processing is done inside of text -->
-<xsl:template match="underline" mode="psml">
-  <xsl:apply-templates mode="psml"/>
-</xsl:template>
-
-<!-- Matches sub elements; processing is done inside of text -->
-<xsl:template match="sub" mode="psml">
-  <xsl:apply-templates mode="psml"/>
-</xsl:template>
-
-<!-- Matches sup elements; processing is done inside of text -->
-<xsl:template match="sup" mode="psml">
-  <xsl:apply-templates mode="psml"/>
-</xsl:template>
-
-<!-- Matches italic elements; processing is done inside of text -->
-<xsl:template match="italic" mode="psml">
-  <xsl:apply-templates mode="psml"/>
-</xsl:template>
-
-<!-- Matches monospace elements; processing is done inside of text -->
-<xsl:template match="monospace" mode="psml">
+<xsl:template match="bold|italic|monospace|sub|sup|underline" mode="psml">
   <xsl:apply-templates mode="psml"/>
 </xsl:template>
 
@@ -185,7 +169,7 @@
 <w:ins w:author="Pageseeder" w:date="fn:get-current-date()">
   <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
   <xsl:apply-templates mode="psml"/>
-  </w:ins>
+</w:ins>
 </xsl:template>
 
 <!-- Match deleted content: only used when diffx is applied -->
@@ -201,7 +185,8 @@
 -->
 <xsl:template match="br" mode="psml">
   <xsl:choose>
-    <xsl:when test="preceding-sibling::*[fn:is-block-element(.)='true'] or following-sibling::*[fn:is-block-element(.)='true']">
+    <xsl:when test="preceding-sibling::*[fn:is-block-element(.)='true']
+                 or following-sibling::*[fn:is-block-element(.)='true']">
       <w:p>
         <w:pPr>
           <xsl:call-template name="apply-style" />

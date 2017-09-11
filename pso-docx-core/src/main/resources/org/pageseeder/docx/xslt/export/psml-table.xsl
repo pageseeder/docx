@@ -420,13 +420,11 @@
                 </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:variable name="current-row-position"
-                  select="count(preceding-sibling::*[name() = 'cell' or 'hcell'][not(number(@rowspan) gt 1)])
+                <xsl:variable name="current-row-position" select="count(preceding-sibling::*[name() = 'cell' or 'hcell'][not(number(@rowspan) gt 1)])
                                                                 + sum(preceding-sibling::*[name() = 'cell' or 'hcell'][@colspan]/@colspan) + 1" />
                 <xsl:for-each select="$row/*[name() = 'cell' or 'hcell']">
-                  <xsl:variable name="row-position"
-                    select="count(preceding-sibling::*[name() = 'cell' or 'hcell'][not(@colspan)])
-                                                           + sum(preceding-sibling::*[name() = 'cell' or 'hcell'][@colspan]/@colspan) + 1" />
+                  <xsl:variable name="row-position" select="count(preceding-sibling::*[name() = 'cell' or 'hcell'][not(@colspan)])
+                                                          + sum(preceding-sibling::*[name() = 'cell' or 'hcell'][@colspan]/@colspan) + 1" />
                   <xsl:choose>
                     <xsl:when test="$row-position = $current-row-position">
                       <xsl:variable name="current-element" select="." />

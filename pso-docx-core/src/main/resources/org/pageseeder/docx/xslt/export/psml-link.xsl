@@ -139,6 +139,7 @@
     <xsl:when test="@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' and $manual-master = 'true'">
       <w:p>
         <w:pPr>
+          <!-- TODO We copy this twice? maybe we can put this in variable to avoid recomputing -->
           <xsl:copy-of select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
         </w:pPr>
       </w:p>
@@ -176,8 +177,8 @@
 -->
 <xsl:template match="link" mode="psml">
   <xsl:choose>
-    <xsl:when test="@href[starts-with(.,'#')]">
-      <xsl:variable name="internal-reference" select="concat('anchor-', substring-after(@href,'#'))" />
+    <xsl:when test="@href[starts-with(., '#')]">
+      <xsl:variable name="internal-reference" select="concat('anchor-', substring-after(@href, '#'))" />
       <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
         <w:r>
           <w:rPr>
@@ -189,7 +190,7 @@
         </w:r>
       </w:hyperlink>
     </xsl:when>
-    <xsl:when test="@href[not(starts-with(.,'#'))]">
+    <xsl:when test="@href[not(starts-with(., '#'))]">
       <!-- only process internal link-->
       <w:r>
         <w:fldChar w:fldCharType="begin" />
@@ -203,10 +204,10 @@
       </w:r>
       <w:r>
         <w:rPr>
-          <xsl:call-template name="apply-style" />
+          <xsl:call-template name="apply-style"/>
         </w:rPr>
         <w:t>
-          <xsl:value-of select="." />
+          <xsl:value-of select="."/>
         </w:t>
       </w:r>
       <w:r>
@@ -217,8 +218,9 @@
       <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:when test="@name">
-      <w:bookmarkStart w:name="anchor-{@name}" w:id="{count(preceding::*)}" />
-      <w:bookmarkEnd  w:id="{count(preceding::*)}" />
+      <xsl:variable name="bookmark-id" select="count(preceding::*)"/>
+      <w:bookmarkStart w:id="{$bookmark-id}" w:name="anchor-{@name}"/>
+      <w:bookmarkEnd w:id="{$bookmark-id}"/>
     </xsl:when>
     <xsl:otherwise>
       <xsl:apply-templates mode="psml"/>

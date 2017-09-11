@@ -35,7 +35,7 @@
   <xsl:variable name="role"      select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/@role"/>
   <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
   <xsl:choose>
-    <!--  TODO check if this can ever happen as all item character content is wrapped in <para> -->
+    <!--  TODO Remove code below and display error message instead -->
     <xsl:when test="text() or link or bold or italic or sup or sub or xref or inline or image or monospace">
       <w:p>
         <w:pPr>

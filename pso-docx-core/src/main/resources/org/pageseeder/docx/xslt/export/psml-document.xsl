@@ -31,7 +31,7 @@
           <xsl:apply-templates select="section|toc" mode="psml">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
           </xsl:apply-templates>
-          <xsl:variable name="section-properties" select="document(concat($_dotxfolder,'/word/document.xml'))//w:body/w:sectPr[last()]"/>
+          <xsl:variable name="section-properties" select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
           <xsl:choose>
             <xsl:when test="$section-properties">
               <xsl:copy-of select="$section-properties"/>
@@ -48,7 +48,7 @@
       <xsl:apply-templates mode="psml" >
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
-      <w:bookmarkEnd w:id="{count(preceding::*)}" />
+      <w:bookmarkEnd w:id="{count(preceding::*)}"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
@@ -119,7 +119,7 @@
     </w:tblPr>
     <xsl:apply-templates mode="psml" />
   </w:tbl>
-  <w:bookmarkEnd w:id="{count(preceding::*)}" />
+  <w:bookmarkEnd w:id="{count(preceding::*)}"/>
 </xsl:template>
 
 <!-- Template to handle each `property` -->
@@ -190,12 +190,12 @@
 <xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator|metadata" mode="psml"/>
 
 <!-- If could not match any, print this error message -->
-<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item ]" mode="psml" priority="-1">
+<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item]" mode="psml" priority="-1">
   <w:r>
     <w:rPr>
       <w:color w:val="991111" /><!-- TODO Magic number? -->
     </w:rPr>
-    <w:t> Error unprocessed element: <xsl:value-of select="name(.)" /></w:t>
+    <w:t>Error unprocessed element: <xsl:value-of select="name(.)" /></w:t>
   </w:r>
 </xsl:template>
 

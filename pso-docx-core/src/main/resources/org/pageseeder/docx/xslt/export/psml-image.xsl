@@ -5,6 +5,8 @@
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
+
+  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
