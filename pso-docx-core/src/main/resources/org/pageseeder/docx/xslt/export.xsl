@@ -85,8 +85,6 @@
 <xsl:param name="_configfileurl"/>
 
 <xsl:include href="export/variables.xsl" />
-<xsl:include href="export/footer.xsl" />
-<xsl:include href="export/header.xsl" />
 <xsl:include href="export/numbering.xsl" />
 <xsl:include href="export/content_types.xsl" />
 <xsl:include href="export/apply-styles.xsl" />
