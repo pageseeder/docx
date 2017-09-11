@@ -9,6 +9,15 @@
 
   2) Fragments/Sections - create bookmarks for each fragment
 
+  Parameters starting with `_` are supplied by the Java a framework.
+
+  This template expects that the PSML content has already been "unnested":
+   * Free text under list items and table cells has been wrapped in `<para>`
+   * new lines and line breaks in preformatted block have been normalized to use `<br>`
+
+  @source the PSML document to export as Word
+  @output the `word/document.xml` file included in the DOCX format
+
   @author Hugo Inacio
   @author Christophe Lauret
   @author Philip Rutherford
@@ -108,45 +117,13 @@
   The root node of the psml file
 -->
 <xsl:template match="/">
-  <xsl:result-document href="{concat($_outputfolder, '../output/numbering.xml')}">
-    <lists>
-      <xsl:for-each select=".//nlist[@start]">
-        <xsl:variable name="role" select="fn:get-style-from-role(@role, .)" />
-        <nlist start="{@start}">
-          <!-- TODO Simplify code -->
-          <xsl:attribute name="level">
-            <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $role]/preceding-sibling::w:lvl)" />
-          </xsl:attribute>
-          <xsl:value-of select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $role]/@w:abstractNumId" />
-        </nlist>
-      </xsl:for-each>
-      <xsl:for-each select=".//list[@start]">
-        <xsl:variable name="role" select="fn:get-style-from-role(@role, .)" />
-        <list start="{@start}">
-          <!-- TODO Simplify code -->
-          <xsl:attribute name="level">
-            <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $role]/preceding-sibling::w:lvl)" />
-          </xsl:attribute>
-          <xsl:value-of select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $role]/@w:abstractNumId" />
-        </list>
-      </xsl:for-each>
-    </lists>
-  </xsl:result-document>
-  <xsl:variable name="word-documents" select="if($manual-master = 'true') then count(.//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']) else 0"/>
-  <xsl:call-template name="create-documents" >
-    <xsl:with-param name="word-documents" select="$word-documents" tunnel="yes"/>
-  </xsl:call-template>
-  <xsl:apply-templates mode="psml">
-    <xsl:with-param name="word-documents" select="$word-documents" tunnel="yes"/>
-  </xsl:apply-templates>
-</xsl:template>
 
-<!-- Template to copy each node recursively -->
-<xsl:template match="* | @*" mode="copy">
-  <xsl:copy>
-    <xsl:copy-of select="@*" />
-    <xsl:apply-templates mode="copy" />
-  </xsl:copy>
+  <!-- Creating files to include in the DOCX package -->
+  <xsl:call-template name="create-documents" />
+
+  <!-- Processing the PSML-->
+  <xsl:apply-templates mode="psml" />
+
 </xsl:template>
 
 </xsl:stylesheet>

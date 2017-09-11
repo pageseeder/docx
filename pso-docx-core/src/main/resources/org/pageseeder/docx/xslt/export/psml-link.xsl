@@ -135,7 +135,6 @@
   checks also for document labels so that styles are applied accordingly through the configuration
 -->
 <xsl:template match="blockxref" mode="psml">
-  <xsl:param name="word-documents" tunnel="yes"/>
   <xsl:choose>
     <xsl:when test="@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' and $manual-master = 'true'">
       <w:p>

@@ -74,11 +74,12 @@
 </xsl:template>
 
 <!-- 
-  Template to handle creation of files referenced by content_types.xml file
+  Template to handle creation of files referenced by `content_types.xml` file
 -->
 <xsl:template name="create-documents">
-  <xsl:param name="word-documents" tunnel="yes"/>
-  <xsl:result-document href="{concat($_outputfolder,encode-for-uri('[Content_Types].xml'))}">
+
+  <!-- Process the `[Content_Types].xml` file -->
+  <xsl:result-document href="{concat($_outputfolder, encode-for-uri('[Content_Types].xml'))}">
     <xsl:apply-templates select="document($_content-types-template)" mode="content-types">
       <xsl:with-param name="current-document" select="current()" />
     </xsl:apply-templates>
@@ -191,6 +192,10 @@
 <!--             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 3))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes" -->
 <!--               Target="endnotes.xml" /> -->
 <!--           </xsl:if> -->
+
+        <!-- TODO Counting blockxrefs to word documents?? -->
+        <xsl:variable name="word-documents" select="if($manual-master = 'true') then count(.//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']) else 0"/>
+
         <xsl:if test="$manual-master = 'true'">
           <xsl:for-each select="//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']">
             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + position()))}"
@@ -308,6 +313,14 @@
       </Relationships>
     </xsl:result-document>
   </xsl:if>
+</xsl:template>
+
+<!-- Template to copy each node recursively -->
+<xsl:template match="* | @*" mode="copy">
+  <xsl:copy>
+    <xsl:copy-of select="@*" />
+    <xsl:apply-templates mode="copy" />
+  </xsl:copy>
 </xsl:template>
 
 </xsl:stylesheet>
