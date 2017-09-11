@@ -15,16 +15,16 @@
   Function to create footer (not currently used)
 -->
 <xsl:function name="fn:create-footer">
-	<w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" exclude-result-prefixes="#all">
-		<w:p>
-			<w:pPr>
-				<w:jc w:val="center" />
-			</w:pPr>
-			<w:r>
-				<w:pgNum />
-			</w:r>
-		</w:p>
-	</w:ftr>
+  <w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" exclude-result-prefixes="#all">
+    <w:p>
+      <w:pPr>
+        <w:jc w:val="center" />
+      </w:pPr>
+      <w:r>
+        <w:pgNum />
+      </w:r>
+    </w:p>
+  </w:ftr>
 </xsl:function>
 
 </xsl:stylesheet>

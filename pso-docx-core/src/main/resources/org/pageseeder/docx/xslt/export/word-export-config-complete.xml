@@ -2,7 +2,7 @@
 <config>
   <core>
     <creator select="[string]" />
-	  <created select=""/>
+    <created select=""/>
     <description select="[string]" />
     <subject select="[string]" />
     <title select="[string]" />
@@ -118,9 +118,9 @@
           <fieldcode regexp="%arabic%" type="SEQ" />
         </prefix>
         <numbered select="false"/>
-	      <numbered select="true">
-	        <fieldcode regexp="%arabic%" type="SEQ" />
-	      </numbered>
+        <numbered select="true">
+          <fieldcode regexp="%arabic%" type="SEQ" />
+        </numbered>
       </level>
     </heading>
     
@@ -201,13 +201,13 @@
 
     <!-- default options:"[existing table style]|TableGrid" -->
     <tables>
-  	  <table default="Table Normal">
-  	   <width type="pct" value="5000"/>
-  		</table>
+      <table default="Table Normal">
+       <width type="pct" value="5000"/>
+      </table>
       <table role="[existing table role]" tablestyle="[existing word table style]" />
-  	  <table role="[existing table role]" tablestyle="[existing word table style]" >
-  		<width type="pct" value="5000"/>
-  	  </table>
+      <table role="[existing table role]" tablestyle="[existing word table style]" >
+      <width type="pct" value="5000"/>
+      </table>
     </tables>
 
     <!-- options:"[existing style name]" -->

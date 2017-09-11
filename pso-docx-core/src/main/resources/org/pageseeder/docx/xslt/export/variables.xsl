@@ -2024,11 +2024,11 @@ Automates the creation of a prefix for a heading defined by the expression set i
           <xsl:choose>
             <xsl:when test="substring-before($regexp,'%') !=''">
               <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
-<!-- 		            <xsl:message>regexp-before:<xsl:value-of select="$regexp-before"/></xsl:message> -->
-<!-- 		            <xsl:message>$current/@prefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
+<!--                 <xsl:message>regexp-before:<xsl:value-of select="$regexp-before"/></xsl:message> -->
+<!--                 <xsl:message>$current/@prefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
               <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
                  <xsl:matching-substring>
-<!-- 		                <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
+<!--                     <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
                    <xsl:value-of select="regex-group(2)"/>
                  </xsl:matching-substring>
                </xsl:analyze-string>
