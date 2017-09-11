@@ -2,6 +2,9 @@
 <!--
   XSLT module for processing MathML
 
+  This is a slightly modified version of a file that came from the Microsoft Office Open SDK
+  and a copy of the latest version can be found on `c:/Program Files (x86)/Microsoft Office/Office[version]`
+
   NB Beta Version 070708
 
   @author Christophe Lauret
@@ -16,7 +19,7 @@
                 version="2.0"
                 exclude-result-prefixes="mml m w">
 
-<!-- TODO This looks like XSLT1.0 style code copied and pasted from some old project -->
+<!-- TODO This looks like XSLT1.0 style code copied and pasted from another project -->
 
 <!-- TODO This is useless -->
 <xsl:output method="xml" encoding="UTF-8"/>
