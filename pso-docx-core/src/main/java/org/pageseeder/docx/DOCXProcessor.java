@@ -115,7 +115,7 @@ public final class DOCXProcessor {
 
     // 4. Unnest the files
     log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export/unnest.xsl");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export-unnest.xsl");
     File sourceDocument = this._builder.source();
     File newSourceDocument = new File(this._builder.working(), "unnested/document-unnested.psml");
     newSourceDocument.getParentFile().mkdir();

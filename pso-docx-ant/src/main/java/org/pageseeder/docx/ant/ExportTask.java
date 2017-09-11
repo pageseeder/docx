@@ -237,7 +237,7 @@ public final class ExportTask extends Task {
     
     // 4. Unnest the files
     log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export/unnest.xsl");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export-unnest.xsl");
     File sourceDocument = this.source;
     File newSourceDocument = new File(this.working, "unnested/document-unnested.psml");
     newSourceDocument.getParentFile().mkdir();
