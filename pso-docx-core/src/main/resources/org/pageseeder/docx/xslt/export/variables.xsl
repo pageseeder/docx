@@ -153,7 +153,7 @@
 </xsl:variable>
 
 <!-- Node containing all inline label configured values -->
-<xsl:variable name="inline-labels" as="element()">
+<xsl:variable name="inline-labels" as="element(inlinelabels)">
   <inlinelabels>
   <xsl:choose>
     <xsl:when test="$config-doc/config/elements/inline[@default = 'generate-ps-style']">
@@ -325,14 +325,7 @@
 -->
 <xsl:function name="fn:get-default-inline-fieldcode-value">
   <xsl:param name="inline-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/inline/fieldcode[@label = $inline-label]/@value != ''">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/inline/fieldcode[@label = $inline-label]/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/inline/fieldcode[@label = $inline-label]/@value)"/>
 </xsl:function>
 
 <!--
@@ -397,14 +390,7 @@
 <xsl:function name="fn:get-document-label-inline-fieldcode-value" as="xs:string">
   <xsl:param name="inline-label"/>
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/fieldcode[@label = $inline-label]/@value != ''">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/inline/fieldcode[@label = $inline-label]/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/inline/fieldcode[@label = $inline-label]/@value)" />
 </xsl:function>
 
 <!--
@@ -415,8 +401,7 @@
 <xsl:function name="fn:default-inline-ignore-labels">
   <xsl:choose>
     <xsl:when test="$config-doc/config/elements[not(@label)]/inline/ignore/@label">
-     <xsl:for-each
-      select="$config-doc/config/elements[not(@label)]/inline/ignore/@label">
+     <xsl:for-each select="$config-doc/config/elements[not(@label)]/inline/ignore/@label">
       <xsl:choose>
         <xsl:when test="position() = last()">
           <xsl:value-of select="concat('^',.,'$')" />
@@ -521,14 +506,7 @@ Returns the default table style.
 -->
 <xsl:function name="fn:default-table-style" as="xs:string">
   <xsl:variable name="table-name" select="$config-doc/config/elements[not(@label)]/tables/table/@default"/>
-  <xsl:choose>
-    <xsl:when test="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId != ''">
-      <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string(document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
 </xsl:function>
 
 <!--
@@ -541,14 +519,7 @@ Returns the default table style.
 <xsl:function name="fn:default-table-roles" as="xs:string">
   <xsl:param name="role"/>
   <xsl:variable name="table-name" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@tablestyle"/>
-  <xsl:choose>
-    <xsl:when test="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId != ''">
-      <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string(document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
 </xsl:function>
 
 <!--
@@ -559,14 +530,7 @@ Returns the default table style.
 <xsl:function name="fn:default-table-style-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:variable name="table-name" select="$config-doc/config/elements[@label = $document-label]/tables/table/@default"/>
-  <xsl:choose>
-    <xsl:when test="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId != ''">
-      <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string(document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
 </xsl:function>
 
 <!--
@@ -580,14 +544,7 @@ Returns the default table style.
   <xsl:param name="document-label"/>
   <xsl:param name="role"/>
   <xsl:variable name="table-name" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@tablestyle"/>
-  <xsl:choose>
-    <xsl:when test="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId != ''">
-          <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string(document(concat($_dotxfolder,$styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)"/>
 </xsl:function>
 
 <!--
@@ -596,14 +553,7 @@ Returns the default table style.
   @return the word table with type
 -->
 <xsl:function name="fn:default-table-style-type" as="xs:string">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/tables/table[@default]/width/@type != ''">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/tables/table[@default]/width/@type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@default]/width/@type)" />
 </xsl:function>
 
 <!--
@@ -612,14 +562,7 @@ Returns the default table style.
   @return the word table with value
 -->
 <xsl:function name="fn:default-table-style-type-value" as="xs:string">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/tables/table[@default]/width/@value != ''">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/tables/table[@default]/width/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@default]/width/@value)" />
 </xsl:function>
 
 <!--
@@ -631,14 +574,7 @@ Returns the default table style.
 -->
 <xsl:function name="fn:default-table-roles-type" as="xs:string">
   <xsl:param name="role"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@type != ''">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@type)"/>
 </xsl:function>
 
 <!--
@@ -650,14 +586,7 @@ Returns the default table width value based on a table role.
 -->
 <xsl:function name="fn:default-table-roles-type-value" as="xs:string">
   <xsl:param name="role"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@value != ''">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@value)"/>
 </xsl:function>
 
 <!--
@@ -667,14 +596,7 @@ Returns the default table width value based on a table role.
 -->
 <xsl:function name="fn:default-table-style-with-document-label-type" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@type != ''">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@type)"/>
 </xsl:function>
 
 <!--
@@ -684,14 +606,7 @@ Returns the default table width value based on a table role.
 -->
 <xsl:function name="fn:default-table-style-with-document-label-type-value" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@value != ''">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@value)" />
 </xsl:function>
 
 <!--
@@ -705,14 +620,7 @@ Returns the default table width value based on a table role.
 <xsl:function name="fn:table-roles-with-document-label-type" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="role"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@type != ''">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@type)" />
 </xsl:function>
 
 <!--
@@ -726,14 +634,7 @@ Returns the default table width value based on a table role.
 <xsl:function name="fn:table-roles-with-document-label-type-value" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="role"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@value != ''">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@value)" />
 </xsl:function>
 
 <!-- specify table width of a table -->
@@ -762,15 +663,7 @@ Returns the default table width value based on a table role.
   @return true or false
 -->
 <xsl:variable name="create-toc" as="xs:boolean">
-  <!-- TODO Simplify code -->
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/toc[@generate = 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/toc/@generate = 'true'" />
 </xsl:variable>
 
 <!--
@@ -779,15 +672,7 @@ Returns the default table width value based on a table role.
   @return true or false
 -->
 <xsl:variable name="create-endnotes" as="xs:boolean">
-  <!-- TODO Simplify code -->
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/endnotes[@generate = 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/default/endnotes/@generate = 'true'"/>
 </xsl:variable>
 
 <xsl:function name="fn:endnote-labels">
@@ -816,15 +701,7 @@ Returns the default table width value based on a table role.
   @return true or false
 -->
 <xsl:variable name="create-footnotes" as="xs:boolean">
-  <!-- TODO Simplify code -->
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/footnotes[@generate = 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/default/footnotes/@generate = 'true'"/>
 </xsl:variable>
 
 
@@ -854,15 +731,7 @@ Returns the default table width value based on a table role.
   @return true or false
 -->
 <xsl:variable name="generate-toc-headings" as="xs:boolean">
-  <!-- TODO Simplify code -->
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/toc/headings[@generate = 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/toc/headings/@generate = 'true'"/>
 </xsl:variable>
 
 <!--
@@ -871,14 +740,7 @@ Returns the default table width value based on a table role.
   @return value of heading levels
 -->
 <xsl:variable name="toc-heading-values" as="xs:string">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/toc/headings/@select != ''">
-      <xsl:value-of select="$config-doc/config/toc/headings/@select" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/toc/headings/@select)"/>
 </xsl:variable>
 
 <!--
@@ -887,15 +749,7 @@ Returns the default table width value based on a table role.
   @return true or false
 -->
 <xsl:variable name="generate-toc-outline" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/toc/outline[@generate = 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/toc/outline/@generate = 'true'"/>
 </xsl:variable>
 
 <!--
@@ -904,14 +758,7 @@ Returns the default table width value based on a table role.
   @return value of outline levels
 -->
 <xsl:variable name="toc-outline-values">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/toc/outline/@select != ''">
-      <xsl:value-of select="$config-doc/config/toc/outline/@select" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/toc/outline/@select)" />
 </xsl:variable>
 
 <!--
@@ -920,14 +767,7 @@ Returns the default table width value based on a table role.
   @return true or false
 -->
 <xsl:variable name="generate-toc-paragraphs" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/toc/paragraph[@generate = 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/toc/paragraph/@generate = 'true'" />
 </xsl:variable>
 
 <!--
@@ -939,10 +779,10 @@ Returns the values of the paragraph styles values for Table of contents.
   <xsl:for-each select="$config-doc/config/toc/paragraph/style">
     <xsl:choose>
       <xsl:when test="position() = last()">
-        <xsl:value-of select="concat(./@value,',',./@indent)"/>
+        <xsl:value-of select="concat(@value, ',', @indent)"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat(./@value,',',./@indent,',')"/>
+        <xsl:value-of select="concat(@value, ',', @indent, ',')"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:for-each>
@@ -954,14 +794,7 @@ Returns the confirmation of creation of comments.
 @return true or false
 -->
 <xsl:variable name="generate-comments" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/comments/@generate = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/default/comments/@generate = 'true'" />
 </xsl:variable>
 
 <!--
@@ -984,31 +817,17 @@ Returns the naming of docx files on export master.
 </xsl:variable>
 
 <!--
-Returns the confirmation of creation of comments.
+  Returns the confirmation of creation of comments.
 
-@return true or false
+  @return true or false
 -->
 <xsl:variable name="generate-mathml" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/mathml/@generate = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/default/mathml/@generate = 'true'"/>
 </xsl:variable>
 
 <!-- boolean variable to generate cross references or not -->
 <xsl:variable name="generate-cross-references" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/xref/@type = 'cross-reference'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="$config-doc/config/default/xref/@type = 'cross-reference'"/>
 </xsl:variable>
 
 <!--
@@ -1055,17 +874,9 @@ Returns the configured style for ps:preformat element for label specific documen
 @param document-label the document label
 @return the w:style
 -->
-<xsl:function name="fn:preformat-wordstyle-for-document-label">
+<xsl:function name="fn:preformat-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/preformat/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/preformat/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/preformat/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1073,16 +884,8 @@ Returns the configured style for ps:preformat element for default documents.
 
 @return the w:style
 -->
-<xsl:function name="fn:preformat-wordstyle-for-default-document">
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/preformat/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/preformat/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:function name="fn:preformat-wordstyle-for-default-document" as="xs:string">
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/preformat/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1092,18 +895,10 @@ Returns the configured w:style for ps:block element for label specific documents
 @param block-label the current block label
 @return the w:style
 -->
-<xsl:function name="fn:block-wordstyle-for-document-label">
+<xsl:function name="fn:block-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="block-label"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/block/label[@value=$block-label]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/block/label[@value=$block-label]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/block/label[@value=$block-label]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1115,12 +910,10 @@ Returns the default w:style for ps:block element for label specific documents.
 <xsl:function name="fn:block-default-wordstyle-for-document-label">
   <xsl:param name="document-label"/>
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/block/@default = 'none'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/block/@default = 'none'">
       <xsl:value-of select="''" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/block/@default">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/block/@default">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/block/@default" />
     </xsl:when>
     <xsl:otherwise>
@@ -1135,17 +928,9 @@ Returns the configured w:style for ps:block element for default documents.
 @param block-label the document label
 @return the w:style
 -->
-<xsl:function name="fn:block-wordstyle-for-default-document">
+<xsl:function name="fn:block-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="block-label"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/block/label[@value=$block-label]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/block/label[@value=$block-label]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/block/label[@value=$block-label]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1155,12 +940,10 @@ Returns the default w:style for ps:block element for default documents.
 -->
 <xsl:function name="fn:block-default-wordstyle-for-default-document">
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/block/@default = 'none'">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/block/@default = 'none'">
       <xsl:value-of select="''" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/block/@default">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/block/@default">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/block/@default" />
     </xsl:when>
     <xsl:otherwise>
@@ -1180,12 +963,10 @@ Returns the configured w:style for ps:inline element for label specific document
   <xsl:param name="document-label"/>
   <xsl:param name="inline-label"/>
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle = 'generate-ps-style'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle = 'generate-ps-style'">
       <xsl:value-of select="concat('psinline',$inline-label)" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
@@ -1203,12 +984,10 @@ Returns the configured w:style for ps:inline element for label specific document
 <xsl:function name="fn:inline-default-wordstyle-for-document-label">
   <xsl:param name="document-label"/>
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/inline/@default = 'none'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/@default = 'none'">
       <xsl:value-of select="''" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/inline/@default">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/@default">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/inline/@default" />
     </xsl:when>
     <xsl:otherwise>
@@ -1223,17 +1002,9 @@ Returns the configured w:style for ps:inline element for default documents.
 @param inline-label the current inline label
 @return the w:style
 -->
-<xsl:function name="fn:inline-wordstyle-for-default-document">
+<xsl:function name="fn:inline-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="inline-label"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/inline/label[@value=$inline-label]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/inline/label[@value=$inline-label]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/inline/label[@value=$inline-label]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1243,12 +1014,10 @@ Returns the default w:style for ps:inline element for default documents.
 -->
 <xsl:function name="fn:inline-default-wordstyle-for-default-document">
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/inline/@default = 'none'">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/inline/@default = 'none'">
       <xsl:value-of select="''" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/inline/@default">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/inline/@default">
       <xsl:value-of select="$config-doc/config/elements[not(@label)]/inline/@default" />
     </xsl:when>
     <xsl:otherwise>
@@ -1269,15 +1038,7 @@ Returns the configured w:style for ps:heading element for label specific documen
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1287,21 +1048,10 @@ Returns the configured w:style for ps:heading element for default documents.
 @param numbered the numbered attribute value of the heading
 @return the w:style
 -->
-<xsl:function name="fn:heading-wordstyle-for-default-document">
+<xsl:function name="fn:heading-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-<!--     <xsl:message>test</xsl:message> -->
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle">
-<!--         <xsl:message>here</xsl:message> -->
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-<!--         <xsl:message>not here</xsl:message> -->
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1315,12 +1065,10 @@ Returns if the configured w:style for ps:heading element for default documents s
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'true'">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'false'">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1339,15 +1087,7 @@ Returns if the configured w:style for ps:heading element for default documents s
 <xsl:function name="fn:default-keep-heading-with-next" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-      <xsl:choose>
-        <xsl:when
-          test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next">
-          <xsl:value-of select="true()" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="false()" />
-        </xsl:otherwise>
-      </xsl:choose>
+  <xsl:value-of select="exists($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--
@@ -1362,12 +1102,10 @@ Returns if the configured w:style for ps:heading element for document label spec
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'true'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'false'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1387,14 +1125,7 @@ Returns if the configured w:style for ps:heading element for document label spec
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-      <xsl:choose>
-        <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next">
-          <xsl:value-of select="true()" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="false()" />
-        </xsl:otherwise>
-      </xsl:choose>
+  <xsl:value-of select="exists($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--
@@ -1408,16 +1139,13 @@ Returns if the configured w:style for ps:para element for default documents shou
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/prefix/@select = 'true'">
+    <xsl:when test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'true'">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'false'">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1437,12 +1165,10 @@ Returns if the configured w:style for ps:para element for default documents shou
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/keep-paragraph-with-next">
+    <xsl:when test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/keep-paragraph-with-next">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/keep-paragraph-with-next">
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/keep-paragraph-with-next">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1464,12 +1190,10 @@ Returns if the configured w:style for ps:para element for document label specifi
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/keep-paragraph-with-next">
+    <xsl:when test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/keep-paragraph-with-next">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/keep-paragraph-with-next">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/keep-paragraph-with-next">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1491,16 +1215,13 @@ Returns if the configured w:style for ps:para element for document label specifi
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/prefix/@select = 'true'">
+    <xsl:when test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'true'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'false'">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1517,19 +1238,11 @@ Returns the w:style for ps:para element that is inside a ps:list for label speci
 @param numbered the numbered attribute value of the ps:para
 @return w:style
 -->
-<xsl:function name="fn:para-list-level-paragraph-for-document-label">
+<xsl:function name="fn:para-list-level-paragraph-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="list-level"/>
   <xsl:param name="numbered"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle != ''">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1539,18 +1252,10 @@ Returns the w:style for ps:para element that is inside a ps:list for default doc
 @param numbered the numbered attribute value of the ps:para
 @return w:style
 -->
- <xsl:function name="fn:para-list-level-paragraph-for-default-document">
+<xsl:function name="fn:para-list-level-paragraph-for-default-document" as="xs:string">
   <xsl:param name="list-level"/>
   <xsl:param name="numbered"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle != ''">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle)" />
 </xsl:function>
 
 <!--
