@@ -84,12 +84,18 @@
 <!-- The location of the configuration file used -->
 <xsl:param name="_configfileurl"/>
 
+<!-- Common utility templates -->
 <xsl:include href="export/variables.xsl" />
-<xsl:include href="export/numbering.xsl" />
-<xsl:include href="export/content_types.xsl" />
 <xsl:include href="export/apply-styles.xsl" />
 <xsl:include href="export/functions.xsl" />
+
+<!-- MathML -->
 <xsl:include href="export/mml2omml.xsl" />
+
+<!-- Generate content for DOCX package (other than `document.xml`) -->
+<xsl:include href="export/word-numbering.xsl" />
+<xsl:include href="export/word-content_types.xsl" />
+<xsl:include href="export/word-styles.xsl" />
 
 <!-- Handling PSML elements -->
 <xsl:include href="export/psml-document.xsl" />
@@ -100,11 +106,6 @@
 <xsl:include href="export/psml-text-block.xsl" />
 <xsl:include href="export/psml-text-inline.xsl" />
 <xsl:include href="export/psml-toc.xsl" />
-
-
-<xsl:include href="export/styles.xsl" />
-
-
 
 
 <!-- The date of the current exported document -->
