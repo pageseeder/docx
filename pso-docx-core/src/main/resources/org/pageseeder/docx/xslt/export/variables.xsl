@@ -17,6 +17,14 @@
                 xmlns:fn="http://www.pageseeder.com/function"
                 exclude-result-prefixes="#all">
 
+<!-- TODO Too many repeated XPaths that may cause unnecessary tree traversal, use variables when appropriate -->
+
+<!-- TODO Too many global variables, this creates complex global state that make the system hard to test -->
+
+<!-- TODO Too many functions rely on global variable, look at options to pass variables as parameters -->
+
+<!-- FIXME Many functions erroneously use `xsl:value-of` in place of `xsl:sequence` to return boolean values: check usage and use appropriate XSLT instruction -->
+
 <!-- The location of the Content_Types.xml file -->
 <xsl:variable name="_content-types-template" select="concat($_dotxfolder, encode-for-uri('[Content_Types].xml'))" as="xs:string"/>
 
@@ -771,9 +779,9 @@ Returns the default table width value based on a table role.
 </xsl:variable>
 
 <!--
-Returns the values of the paragraph styles values for Table of contents.
+  Returns the values of the paragraph styles values for Table of contents.
 
-@return list of paragprah styles and indent value
+  @return list of paragraph styles and indent value
 -->
 <xsl:variable name="toc-paragraph-values">
   <xsl:for-each select="$config-doc/config/toc/paragraph/style">
@@ -789,18 +797,18 @@ Returns the values of the paragraph styles values for Table of contents.
 </xsl:variable>
 
 <!--
-Returns the confirmation of creation of comments.
+  Returns the confirmation of creation of comments.
 
-@return true or false
+  @return true or false
 -->
 <xsl:variable name="generate-comments" as="xs:boolean">
   <xsl:value-of select="$config-doc/config/default/comments/@generate = 'true'" />
 </xsl:variable>
 
 <!--
-Returns the naming of docx files on export master.
+  Returns the naming of docx files on export master.
 
-@return type of export
+  @return type of export
 -->
 <xsl:variable name="master-select" as="xs:string">
   <xsl:choose>
@@ -831,48 +839,30 @@ Returns the naming of docx files on export master.
 </xsl:variable>
 
 <!--
-Returns the configured default paragraph style.
+  Returns the configured default paragraph style.
 
-@return the value of the default paragraph style
+  @return the value of the default paragraph style
 -->
-<xsl:variable name="default-paragraph-style">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/defaultparagraphstyle/@wordstyle = 'none'">
-      <xsl:value-of select="'Body Text'" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/default/defaultparagraphstyle/@wordstyle != ''">
-      <xsl:value-of select="$config-doc/config/default/defaultparagraphstyle/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'Body Text'" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:variable name="default-paragraph-style" as="xs:string">
+  <xsl:variable name="style" select="$config-doc/config/default/defaultparagraphstyle/@wordstyle"/>
+  <xsl:value-of select="if ($style and $style != '' and $style != 'none') then $style else 'Body Text'" />
 </xsl:variable>
 
 <!--
-Returns the configured default character style.
+  Returns the configured default character style.
 
-@return the value of the default character style
+  @return the value of the default character style
 -->
-<xsl:variable name="default-character-style">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/defaultcharacterstyle/@wordstyle = 'none'">
-      <xsl:value-of select="'Default Paragraph Font'" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/default/defaultcharacterstyle/@wordstyle != ''">
-      <xsl:value-of select="$config-doc/config/default/defaultcharacterstyle/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'Default Paragraph Font'" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:variable name="default-character-style" as="xs:string">
+  <xsl:variable name="style" select="$config-doc/config/default/defaultcharacterstyle/@wordstyle"/>
+  <xsl:value-of select="if ($style and $style != '' and $style != 'none') then $style else 'Default Paragraph Font'" />
 </xsl:variable>
 
 <!--
-Returns the configured style for ps:preformat element for label specific documents.
+  Returns the configured style for ps:preformat element for label specific documents.
 
-@param document-label the document label
-@return the w:style
+  @param document-label the document label
+  @return the w:style
 -->
 <xsl:function name="fn:preformat-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
@@ -880,20 +870,20 @@ Returns the configured style for ps:preformat element for label specific documen
 </xsl:function>
 
 <!--
-Returns the configured style for ps:preformat element for default documents.
+  Returns the configured style for ps:preformat element for default documents.
 
-@return the w:style
+  @return the w:style
 -->
 <xsl:function name="fn:preformat-wordstyle-for-default-document" as="xs:string">
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/preformat/@wordstyle)" />
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:block element for label specific documents.
+  Returns the configured w:style for ps:block element for label specific documents.
 
-@param document-label the document label
-@param block-label the current block label
-@return the w:style
+  @param document-label the document label
+  @param block-label the current block label
+  @return the w:style
 -->
 <xsl:function name="fn:block-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
@@ -902,31 +892,22 @@ Returns the configured w:style for ps:block element for label specific documents
 </xsl:function>
 
 <!--
-Returns the default w:style for ps:block element for label specific documents.
+  Returns the default w:style for ps:block element for label specific documents.
 
-@param document-label the document label
-@return the w:style
+  @param document-label the document label
+  @return the w:style
 -->
-<xsl:function name="fn:block-default-wordstyle-for-document-label">
+<xsl:function name="fn:block-default-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/block/@default = 'none'">
-      <xsl:value-of select="''" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/block/@default">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/block/@default" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/block/@default"/>
+  <xsl:value-of select="if ($style = 'none') then '' else string($style)" />
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:block element for default documents.
+  Returns the configured w:style for ps:block element for default documents.
 
-@param block-label the document label
-@return the w:style
+  @param block-label the document label
+  @return the w:style
 -->
 <xsl:function name="fn:block-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="block-label"/>
@@ -934,73 +915,46 @@ Returns the configured w:style for ps:block element for default documents.
 </xsl:function>
 
 <!--
-Returns the default w:style for ps:block element for default documents.
+  Returns the default w:style for ps:block element for default documents.
 
-@return the w:style
+  @return the w:style
 -->
-<xsl:function name="fn:block-default-wordstyle-for-default-document">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/block/@default = 'none'">
-      <xsl:value-of select="''" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/block/@default">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/block/@default" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:function name="fn:block-default-wordstyle-for-default-document" as="xs:string">
+  <xsl:variable name="style" select="$config-doc/config/elements[not(@label)]/block/@default"/>
+  <xsl:value-of select="if ($style = 'none') then '' else string($style)" />
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:inline element for label specific documents.
+  Returns the configured w:style for ps:inline element for label specific documents.
 
-@param document-label the document label
-@param inline-label the current inline label
-@return the w:style
+  @param document-label the document label
+  @param inline-label the current inline label
+  @return the w:style
 -->
-<xsl:function name="fn:inline-wordstyle-for-document-label">
+<xsl:function name="fn:inline-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="inline-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle = 'generate-ps-style'">
-      <xsl:value-of select="concat('psinline',$inline-label)" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle"/>
+  <xsl:value-of select="if ($style = 'generate-ps-style') then concat('psinline', $inline-label) else string($style)"/>
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:inline element for label specific documents.
+  Returns the configured w:style for ps:inline element for label specific documents.
 
-@param document-label the document label
-@return the w:style
+  @param document-label the document label
+  @return the w:style
 -->
-<xsl:function name="fn:inline-default-wordstyle-for-document-label">
+<xsl:function name="fn:inline-default-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/@default = 'none'">
-      <xsl:value-of select="''" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/inline/@default">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/inline/@default" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/inline/@default"/>
+  <xsl:value-of select="if ($style = 'none') then '' else string($style)" />
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:inline element for default documents.
+  Returns the configured w:style for ps:inline element for default documents.
 
-@param inline-label the current inline label
-@return the w:style
+  @param inline-label the current inline label
+  @return the w:style
 -->
 <xsl:function name="fn:inline-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="inline-label"/>
@@ -1008,33 +962,24 @@ Returns the configured w:style for ps:inline element for default documents.
 </xsl:function>
 
 <!--
-Returns the default w:style for ps:inline element for default documents.
+  Returns the default w:style for ps:inline element for default documents.
 
-@return the w:style
+  @return the w:style
 -->
-<xsl:function name="fn:inline-default-wordstyle-for-default-document">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/inline/@default = 'none'">
-      <xsl:value-of select="''" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/inline/@default">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/inline/@default" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:function name="fn:inline-default-wordstyle-for-default-document" as="xs:string">
+  <xsl:variable name="style" select="$config-doc/config/elements[not(@label)]/inline/@default"/>
+  <xsl:value-of select="if ($style = 'none') then '' else string($style)"/>
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:heading element for label specific documents.
+  Returns the configured w:style for ps:heading element for label specific documents.
 
-@param document-label the document label
-@param heading-level the current heading level
-@param numbered the numbered attribute value of the heading
-@return the w:style
+  @param document-label the document label
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @return the w:style
 -->
-<xsl:function name="fn:heading-wordstyle-for-document-label">
+<xsl:function name="fn:heading-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
@@ -1042,11 +987,11 @@ Returns the configured w:style for ps:heading element for label specific documen
 </xsl:function>
 
 <!--
-Returns the configured w:style for ps:heading element for default documents.
+  Returns the configured w:style for ps:heading element for default documents.
 
-@param heading-level the current heading level
-@param numbered the numbered attribute value of the heading
-@return the w:style
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @return the w:style
 -->
 <xsl:function name="fn:heading-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="heading-level"/>
@@ -1055,34 +1000,25 @@ Returns the configured w:style for ps:heading element for default documents.
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:heading element for default documents should convert the prefix into a value or not.
+  Returns if the configured w:style for ps:heading element for default documents should convert the prefix into a value or not.
 
-@param heading-level the current heading level
-@param numbered the numbered attribute value of the heading
-@return true or false
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @return true or false
 -->
 <xsl:function name="fn:heading-prefix-select-for-default-document" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select = 'false'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="select" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select"/>
+  <xsl:value-of select="$select = 'true' or $select = 'false'"/>
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:heading element for default documents should keep with the next w:paragraph.
+  Returns if the configured w:style for ps:heading element for default documents should keep with the next w:paragraph.
 
-@param heading-level the current heading level
-@param numbered the numbered attribute value of the heading
-@return true or false
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @return true or false
 -->
 <xsl:function name="fn:default-keep-heading-with-next" as="xs:boolean">
   <xsl:param name="heading-level"/>
@@ -1091,11 +1027,11 @@ Returns if the configured w:style for ps:heading element for default documents s
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:heading element for document label specific documents should convert the prefix into a value or not.
+  Returns if the configured w:style for ps:heading element for document label specific documents should convert the prefix into a value or not.
 
-@param heading-level the current heading level
-@param numbered the numbered attribute value of the heading
-@return true or false
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @return true or false
 -->
 <xsl:function name="fn:heading-prefix-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
@@ -1115,11 +1051,11 @@ Returns if the configured w:style for ps:heading element for document label spec
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:heading element for document label specific documents should keep with the next w:paragraph.
+  Returns if the configured w:style for ps:heading element for document label specific documents should keep with the next w:paragraph.
 
-@param heading-level the current heading level
-@param numbered the numbered attribute value of the heading
-@return true or false
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @return true or false
 -->
 <xsl:function name="fn:labels-keep-heading-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
@@ -1129,23 +1065,22 @@ Returns if the configured w:style for ps:heading element for document label spec
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:para element for default documents should handle the @ps:prefix.
+  Returns if the configured w:style for ps:para element for default documents should handle the @ps:prefix.
 
-@param indent-level the current indent level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param indent-level the current indent level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:para-prefix-select-for-default-document" as="xs:boolean">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
   <xsl:choose>
-    <xsl:when test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/prefix/@select = 'true'">
+    <xsl:when test="not($indent-level) and $indent[@level='0']/prefix/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'false'">
+    <xsl:when test="$indent[@level=$indent-level]/prefix/@select = 'true'
+                 or $indent[@level=$indent-level]/prefix/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1155,11 +1090,11 @@ Returns if the configured w:style for ps:para element for default documents shou
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:para element for default documents should keep with the next w:paragraph.
+  Returns if the configured w:style for ps:para element for default documents should keep with the next w:paragraph.
 
-@param indent-level the current ps:para level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param indent-level the current ps:para level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:default-keep-para-with-next" as="xs:boolean">
   <xsl:param name="indent-level"/>
@@ -1178,12 +1113,12 @@ Returns if the configured w:style for ps:para element for default documents shou
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:para element for document label specific documents should keep with the next w:paragraph.
+  Returns if the configured w:style for ps:para element for document label specific documents should keep with the next w:paragraph.
 
-@param document-label the current document label
-@param indent-level the current ps:para level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param document-label the current document label
+  @param indent-level the current ps:para level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:labels-keep-para-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
@@ -1203,12 +1138,12 @@ Returns if the configured w:style for ps:para element for document label specifi
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:para element for document label specific documents should handle the @ps:prefix.
+  Returns if the configured w:style for ps:para element for document label specific documents should handle the @ps:prefix.
 
-@param document-label the current document label
-@param indent-level the current indent level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param document-label the current document label
+  @param indent-level the current indent level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:para-prefix-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
@@ -1231,12 +1166,12 @@ Returns if the configured w:style for ps:para element for document label specifi
 </xsl:function>
 
 <!--
-Returns the w:style for ps:para element that is inside a ps:list for label specific document.
+  Returns the w:style for ps:para element that is inside a ps:list for label specific document.
 
-@param document-label the current document label
-@param list-level the current list level
-@param numbered the numbered attribute value of the ps:para
-@return w:style
+  @param document-label the current document label
+  @param list-level the current list level
+  @param numbered the numbered attribute value of the ps:para
+  @return w:style
 -->
 <xsl:function name="fn:para-list-level-paragraph-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
@@ -1246,11 +1181,11 @@ Returns the w:style for ps:para element that is inside a ps:list for label speci
 </xsl:function>
 
 <!--
-Returns the w:style for ps:para element that is inside a ps:list for default document.
+  Returns the w:style for ps:para element that is inside a ps:list for default document.
 
-@param list-level the current list level
-@param numbered the numbered attribute value of the ps:para
-@return w:style
+  @param list-level the current list level
+  @param numbered the numbered attribute value of the ps:para
+  @return w:style
 -->
 <xsl:function name="fn:para-list-level-paragraph-for-default-document" as="xs:string">
   <xsl:param name="list-level"/>
@@ -1259,27 +1194,22 @@ Returns the w:style for ps:para element that is inside a ps:list for default doc
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:para element for default documents should handle the @ps:numbering.
+  Returns if the configured w:style for ps:para element for default documents should handle the @ps:numbering.
 
-@param indent-level the current indent level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param indent-level the current indent level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:para-numbered-select-for-default-document" as="xs:boolean">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/numbered/@select = 'true'">
+    <xsl:when test="not($indent-level) and $indent[@level='0']/numbered/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/numbered/@select = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/numbered/@select = 'false'">
-      <!-- TODO check logic for @select = 'false' here and in all code below -->
+    <xsl:when test="$indent[@level=$indent-level]/numbered/@select = 'true'
+                 or $indent[@level=$indent-level]/numbered/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1289,28 +1219,24 @@ Returns if the configured w:style for ps:para element for default documents shou
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:para element for label specific documents should handle the @ps:numbering.
+  Returns if the configured w:style for ps:para element for label specific documents should handle the @ps:numbering.
 
-@param document-level the current document label
-@param indent-level the current indent level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param document-level the current document label
+  @param indent-level the current indent level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:para-numbered-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/numbered/@select = 'true'">
+    <xsl:when test="not($indent-level) and $indent[@level='0']/numbered/@select = 'true'">
       <xsl:value-of select="true()" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/numbered/@select = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/numbered/@select = 'false'">
+    <xsl:when test="$indent[@level=$indent-level]/numbered/@select = 'true'
+                 or $indent[@level=$indent-level]/numbered/@select = 'false'">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1320,28 +1246,17 @@ Returns if the configured w:style for ps:para element for label specific documen
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:heading element for default documents should handle the @ps:numbering.
+  Returns if the configured w:style for ps:heading element for default documents should handle the @ps:numbering.
 
-@param heading-level the current indent level
-@param numbered the numbered attribute value of the ps:para
-@return true or false
+  @param heading-level the current indent level
+  @param numbered the numbered attribute value of the ps:para
+  @return true or false
 -->
 <xsl:function name="fn:heading-numbered-select-for-default-document" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select = 'false'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="select" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select"/>
+  <xsl:value-of select="$select = 'true' or $select = 'false'" />
 </xsl:function>
 
 <!--
@@ -1356,71 +1271,41 @@ Returns if the configured w:style for ps:heading element for default documents s
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select = 'false'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
- <!--
-Returns if the configured w:style for ps:block element for default documents should keep with the next w:paragraph.
-
-@param label the current ps:block label
-
-@return true or false
--->
-<xsl:function name="fn:default-keep-block-with-next" as="xs:boolean">
-  <xsl:param name="label"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[not(@label)]/block/label[@value=$label]/keep-paragraph-with-next">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="select" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select"/>
+  <xsl:value-of select="$select = 'true' or $select = 'false'"/>
 </xsl:function>
 
 <!--
-Returns if the configured w:style for ps:block element for document label specific documents should keep with the next w:paragraph.
+  Returns if the configured w:style for ps:block element for default documents should keep with the next w:paragraph.
 
-@param document-label the current ps:document label
-@param label the current ps:block label
+  @param label the current ps:block label
+  @return true or false
+-->
+<xsl:function name="fn:default-keep-block-with-next" as="xs:boolean">
+  <xsl:param name="label"/>
+  <xsl:value-of select="exists($config-doc/config/elements[not(@label)]/block/label[@value=$label]/keep-paragraph-with-next)"/>
+</xsl:function>
 
-@return true or false
+<!--
+  Returns if the configured w:style for ps:block element for document label specific documents should keep with the next w:paragraph.
+
+  @param document-label the current ps:document label
+  @param label the current ps:block label
+  @return true or false
 -->
 <xsl:function name="fn:labels-keep-block-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="label"/>
-  <xsl:choose>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/block/label[@value=$label]/keep-paragraph-with-next">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="exists($config-doc/config/elements[@label = $document-label]/block/label[@value=$label]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--
-Returns the word numeric value for pageseeder numeric value.
+  Returns the word numeric value for pageseeder numeric value.
 
-@param regexp-value the value of the current regex value
-
-@return the pageseeder numeric value
+  @param regexp-value the value of the current regex value
+  @return the pageseeder numeric value
 -->
-<xsl:function name="fn:get-numeric-type">
+<xsl:function name="fn:get-numeric-type" as="xs:string?">
   <xsl:param name="regexp-value"/>
   <xsl:choose>
     <xsl:when test="$regexp-value = 'arabic'">
@@ -1442,42 +1327,41 @@ Returns the word numeric value for pageseeder numeric value.
 </xsl:function>
 
 <!--
-Replaces each set numeric value with a real regular expression.
+  Replaces each set numeric value with a real regular expression.
 
-@param regexp-value the value of the current regex value
-
-@return the real regular expression value
+  @param regexp-value the value of the current regex value
+  @return the real regular expression value
 -->
-<xsl:function name="fn:replace-regexp">
+<xsl:function name="fn:replace-regexp" as="xs:string?">
   <xsl:param name="regexp-value"/>
   <xsl:choose>
-    <xsl:when test="matches($regexp-value,'%arabic%')">
-      <xsl:value-of select="replace($regexp-value,'%arabic%','(\\d+)')"/>
+    <xsl:when test="matches($regexp-value, '%arabic%')">
+      <xsl:value-of select="replace($regexp-value, '%arabic%', '(\\d+)')"/>
     </xsl:when>
-    <xsl:when test="matches($regexp-value,'%lowerletter%')">
-      <xsl:value-of select="replace($regexp-value,'%lowerletter%','([a-z]+)')"/>
+    <xsl:when test="matches($regexp-value, '%lowerletter%')">
+      <xsl:value-of select="replace($regexp-value, '%lowerletter%', '([a-z]+)')"/>
     </xsl:when>
-    <xsl:when test="matches($regexp-value,'upperletter')">
-      <xsl:value-of select="replace($regexp-value,'%upperletter%','([A-Z]+)')"/>
+    <xsl:when test="matches($regexp-value, 'upperletter')">
+      <xsl:value-of select="replace($regexp-value, '%upperletter%', '([A-Z]+)')"/>
     </xsl:when>
-    <xsl:when test="matches($regexp-value,'upperroman')">
-      <xsl:value-of select="replace($regexp-value,'%upperroman%','([IVXCLDM]+)')"/>
+    <xsl:when test="matches($regexp-value, 'upperroman')">
+      <xsl:value-of select="replace($regexp-value, '%upperroman%', '([IVXCLDM]+)')"/>
     </xsl:when>
-    <xsl:when test="matches($regexp-value,'lowerroman')">
-      <xsl:value-of select="replace($regexp-value,'%lowerroman%','([ivxcldm]+)')"/>
+    <xsl:when test="matches($regexp-value, 'lowerroman')">
+      <xsl:value-of select="replace($regexp-value, '%lowerroman%', '([ivxcldm]+)')"/>
     </xsl:when>
   </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a prefix for a heading defined by the expression set in configuration for document label specific documents.
+  Automates the creation of a prefix for a heading defined by the expression set in configuration for document label specific documents.
 
-@param document-label the value of the current document label
-@param heading-level the value of the current heading level
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param document-label the value of the current document label
+  @param heading-level the value of the current heading level
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:heading-prefix-value-for-document-label" >
   <xsl:param name="document-label"/>
@@ -1485,423 +1369,381 @@ Automates the creation of a prefix for a heading defined by the expression set i
   <xsl:param name="current"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat($document-label,'-heading',$heading-level)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-         <xsl:choose>
-            <xsl:when test="$current/preceding::heading[ancestor::document[1]/documentinfo/uri/labels = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix != ''">
-              <xsl:variable name="preceding-heading-value" select="$current/preceding::heading[ancestor::document[1]/documentinfo/uri/labels = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix"/>
-<!--                 <xsl:message>heading-level:<xsl:value-of select="$heading-level"/></xsl:message> -->
-<!--                 <xsl:message>preceding-heading-level:<xsl:value-of select="$current/preceding::heading[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1]/@level"/></xsl:message> -->
-<!--                 <xsl:message>headingvalue:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--                 <xsl:message>preceding-heading-value:<xsl:value-of select="$preceding-heading-value"/></xsl:message> -->
-<!--                 <xsl:message>1:<xsl:value-of select="fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)"/></xsl:message> -->
-<!--                 <xsl:message>2:<xsl:value-of select="fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression)"/></xsl:message> -->
-
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']/fieldcode">
+      <xsl:variable name="type"   select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@type"/>
+      <xsl:variable name="name"   select="concat($document-label,'-heading',$heading-level)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
         <xsl:choose>
-                <xsl:when test="number(fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
-                  <xsl:value-of select="'\n'"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
-              <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
-<!--                <xsl:message>regexp-before:<xsl:value-of select="$regexp-before"/></xsl:message> -->
-<!--                <xsl:message>$current/@prefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-              <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-<!--                    <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
-              <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-          <!--         <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-             </xsl:when>
+          <xsl:when test="$current/preceding::heading[ancestor::document[1]/documentinfo/uri/labels = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix != ''">
+            <xsl:variable name="preceding-heading-value" select="$current/preceding::heading[ancestor::document[1]/documentinfo/uri/labels = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix"/>
+            <xsl:choose>
+              <xsl:when test="number(fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
+                <xsl:value-of select="'\n'"/>
+              </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="''"/>
+                <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
               </xsl:otherwise>
             </xsl:choose>
-        </xsl:variable>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
+            <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+             </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
+            <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:if test="$string-before-regexp != ''">
-          <w:r>
+      <xsl:if test="$string-before-regexp != ''">
+        <w:r>
           <w:t xml:space="preserve"><xsl:value-of select="$string-before-regexp"/></w:t>
         </w:r>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
-        <xsl:if test="$string-after-regexp != ''">
-          <w:r>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
+      <xsl:if test="$string-after-regexp != ''">
+        <w:r>
           <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
         </w:r>
-        </xsl:if>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']">
-        <w:r>
-          <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
-        </w:r>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
+      </xsl:if>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']">
+      <w:r>
+        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+      </w:r>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
 
-      </xsl:when>
-      <xsl:otherwise>
-        <w:r>
-          <w:t xml:space="preserve"/>
-        </w:r>
-      </xsl:otherwise>
-    </xsl:choose>
+    </xsl:when>
+    <xsl:otherwise>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a numbered value for a heading defined by the expression set in configuration for document label specific documents.
+  Automates the creation of a numbered value for a heading defined by the expression set in configuration for document label specific documents.
 
-@param document-label the value of the current document label
-@param heading-level the value of the current heading level
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param document-label the value of the current document label
+  @param heading-level the value of the current heading level
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
  <xsl:function name="fn:heading-numbered-value-for-document-label" >
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="current"/>
   <xsl:param name="numbered"/>
-<!--     <xsl:message>indent-level:<xsl:value-of select="number($indent-level)"/></xsl:message> -->
-<!--     <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--     <xsl:message>precedingparavalue:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]"/></xsl:message> -->
-<!--     <xsl:message>precedingparaindent:<xsl:value-of select="number($current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]/@indent)"/></xsl:message> -->
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat($document-label,'-heading-num',$heading-level)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-          <xsl:choose>
-            <xsl:when test="$current/preceding::heading[@numbered][1][@level &lt; $heading-level]">
-              <xsl:value-of select="'\r 1'"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="'\n'"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat($document-label,'-heading-num',$heading-level)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+        <xsl:choose>
+          <xsl:when test="$current/preceding::heading[@numbered][1][@level &lt; $heading-level]">
+            <xsl:value-of select="'\r 1'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'\n'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
-                 <xsl:matching-substring>
-<!--                     <xsl:message>here</xsl:message> -->
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),$document-label,$current,$numbered)}">
-                      </w:fldSimple>
-<!--                    <xsl:message>regex1:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),$document-label,$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
-                 <xsl:matching-substring>
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
-                      </w:fldSimple>
-<!--                    <xsl:message>regex2:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+      <xsl:if test="$string-before-regexp != ''">
+        <xsl:sequence select="$string-before-regexp"/>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
 
-        <xsl:if test="$string-before-regexp != ''">
-          <xsl:sequence select="$string-before-regexp"/>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
-<!--           <w:r> -->
-<!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
-<!--           </w:r> -->
-        <xsl:if test="$string-after-regexp != ''">
-         <xsl:sequence select="$string-after-regexp"/>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:if test="$string-after-regexp != ''">
+        <xsl:sequence select="$string-after-regexp"/>
+      </xsl:if>
+    </xsl:when>
+    <xsl:otherwise>
+      <!-- Do nothing -->
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a prefix for a heading defined by the expression set in configuration for default documents.
+  Automates the creation of a prefix for a heading defined by the expression set in configuration for default documents.
 
-@param heading-level the value of the current heading level
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param heading-level the value of the current heading level
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:heading-prefix-value-for-default-document" >
   <xsl:param name="heading-level"/>
   <xsl:param name="current" as="node()"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat('defaultheading',$heading-level)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-         <xsl:choose>
-            <xsl:when test="$current/preceding::heading[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix != ''">
-              <xsl:variable name="preceding-heading-value" select="$current/preceding::heading[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix"/>
-<!--                 <xsl:message>heading-level:<xsl:value-of select="$heading-level"/></xsl:message> -->
-<!--                 <xsl:message>preceding-heading-level:<xsl:value-of select="$current/preceding::heading[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1]/@level"/></xsl:message> -->
-<!--                 <xsl:message>headingvalue:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--                 <xsl:message>preceding-heading-value:<xsl:value-of select="$preceding-heading-value"/></xsl:message> -->
-<!--                 <xsl:message>1:<xsl:value-of select="fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)"/></xsl:message> -->
-<!--                 <xsl:message>2:<xsl:value-of select="fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression)"/></xsl:message> -->
-
-              <xsl:choose>
-                <xsl:when test="number(fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
-                  <xsl:value-of select="'\n'"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
-              <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
-<!--                 <xsl:message>regexp-before:<xsl:value-of select="$regexp-before"/></xsl:message> -->
-<!--                 <xsl:message>$current/@prefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-              <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-<!--                     <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-
-        </xsl:variable>
-
-
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
-              <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-          <!--         <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-             </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat('defaultheading',$heading-level)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+        <xsl:choose>
+          <xsl:when test="$current/preceding::heading[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix != ''">
+            <xsl:variable name="preceding-heading-value" select="$current/preceding::heading[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix"/>
+            <xsl:choose>
+              <xsl:when test="number(fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
+                <xsl:value-of select="'\n'"/>
+              </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="''"/>
+                <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
               </xsl:otherwise>
             </xsl:choose>
-        </xsl:variable>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-<!--           <xsl:message>type:<xsl:value-of select="$type"/></xsl:message> -->
-<!--           <xsl:message>name:<xsl:value-of select="$name"/></xsl:message> -->
-<!--           <xsl:message>regexp:<xsl:value-of select="$regexp"/></xsl:message> -->
-<!--           <xsl:message>numeric-type:<xsl:value-of select="$numeric-type"/></xsl:message> -->
-<!--           <xsl:message>real-regular-expression:<xsl:value-of select="$real-regular-expression"/></xsl:message> -->
-<!--           <xsl:message>flags:<xsl:value-of select="$flags"/></xsl:message> -->
-        <xsl:if test="$string-before-regexp != ''">
-          <w:r>
-            <w:t xml:space="preserve"><xsl:value-of select="$string-before-regexp"/></w:t>
-          </w:r>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
-        <xsl:if test="$string-after-regexp != ''">
-          <w:r>
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
+            <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
+            <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:if test="$string-before-regexp != ''">
+        <w:r>
+          <w:t xml:space="preserve"><xsl:value-of select="$string-before-regexp"/></w:t>
+        </w:r>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
+      <xsl:if test="$string-after-regexp != ''">
+        <w:r>
           <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
         </w:r>
-        </xsl:if>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']">
-        <w:r>
-          <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
-        </w:r>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
+      </xsl:if>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']">
+      <w:r>
+        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+      </w:r>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
 <!--           <w:r> -->
 <!--             <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t> -->
 <!--           </w:r> -->
-      </xsl:when>
-      <xsl:otherwise>
-        <w:r>
-          <w:t xml:space="preserve"/>
-        </w:r>
-      </xsl:otherwise>
-    </xsl:choose>
+    </xsl:when>
+    <xsl:otherwise>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 
 <!--
-Automates the creation of a numbered value for a heading defined by the expression set in configuration for default documents.
+  Automates the creation of a numbered value for a heading defined by the expression set in configuration for default documents.
 
-@param heading-level the value of the current heading level
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param heading-level the value of the current heading level
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:heading-numbered-value-for-default-document" >
   <xsl:param name="heading-level"/>
   <xsl:param name="current" as="node()"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat('default-heading-num',$heading-level)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-          <xsl:choose>
-            <xsl:when test="$current/preceding::heading[1][@level &lt; $heading-level]">
-              <xsl:value-of select="'\r 1'"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="'\n'"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
-<!--                 <xsl:message>substring-before($regexp,'%')</xsl:message> -->
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
-                 <xsl:matching-substring>
-<!--                     <xsl:message>here</xsl:message> -->
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
-                      </w:fldSimple>
-<!--                    <xsl:message>regex1:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
-                 <xsl:matching-substring>
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
-                      </w:fldSimple>
-<!--                    <xsl:message>regex2:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat('default-heading-num',$heading-level)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+        <xsl:choose>
+          <xsl:when test="$current/preceding::heading[1][@level &lt; $heading-level]">
+            <xsl:value-of select="'\r 1'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'\n'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:if test="$string-before-regexp != ''">
-          <xsl:sequence select="$string-before-regexp"/>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
-<!--           <w:r> -->
-<!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
-<!--           </w:r> -->
-        <xsl:if test="$string-after-regexp != ''">
-         <xsl:sequence select="$string-after-regexp"/>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:if test="$string-before-regexp != ''">
+        <xsl:sequence select="$string-before-regexp"/>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
+      <!--           <w:r> -->
+      <!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
+      <!--           </w:r> -->
+      <xsl:if test="$string-after-regexp != ''">
+        <xsl:sequence select="$string-after-regexp"/>
+      </xsl:if>
+    </xsl:when>
+    <xsl:otherwise>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a prefix for a ps:para defined by the expression set in configuration for document label specific documents.
+  Automates the creation of a prefix for a ps:para defined by the expression set in configuration for document label specific documents.
 
-@param document-label the value of the current document label
-@param indent-level the value of the current para indent
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param document-label the value of the current document label
+  @param indent-level the value of the current para indent
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:para-prefix-value-for-document-label" >
   <xsl:param name="document-label"/>
@@ -1909,124 +1751,101 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
   <xsl:param name="current"/>
   <xsl:param name="numbered"/>
 
-  <xsl:variable name="current-indent">
-    <xsl:choose>
-      <xsl:when test="not($indent-level)">
-        <xsl:value-of select="'0'"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$indent-level"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="current-indent" select="if ($indent-level) then string($indent-level) else '0'"/>
 
-<!--     <xsl:message>indent:<xsl:value-of select="$indent-level"/></xsl:message> -->
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat($document-label,'-para',$current-indent)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-         <xsl:choose>
-            <xsl:when test="$current/preceding::para[ancestor::document[1]/documentinfo/uri/labels = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix != ''">
-              <xsl:variable name="precedingparavalue" select="$current/preceding::para[ancestor::document[1]/documentinfo/uri/labels = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix"/>
-<!--                 <xsl:message>indent-level:<xsl:value-of select="$indent-level"/></xsl:message> -->
-<!--                 <xsl:message>preceding-heading-level:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@level &lt;= number($heading-level)][1]/@level"/></xsl:message> -->
-<!--                 <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--                 <xsl:message>precedingparavalue:<xsl:value-of select="$precedingparavalue"/></xsl:message> -->
-<!--                 <xsl:message>1:<xsl:value-of select="fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)"/></xsl:message> -->
-<!--                 <xsl:message>2:<xsl:value-of select="fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression)"/></xsl:message> -->
-
-              <xsl:choose>
-                <xsl:when test="number(fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
-                  <xsl:value-of select="'\n'"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
-
-              <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
-<!--                <xsl:message>regexp-before:<xsl:value-of select="$regexp-before"/></xsl:message> -->
-<!--                <xsl:message>$current/@prefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-              <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-<!--                    <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-
-        </xsl:variable>
-
-
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
-              <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-          <!--         <xsl:message>regex:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-             </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat($document-label,'-para',$current-indent)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+       <xsl:choose>
+          <xsl:when test="$current/preceding::para[ancestor::document[1]/documentinfo/uri/labels = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix != ''">
+            <xsl:variable name="precedingparavalue" select="$current/preceding::para[ancestor::document[1]/documentinfo/uri/labels = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix"/>
+            <xsl:choose>
+              <xsl:when test="number(fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
+                <xsl:value-of select="'\n'"/>
+              </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="''"/>
+                <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
               </xsl:otherwise>
             </xsl:choose>
-        </xsl:variable>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:if test="$string-before-regexp != ''">
-          <w:r>
-            <w:t xml:space="preserve"><xsl:value-of select="$string-before-regexp"/></w:t>
-          </w:r>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
-        <xsl:if test="$string-after-regexp != ''">
-          <w:r>
-          <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
-        </w:r>
-        </xsl:if>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']">
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
+            <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
+               <xsl:matching-substring>
+                 <xsl:value-of select="regex-group(2)"/>
+               </xsl:matching-substring>
+             </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
+            <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:if test="$string-before-regexp != ''">
         <w:r>
-          <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+          <w:t xml:space="preserve"><xsl:value-of select="$string-before-regexp"/></w:t>
         </w:r>
-      </xsl:when>
-      <xsl:otherwise>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
+      <xsl:if test="$string-after-regexp != ''">
         <w:r>
-          <w:t xml:space="preserve"/>
-        </w:r>
-      </xsl:otherwise>
-    </xsl:choose>
+        <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
+      </w:r>
+      </xsl:if>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']">
+      <w:r>
+        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+      </w:r>
+    </xsl:when>
+    <xsl:otherwise>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a numbered value for a ps:para defined by the expression set in configuration for document label specific documents.
+  Automates the creation of a numbered value for a ps:para defined by the expression set in configuration for document label specific documents.
 
-@param document-label the value of the current document label
-@param indent-level the value of the current para indent
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param document-label the value of the current document label
+  @param indent-level the value of the current para indent
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:para-numbered-value-for-document-label" >
   <xsl:param name="document-label"/>
@@ -2034,227 +1853,192 @@ Automates the creation of a numbered value for a ps:para defined by the expressi
   <xsl:param name="current"/>
   <xsl:param name="numbered"/>
 
-  <xsl:variable name="current-indent">
-    <xsl:choose>
-      <xsl:when test="not($indent-level)">
-        <xsl:value-of select="'0'"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$indent-level"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-<!--     <xsl:message>indent-level:<xsl:value-of select="number($indent-level)"/></xsl:message> -->
-<!--     <xsl:message>paraprefix:<xsl:value-of select="$current/@prefix"/></xsl:message> -->
-<!--     <xsl:message>precedingparavalue:<xsl:value-of select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]"/></xsl:message> -->
-<!--     <xsl:message>precedingparaindent:<xsl:value-of select="number($current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($indent-level)][1][@indent = number($indent-level)][@prefix]/@indent)"/></xsl:message> -->
+  <xsl:variable name="current-indent" select="if ($indent-level) then string($indent-level) else '0'"/>
+
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat($document-label,'-para-num',$current-indent)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-          <xsl:choose>
-            <xsl:when test="$current/preceding::para[@numbered][1][@indent &lt; $current-indent]">
-              <xsl:value-of select="'\r 1'"/>
-            </xsl:when>
-            <xsl:when test="$current/preceding::heading[1][not(following::para[@indent &gt;= $current-indent][following::*[generate-id() = generate-id($current)]])]">
-              <xsl:value-of select="'\r 1'"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="'\n'"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat($document-label,'-para-num',$current-indent)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+        <xsl:choose>
+          <xsl:when test="$current/preceding::para[@numbered][1][@indent &lt; $current-indent]">
+            <xsl:value-of select="'\r 1'"/>
+          </xsl:when>
+          <xsl:when test="$current/preceding::heading[1][not(following::para[@indent &gt;= $current-indent][following::*[generate-id() = generate-id($current)]])]">
+            <xsl:value-of select="'\r 1'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'\n'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),$document-label,$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+             </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-<!--                 <xsl:message>substring-before($regexp,'%')</xsl:message> -->
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
-                 <xsl:matching-substring>
-<!--                     <xsl:message>here</xsl:message> -->
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),$document-label,$current,$numbered)}">
-                      </w:fldSimple>
-<!--                         <xsl:comment>regex1:<xsl:value-of select="regex-group(1)"/></xsl:comment> -->
-<!--                         <xsl:comment>regex2:<xsl:value-of select="regex-group(2)"/></xsl:comment> -->
-<!--                         <xsl:comment>regex3:<xsl:value-of select="regex-group(3)"/></xsl:comment> -->
-<!--                         <xsl:comment>regex4:<xsl:value-of select="regex-group(4)"/></xsl:comment> -->
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
-
-        <xsl:variable name="string-after-regexp">
-<!--             <xsl:message>$regexp:<xsl:value-of select="$regexp"/></xsl:message> -->
-<!--             <xsl:message>substring-after:<xsl:value-of select="replace($regexp,'.*%[^%]+%','')"/></xsl:message> -->
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
-                 <xsl:matching-substring>
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
-                      </w:fldSimple>
-<!--                    <xsl:message>regex2:<xsl:value-of select="regex-group(2)"/></xsl:message> -->
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
-        <xsl:if test="$string-before-regexp != ''">
-          <xsl:sequence select="$string-before-regexp"/>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
+      <xsl:if test="$string-before-regexp != ''">
+        <xsl:sequence select="$string-before-regexp"/>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
 <!--           <w:r> -->
 <!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
 <!--           </w:r> -->
-        <xsl:if test="$string-after-regexp != ''">
-         <xsl:sequence select="$string-after-regexp"/>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:if test="$string-after-regexp != ''">
+       <xsl:sequence select="$string-after-regexp"/>
+      </xsl:if>
+    </xsl:when>
+    <xsl:otherwise>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Automates the creation of a prefix for a ps:para defined by the expression set in configuration for default documents.
+  Automates the creation of a prefix for a ps:para defined by the expression set in configuration for default documents.
 
-@param indent-level the value of the current para indent
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param indent-level the value of the current para indent
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the real regular expression value
+  @return the real regular expression value
 -->
 <xsl:function name="fn:para-prefix-value-for-default-document" >
   <xsl:param name="indent-level"/>
   <xsl:param name="current"/>
   <xsl:param name="numbered"/>
 
-  <xsl:variable name="current-indent">
-    <xsl:choose>
-      <xsl:when test="not($indent-level)">
-        <xsl:value-of select="'0'"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$indent-level"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="current-indent" select="if ($indent-level) then string($indent-level) else '0'"/>
+
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat('default-para',$current-indent)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-         <xsl:choose>
-            <xsl:when test="$current/preceding::para[@prefix][ancestor::document[1]/not(.//labels)]
-            [number(@indent) &lt;= number($current-indent)][1]
-            [number(@indent) = number($current-indent)]/@prefix != ''">
-              <xsl:variable name="precedingparavalue" select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($current-indent)][1][@indent = number($current-indent)]/@prefix"/>
-              <xsl:choose>
-                <xsl:when test="number(fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
-                  <xsl:value-of select="'\n'"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
-              <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
-              <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-
-        </xsl:variable>
-
-
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
-              <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
-                 <xsl:matching-substring>
-                   <xsl:value-of select="regex-group(2)"/>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-             </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat('default-para',$current-indent)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+       <xsl:choose>
+          <xsl:when test="$current/preceding::para[@prefix][ancestor::document[1]/not(.//labels)]
+          [number(@indent) &lt;= number($current-indent)][1]
+          [number(@indent) = number($current-indent)]/@prefix != ''">
+            <xsl:variable name="precedingparavalue" select="$current/preceding::para[ancestor::document[1]/not(.//labels)][@indent &lt;= number($current-indent)][1][@indent = number($current-indent)]/@prefix"/>
+            <xsl:choose>
+              <xsl:when test="number(fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
+                <xsl:value-of select="'\n'"/>
+              </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="''"/>
+                <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
               </xsl:otherwise>
             </xsl:choose>
-        </xsl:variable>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('\r ',fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:if test="$string-before-regexp != ''">
-          <w:r>
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:variable name="regexp-before" select="concat('(',substring-before($regexp,'%'),').*')"/>
+            <xsl:analyze-string regex="({$regexp-before})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:variable name="regexp-after" select="concat('.*(',replace($regexp,'.*%[^%]+%',''),')')"/>
+            <xsl:analyze-string regex="({$regexp-after})" select="replace($current/@prefix,'&#160;',' ')">
+              <xsl:matching-substring>
+                <xsl:value-of select="regex-group(2)"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:if test="$string-before-regexp != ''">
+        <w:r>
           <w:t xml:space="preserve"><xsl:value-of select="$string-before-regexp"/></w:t>
         </w:r>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
-        <xsl:if test="$string-after-regexp != ''">
-          <w:r>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
+      <xsl:if test="$string-after-regexp != ''">
+        <w:r>
           <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
         </w:r>
-        </xsl:if>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']">
-        <w:r>
-          <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
-        </w:r>
-      </xsl:when>
-      <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'false']">
+      </xsl:if>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'true']">
+      <w:r>
+        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+      </w:r>
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'false']">
 <!--           <w:r> -->
 <!--             <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t> -->
 <!--           </w:r> -->
-      </xsl:when>
-      <xsl:otherwise>
-        <w:r>
-          <w:t xml:space="preserve"/>
-        </w:r>
-      </xsl:otherwise>
-    </xsl:choose>
+    </xsl:when>
+    <xsl:otherwise>
+      <w:r>
+        <w:t xml:space="preserve"/>
+      </w:r>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
@@ -2271,114 +2055,104 @@ Automates the creation of a prefix for a ps:para defined by the expression set i
   <xsl:param name="current"/>
   <xsl:param name="numbered"/>
 
-  <xsl:variable name="current-indent">
-    <xsl:choose>
-      <xsl:when test="not($indent-level)">
-        <xsl:value-of select="'0'"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$indent-level"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="current-indent" select="if ($indent-level) then string($indent-level) else '0'"/>
+
   <xsl:choose>
-     <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered[@select = 'true']/fieldcode">
-        <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@type"/>
-        <xsl:variable name="name" select="concat('default-para-num',$current-indent)"/>
-        <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@regexp"/>
-        <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
-        <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
-        <xsl:variable name="flags">
-          <xsl:choose>
-            <xsl:when test="$current/preceding::para[@numbered][1][@indent &lt; $current-indent]">
-              <xsl:value-of select="'\r 1'"/>
-            </xsl:when>
-            <xsl:when test="$current/preceding::heading[1]">
-              <xsl:variable name="preceding-heading" select="$current/preceding::heading[1]"/>
-              <xsl:choose>
-                <xsl:when test="$preceding-heading/following::para[following::*[generate-id() = generate-id($current)]][@indent &lt;= $current-indent]">
-                  <xsl:value-of select="'\n'"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="'\r 1'"/>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:value-of select="'\r 1'"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="'\n'"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="string-before-regexp">
-          <xsl:choose>
-            <xsl:when test="substring-before($regexp,'%') !=''">
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
-                 <xsl:matching-substring>
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
-                      </w:fldSimple>
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered[@select = 'true']/fieldcode">
+      <xsl:variable name="type" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@type"/>
+      <xsl:variable name="name" select="concat('default-para-num',$current-indent)"/>
+      <xsl:variable name="regexp" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/numbered/fieldcode/@regexp"/>
+      <xsl:variable name="numeric-type" select="fn:get-numeric-type(substring-before(substring-after($regexp,'%'),'%'))"/>
+      <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
+      <xsl:variable name="flags">
+        <xsl:choose>
+          <xsl:when test="$current/preceding::para[@numbered][1][@indent &lt; $current-indent]">
+            <xsl:value-of select="'\r 1'"/>
+          </xsl:when>
+          <xsl:when test="$current/preceding::heading[1]">
+            <xsl:variable name="preceding-heading" select="$current/preceding::heading[1]"/>
+            <xsl:choose>
+              <xsl:when test="$preceding-heading/following::para[following::*[generate-id() = generate-id($current)]][@indent &lt;= $current-indent]">
+                <xsl:value-of select="'\n'"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="'\r 1'"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:value-of select="'\r 1'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'\n'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
+      <xsl:variable name="string-before-regexp">
+        <xsl:choose>
+          <xsl:when test="substring-before($regexp,'%') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="substring-before($regexp,'%')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                <w:r>
+                  <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:variable name="string-after-regexp">
-          <xsl:choose>
-            <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
-              <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
-                 <xsl:matching-substring>
-                      <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
-                      </w:fldSimple>
-                      <xsl:if test="regex-group(4) != ''">
-                      <w:r>
-                        <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
-                      </w:r>
-                      </xsl:if>
-                 </xsl:matching-substring>
-               </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="''"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+      <xsl:variable name="string-after-regexp">
+        <xsl:choose>
+          <xsl:when test="replace($regexp,'.*%[^%]+%','') !=''">
+            <xsl:analyze-string regex="((\^([^\^]*)\^)?([^\^]+))" select="replace($regexp,'.*%[^%]+%','')">
+              <xsl:matching-substring>
+                <w:fldSimple w:instr="{fn:get-field-code(regex-group(3),'default',$current,$numbered)}">
+                </w:fldSimple>
+                <xsl:if test="regex-group(4) != ''">
+                  <w:r>
+                    <w:t xml:space="preserve"><xsl:value-of select="regex-group(4)"/></w:t>
+                  </w:r>
+                </xsl:if>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <xsl:if test="$string-before-regexp != ''">
-          <xsl:sequence select="$string-before-regexp"/>
-        </xsl:if>
-        <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
-        </w:fldSimple>
+      <xsl:if test="$string-before-regexp != ''">
+        <xsl:sequence select="$string-before-regexp"/>
+      </xsl:if>
+      <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
+      </w:fldSimple>
 <!--           <w:r> -->
 <!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
 <!--           </w:r> -->
-        <xsl:if test="$string-after-regexp != ''">
-         <xsl:sequence select="$string-after-regexp"/>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:if test="$string-after-regexp != ''">
+        <xsl:sequence select="$string-after-regexp"/>
+      </xsl:if>
+    </xsl:when>
+  </xsl:choose>
 </xsl:function>
 
 <!--
-Generates the field code formula based on params
+  Generates the field code formula based on params
 
-@param field-type the type of the fieldcode
-@param field-name-value document label or default
-@param current the value of the current node
-@param numbered the value of the current numbered attribute
+  @param field-type the type of the fieldcode
+  @param field-name-value document label or default
+  @param current the value of the current node
+  @param numbered the value of the current numbered attribute
 
-@return the field code value
+  @return the field code value
 -->
 <xsl:function name="fn:get-field-code">
   <xsl:param name="field-type" />
@@ -2483,21 +2257,21 @@ Generates the field code formula based on params
   <xsl:param name="user-regexp" />
   <xsl:param name="real-regexp" />
   <xsl:variable name="prefix-value">
-    <xsl:analyze-string regex="({$real-regexp})" select="replace($prefix,'&#160;',' ')">
+    <xsl:analyze-string regex="({$real-regexp})" select="replace($prefix, '&#160;', ' ')">
       <xsl:matching-substring>
         <xsl:value-of select="regex-group(2)"/>
       </xsl:matching-substring>
     </xsl:analyze-string>
   </xsl:variable>
   <xsl:choose>
-    <xsl:when test="matches($user-regexp,'arabic')">
+    <xsl:when test="matches($user-regexp, 'arabic')">
       <xsl:value-of select="$prefix-value"/>
     </xsl:when>
-    <xsl:when test="matches($user-regexp,'upperletter|lowerletter')">
-      <xsl:value-of select="fn:alpha-to-integer($prefix-value,1)"/>
+    <xsl:when test="matches($user-regexp, 'upperletter|lowerletter')">
+      <xsl:value-of select="fn:alpha-to-integer($prefix-value, 1)"/>
     </xsl:when>
-    <xsl:when test="matches($user-regexp,'lowerroman|upperroman')">
-      <xsl:value-of select="fn:roman-to-integer($prefix-value,1)"/>
+    <xsl:when test="matches($user-regexp, 'lowerroman|upperroman')">
+      <xsl:value-of select="fn:roman-to-integer($prefix-value, 1)"/>
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
@@ -2549,20 +2323,17 @@ Generates the field code formula based on params
 
   @return the numeric value
 -->
-<xsl:function name="fn:alpha-to-integer">
- <xsl:param name="alpha-number" />
- <xsl:param name="index" />
- <xsl:variable name="temp">
-  <xsl:value-of select="fn:to-alpha($index)"/>
- </xsl:variable>
- <xsl:choose>
-   <xsl:when test="$temp = $alpha-number">
-     <xsl:value-of select="$index" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="fn:alpha-to-integer($alpha-number,$index + 1)" />
-   </xsl:otherwise>
- </xsl:choose>
+<xsl:function name="fn:alpha-to-integer" as="xs:string">
+  <xsl:param name="alpha-number" />
+  <xsl:param name="index" />
+  <xsl:choose>
+    <xsl:when test="fn:to-alpha($index) = $alpha-number">
+      <xsl:value-of select="$index" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="fn:alpha-to-integer($alpha-number, $index + 1)" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
@@ -2572,7 +2343,7 @@ Generates the field code formula based on params
 
   @return the alpha value
 -->
-<xsl:function name="fn:to-alpha">
+<xsl:function name="fn:to-alpha" as="xs:string">
   <xsl:param name="value"/>
   <xsl:number value="$value" format="A"/>
 </xsl:function>
@@ -2584,16 +2355,9 @@ Generates the field code formula based on params
 
   @return the w:style
 -->
-<xsl:function name="fn:title-wordstyle-for-document-label">
+<xsl:function name="fn:title-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/title/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/title/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/title/@wordstyle)"/>
 </xsl:function>
 
 <!--
@@ -2601,15 +2365,8 @@ Generates the field code formula based on params
 
   @return the w:style
 -->
-<xsl:function name="fn:title-wordstyle-for-default-document">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/title/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/title/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:function name="fn:title-wordstyle-for-default-document" as="xs:string">
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/title/@wordstyle)"/>
 </xsl:function>
 
 <!--
@@ -2677,99 +2434,13 @@ Generates the field code formula based on params
 <xsl:function name="fn:default-list-wordstyle" as="xs:string">
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
-  <xsl:choose>
-    <!-- TODO Simplify code!! <xsl:value-of select="concat('List ', if ($list-type = 'nlist') then 'Number' else 'Bullet', if ($list-level gt 1) then format-number($list-level, ' #') else '')"/> -->
-    <xsl:when test="$list-level = 1">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 2">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 2'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 2'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 3">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 3'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 3'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 4">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 4'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 4'" />
-        </xsl:otherwise>
-        </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 5">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 5'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 5'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 6">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 6'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 6'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 7">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 7'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 7'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$list-level = 8">
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 8'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 8'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <xsl:value-of select="'List Number 9'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'List Bullet 9'" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of>
+    <xsl:value-of select="'List '"/>
+    <xsl:value-of select="if ($list-type = 'nlist') then 'Number' else 'Bullet'"/>
+    <xsl:if test="$list-level gt 1">
+      <xsl:value-of select="format-number($list-level, ' #')"/>
+    </xsl:if>
+  </xsl:value-of>
 </xsl:function>
 
 <!--
@@ -2781,19 +2452,18 @@ Generates the field code formula based on params
 
   @return the w:style
 -->
-<xsl:function name="fn:para-wordstyle-for-document-label">
+<xsl:function name="fn:para-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(numbered)][if($prefix) then prefix else not(prefix)]"/>
   <xsl:choose>
-    <xsl:when
-      test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(numbered)][if($prefix) then prefix else not(prefix)][@level='0']/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(@numbered)][if($prefix) then prefix else not(prefix)][@level='0']/@wordstyle" />
+    <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
+      <xsl:value-of select="$indent[@level='0']/@wordstyle" />
     </xsl:when>
-    <xsl:when
-      test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(numbered)][if($prefix) then prefix else not(prefix)][@level=$indent-level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(numbered)][if($prefix) then prefix else not(prefix)][@level=$indent-level]/@wordstyle" />
+    <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
+      <xsl:value-of select="$indent[@level=$indent-level]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
@@ -2902,93 +2572,93 @@ Generates the field code formula based on params
 <xsl:variable name="all-different-lists" as="node()">
 <lists>
   <xsl:for-each select=".//nlist[not(@type) and not(descendant::nlist/@type)][not(ancestor::*[name() = 'list' or name() = 'nlist'])]"> <!--  or @role or @start] -->
-      <xsl:variable name="role" select="fn:get-style-from-role(@role,.)"/>
-      <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
-      <xsl:variable name="list-type" select="./name()"/>
-      <xsl:variable name="labels">
-        <xsl:choose>
-          <xsl:when test="ancestor::document[1]/documentinfo/uri/labels">
-            <xsl:value-of select="ancestor::document[1]/documentinfo/uri/labels"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="''"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="paragraph-style" >
-        <xsl:choose>
-          <xsl:when test="$role != ''">
-            <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $role]/@w:styleId"/>
-          </xsl:when>
-          <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-            <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
-          </xsl:when>
-          <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-            <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="paragraph-style-name" >
-        <xsl:choose>
-          <xsl:when test="$role != ''">
-            <xsl:value-of select="$role"/>
-          </xsl:when>
-          <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-            <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
-          </xsl:when>
-          <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-            <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
-      <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/>
-
+    <xsl:variable name="role" select="fn:get-style-from-role(@role,.)"/>
+    <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
+    <xsl:variable name="list-type" select="./name()"/>
+    <xsl:variable name="labels">
       <xsl:choose>
-        <xsl:when test="$list-type = 'nlist'">
-          <nlist start="{if (@start) then @start else 1}" >
-            <xsl:attribute name="level">
-                <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
-            </xsl:attribute>
-            <xsl:attribute name="role" select="$role"/>
-            <xsl:attribute name="labels" select="$labels"/>
-            <xsl:attribute name="level1" select="$level"/>
-            <xsl:attribute name="pstylename">
-              <xsl:value-of select="$paragraph-style-name"/>
-            </xsl:attribute>
-            <xsl:attribute name="pstyle">
-              <xsl:value-of select="$paragraph-style"/>
-            </xsl:attribute>
-            <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
-          </nlist>
+        <xsl:when test="ancestor::document[1]/documentinfo/uri/labels">
+          <xsl:value-of select="ancestor::document[1]/documentinfo/uri/labels"/>
         </xsl:when>
         <xsl:otherwise>
-          <list>
-            <xsl:attribute name="level">
-              <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
-            </xsl:attribute>
-            <xsl:attribute name="role" select="$role"/>
-            <xsl:attribute name="labels" select="$labels"/>
-            <xsl:attribute name="level1" select="$level"/>
-            <xsl:attribute name="pstylename">
-              <xsl:value-of select="$paragraph-style-name"/>
-            </xsl:attribute>
-            <xsl:attribute name="pstyle">
-              <xsl:value-of select="$paragraph-style"/>
-            </xsl:attribute>
-            <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
-          </list>
+          <xsl:value-of select="''"/>
         </xsl:otherwise>
       </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="paragraph-style" >
+      <xsl:choose>
+        <xsl:when test="$role != ''">
+          <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $role]/@w:styleId"/>
+        </xsl:when>
+        <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
+          <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+        </xsl:when>
+        <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
+          <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="paragraph-style-name" >
+      <xsl:choose>
+        <xsl:when test="$role != ''">
+          <xsl:value-of select="$role"/>
+        </xsl:when>
+        <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
+          <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+        </xsl:when>
+        <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
+          <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
-    </xsl:for-each>
-  </lists>
+    <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/>
+
+    <xsl:choose>
+      <xsl:when test="$list-type = 'nlist'">
+        <nlist start="{if (@start) then @start else 1}" >
+          <xsl:attribute name="level">
+              <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
+          </xsl:attribute>
+          <xsl:attribute name="role" select="$role"/>
+          <xsl:attribute name="labels" select="$labels"/>
+          <xsl:attribute name="level1" select="$level"/>
+          <xsl:attribute name="pstylename">
+            <xsl:value-of select="$paragraph-style-name"/>
+          </xsl:attribute>
+          <xsl:attribute name="pstyle">
+            <xsl:value-of select="$paragraph-style"/>
+          </xsl:attribute>
+          <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
+        </nlist>
+      </xsl:when>
+      <xsl:otherwise>
+        <list>
+          <xsl:attribute name="level">
+            <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
+          </xsl:attribute>
+          <xsl:attribute name="role" select="$role"/>
+          <xsl:attribute name="labels" select="$labels"/>
+          <xsl:attribute name="level1" select="$level"/>
+          <xsl:attribute name="pstylename">
+            <xsl:value-of select="$paragraph-style-name"/>
+          </xsl:attribute>
+          <xsl:attribute name="pstyle">
+            <xsl:value-of select="$paragraph-style"/>
+          </xsl:attribute>
+          <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
+        </list>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:for-each>
+</lists>
 </xsl:variable>
 
 <!--
