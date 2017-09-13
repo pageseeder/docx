@@ -2,6 +2,8 @@
 <!--
   XSLT module contains reusable global functions.
 
+  These functions do not rely on the global state (i.e. there are pure functions)
+
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
@@ -99,51 +101,235 @@
   <xsl:sequence select="replace($arg,'\s+$','','m')"/>
 </xsl:function>
 
-<!-- 
-  Returns the value of the numbering id to create in the numbering.xml file
--->
-<xsl:function name="fn:get-numbering-id">
-  <xsl:param name="current" as="element()" />
-  <xsl:choose>
-    <xsl:when
-      test="$current/ancestor::*[name() = 'list' or 'nlist']/parent::block and
-            $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label = $config-doc/config/lists/list/@name and
-            $config-doc/config/lists/(list|nlist)[@name = $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label][@style != '']">
-      <xsl:variable name="style-name"
-        select="$config-doc/config/lists/(list|nlist)[@name = $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label]/@style" />
-      <xsl:value-of
-        select="document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num[w:abstractNumId/@w:val = document(concat($_dotxfolder,$numbering-template))/w:numbering/w:abstractNum[w:numStyleLink[@w:val = $style-name]]/@w:abstractNumId]/@w:numId" />
-    </xsl:when>
-    <xsl:when
-      test="$current/ancestor::*[name() = 'list' or 'nlist']/parent::block and
-            $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label = $config-doc/config/lists/(list|nlist)/@name">
-      <xsl:variable name="style-name"
-        select="$current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label" />
-      <xsl:variable name="max-num-id"
-        select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))" />
-      <xsl:variable name="position"
-        select="count($config-doc/config/lists/(list|nlist)) - count($config-doc/config/lists/(list|nlist)[@name=$style-name]/following-sibling::*[name() = 'list' or 'nlist'][@style=''])" />
-      <xsl:value-of select="$max-num-id + $position" />
-    </xsl:when>
-    <xsl:when test="$current/parent::*[name() = 'nlist']">
+<!--
+  Returns the list of document label specific ignore inline labels.
 
-      <xsl:variable name="max-num-id"
-        select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))" />
-      <xsl:variable name="default-position"
-        select="count($config-doc/config/lists/(list|nlist)) - count($config-doc/config/lists/nlist[@name='default']/following-sibling::*[name() = 'list' or 'nlist'][@style=''])" />
-      <xsl:value-of select="$max-num-id + $default-position" />
+  @param document-label the value of the document label
+
+  @return the list of inline labels
+-->
+<xsl:function name="fn:items-to-regex">
+  <xsl:param name="items"/>
+  <xsl:choose>
+    <xsl:when test="$items">
+      <!--<xsl:value-of select="for $i in $items return concat('^', . ,'$')" separator="|"/>-->
+      <xsl:for-each select="$items">
+        <xsl:choose>
+          <xsl:when test="position() = last()">
+            <xsl:value-of select="concat('^', . ,'$')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('^', . ,'$', '|')" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:variable name="max-num-id"
-        select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))" />
-      <xsl:variable name="default-position"
-        select="count($config-doc/config/lists/(list|nlist)) - count($config-doc/config/lists/list[@name='default']/following-sibling::*[name() = 'list' or 'nlist'][@style=''])" />
-      <xsl:value-of select="$max-num-id + $default-position" />
+      <xsl:value-of select="concat('^','No Selected Value','$')" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 
-<!-- 
+<!-- specify table width of a table -->
+<xsl:function name="fn:table-set-width-value">
+  <xsl:param name="node"/>
+  <xsl:choose>
+    <xsl:when test="$node/@width">
+      <xsl:analyze-string regex="(\d+)(.*)" select="$node/@width">
+        <xsl:matching-substring>
+          <xsl:attribute name="w:w" select="if(regex-group(2) = '%') then number(regex-group(1)) * 50 else number(regex-group(1)) * 15"/>
+          <xsl:attribute name="w:type" select="if(regex-group(2) = '%') then 'pct' else 'dxa'"/>
+        </xsl:matching-substring>
+        <xsl:non-matching-substring/>
+      </xsl:analyze-string>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:attribute name="w:w" select="0"/>
+      <xsl:attribute name="w:type" select="'auto'"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the word numeric value for pageseeder numeric value.
+
+  @param regexp-value the value of the current regex value
+  @return the pageseeder numeric value
+-->
+<xsl:function name="fn:get-numeric-type" as="xs:string?">
+  <xsl:param name="regexp-value"/>
+  <xsl:choose>
+    <xsl:when test="$regexp-value = 'arabic'">
+      <xsl:value-of select="'Arabic'"/>
+    </xsl:when>
+    <xsl:when test="$regexp-value = 'lowerletter'">
+      <xsl:value-of select="'alphabetic'"/>
+    </xsl:when>
+    <xsl:when test="$regexp-value = 'upperletter'">
+      <xsl:value-of select="'ALPHABETIC'"/>
+    </xsl:when>
+    <xsl:when test="$regexp-value = 'lowerroman'">
+      <xsl:value-of select="'roman'"/>
+    </xsl:when>
+    <xsl:when test="$regexp-value = 'upperroman'">
+      <xsl:value-of select="'ROMAN'"/>
+    </xsl:when>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Replaces each set numeric value with a real regular expression.
+
+  @param regexp-value the value of the current regex value
+  @return the real regular expression value
+-->
+<xsl:function name="fn:replace-regexp" as="xs:string?">
+  <xsl:param name="regexp-value"/>
+  <xsl:choose>
+    <xsl:when test="matches($regexp-value, '%arabic%')">
+      <xsl:value-of select="replace($regexp-value, '%arabic%', '(\\d+)')"/>
+    </xsl:when>
+    <xsl:when test="matches($regexp-value, '%lowerletter%')">
+      <xsl:value-of select="replace($regexp-value, '%lowerletter%', '([a-z]+)')"/>
+    </xsl:when>
+    <xsl:when test="matches($regexp-value, 'upperletter')">
+      <xsl:value-of select="replace($regexp-value, '%upperletter%', '([A-Z]+)')"/>
+    </xsl:when>
+    <xsl:when test="matches($regexp-value, 'upperroman')">
+      <xsl:value-of select="replace($regexp-value, '%upperroman%', '([IVXCLDM]+)')"/>
+    </xsl:when>
+    <xsl:when test="matches($regexp-value, 'lowerroman')">
+      <xsl:value-of select="replace($regexp-value, '%lowerroman%', '([ivxcldm]+)')"/>
+    </xsl:when>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the numeric value of a regular expression variable
+
+  @param prefix the prefix value
+  @param user-regexp the user defined regular expression
+  @param real-regexp the real valiue of the regular expression
+
+  @return the numeric value
+-->
+<xsl:function name="fn:get-number-from-regexp">
+  <xsl:param name="prefix" />
+  <xsl:param name="user-regexp" />
+  <xsl:param name="real-regexp" />
+  <xsl:variable name="prefix-value">
+    <xsl:analyze-string regex="({$real-regexp})" select="replace($prefix, '&#160;', ' ')">
+      <xsl:matching-substring>
+        <xsl:value-of select="regex-group(2)"/>
+      </xsl:matching-substring>
+    </xsl:analyze-string>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="matches($user-regexp, 'arabic')">
+      <xsl:value-of select="$prefix-value"/>
+    </xsl:when>
+    <xsl:when test="matches($user-regexp, 'upperletter|lowerletter')">
+      <xsl:value-of select="fn:alpha-to-integer($prefix-value, 1)"/>
+    </xsl:when>
+    <xsl:when test="matches($user-regexp, 'lowerroman|upperroman')">
+      <xsl:value-of select="fn:roman-to-integer($prefix-value, 1)"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the default ps:list w:style
+
+  @param list-level the current list level
+  @param list-type list or nlist
+
+  @return the w:style
+-->
+<xsl:function name="fn:default-list-wordstyle" as="xs:string">
+  <xsl:param name="list-level"/>
+  <xsl:param name="list-type"/>
+  <xsl:value-of>
+    <xsl:value-of select="'List '"/>
+    <xsl:value-of select="if ($list-type = 'nlist') then 'Number' else 'Bullet'"/>
+    <xsl:if test="$list-level gt 1">
+      <xsl:value-of select="format-number($list-level, ' #')"/>
+    </xsl:if>
+  </xsl:value-of>
+</xsl:function>
+
+<!--
+  Returns the roman value of a numeric value
+
+  @param roman-number the roman number to convert value
+  @param index the current integer value
+
+  @return the numeric value
+-->
+<xsl:function name="fn:roman-to-integer">
+  <xsl:param name="roman-number" />
+  <xsl:param name="index" />
+  <xsl:variable name="temp">
+    <xsl:value-of select="fn:to-roman($index)"/>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="$temp = $roman-number">
+      <xsl:value-of select="$index" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="fn:roman-to-integer($roman-number,$index + 1)" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the roman value of a numeric value
+
+  @param value the current integer value
+
+  @return the roman value
+-->
+<xsl:function name="fn:to-roman">
+  <xsl:param name="value"/>
+  <xsl:number value="$value" format="I"/>
+</xsl:function>
+
+<!--
+  Returns the alpha value of a numeric value
+
+  @param alpha-number the alpha number to convert value
+  @param index the current integer value
+
+  @return the numeric value
+-->
+<xsl:function name="fn:alpha-to-integer" as="xs:string">
+  <xsl:param name="alpha-number" />
+  <xsl:param name="index" />
+  <xsl:choose>
+    <xsl:when test="fn:to-alpha($index) = $alpha-number">
+      <xsl:value-of select="$index" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="fn:alpha-to-integer($alpha-number, $index + 1)" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the alpha value of a numeric value
+
+  @param value the current integer value
+
+  @return the alpha value
+-->
+<xsl:function name="fn:to-alpha" as="xs:string">
+  <xsl:param name="value"/>
+  <xsl:number value="$value" format="A"/>
+</xsl:function>
+
+<!--
   Checks if the current element contains block elements or not
  -->
 <xsl:function name="fn:has-block-elements" as="xs:boolean">

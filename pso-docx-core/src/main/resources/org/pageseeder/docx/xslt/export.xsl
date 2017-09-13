@@ -85,6 +85,7 @@
 <xsl:param name="_configfileurl"/>
 
 <!-- Common utility templates -->
+<xsl:include href="export/config.xsl" />
 <xsl:include href="export/variables.xsl" />
 <xsl:include href="export/apply-styles.xsl" />
 <xsl:include href="export/functions.xsl" />
