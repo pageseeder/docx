@@ -16,7 +16,7 @@
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
                 xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!--

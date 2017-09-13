@@ -12,7 +12,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:dfx="http://www.topologi.com/2005/Diff-X"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!-- Anchor elements are ignored -->
@@ -51,17 +52,17 @@
         </w:r>
       </w:p>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:tab-inline-labels-document($labels))">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:tab-inline-labels-document($labels))">
       <w:r>
         <w:tab/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:default-tab-inline-labels())">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:default-tab-inline-labels())">
       <w:r>
         <w:tab/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:inline-index-labels-with-document-label($labels))">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-index-labels-with-document-label($labels))">
       <xsl:variable name="quote">"</xsl:variable>
       <w:r>
         <w:t><xsl:value-of select="$text"/></w:t>
@@ -71,7 +72,7 @@
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:default-inline-index-labels())">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-index-labels())">
       <xsl:variable name="quote">"</xsl:variable>
       <w:r>
         <w:t><xsl:value-of select="$text"/></w:t>
@@ -81,20 +82,20 @@
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:inline-fieldcode-labels-with-document-label($labels))
-                and fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels) != ''">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-fieldcode-labels-with-document-label($labels))
+                and config:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels) != ''">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
-        <w:instrText xml:space="preserve"><xsl:value-of select="fn:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels)" /></w:instrText>
+        <w:instrText xml:space="preserve"><xsl:value-of select="config:get-document-label-inline-fieldcode-value(ancestor::inline[1]/@label, $labels)" /></w:instrText>
         <w:fldChar w:fldCharType="separate"/>
         <w:t xml:space="preserve"><xsl:value-of select="$text" /></w:t>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, fn:default-inline-fieldcode-labels()) and fn:get-default-inline-fieldcode-value(ancestor::inline[1]/@label) !=''">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-fieldcode-labels()) and config:get-default-inline-fieldcode-value(ancestor::inline[1]/@label) !=''">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
-        <w:instrText xml:space="preserve"><xsl:value-of select="fn:get-default-inline-fieldcode-value(ancestor::inline[1]/@label)" /></w:instrText>
+        <w:instrText xml:space="preserve"><xsl:value-of select="config:get-default-inline-fieldcode-value(ancestor::inline[1]/@label)" /></w:instrText>
         <w:fldChar w:fldCharType="separate"/>
         <w:t xml:space="preserve"><xsl:value-of select="$text" /></w:t>
         <w:fldChar w:fldCharType="end"/>
@@ -149,8 +150,8 @@
         <xsl:apply-templates mode="psml" />
       </w:p>
     </xsl:when>
-    <xsl:when test="matches(@label,fn:inline-ignore-labels-with-document-label($labels))"/>
-    <xsl:when test="matches(@label,fn:default-inline-ignore-labels())"/>
+    <xsl:when test="matches(@label, config:inline-ignore-labels-with-document-label($labels))"/>
+    <xsl:when test="matches(@label, config:default-inline-ignore-labels())"/>
     <xsl:otherwise>
       <xsl:apply-templates mode="psml" />
     </xsl:otherwise>

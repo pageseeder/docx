@@ -14,7 +14,8 @@
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:dcterms="http://purl.org/dc/terms/"
                 xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- TODO Too many repeated XPaths that may cause unnecessary tree traversal, use variables when appropriate -->
@@ -1356,7 +1357,7 @@
 <xsl:variable name="all-different-lists" as="node()">
 <lists>
   <xsl:for-each select=".//nlist[not(@type) and not(descendant::nlist/@type)][not(ancestor::*[name() = 'list' or name() = 'nlist'])]"> <!--  or @role or @start] -->
-    <xsl:variable name="role" select="fn:get-style-from-role(@role,.)"/>
+    <xsl:variable name="role" select="config:get-style-from-role(@role,.)"/>
     <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
     <xsl:variable name="list-type" select="./name()"/>
     <xsl:variable name="labels">
@@ -1374,11 +1375,11 @@
         <xsl:when test="$role != ''">
           <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $role]/@w:styleId"/>
         </xsl:when>
-        <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-          <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+        <xsl:when test="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
+          <xsl:value-of select="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
         </xsl:when>
-        <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-          <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+        <xsl:when test="config:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
+          <xsl:value-of select="config:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
@@ -1390,11 +1391,11 @@
         <xsl:when test="$role != ''">
           <xsl:value-of select="$role"/>
         </xsl:when>
-        <xsl:when test="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-          <xsl:value-of select="fn:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+        <xsl:when test="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
+          <xsl:value-of select="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
         </xsl:when>
-        <xsl:when test="fn:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-          <xsl:value-of select="fn:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+        <xsl:when test="config:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
+          <xsl:value-of select="config:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
@@ -1402,13 +1403,13 @@
       </xsl:choose>
     </xsl:variable>
 
-    <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/>
+    <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/>
 
     <xsl:choose>
       <xsl:when test="$list-type = 'nlist'">
         <nlist start="{if (@start) then @start else 1}" >
           <xsl:attribute name="level">
-              <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
+              <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
           </xsl:attribute>
           <xsl:attribute name="role" select="$role"/>
           <xsl:attribute name="labels" select="$labels"/>
@@ -1419,13 +1420,13 @@
           <xsl:attribute name="pstyle">
             <xsl:value-of select="$paragraph-style"/>
           </xsl:attribute>
-          <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
+          <xsl:value-of select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
         </nlist>
       </xsl:when>
       <xsl:otherwise>
         <list>
           <xsl:attribute name="level">
-            <xsl:value-of select="count(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
+            <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
           </xsl:attribute>
           <xsl:attribute name="role" select="$role"/>
           <xsl:attribute name="labels" select="$labels"/>

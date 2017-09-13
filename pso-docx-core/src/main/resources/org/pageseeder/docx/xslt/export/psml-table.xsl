@@ -9,7 +9,9 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function" exclude-result-prefixes="#all">
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
+                exclude-result-prefixes="#all">
 
 <!-- Template to match table. It calls a named template to create each row -->
 <xsl:template match="table[.//row]" mode="psml">
@@ -29,14 +31,14 @@
       <xsl:choose>
 
         <!-- Table with role AND document label -->
-        <xsl:when test="fn:table-roles-with-document-label($labels, @role) != ''">
-          <w:tblStyle w:val="{fn:table-roles-with-document-label(@role, $labels)}" />
-          <xsl:if test="fn:table-roles-with-document-label-type($labels, @role) != ''">
+        <xsl:when test="config:table-roles-with-document-label($labels, @role) != ''">
+          <w:tblStyle w:val="{config:table-roles-with-document-label(@role, $labels)}" />
+          <xsl:if test="config:table-roles-with-document-label-type($labels, @role) != ''">
             <w:tblW>
               <xsl:choose>
-                <xsl:when test="fn:table-roles-with-document-label-type-value($labels, @role) != ''">
-                  <xsl:attribute name="w:w" select="fn:table-roles-with-document-label-type-value($labels, @role)"/>
-                  <xsl:attribute name="w:type" select="fn:table-roles-with-document-label-type($labels, @role)"/>
+                <xsl:when test="config:table-roles-with-document-label-type-value($labels, @role) != ''">
+                  <xsl:attribute name="w:w" select="config:table-roles-with-document-label-type-value($labels, @role)"/>
+                  <xsl:attribute name="w:type" select="config:table-roles-with-document-label-type($labels, @role)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:sequence select="fn:table-set-width-value(.)"/>
@@ -47,14 +49,14 @@
         </xsl:when>
 
         <!-- Table with document label -->
-        <xsl:when test="fn:default-table-style-with-document-label($labels) != ''">
-          <w:tblStyle w:val="{fn:default-table-style-with-document-label($labels)}" />
-          <xsl:if test="fn:default-table-style-with-document-label-type($labels) != ''">
+        <xsl:when test="config:default-table-style-with-document-label($labels) != ''">
+          <w:tblStyle w:val="{config:default-table-style-with-document-label($labels)}" />
+          <xsl:if test="config:default-table-style-with-document-label-type($labels) != ''">
             <w:tblW>
               <xsl:choose>
-                <xsl:when test="fn:default-table-style-with-document-label-type-value($labels) != ''">
-                  <xsl:attribute name="w:w" select="fn:default-table-style-with-document-label-type-value($labels)"/>
-                  <xsl:attribute name="w:type" select="fn:default-table-style-with-document-label-type($labels)"/>
+                <xsl:when test="config:default-table-style-with-document-label-type-value($labels) != ''">
+                  <xsl:attribute name="w:w" select="config:default-table-style-with-document-label-type-value($labels)"/>
+                  <xsl:attribute name="w:type" select="config:default-table-style-with-document-label-type($labels)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:sequence select="fn:table-set-width-value(.)"/>
@@ -65,14 +67,14 @@
         </xsl:when>
 
         <!-- Table with role -->
-        <xsl:when test="fn:default-table-roles(@role) != ''">
-          <w:tblStyle w:val="{fn:default-table-roles(@role)}" />
-          <xsl:if test="fn:default-table-roles-type(@role) != ''">
+        <xsl:when test="config:default-table-roles(@role) != ''">
+          <w:tblStyle w:val="{config:default-table-roles(@role)}" />
+          <xsl:if test="config:default-table-roles-type(@role) != ''">
              <w:tblW>
               <xsl:choose>
-                <xsl:when test="fn:default-table-roles-type-value(@role) != ''">
-                  <xsl:attribute name="w:w" select="fn:default-table-roles-type-value(@role)"/>
-                  <xsl:attribute name="w:type" select="fn:default-table-roles-type(@role)"/>
+                <xsl:when test="config:default-table-roles-type-value(@role) != ''">
+                  <xsl:attribute name="w:w" select="config:default-table-roles-type-value(@role)"/>
+                  <xsl:attribute name="w:type" select="config:default-table-roles-type(@role)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:sequence select="fn:table-set-width-value(.)"/>
@@ -83,14 +85,14 @@
         </xsl:when>
 
         <!-- Default table -->
-        <xsl:when test="fn:default-table-style() != ''">
-          <w:tblStyle w:val="{fn:default-table-style()}" />
-          <xsl:if test="fn:default-table-style-type() != ''">
+        <xsl:when test="config:default-table-style() != ''">
+          <w:tblStyle w:val="{config:default-table-style()}" />
+          <xsl:if test="config:default-table-style-type() != ''">
             <w:tblW>
               <xsl:choose>
-                <xsl:when test="fn:default-table-style-type-value() != ''">
-                  <xsl:attribute name="w:w" select="fn:default-table-style-type-value()"/>
-                  <xsl:attribute name="w:type" select="fn:default-table-style-type()"/>
+                <xsl:when test="config:default-table-style-type-value() != ''">
+                  <xsl:attribute name="w:w" select="config:default-table-style-type-value()"/>
+                  <xsl:attribute name="w:type" select="config:default-table-style-type()"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:sequence select="fn:table-set-width-value(.)"/>

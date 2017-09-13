@@ -9,7 +9,8 @@
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -43,11 +44,11 @@
             <xsl:when test="parent::*[@role]">
               <w:pStyle w:val="{parent::*/@role}"/>
             </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-document-label($labels ,$role, $level, $list-type) != ''">
-              <w:pStyle w:val="{fn:list-wordstyle-for-document-label($labels, $role, $level, $list-type)}"/>
+            <xsl:when test="config:list-wordstyle-for-document-label($labels ,$role, $level, $list-type) != ''">
+              <w:pStyle w:val="{config:list-wordstyle-for-document-label($labels, $role, $level, $list-type)}"/>
             </xsl:when>
-            <xsl:when test="fn:list-wordstyle-for-default-document($role, $level, $list-type) != ''">
-              <w:pStyle w:val="{fn:list-wordstyle-for-default-document($role, $level, $list-type)}"/>
+            <xsl:when test="config:list-wordstyle-for-default-document($role, $level, $list-type) != ''">
+              <w:pStyle w:val="{config:list-wordstyle-for-default-document($role, $level, $list-type)}"/>
             </xsl:when>
             <xsl:otherwise>
               <w:pStyle w:val="{fn:default-list-wordstyle($level, $list-type)}"/>
@@ -65,7 +66,7 @@
             <xsl:variable name="adjusted-level">
               <xsl:choose>
                 <xsl:when test="parent::*[@role]">
-                  <xsl:value-of select="fn:get-level-from-role(parent::*/@role, .)"/>
+                  <xsl:value-of select="config:get-level-from-role(parent::*/@role, .)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="count(ancestor::list)+count(ancestor::nlist) - 1"/>

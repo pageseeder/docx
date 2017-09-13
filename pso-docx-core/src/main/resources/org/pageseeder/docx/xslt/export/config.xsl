@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  XSLT module containing global variables and functions.
+  XSLT module providing functions to access the configuration of the module.
+
+  All functions in this module rely on the configuration document. Only functions from the
+  `http://pageseeder.org/docx/config` namespace can dispense with providing the configuration
+  as parameter.
 
   @author Christophe Lauret
   @author Philip Rutherford
@@ -14,16 +18,21 @@
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:dcterms="http://purl.org/dc/terms/"
                 xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
-<!-- The document node of the configuration file -->
+<!--
+  The document node of the configuration file
+
+  This variable should not be used outside this module
+-->
 <xsl:variable name="config-doc" select="document($_configfileurl)" />
 
 <!--
   @return a regular expression matching all the inline labels that should create a tab
 -->
-<xsl:function name="fn:default-tab-inline-labels" as="xs:string">
+<xsl:function name="config:default-tab-inline-labels" as="xs:string">
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[not(@label)]/inline/tab/@label)"/>
 </xsl:function>
 
@@ -31,7 +40,7 @@
   @param document-label the document label to match
   @return a regular expression matching all inline labels that should create a tab specific for a document label
 -->
-<xsl:function name="fn:tab-inline-labels-document" as="xs:string">
+<xsl:function name="config:tab-inline-labels-document" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/inline/tab/@label)"/>
 </xsl:function>
@@ -39,7 +48,7 @@
 <!--
   @return a regular expression matching all the default inline labels to transform to fieldcodes.
 -->
-<xsl:function name="fn:default-inline-fieldcode-labels" as="xs:string">
+<xsl:function name="config:default-inline-fieldcode-labels" as="xs:string">
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[not(@label)]/inline/fieldcode/@label)"/>
 </xsl:function>
 
@@ -47,7 +56,7 @@
   @param document-label the document label to match
   @return a regular expression matching the list of a specific document label inline labels to transform to fieldcodes.
 -->
-<xsl:function name="fn:inline-fieldcode-labels-with-document-label">
+<xsl:function name="config:inline-fieldcode-labels-with-document-label">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/inline/fieldcode/@label)"/>
 </xsl:function>
@@ -58,7 +67,7 @@
   @param inline-label the value of the inline label
   @return the value of the fieldcode
 -->
-<xsl:function name="fn:get-default-inline-fieldcode-value">
+<xsl:function name="config:get-default-inline-fieldcode-value">
   <xsl:param name="inline-label"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/inline/fieldcode[@label = $inline-label]/@value)"/>
 </xsl:function>
@@ -68,7 +77,7 @@
 
   @return the list of inline labels
 -->
-<xsl:function name="fn:default-inline-index-labels" as="xs:string">
+<xsl:function name="config:default-inline-index-labels" as="xs:string">
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[not(@label)]/inline/index/@label)"/>
 </xsl:function>
 
@@ -77,7 +86,7 @@
 
   @return the list of inline labels
 -->
-<xsl:function name="fn:inline-index-labels-with-document-label" as="xs:string">
+<xsl:function name="config:inline-index-labels-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/inline/index/@label)"/>
 </xsl:function>
@@ -90,7 +99,7 @@
 
   @return the value of the fieldcode
 -->
-<xsl:function name="fn:get-document-label-inline-fieldcode-value" as="xs:string">
+<xsl:function name="config:get-document-label-inline-fieldcode-value" as="xs:string">
   <xsl:param name="inline-label"/>
   <xsl:param name="document-label"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/inline/fieldcode[@label = $inline-label]/@value)" />
@@ -101,7 +110,7 @@
 
   @return the list of inline labels
 -->
-<xsl:function name="fn:default-inline-ignore-labels" as="xs:string">
+<xsl:function name="config:default-inline-ignore-labels" as="xs:string">
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[not(@label)]/inline/ignore/@label)"/>
 </xsl:function>
 
@@ -112,7 +121,7 @@
 
   @return the list of inline labels
 -->
-<xsl:function name="fn:inline-ignore-labels-with-document-label" as="xs:string">
+<xsl:function name="config:inline-ignore-labels-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/inline/ignore/@label)"/>
 </xsl:function>
@@ -122,7 +131,7 @@
 
   @return the list of block labels
 -->
-<xsl:function name="fn:default-block-ignore-labels" as="xs:string">
+<xsl:function name="config:default-block-ignore-labels" as="xs:string">
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[not(@label)]/block/ignore/@label)"/>
 </xsl:function>
 
@@ -133,7 +142,7 @@
 
   @return the list of block labels
 -->
-<xsl:function name="fn:block-ignore-labels-with-document-label" as="xs:string">
+<xsl:function name="config:block-ignore-labels-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/block/ignore/@label)"/>
 </xsl:function>
@@ -143,7 +152,7 @@
 
   @return the word table style
 -->
-<xsl:function name="fn:default-table-style" as="xs:string">
+<xsl:function name="config:default-table-style" as="xs:string">
   <xsl:variable name="table-name" select="$config-doc/config/elements[not(@label)]/tables/table/@default"/>
   <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
 </xsl:function>
@@ -155,7 +164,7 @@
 
   @return the word table style
 -->
-<xsl:function name="fn:default-table-roles" as="xs:string">
+<xsl:function name="config:default-table-roles" as="xs:string">
   <xsl:param name="role"/>
   <xsl:variable name="table-name" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@tablestyle"/>
   <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
@@ -166,7 +175,7 @@
 
   @return the word table style
 -->
-<xsl:function name="fn:default-table-style-with-document-label" as="xs:string">
+<xsl:function name="config:default-table-style-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:variable name="table-name" select="$config-doc/config/elements[@label = $document-label]/tables/table/@default"/>
   <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
@@ -179,7 +188,7 @@
 
   @return the word table style
 -->
-<xsl:function name="fn:table-roles-with-document-label" as="xs:string">
+<xsl:function name="config:table-roles-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="role"/>
   <xsl:variable name="table-name" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@tablestyle"/>
@@ -191,7 +200,7 @@
 
   @return the word table with type
 -->
-<xsl:function name="fn:default-table-style-type" as="xs:string">
+<xsl:function name="config:default-table-style-type" as="xs:string">
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@default]/width/@type)" />
 </xsl:function>
 
@@ -200,7 +209,7 @@
 
   @return the word table with value
 -->
-<xsl:function name="fn:default-table-style-type-value" as="xs:string">
+<xsl:function name="config:default-table-style-type-value" as="xs:string">
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@default]/width/@value)" />
 </xsl:function>
 
@@ -211,7 +220,7 @@
 
   @return the word table width type
 -->
-<xsl:function name="fn:default-table-roles-type" as="xs:string">
+<xsl:function name="config:default-table-roles-type" as="xs:string">
   <xsl:param name="role"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@type)"/>
 </xsl:function>
@@ -223,7 +232,7 @@ Returns the default table width value based on a table role.
 
 @return the word table width value
 -->
-<xsl:function name="fn:default-table-roles-type-value" as="xs:string">
+<xsl:function name="config:default-table-roles-type-value" as="xs:string">
   <xsl:param name="role"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/tables/table[@role = $role]/width/@value)"/>
 </xsl:function>
@@ -233,7 +242,7 @@ Returns the default table width value based on a table role.
 
   @return the word table width type
 -->
-<xsl:function name="fn:default-table-style-with-document-label-type" as="xs:string">
+<xsl:function name="config:default-table-style-with-document-label-type" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@type)"/>
 </xsl:function>
@@ -243,7 +252,7 @@ Returns the default table width value based on a table role.
 
   @return the word table width value
 -->
-<xsl:function name="fn:default-table-style-with-document-label-type-value" as="xs:string">
+<xsl:function name="config:default-table-style-with-document-label-type-value" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@default]/width/@value)" />
 </xsl:function>
@@ -256,7 +265,7 @@ Returns the default table width value based on a table role.
 
   @return the word table width type
 -->
-<xsl:function name="fn:table-roles-with-document-label-type" as="xs:string">
+<xsl:function name="config:table-roles-with-document-label-type" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="role"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@type)" />
@@ -270,7 +279,7 @@ Returns the default table width value based on a table role.
 
   @return the word table width type
 -->
-<xsl:function name="fn:table-roles-with-document-label-type-value" as="xs:string">
+<xsl:function name="config:table-roles-with-document-label-type-value" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="role"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/width/@value)" />
@@ -282,7 +291,7 @@ Returns the default table width value based on a table role.
   @param document-label the document label
   @return the w:style
 -->
-<xsl:function name="fn:preformat-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:preformat-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/preformat/@wordstyle)" />
 </xsl:function>
@@ -292,7 +301,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:preformat-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:preformat-wordstyle-for-default-document" as="xs:string">
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/preformat/@wordstyle)" />
 </xsl:function>
 
@@ -303,7 +312,7 @@ Returns the default table width value based on a table role.
   @param block-label the current block label
   @return the w:style
 -->
-<xsl:function name="fn:block-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:block-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="block-label"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/block/label[@value=$block-label]/@wordstyle)" />
@@ -315,7 +324,7 @@ Returns the default table width value based on a table role.
   @param document-label the document label
   @return the w:style
 -->
-<xsl:function name="fn:block-default-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:block-default-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/block/@default"/>
   <xsl:value-of select="if ($style = 'none') then '' else string($style)" />
@@ -327,7 +336,7 @@ Returns the default table width value based on a table role.
   @param block-label the document label
   @return the w:style
 -->
-<xsl:function name="fn:block-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:block-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="block-label"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/block/label[@value=$block-label]/@wordstyle)" />
 </xsl:function>
@@ -337,7 +346,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:block-default-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:block-default-wordstyle-for-default-document" as="xs:string">
   <xsl:variable name="style" select="$config-doc/config/elements[not(@label)]/block/@default"/>
   <xsl:value-of select="if ($style = 'none') then '' else string($style)" />
 </xsl:function>
@@ -349,7 +358,7 @@ Returns the default table width value based on a table role.
   @param inline-label the current inline label
   @return the w:style
 -->
-<xsl:function name="fn:inline-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:inline-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="inline-label"/>
   <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle"/>
@@ -362,7 +371,7 @@ Returns the default table width value based on a table role.
   @param document-label the document label
   @return the w:style
 -->
-<xsl:function name="fn:inline-default-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:inline-default-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/inline/@default"/>
   <xsl:value-of select="if ($style = 'none') then '' else string($style)" />
@@ -374,7 +383,7 @@ Returns the default table width value based on a table role.
   @param inline-label the current inline label
   @return the w:style
 -->
-<xsl:function name="fn:inline-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:inline-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="inline-label"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/inline/label[@value=$inline-label]/@wordstyle)" />
 </xsl:function>
@@ -384,7 +393,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:inline-default-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:inline-default-wordstyle-for-default-document" as="xs:string">
   <xsl:variable name="style" select="$config-doc/config/elements[not(@label)]/inline/@default"/>
   <xsl:value-of select="if ($style = 'none') then '' else string($style)"/>
 </xsl:function>
@@ -397,7 +406,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the heading
   @return the w:style
 -->
-<xsl:function name="fn:heading-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:heading-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
@@ -411,7 +420,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the heading
   @return the w:style
 -->
-<xsl:function name="fn:heading-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:heading-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle)" />
@@ -424,7 +433,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the heading
   @return true or false
 -->
-<xsl:function name="fn:heading-prefix-select-for-default-document" as="xs:boolean">
+<xsl:function name="config:heading-prefix-select-for-default-document" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="select" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select"/>
@@ -438,7 +447,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the heading
   @return true or false
 -->
-<xsl:function name="fn:default-keep-heading-with-next" as="xs:boolean">
+<xsl:function name="config:default-keep-heading-with-next" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:value-of select="exists($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
@@ -451,7 +460,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the heading
   @return true or false
 -->
-<xsl:function name="fn:heading-prefix-select-for-document-label" as="xs:boolean">
+<xsl:function name="config:heading-prefix-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
@@ -466,7 +475,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the heading
   @return true or false
 -->
-<xsl:function name="fn:labels-keep-heading-with-next" as="xs:boolean">
+<xsl:function name="config:labels-keep-heading-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
@@ -480,7 +489,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:para-prefix-select-for-default-document" as="xs:boolean">
+<xsl:function name="config:para-prefix-select-for-default-document" as="xs:boolean">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
@@ -505,7 +514,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:default-keep-para-with-next" as="xs:boolean">
+<xsl:function name="config:default-keep-para-with-next" as="xs:boolean">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:choose>
@@ -529,7 +538,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:labels-keep-para-with-next" as="xs:boolean">
+<xsl:function name="config:labels-keep-para-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
@@ -554,7 +563,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:para-prefix-select-for-document-label" as="xs:boolean">
+<xsl:function name="config:para-prefix-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
@@ -582,7 +591,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return w:style
 -->
-<xsl:function name="fn:para-list-level-paragraph-for-document-label" as="xs:string">
+<xsl:function name="config:para-list-level-paragraph-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="list-level"/>
   <xsl:param name="numbered"/>
@@ -596,7 +605,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return w:style
 -->
-<xsl:function name="fn:para-list-level-paragraph-for-default-document" as="xs:string">
+<xsl:function name="config:para-list-level-paragraph-for-default-document" as="xs:string">
   <xsl:param name="list-level"/>
   <xsl:param name="numbered"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/listpara/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$list-level]/@wordstyle)" />
@@ -609,7 +618,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:para-numbered-select-for-default-document" as="xs:boolean">
+<xsl:function name="config:para-numbered-select-for-default-document" as="xs:boolean">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
@@ -635,7 +644,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:para-numbered-select-for-document-label" as="xs:boolean">
+<xsl:function name="config:para-numbered-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
@@ -661,7 +670,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:heading-numbered-select-for-default-document" as="xs:boolean">
+<xsl:function name="config:heading-numbered-select-for-default-document" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="select" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select"/>
@@ -676,7 +685,7 @@ Returns the default table width value based on a table role.
   @param numbered the numbered attribute value of the ps:para
   @return true or false
 -->
-<xsl:function name="fn:heading-numbered-select-for-document-label" as="xs:boolean">
+<xsl:function name="config:heading-numbered-select-for-document-label" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
@@ -690,7 +699,7 @@ Returns the default table width value based on a table role.
   @param label the current ps:block label
   @return true or false
 -->
-<xsl:function name="fn:default-keep-block-with-next" as="xs:boolean">
+<xsl:function name="config:default-keep-block-with-next" as="xs:boolean">
   <xsl:param name="label"/>
   <xsl:value-of select="exists($config-doc/config/elements[not(@label)]/block/label[@value=$label]/keep-paragraph-with-next)"/>
 </xsl:function>
@@ -702,7 +711,7 @@ Returns the default table width value based on a table role.
   @param label the current ps:block label
   @return true or false
 -->
-<xsl:function name="fn:labels-keep-block-with-next" as="xs:boolean">
+<xsl:function name="config:labels-keep-block-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="label"/>
   <xsl:value-of select="exists($config-doc/config/elements[@label = $document-label]/block/label[@value=$label]/keep-paragraph-with-next)"/>
@@ -715,7 +724,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:title-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:title-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/title/@wordstyle)"/>
 </xsl:function>
@@ -725,7 +734,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:title-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:title-wordstyle-for-default-document" as="xs:string">
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/title/@wordstyle)"/>
 </xsl:function>
 
@@ -739,7 +748,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:list-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:list-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
@@ -766,7 +775,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:list-wordstyle-for-default-document" as="xs:string">
+<xsl:function name="config:list-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
@@ -793,7 +802,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:para-wordstyle-for-document-label" as="xs:string">
+<xsl:function name="config:para-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
@@ -820,7 +829,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:para-wordstyle-for-default-document">
+<xsl:function name="config:para-wordstyle-for-default-document">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
@@ -847,7 +856,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="fn:get-style-from-role">
+<xsl:function name="config:get-style-from-role">
   <xsl:param name="role"/>
   <xsl:param name="current" as="node()"/>
   <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
@@ -880,7 +889,7 @@ Returns the default table width value based on a table role.
 
   @return the w:lvl
 -->
-<xsl:function name="fn:get-level-from-role">
+<xsl:function name="config:get-level-from-role">
   <xsl:param name="role"/>
   <xsl:param name="current" as="node()"/>
   <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
@@ -904,14 +913,5 @@ Returns the default table width value based on a table role.
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
-
-
-
-
-
-
-
-
-
 
 </xsl:stylesheet>

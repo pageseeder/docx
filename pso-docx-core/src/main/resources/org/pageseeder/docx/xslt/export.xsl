@@ -23,8 +23,6 @@
   @author Philip Rutherford
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
                 xmlns:dcterms="http://purl.org/dc/terms/" dcterms:W3CDTF="http://purl.org/dc/terms/W3CDTF"
                 exclude-result-prefixes="#all">
 
@@ -37,7 +35,7 @@
 <!-- We must preserve white-spaces within inline elements -->
 <xsl:preserve-space elements="bold italic underline sup sub inline monospace"/>
 
-<!-- TODO: Shouldn't we specified the white-space control for every PSML element?? -->
+<!-- TODO: Shouldn't we specify the white-space control for every PSML element?? -->
 
 <!-- Parameter that contains the relative location of any referenced external files -->
 <xsl:param name="resourcefolder"/>
@@ -107,11 +105,6 @@
 <xsl:include href="export/psml-text-block.xsl" />
 <xsl:include href="export/psml-text-inline.xsl" />
 <xsl:include href="export/psml-toc.xsl" />
-
-
-<!-- The date of the current exported document -->
-<xsl:variable name="document-date" select="document/@date" />
-
 
 <!--
   The root node of the psml file

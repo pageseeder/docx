@@ -15,7 +15,7 @@
                 xmlns:dcterms="http://purl.org/dc/terms/"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!-- 
@@ -77,6 +77,7 @@
   Template to handle creation of files referenced by `content_types.xml` file
 -->
 <xsl:template name="create-documents">
+  <xsl:variable name="document-date" select="document/@date" />
 
   <!-- Process the `[Content_Types].xml` file -->
   <xsl:result-document href="{concat($_outputfolder, encode-for-uri('[Content_Types].xml'))}">
@@ -111,6 +112,7 @@
                 </xsl:for-each>
               </xsl:when>
               <xsl:otherwise>
+
                 <xsl:variable name="created">
                   <xsl:choose>
                     <xsl:when test="$manual-created = 'Pageseeder Document Creation Date'">

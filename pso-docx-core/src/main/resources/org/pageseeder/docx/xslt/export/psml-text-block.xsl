@@ -10,7 +10,8 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -37,13 +38,13 @@
     <w:pPr>
       <xsl:call-template name="apply-style" />
       <xsl:choose>
-        <xsl:when test="fn:labels-keep-heading-with-next($labels, @level, @numbered)">
+        <xsl:when test="config:labels-keep-heading-with-next($labels, @level, @numbered)">
           <w:rPr>
             <w:vanish/>
             <w:specVanish/>
           </w:rPr>
         </xsl:when>
-        <xsl:when test="fn:default-keep-heading-with-next(@level, @numbered)">
+        <xsl:when test="config:default-keep-heading-with-next(@level, @numbered)">
           <w:rPr>
             <w:vanish/>
             <w:specVanish/>
@@ -54,20 +55,20 @@
     <!-- TODO check how prefixes work -->
     <xsl:if test="@prefix">
       <xsl:choose>
-        <xsl:when test="fn:heading-prefix-select-for-document-label($labels, @level, @numbered)">
+        <xsl:when test="config:heading-prefix-select-for-document-label($labels, @level, @numbered)">
           <xsl:sequence select="fn:heading-prefix-value-for-document-label($labels, @level, current(), @numbered)" />
         </xsl:when>
-        <xsl:when test="fn:heading-prefix-select-for-default-document(@level, @numbered)">
+        <xsl:when test="config:heading-prefix-select-for-default-document(@level, @numbered)">
           <xsl:sequence select="fn:heading-prefix-value-for-default-document(@level, current(), @numbered)" />
         </xsl:when>
       </xsl:choose>
     </xsl:if>
     <xsl:if test="@numbered = 'true'">
       <xsl:choose>
-        <xsl:when test="fn:heading-numbered-select-for-document-label($labels, @level, @numbered)">
+        <xsl:when test="config:heading-numbered-select-for-document-label($labels, @level, @numbered)">
           <xsl:sequence select="fn:heading-numbered-value-for-document-label($labels, @level, current(), @numbered)" />
         </xsl:when>
-        <xsl:when test="fn:heading-numbered-select-for-default-document(@level, @numbered)">
+        <xsl:when test="config:heading-numbered-select-for-default-document(@level, @numbered)">
           <xsl:sequence select="fn:heading-numbered-value-for-default-document(@level, current(), @numbered)" />
         </xsl:when>
       </xsl:choose>
@@ -88,8 +89,8 @@
   <xsl:choose>
     <!-- when containing other block elements, including mixed content -->
     <!-- will not create w:p here -->
-    <xsl:when test="matches(@label, fn:block-ignore-labels-with-document-label($labels))"/>
-    <xsl:when test="matches(@label, fn:default-block-ignore-labels())"/>
+    <xsl:when test="matches(@label, config:block-ignore-labels-with-document-label($labels))"/>
+    <xsl:when test="matches(@label, config:default-block-ignore-labels())"/>
     <xsl:when test="fn:has-block-elements(.)">
       <xsl:apply-templates mode="psml" />
     </xsl:when>
@@ -102,7 +103,7 @@
           </xsl:if>
           <xsl:call-template name="apply-style" />
           <xsl:choose>
-            <xsl:when test="fn:labels-keep-block-with-next($labels, @label) or fn:default-keep-block-with-next(@label)">
+            <xsl:when test="config:labels-keep-block-with-next($labels, @label) or config:default-keep-block-with-next(@label)">
               <w:rPr>
                 <w:vanish/>
                 <w:specVanish/>
@@ -140,8 +141,8 @@
       <xsl:if test="$cell-align != '' and (ancestor::cell or ancestor::hcell)">
         <w:jc w:val="{$cell-align}"/>
       </xsl:if>
-      <xsl:if test="fn:labels-keep-para-with-next($labels, @indent, @numbered)
-                 or fn:default-keep-para-with-next(@indent, @numbered)">
+      <xsl:if test="config:labels-keep-para-with-next($labels, @indent, @numbered)
+                 or config:default-keep-para-with-next(@indent, @numbered)">
         <w:rPr>
           <w:vanish/>
           <w:specVanish/>
@@ -156,10 +157,10 @@
           <xsl:choose>
           <xsl:when test="position()=1">
             <xsl:choose>
-              <xsl:when test="fn:list-wordstyle-for-document-label($labels, $role, $level, $list-type) != ''">
+              <xsl:when test="config:list-wordstyle-for-document-label($labels, $role, $level, $list-type) != ''">
                 <xsl:call-template name="apply-style" />
               </xsl:when>
-              <xsl:when test="fn:list-wordstyle-for-default-document($role, $level, $list-type) != ''">
+              <xsl:when test="config:list-wordstyle-for-default-document($role, $level, $list-type) != ''">
                 <xsl:call-template name="apply-style" />
               </xsl:when>
               <xsl:otherwise>
@@ -178,7 +179,7 @@
             <xsl:variable name="adjusted-level">
               <xsl:choose>
                 <xsl:when test="ancestor::item/parent::*[@role]">
-                  <xsl:value-of select="fn:get-level-from-role(ancestor::item/parent::*/@role,.)"/>
+                  <xsl:value-of select="config:get-level-from-role(ancestor::item/parent::*/@role,.)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="count(ancestor::list)+count(ancestor::nlist) - 1"/>
@@ -219,13 +220,13 @@
           <xsl:otherwise>
             <xsl:variable name="list-level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
             <xsl:choose>
-              <xsl:when test="fn:para-list-level-paragraph-for-document-label($labels,$list-level,@numbered) != ''">
-                <xsl:variable name="style-name" select="fn:para-list-level-paragraph-for-document-label($labels,$list-level,@numbered)"/>
-                <w:pStyle w:val="{document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
+              <xsl:when test="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered) != ''">
+                <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered)"/>
+                <w:pStyle w:val="{document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
               </xsl:when>
-              <xsl:when test="fn:para-list-level-paragraph-for-default-document($list-level,@numbered) != ''">
-                <xsl:variable name="style-name" select="fn:para-list-level-paragraph-for-default-document($list-level,@numbered)"/>
-                <w:pStyle w:val="{document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
+              <xsl:when test="config:para-list-level-paragraph-for-default-document($list-level, @numbered) != ''">
+                <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-default-document($list-level, @numbered)"/>
+                <w:pStyle w:val="{document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
               </xsl:when>
               <xsl:otherwise>
                 <w:pStyle w:val="BodyText"/>
@@ -241,10 +242,10 @@
 
       <xsl:if test="@prefix">
         <xsl:choose>
-          <xsl:when test="fn:para-prefix-select-for-document-label($labels, @indent, @numbered)">
+          <xsl:when test="config:para-prefix-select-for-document-label($labels, @indent, @numbered)">
             <xsl:sequence select="fn:para-prefix-value-for-document-label($labels, @indent, current(), @numbered)" />
           </xsl:when>
-          <xsl:when test="fn:para-prefix-select-for-default-document(@indent, @numbered)">
+          <xsl:when test="config:para-prefix-select-for-default-document(@indent, @numbered)">
             <xsl:sequence select="fn:para-prefix-value-for-default-document(@indent, current(), @numbered)" />
           </xsl:when>
           <xsl:otherwise>
@@ -256,10 +257,10 @@
       </xsl:if>
       <xsl:if test="@numbered = 'true'">
         <xsl:choose>
-          <xsl:when test="fn:para-numbered-select-for-document-label($labels,@indent,@numbered)">
+          <xsl:when test="config:para-numbered-select-for-document-label($labels,@indent,@numbered)">
             <xsl:sequence select="fn:para-numbered-value-for-document-label($labels,@indent,current(),@numbered)" />
           </xsl:when>
-          <xsl:when test="fn:para-numbered-select-for-default-document(@indent,@numbered)">
+          <xsl:when test="config:para-numbered-select-for-default-document(@indent,@numbered)">
             <xsl:sequence select="fn:para-numbered-value-for-default-document(@indent,current(),@numbered)" />
           </xsl:when>
         </xsl:choose>
