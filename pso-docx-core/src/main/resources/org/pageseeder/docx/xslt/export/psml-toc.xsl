@@ -11,6 +11,7 @@
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -19,17 +20,17 @@
   Create initial toc paragraphs only if the `$create-toc` global variable is `true`.
 -->
 <xsl:template match="toc" mode="psml">
-  <xsl:if test="$create-toc">
+  <xsl:if test="config:generate-toc()">
     <xsl:variable name="toc-text">
       <xsl:text>TOC </xsl:text>
-      <xsl:if test="$generate-toc-headings and $toc-heading-values != ''">
-        <xsl:text>\o "</xsl:text><xsl:value-of select="$toc-heading-values"/><xsl:text>" </xsl:text>
+      <xsl:if test="config:generate-toc-headings() and config:toc-heading-values() != ''">
+        <xsl:text>\o "</xsl:text><xsl:value-of select="config:toc-heading-values()"/><xsl:text>" </xsl:text>
       </xsl:if>
-      <xsl:if test="$generate-toc-outline and $toc-outline-values != ''">
-        <xsl:text>\u "</xsl:text><xsl:value-of select="$toc-outline-values"/><xsl:text>" </xsl:text>
+      <xsl:if test="config:generate-toc-outline() and config:toc-outline-values() != ''">
+        <xsl:text>\u "</xsl:text><xsl:value-of select="config:toc-outline-values()"/><xsl:text>" </xsl:text>
       </xsl:if>
-      <xsl:if test="$generate-toc-paragraphs">
-       <xsl:text>\t "</xsl:text><xsl:value-of select="$toc-paragraph-values"/><xsl:text>" </xsl:text>
+      <xsl:if test="config:generate-toc-paragraphs()">
+       <xsl:text>\t "</xsl:text><xsl:value-of select="config:toc-paragraph-values()"/><xsl:text>" </xsl:text>
       </xsl:if>
     </xsl:variable>
     <w:p>

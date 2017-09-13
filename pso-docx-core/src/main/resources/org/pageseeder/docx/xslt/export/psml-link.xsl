@@ -11,6 +11,7 @@
                 xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
                 xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -19,7 +20,7 @@
 <xsl:template match="xref" mode="psml">
   <xsl:choose>
     <!-- TODO check requirements for generate-cross-references -->
-    <xsl:when test="$generate-cross-references">
+    <xsl:when test="config:generate-cross-references()">
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
       </w:r>

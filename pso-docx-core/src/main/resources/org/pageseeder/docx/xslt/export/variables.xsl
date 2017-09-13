@@ -148,18 +148,12 @@
 
 <!-- The word style of the configuration file for xref elements -->
 <xsl:variable name="xref-style" as="xs:string">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/elements/xref">
-      <xsl:value-of select="$config-doc/config/elements/xref/@style"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''"/>
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:value-of select="string($config-doc/config/elements/xref/@style)"/>
 </xsl:variable>
 
 <!-- Node containing all inline label configured values -->
 <xsl:variable name="inline-labels" as="element(inlinelabels)">
+  <!-- TODO Only used in `content_types.xml` -->
   <inlinelabels>
   <xsl:choose>
     <xsl:when test="$config-doc/config/elements/inline[@default = 'generate-ps-style']">
@@ -186,6 +180,7 @@
 
 <!-- Node containing all block label configured values -->
 <xsl:variable name="block-labels" as="element(blocklabels)">
+  <!-- TODO Only used in `content_types.xml` -->
   <blocklabels>
    <xsl:choose>
     <xsl:when test="$config-doc/config/elements/block[@default = 'generate-ps-style']">
@@ -211,174 +206,7 @@
   </blocklabels>
 </xsl:variable>
 
-
-<!-- TODO Simplify code for functions below -->
-<!-- TODO Specify return type -->
 <!-- TODO Move functions related specifically to the config to a separate module -->
-
-<!--
-  Returns the confirmation of creation a table of contents or not at ps:toc level.
-
-  @return true or false
--->
-<xsl:variable name="create-toc" as="xs:boolean">
-  <!-- TODO turn into function? -->
-  <xsl:value-of select="$config-doc/config/toc/@generate = 'true'" />
-</xsl:variable>
-
-<!--
-  Returns the confirmation of creation a table of contents or not at ps:toc level.
-
-  @return true or false
--->
-<!-- TODO remove -->
-<xsl:variable name="create-endnotes" as="xs:boolean">
-  <!-- TODO turn into function? -->
-  <xsl:value-of select="$config-doc/config/default/endnotes/@generate = 'true'"/>
-</xsl:variable>
-
-<!-- TODO Remove -->
-<xsl:function name="fn:endnote-labels">
-  <xsl:choose>
-    <xsl:when test="$create-endnotes">
-      <xsl:for-each select="tokenize($config-doc/config/default/endnotes/@xref-labels, ',')">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the confirmation of creation a table of contents or not at ps:toc level.
-
-  @return true or false
--->
-  <!-- TODO remove -->
-<xsl:variable name="create-footnotes" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/default/footnotes/@generate = 'true'"/>
-</xsl:variable>
-
-<!-- TODO remove -->
-<xsl:function name="fn:footnote-labels">
-  <xsl:choose>
-    <xsl:when test="$create-footnotes">
-      <xsl:for-each select="tokenize($config-doc/config/default/footnotes/@xref-labels,',')">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the confirmation of creation a table of contents with headings or not.
-
-  @return true or false
--->
-<xsl:variable name="generate-toc-headings" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/toc/headings/@generate = 'true'"/>
-</xsl:variable>
-
-<!--
-  Returns the values of the heading values for Table of contents.
-
-  @return value of heading levels
--->
-<xsl:variable name="toc-heading-values" as="xs:string">
-  <xsl:value-of select="string($config-doc/config/toc/headings/@select)"/>
-</xsl:variable>
-
-<!--
-  Returns the confirmation of creation a table of contents with outline levels or not.
-
-  @return true or false
--->
-<xsl:variable name="generate-toc-outline" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/toc/outline/@generate = 'true'"/>
-</xsl:variable>
-
-<!--
-  Returns the values of the outline level values for Table of contents.
-
-  @return value of outline levels
--->
-<xsl:variable name="toc-outline-values">
-  <xsl:value-of select="string($config-doc/config/toc/outline/@select)" />
-</xsl:variable>
-
-<!--
-  Returns the confirmation of creation a table of contents with paragraph styles or not.
-
-  @return true or false
--->
-<xsl:variable name="generate-toc-paragraphs" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/toc/paragraph/@generate = 'true'" />
-</xsl:variable>
-
-<!--
-  Returns the values of the paragraph styles values for Table of contents.
-
-  @return list of paragraph styles and indent value
--->
-<xsl:variable name="toc-paragraph-values">
-  <xsl:for-each select="$config-doc/config/toc/paragraph/style">
-    <xsl:choose>
-      <xsl:when test="position() = last()">
-        <xsl:value-of select="concat(@value, ',', @indent)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat(@value, ',', @indent, ',')"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:for-each>
-</xsl:variable>
-
-<!--
-  Returns the confirmation of creation of comments.
-
-  @return true or false
--->
-<xsl:variable name="generate-comments" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/default/comments/@generate = 'true'" />
-</xsl:variable>
-
-<!--
-  Returns the naming of docx files on export master.
-
-  @return type of export
--->
-<xsl:variable name="master-select" as="xs:string">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/default/master/@select = 'uriid'">
-      <xsl:value-of select="'uriid'" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/default/master/@select = 'urititle'">
-      <xsl:value-of select="'urititle'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'uriid'" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
 
 <!--
   Returns the confirmation of creation of comments.
@@ -387,11 +215,6 @@
 -->
 <xsl:variable name="generate-mathml" as="xs:boolean">
   <xsl:value-of select="$config-doc/config/default/mathml/@generate = 'true'"/>
-</xsl:variable>
-
-<!-- boolean variable to generate cross references or not -->
-<xsl:variable name="generate-cross-references" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/default/xref/@type = 'cross-reference'"/>
 </xsl:variable>
 
 <!--
@@ -643,9 +466,6 @@
         <xsl:sequence select="$string-after-regexp"/>
       </xsl:if>
     </xsl:when>
-    <xsl:otherwise>
-      <!-- Do nothing -->
-    </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 
@@ -739,9 +559,6 @@
       </w:r>
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
-<!--           <w:r> -->
-<!--             <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t> -->
-<!--           </w:r> -->
     </xsl:when>
     <xsl:otherwise>
       <w:r>
@@ -828,9 +645,6 @@
       </xsl:if>
       <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
       </w:fldSimple>
-      <!--           <w:r> -->
-      <!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
-      <!--           </w:r> -->
       <xsl:if test="$string-after-regexp != ''">
         <xsl:sequence select="$string-after-regexp"/>
       </xsl:if>
@@ -1027,9 +841,6 @@
       </xsl:if>
       <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
       </w:fldSimple>
-<!--           <w:r> -->
-<!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
-<!--           </w:r> -->
       <xsl:if test="$string-after-regexp != ''">
        <xsl:sequence select="$string-after-regexp"/>
       </xsl:if>
@@ -1134,9 +945,6 @@
       </w:r>
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$current-indent]/prefix[@select = 'false']">
-<!--           <w:r> -->
-<!--             <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t> -->
-<!--           </w:r> -->
     </xsl:when>
     <xsl:otherwise>
       <w:r>
@@ -1239,9 +1047,6 @@
       </xsl:if>
       <w:fldSimple w:instr="{concat($type,' ',$name,' \* ',$numeric-type,' ',$flags)}">
       </w:fldSimple>
-<!--           <w:r> -->
-<!--             <w:t xml:space="preserve"><xsl:value-of select="' '"/></w:t> -->
-<!--           </w:r> -->
       <xsl:if test="$string-after-regexp != ''">
         <xsl:sequence select="$string-after-regexp"/>
       </xsl:if>

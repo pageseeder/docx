@@ -32,6 +32,107 @@
 <xsl:variable name="config-doc" select="document($_configfileurl)" />
 
 <!--
+  Returns the confirmation of creation a table of contents or not at PSML toc level.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/toc/@generate = 'true'" />
+</xsl:function>
+
+<!--
+  Returns the confirmation of creation a table of contents with headings or not.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc-headings" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/toc/headings/@generate = 'true'"/>
+</xsl:function>
+
+<!--
+  Returns the values of the heading values for Table of contents.
+
+  @return value of heading levels
+-->
+<xsl:function name="config:toc-heading-values" as="xs:string">
+  <xsl:value-of select="string($config-doc/config/toc/headings/@select)"/>
+</xsl:function>
+
+<!--
+  Returns the confirmation of creation a table of contents with outline levels or not.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc-outline" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/toc/outline/@generate = 'true'"/>
+</xsl:function>
+
+<!--
+  Returns the values of the outline level values for Table of contents.
+
+  @return value of outline levels
+-->
+<xsl:function name="config:toc-outline-values" as="xs:string">
+  <xsl:value-of select="string($config-doc/config/toc/outline/@select)" />
+</xsl:function>
+
+<!--
+  Returns the confirmation of creation a table of contents with paragraph styles or not.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc-paragraphs" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/toc/paragraph/@generate = 'true'" />
+</xsl:function>
+
+<!--
+  Returns the values of the paragraph styles values for Table of contents.
+
+  @return list of paragraph styles and indent value
+-->
+<xsl:function name="config:toc-paragraph-values">
+  <!-- TODO Looks like this function's return type is `xs:string*`, but used in `xslvalue-of` -->
+  <xsl:for-each select="$config-doc/config/toc/paragraph/style">
+    <xsl:choose>
+      <xsl:when test="position() = last()">
+        <xsl:value-of select="concat(@value, ',', @indent)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat(@value, ',', @indent, ',')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:for-each>
+</xsl:function>
+
+<!--
+  Returns the confirmation of creation of comments.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-comments" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/default/comments/@generate = 'true'" />
+</xsl:function>
+
+<!--
+  Indicate whether cross-references should be generated.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-cross-references" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/default/xref/@type = 'cross-reference'"/>
+</xsl:function>
+
+
+<!--
+  Returns the naming of docx files on export master.
+
+  @return type of export: 'urititle' or 'uriid'
+-->
+<xsl:function name="config:master-select" as="xs:string">
+  <xsl:value-of select="if ($config-doc/config/default/master/@select = 'urititle') then 'urititle' else 'uriid'" />
+</xsl:function>
+
+<!--
   @return a regular expression matching all the inline labels that should create a tab
 -->
 <xsl:function name="config:default-tab-inline-labels" as="xs:string">

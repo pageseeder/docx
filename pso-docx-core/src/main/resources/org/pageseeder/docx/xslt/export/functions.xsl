@@ -108,21 +108,11 @@
 
   @return the list of inline labels
 -->
-<xsl:function name="fn:items-to-regex">
+<xsl:function name="fn:items-to-regex" as="xs:string">
   <xsl:param name="items"/>
   <xsl:choose>
     <xsl:when test="$items">
-      <!--<xsl:value-of select="for $i in $items return concat('^', . ,'$')" separator="|"/>-->
-      <xsl:for-each select="$items">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^', . ,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^', . ,'$', '|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
+      <xsl:value-of select="string-join(for $i in $items return concat('^', $i ,'$'), '|')"/>
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="concat('^','No Selected Value','$')" />

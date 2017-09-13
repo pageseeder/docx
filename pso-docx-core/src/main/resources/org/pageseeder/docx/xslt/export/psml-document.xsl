@@ -12,6 +12,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -68,7 +69,7 @@
  -->
 <xsl:template match="fragment" mode="psml">
   <!-- TODO generate comments for other xref-fragment, properties-fragment, media-fragment -->
-  <xsl:if test="$generate-comments">
+  <xsl:if test="config:generate-comments()">
     <xsl:variable name="id" select="count(preceding::fragment) + 1"/>
     <w:p>
      <w:commentRangeStart w:id="{$id}"/>

@@ -6,16 +6,19 @@
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
+
+  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:dcterms="http://purl.org/dc/terms/" dcterms:W3CDTF="http://purl.org/dc/terms/W3CDTF"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
                 xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- 
@@ -23,39 +26,13 @@
 -->
 <xsl:template match="/" mode="content-types">
   <xsl:param name="current-document" />
-  <xsl:variable name="current-default-extension">
-    <xsl:choose>
-      <xsl:when test="*[name() = 'Types']/*[name() = 'Default']">
-        <xsl:for-each select="*[name() = 'Types']/*[name() = 'Default']/@Extension">
-          <xsl:choose>
-            <xsl:when test="position() = last()">
-              <xsl:value-of select="concat('^',upper-case(.),'$')" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="concat('^',upper-case(.),'$','|')" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:for-each>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat('^','No Selected Value','$')" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="current-default-extension" select="upper-case(fn:items-to-regex(*[name() = 'Types']/*[name() = 'Default']/@Extension))"/>
   <xsl:for-each select="*">
     <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
       <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" />
-      <xsl:if test="$generate-comments">
+      <xsl:if test="config:generate-comments()">
         <Override PartName="/word/comments.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml" />
       </xsl:if>
-      <!--
-      <xsl:if test="$create-endnotes">
-        <Override PartName="/word/endnotes.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.endnotes+xml" />
-      </xsl:if>
-      <xsl:if test="$create-footnotes">
-        <Override PartName="/word/footnotes.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml" />
-      </xsl:if>
-       -->
       <xsl:for-each select="*">
         <xsl:if test=".[name() = 'Default']">
           <xsl:copy-of select="." />
@@ -64,9 +41,10 @@
           <xsl:copy-of select="." />
         </xsl:if>
       </xsl:for-each>
-      <xsl:for-each select="distinct-values($current-document//image/upper-case(substring-after(@src,'.')))">
-        <xsl:if test="not(matches(.,$current-default-extension))">
-          <Default ContentType="{concat('image/',.)}" Extension="{.}" />
+      <!-- TODO: Extension should probably look for last '.' -->
+      <xsl:for-each select="distinct-values($current-document//image/upper-case(substring-after(@src, '.')))">
+        <xsl:if test="not(matches(., $current-default-extension))">
+          <Default ContentType="{concat('image/', .)}" Extension="{.}" />
         </xsl:if>
       </xsl:for-each>
     </Types>
@@ -182,18 +160,10 @@
         <xsl:for-each select="document($_document-relationship)//*">
           <xsl:copy-of select=".[name() = 'Relationship'][@Target!='comments.xml']"/>
         </xsl:for-each>
-        <xsl:if test="$generate-comments">
+        <xsl:if test="config:generate-comments()">
           <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"
             Target="comments.xml" />
         </xsl:if>
-<!--           <xsl:if test="$create-footnotes"> -->
-<!--             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes" -->
-<!--               Target="footnotes.xml" /> -->
-<!--           </xsl:if> -->
-<!--           <xsl:if test="$create-endnotes"> -->
-<!--             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 3))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes" -->
-<!--               Target="endnotes.xml" /> -->
-<!--           </xsl:if> -->
 
         <!-- TODO Counting blockxrefs to word documents?? -->
         <xsl:variable name="word-documents" select="if($manual-master = 'true') then count(.//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']) else 0"/>
@@ -202,7 +172,7 @@
           <xsl:for-each select="//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']">
             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + position()))}"
                           Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument"
-                          Target="{if ($master-select = 'uriid') then concat(@uriid,'.docx') else @urititle}"
+                          Target="{if (config:master-select() = 'uriid') then concat(@uriid,'.docx') else @urititle}"
                           TargetMode="External"/>
           </xsl:for-each>
         </xsl:if>
@@ -234,7 +204,7 @@
     </xsl:apply-templates>
   </xsl:result-document>
 
-  <xsl:if test="$generate-comments">
+  <xsl:if test="config:generate-comments()">
     <xsl:result-document href="{concat($_outputfolder,'word/comments.xml')}">
       <w:comments>
         <xsl:for-each select=".//fragment">
