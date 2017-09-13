@@ -31,6 +31,111 @@
 -->
 <xsl:variable name="config-doc" select="document($_configfileurl)" />
 
+<!-- The value of the creator property -->
+<xsl:function name="config:creator" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dc:creator"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/creator/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-creator"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the revision property -->
+<xsl:function name="config:revision" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:revision"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/revision/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-revision"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the description property -->
+<xsl:function name="config:description" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:description"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/description/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-description"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the subject property -->
+<xsl:function name="config:subject" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:subject"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/subject/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-subject"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the title property -->
+<xsl:function name="config:title" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:title"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/title/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-title"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the category property -->
+<xsl:function name="config:category" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:category"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/category/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-category"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the version property -->
+<xsl:function name="config:version" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:version"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/version/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-version"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
 <!--
   Returns the confirmation of creation a table of contents or not at PSML toc level.
 
@@ -122,6 +227,14 @@
   <xsl:sequence select="$config-doc/config/default/xref/@type = 'cross-reference'"/>
 </xsl:function>
 
+<!--
+  Returns the confirmation of creation of comments.
+
+  @return true or false
+-->
+<xsl:function name="config:generate-mathml" as="xs:boolean">
+  <xslsequence select="$config-doc/config/default/mathml/@generate = 'true'"/>
+</xsl:function>
 
 <!--
   Returns the naming of docx files on export master.

@@ -41,111 +41,6 @@
 <!-- The location of the styles template -->
 <xsl:variable name="styles-template" select="'/word/styles.xml'" as="xs:string"/>
 
-<!-- The value of the creator property -->
-<xsl:variable name="creator">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dc:creator"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/creator/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-creator"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- The value of the revision property -->
-<xsl:variable name="revision">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:revision"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/revision/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-revision"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- The value of the description property -->
-<xsl:variable name="description">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:description"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/description/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-description"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- The value of the subject property -->
-<xsl:variable name="subject">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:subject"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/subject/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-subject"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- The value of the title property -->
-<xsl:variable name="title">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:title"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/title/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-title"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- The value of the category property -->
-<xsl:variable name="category">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:category"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/category/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-category"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- The value of the version property -->
-<xsl:variable name="version">
-  <xsl:choose>
-    <xsl:when test="$manual-core = 'Template'">
-      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:version"/>
-    </xsl:when>
-    <xsl:when test="$manual-core = 'Config'">
-      <xsl:value-of select="$config-doc/config/core/version/@select"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$manual-version"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
 <!-- The word style of the configuration file for xref elements -->
 <xsl:variable name="xref-style" as="xs:string">
   <xsl:value-of select="string($config-doc/config/elements/xref/@style)"/>
@@ -207,15 +102,6 @@
 </xsl:variable>
 
 <!-- TODO Move functions related specifically to the config to a separate module -->
-
-<!--
-  Returns the confirmation of creation of comments.
-
-  @return true or false
--->
-<xsl:variable name="generate-mathml" as="xs:boolean">
-  <xsl:value-of select="$config-doc/config/default/mathml/@generate = 'true'"/>
-</xsl:variable>
 
 <!--
   Returns the configured default paragraph style.

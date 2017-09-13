@@ -60,11 +60,11 @@
     </xsl:when>
 
     <!-- TODO check requirements for mathml processing -->
-    <xsl:when test="starts-with(@href, '_external/') and $generate-mathml">
+    <xsl:when test="starts-with(@href, '_external/') and config:generate-mathml()">
       <!-- External xref: choose to copy or not based on type and config -->
       <xsl:variable name="referenced-document" select="document(@href)" />
       <xsl:choose>
-        <xsl:when test="$referenced-document//section/media-fragment[@mediatype='application/mathml+xml'] and $generate-mathml">
+        <xsl:when test="$referenced-document//section/media-fragment[@mediatype='application/mathml+xml'] and config:generate-mathml()">
           <xsl:variable name="mathml">
             <m:math>
               <xsl:sequence select="$referenced-document//section/media-fragment[@mediatype='application/mathml+xml']/*"/>

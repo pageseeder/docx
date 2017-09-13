@@ -106,39 +106,39 @@
                     <xsl:value-of select="$created" />
                   </dcterms:created>
                 </xsl:if>
-                <xsl:if test="$creator != ''">
+                <xsl:if test="config:creator() != ''">
                   <dc:creator>
-                    <xsl:value-of select="$creator" />
+                    <xsl:value-of select="config:creator()" />
                   </dc:creator>
                 </xsl:if>
-                <xsl:if test="$description != ''">
+                <xsl:if test="config:description() != ''">
                   <dc:description>
-                    <xsl:value-of select="$description" />
+                    <xsl:value-of select="config:description()" />
                   </dc:description>
                 </xsl:if>
-                <xsl:if test="$revision != ''">
+                <xsl:if test="config:revision() != ''">
                   <cp:revision>
-                    <xsl:value-of select="$revision" />
+                    <xsl:value-of select="config:revision()" />
                   </cp:revision>
                 </xsl:if>
-                <xsl:if test="$subject != ''">
+                <xsl:if test="config:subject() != ''">
                   <dc:subject>
-                    <xsl:value-of select="$subject" />
+                    <xsl:value-of select="config:subject()" />
                   </dc:subject>
                 </xsl:if>
-                <xsl:if test="$title != ''">
+                <xsl:if test="config:title() != ''">
                   <dc:title>
-                    <xsl:value-of select="$title" />
+                    <xsl:value-of select="config:title()" />
                   </dc:title>
                 </xsl:if>
-                <xsl:if test="$category != ''">
+                <xsl:if test="config:category() != ''">
                   <cp:category>
-                    <xsl:value-of select="$category" />
+                    <xsl:value-of select="config:category()" />
                   </cp:category>
                 </xsl:if>
-                <xsl:if test="$version != ''">
+                <xsl:if test="config:version() != ''">
                   <cp:version>
-                    <xsl:value-of select="$version" />
+                    <xsl:value-of select="config:version()" />
                   </cp:version>
                 </xsl:if>
               </xsl:otherwise>
