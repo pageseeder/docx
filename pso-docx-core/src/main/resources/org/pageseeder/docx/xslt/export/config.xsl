@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  XSLT module providing functions to access the configuration of the module.
+  XSLT module providing functions to access the configuration.
 
   All functions in this module rely on the configuration document. Only functions from the
   `http://pageseeder.org/docx/config` namespace can dispense with providing the configuration
@@ -9,6 +9,8 @@
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
+
+  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -56,7 +58,7 @@
   @param document-label the document label to match
   @return a regular expression matching the list of a specific document label inline labels to transform to fieldcodes.
 -->
-<xsl:function name="config:inline-fieldcode-labels-with-document-label">
+<xsl:function name="config:inline-fieldcode-labels-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/inline/fieldcode/@label)"/>
 </xsl:function>
@@ -67,7 +69,7 @@
   @param inline-label the value of the inline label
   @return the value of the fieldcode
 -->
-<xsl:function name="config:get-default-inline-fieldcode-value">
+<xsl:function name="config:get-default-inline-fieldcode-value" as="xs:string">
   <xsl:param name="inline-label"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)]/inline/fieldcode[@label = $inline-label]/@value)"/>
 </xsl:function>
@@ -437,7 +439,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="select" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select"/>
-  <xsl:value-of select="$select = 'true' or $select = 'false'"/>
+  <xsl:sequence select="$select = 'true' or $select = 'false'"/>
 </xsl:function>
 
 <!--
@@ -450,7 +452,7 @@ Returns the default table width value based on a table role.
 <xsl:function name="config:default-keep-heading-with-next" as="xs:boolean">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:value-of select="exists($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
+  <xsl:sequence select="exists($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--
@@ -465,7 +467,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="select" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix/@select"/>
-  <xsl:value-of select="$select = 'true' or $select = 'false'" />
+  <xsl:sequence select="$select = 'true' or $select = 'false'" />
 </xsl:function>
 
 <!--
@@ -479,7 +481,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:value-of select="exists($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
+  <xsl:sequence select="exists($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--
@@ -495,14 +497,14 @@ Returns the default table width value based on a table role.
   <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $indent[@level='0']/prefix/@select = 'true'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$indent[@level=$indent-level]/prefix/@select = 'true'
                or $indent[@level=$indent-level]/prefix/@select = 'false'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -519,13 +521,13 @@ Returns the default table width value based on a table role.
   <xsl:param name="numbered"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/keep-paragraph-with-next">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/keep-paragraph-with-next">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -544,13 +546,13 @@ Returns the default table width value based on a table role.
   <xsl:param name="numbered"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/keep-paragraph-with-next">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/keep-paragraph-with-next">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -569,16 +571,16 @@ Returns the default table width value based on a table role.
   <xsl:param name="numbered"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/prefix/@select = 'true'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'true'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/prefix/@select = 'false'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -624,14 +626,14 @@ Returns the default table width value based on a table role.
   <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $indent[@level='0']/numbered/@select = 'true'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$indent[@level=$indent-level]/numbered/@select = 'true'
                or $indent[@level=$indent-level]/numbered/@select = 'false'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -651,14 +653,14 @@ Returns the default table width value based on a table role.
   <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)]"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $indent[@level='0']/numbered/@select = 'true'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$indent[@level=$indent-level]/numbered/@select = 'true'
                or $indent[@level=$indent-level]/numbered/@select = 'false'">
-      <xsl:value-of select="true()" />
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -674,7 +676,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="select" select="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select"/>
-  <xsl:value-of select="$select = 'true' or $select = 'false'" />
+  <xsl:sequence select="$select = 'true' or $select = 'false'" />
 </xsl:function>
 
 <!--
@@ -690,7 +692,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:variable name="select" select="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/numbered/@select"/>
-  <xsl:value-of select="$select = 'true' or $select = 'false'"/>
+  <xsl:sequence select="$select = 'true' or $select = 'false'"/>
 </xsl:function>
 
 <!--
@@ -701,7 +703,7 @@ Returns the default table width value based on a table role.
 -->
 <xsl:function name="config:default-keep-block-with-next" as="xs:boolean">
   <xsl:param name="label"/>
-  <xsl:value-of select="exists($config-doc/config/elements[not(@label)]/block/label[@value=$label]/keep-paragraph-with-next)"/>
+  <xsl:sequence select="exists($config-doc/config/elements[not(@label)]/block/label[@value=$label]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--
@@ -726,7 +728,7 @@ Returns the default table width value based on a table role.
 -->
 <xsl:function name="config:title-wordstyle-for-document-label" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/title/@wordstyle)"/>
+  <xsl:sequence select="string($config-doc/config/elements[@label = $document-label]/title/@wordstyle)"/>
 </xsl:function>
 
 <!--
@@ -829,7 +831,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="config:para-wordstyle-for-default-document">
+<xsl:function name="config:para-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
@@ -856,7 +858,7 @@ Returns the default table width value based on a table role.
 
   @return the w:style
 -->
-<xsl:function name="config:get-style-from-role">
+<xsl:function name="config:get-style-from-role" as="xs:string">
   <xsl:param name="role"/>
   <xsl:param name="current" as="node()"/>
   <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
@@ -889,7 +891,7 @@ Returns the default table width value based on a table role.
 
   @return the w:lvl
 -->
-<xsl:function name="config:get-level-from-role">
+<xsl:function name="config:get-level-from-role" as="xs:string">
   <xsl:param name="role"/>
   <xsl:param name="current" as="node()"/>
   <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
