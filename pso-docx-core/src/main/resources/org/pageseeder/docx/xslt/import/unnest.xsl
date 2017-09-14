@@ -1,24 +1,10 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
   xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-  xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-  xmlns:w10="urn:schemas-microsoft-com:office:word"
   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-  xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-  xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
-  xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-  xmlns:rs="http://schemas.openxmlformats.org/package/2006/relationships"
-  xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:dcterms="http://purl.org/dc/terms/"
   xmlns:f="http://www.pageseeder.com/function"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
   exclude-result-prefixes="#all">
 
 <xsl:param name="remove-custom-xml"               select="'true'"/>
@@ -41,12 +27,14 @@
 <xsl:param name="remove-font-info"                select="'true'"/>
 <xsl:param name="remove-paragraph-properties"     select="'true'"/>
 
-  <xsl:output encoding="UTF-8" method="xml" indent="no" />
+<!-- TODO Move to utilities -->
 
-  <xsl:variable name="stylesdocument" select="document('styles.xml')"/>  
- 
- <!-- match root and handle purges, consolidations and simplifications --> 
- <xsl:template match="/">
+<xsl:output encoding="UTF-8" method="xml" indent="no" />
+
+<xsl:variable name="stylesdocument" select="document('styles.xml')"/>
+
+<!-- match root and handle purges, consolidations and simplifications -->
+<xsl:template match="/">
   <xsl:sequence select="f:purge(f:consolidate(f:purge(f:simplify(node()))))"/>
 </xsl:template>
 
@@ -156,22 +144,20 @@
   <xsl:choose>
     <xsl:when test="preceding-sibling::*[1][name() = 'w:t']">
       <xsl:element name="{preceding-sibling::*[1]/name()}">
-      <xsl:attribute name="xml:space">preserve</xsl:attribute>
-      <xsl:text>-</xsl:text>
-    </xsl:element>
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:text>-</xsl:text>
+      </xsl:element>
     </xsl:when>
     <xsl:when test="following-sibling::*[1][name() = 'w:t']">
-    <xsl:element name="{following-sibling::*[1]/name()}">
-      <xsl:attribute name="xml:space">preserve</xsl:attribute>
-      <xsl:text>-</xsl:text>
-    </xsl:element>
+      <xsl:element name="{following-sibling::*[1]/name()}">
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:text>-</xsl:text>
+      </xsl:element>
     </xsl:when>
     <xsl:otherwise>
-    <w:t xml:space="preserve">-</w:t>
+      <w:t xml:space="preserve">-</w:t>
     </xsl:otherwise>
   </xsl:choose>
- 
-  
 </xsl:template>
 
 <!-- Replace tabs -->
@@ -179,22 +165,21 @@
   <xsl:choose>
     <xsl:when test="preceding-sibling::*[1][name() = 'w:t']">
       <xsl:element name="{preceding-sibling::*[1]/name()}">
-      <xsl:attribute name="xml:space">preserve</xsl:attribute>
-      <xsl:text>&#x9;</xsl:text>
-    </xsl:element>
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:text>&#x9;</xsl:text>
+      </xsl:element>
     </xsl:when>
     <xsl:when test="following-sibling::*[1][name() = 'w:t']">
-    <xsl:element name="{following-sibling::*[1]/name()}">
-      <xsl:attribute name="xml:space">preserve</xsl:attribute>
-      <xsl:text>&#x9;</xsl:text>
-    </xsl:element>
+      <xsl:element name="{following-sibling::*[1]/name()}">
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:text>&#x9;</xsl:text>
+      </xsl:element>
     </xsl:when>
     <xsl:otherwise>
-    <w:t xml:space="preserve">&#x9;</w:t>
+      <w:t xml:space="preserve">&#x9;</w:t>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
-
 
 <!-- Remove font information -->
 <xsl:template match="w:rFonts        [$remove-font-info = 'true']" mode="simplify"/>
@@ -225,16 +210,11 @@
   <w:p>
     <xsl:for-each-group select="*" group-starting-with="w:r[w:fldChar[@w:fldCharType='begin']]">
       <xsl:for-each-group select="current-group()" group-ending-with="w:r[w:fldChar[@w:fldCharType='end']]">
-<!--       and w:fldChar[@w:fldCharType='begin'] -->
         <xsl:choose>
           <xsl:when test="current-group()[w:fldChar[@w:fldCharType='end']]">
-<!--              <xsl:message>&lt;test&gt;</xsl:message> -->
-<!--               <xsl:message><xsl:apply-templates select="current-group()" mode="xml"/></xsl:message> -->
-<!--               <xsl:message>&lt;/test&gt;</xsl:message> -->
             <w:r>
               <xsl:choose>
                 <xsl:when test="current-group()/w:rPr">
-<!--                   <xsl:message><xsl:apply-templates select="current-group()" mode="xml"/></xsl:message> -->
                   <xsl:apply-templates select="current-group()/w:rPr" mode="simplify"/>
                 </xsl:when>
                 <xsl:otherwise></xsl:otherwise>
@@ -250,10 +230,7 @@
     </xsl:for-each-group>
   </w:p>
 </xsl:template>   
-  
-  
-  
-  
+
 <!-- ========================================================================================= -->
 <!-- Remove empty runs and run properties                                                      -->
 <!-- ========================================================================================= -->
@@ -305,7 +282,7 @@
 <xsl:template match="w:p|w:hyperlink|w:sdt|w:smartTag" mode="consolidate">
 <xsl:element name="{./name()}">
   <xsl:copy-of select="@*"/>
-  
+
   <xsl:variable name="paragraphTextRunProperties" as="element()">
       <w:rPr>
       <xsl:choose>
@@ -316,183 +293,92 @@
       </xsl:choose>
       </w:rPr>
     </xsl:variable>
-    
-  <xsl:for-each-group select="*" group-adjacent="f:key-for-run(.)">
-    <xsl:comment><xsl:apply-templates select="current-group()" mode="xml"/></xsl:comment>
-<!--     <xsl:message>&lt;test&gt;</xsl:message> -->
-<!--     <xsl:message><xsl:apply-templates select="current-group()" mode="xml"/></xsl:message> -->
-<!--     <xsl:message>&lt;/test&gt;</xsl:message> -->
-    <xsl:choose>
 
-      <!-- Not a Run -->
-      <xsl:when test="not(self::w:r)">
-        <xsl:apply-templates select="current-group()" mode="consolidate"/>
-      </xsl:when>
+    <xsl:for-each-group select="*" group-adjacent="f:key-for-run(.)">
+      <xsl:comment><xsl:apply-templates select="current-group()" mode="xml"/></xsl:comment>
+      <xsl:choose>
 
-      <!-- Runs -->
-      <xsl:otherwise>
-        <xsl:variable name="runs" select="current-group()"/>
-        <xsl:for-each-group select="current-group()/*" group-adjacent="if (self::w:br) then 1 else 2">
-        <xsl:choose>
-          <xsl:when test="current-grouping-key() = 1">
-            <w:r>
-              <xsl:copy-of select="current-group()"/>
-            </w:r>
-          </xsl:when>
-          <xsl:otherwise>
-            
-          <xsl:for-each-group select="current-group()" group-starting-with="w:fldChar[@w:fldCharType='begin']">
-            <xsl:for-each-group select="current-group()" group-ending-with="w:fldChar[@w:fldCharType='end']">  
-            <w:r>
-              <xsl:variable name="runStyleName" select="w:rPr/r:pStyle/@w:val"/>
-              <!-- Include run properties (from the first match - they are identical)-->
-              <w:rPr>
-                <xsl:variable name="runProperties" as="element()">
-                  <w:rPr>
-                    <xsl:copy-of select="$runs/w:rPr[1]"/>
-                  </w:rPr>
-                </xsl:variable>
-<!--                 <xsl:message><xsl:apply-templates select="$runProperties" mode="xml"/></xsl:message> -->
-<!--                 <xsl:for-each select="$runs/w:rPr"> -->
-<!--                   <xsl:message>#<xsl:value-of select="./name()" />:: -->
-<!--                   <xsl:for-each select="./preceding-sibling::*"> -->
-<!--                       <xsl:value-of select="./name()" /> -->
-<!--                   </xsl:for-each> -->
-<!--                   </xsl:message> -->
-<!--                    <xsl:choose> -->
-<!--                      <xsl:when test="position() = 1"> -->
-<!--                        <xsl:copy-of select="./*"/> -->
-<!--                       </xsl:when> -->
-<!--                       <xsl:otherwise> -->
-<!--                         <xsl:value-of select="concat('^',./name(),'$','|')" /> -->
-<!--                      </xsl:otherwise> -->
-<!--                    </xsl:choose> -->
-<!--                   </xsl:for-each> -->
-                
-                
-                <xsl:variable name="runPropertyMatch">
-                  <xsl:for-each select="$runs/w:rPr[1]/*">
-                    <xsl:choose>
-							        <xsl:when test="position() = last()">
-							          <xsl:value-of select="concat('^',./name(),'$')" />
-							        </xsl:when>
-							        <xsl:otherwise>
-							          <xsl:value-of select="concat('^',./name(),'$','|')" />
-							        </xsl:otherwise>
-							      </xsl:choose>
-                   </xsl:for-each>
-                </xsl:variable>
-                
-                
-<!--                 <xsl:variable name="stylesRunPropertyMatch"> -->
-<!--                   <xsl:for-each select="$stylesdocument//w:style[@w:id = $runStyleName]/w:rPr/*"> -->
-<!--                     <xsl:choose> -->
-<!--                       <xsl:when test="position() = last()"> -->
-<!--                         <xsl:value-of select="concat('^',./name(),'$')" /> -->
-<!--                       </xsl:when> -->
-<!--                       <xsl:otherwise> -->
-<!--                         <xsl:value-of select="concat('^',./name(),'$','|')" /> -->
-<!--                       </xsl:otherwise> -->
-<!--                     </xsl:choose> -->
-<!--                    </xsl:for-each> -->
-<!--                 </xsl:variable> -->
-                
-                <xsl:for-each select="$paragraphTextRunProperties/*">
-<!--              <xsl:if test="not(matches(./name(),$runPropertyMatch)) and not(matches(./name(),$stylesRunPropertyMatch))"> -->
-                  <xsl:if test="not(matches(./name(),$runPropertyMatch))">
-                    <xsl:copy-of select="."/>
-                  </xsl:if>
-                </xsl:for-each>
-                
-                
-<!--                 <xsl:if test="doc-available('styles.xml')"> -->
-<!--                 <xsl:message select="'here'"></xsl:message> -->
-<!--                 </xsl:if> -->
-<!--                  <xsl:for-each select="$stylesdocument//w:style[@w:styleId = $runStyleName]/w:rPr/*"> -->
-<!--                   <xsl:message select="./name()"></xsl:message> -->
-<!--                   <xsl:if test="not(matches(./name(),$runPropertyMatch))"> -->
-<!--                     <xsl:copy-of select="."/> -->
-<!--                   </xsl:if> -->
-<!--                 </xsl:for-each> -->
-               
-                <xsl:for-each select="$runProperties/w:rPr/*">
-                    <xsl:copy-of select="."/>
-                </xsl:for-each>
-                
-              </w:rPr>
-<!--               <xsl:apply-templates select="$runs/w:rPr" mode="consolidate"/> -->
-<!--                Collate other nodes --> 
-              
-              <xsl:for-each-group select="current-group()[not(self::w:rPr)]" group-adjacent="if (self::w:t) then 1 else if (self::w:instrText) then 2 else 3">
-				        <xsl:choose>
-				          <xsl:when test="current-grouping-key() = 1">
-				            <w:t xml:space="preserve"><xsl:value-of select="current-group()" separator=""/></w:t>
-				          </xsl:when>
-				          <xsl:when test="current-grouping-key() = 2">
-                    <w:instrText xml:space="preserve"><xsl:value-of select="current-group()" separator=""/></w:instrText>
-                  </xsl:when>
-				          <xsl:otherwise>
-                    <xsl:apply-templates select="current-group()" mode="consolidate"/>
-                  </xsl:otherwise>
-                </xsl:choose>
+        <!-- Not a Run -->
+        <xsl:when test="not(self::w:r)">
+          <xsl:apply-templates select="current-group()" mode="consolidate"/>
+        </xsl:when>
+
+        <!-- Runs -->
+        <xsl:otherwise>
+          <xsl:variable name="runs" select="current-group()"/>
+          <xsl:for-each-group select="current-group()/*" group-adjacent="if (self::w:br) then 1 else 2">
+          <xsl:choose>
+            <xsl:when test="current-grouping-key() = 1">
+              <w:r>
+                <xsl:copy-of select="current-group()"/>
+              </w:r>
+            </xsl:when>
+            <xsl:otherwise>
+
+            <xsl:for-each-group select="current-group()" group-starting-with="w:fldChar[@w:fldCharType='begin']">
+              <xsl:for-each-group select="current-group()" group-ending-with="w:fldChar[@w:fldCharType='end']">
+              <w:r>
+                <xsl:variable name="runStyleName" select="w:rPr/r:pStyle/@w:val"/>
+                <!-- Include run properties (from the first match - they are identical)-->
+                <w:rPr>
+                  <xsl:variable name="runProperties" as="element()">
+                    <w:rPr>
+                      <xsl:copy-of select="$runs/w:rPr[1]"/>
+                    </w:rPr>
+                  </xsl:variable>
+
+                  <xsl:variable name="runPropertyMatch">
+                    <xsl:for-each select="$runs/w:rPr[1]/*">
+                      <xsl:choose>
+                        <xsl:when test="position() = last()">
+                          <xsl:value-of select="concat('^',./name(),'$')" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="concat('^',./name(),'$','|')" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                     </xsl:for-each>
+                  </xsl:variable>
+
+                  <xsl:for-each select="$paragraphTextRunProperties/*">
+                    <xsl:if test="not(matches(./name(),$runPropertyMatch))">
+                      <xsl:copy-of select="."/>
+                    </xsl:if>
+                  </xsl:for-each>
+
+                  <xsl:for-each select="$runProperties/w:rPr/*">
+                      <xsl:copy-of select="."/>
+                  </xsl:for-each>
+                </w:rPr>
+
+                <xsl:for-each-group select="current-group()[not(self::w:rPr)]" group-adjacent="if (self::w:t) then 1 else if (self::w:instrText) then 2 else 3">
+                  <xsl:choose>
+                    <xsl:when test="current-grouping-key() = 1">
+                      <w:t xml:space="preserve"><xsl:value-of select="current-group()" separator=""/></w:t>
+                    </xsl:when>
+                    <xsl:when test="current-grouping-key() = 2">
+                      <w:instrText xml:space="preserve"><xsl:value-of select="current-group()" separator=""/></w:instrText>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:apply-templates select="current-group()" mode="consolidate"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:for-each-group>
+
+              </w:r>
               </xsl:for-each-group>
+              </xsl:for-each-group>
+            </xsl:otherwise>
+          </xsl:choose>
 
-            </w:r>
-            </xsl:for-each-group>
-            </xsl:for-each-group>
-          </xsl:otherwise>
-        </xsl:choose>
-         
-	        
         </xsl:for-each-group>
-        
-      </xsl:otherwise>
 
+      </xsl:otherwise>
     </xsl:choose>
-  
+
   </xsl:for-each-group>
 </xsl:element>
 </xsl:template>
-
-
-
-<!-- <xsl:template match="w:hyperlink" mode="consolidate"> -->
-<!-- <w:hyperlink> -->
-<!--   <xsl:copy-of select="@*"/> -->
-<!--   <xsl:for-each-group select="*" group-adjacent="f:key-for-run(.)"> -->
-<!--     <xsl:choose> -->
-
-<!--       Not a Run -->
-<!--       <xsl:when test="not(self::w:r)"> -->
-<!--         <xsl:apply-templates select="current-group()" mode="consolidate"/> -->
-<!--       </xsl:when> -->
-
-<!--       Runs -->
-<!--       <xsl:otherwise> -->
-<!--         <xsl:variable name="runs" select="current-group()"/> -->
-<!--         <w:r> -->
-<!--           Include run properties (from the first match - they are identical) -->
-<!--           <xsl:apply-templates select="w:rPr" mode="consolidate"/> -->
-<!--           Collate other nodes -->
-<!--           <xsl:for-each-group select="$runs/*[not(self::w:rPr)]" group-by="name()"> -->
-<!--             <xsl:choose> -->
-<!--               <xsl:when test="self::w:t"> -->
-<!--                 <w:t xml:space="preserve"><xsl:value-of select="current-group()" separator=""/></w:t> -->
-<!--               </xsl:when> -->
-<!--               <xsl:otherwise> -->
-<!--                 <xsl:apply-templates select="current-group()" mode="consolidate"/> -->
-<!--               </xsl:otherwise> -->
-<!--             </xsl:choose> -->
-<!--           </xsl:for-each-group> -->
-<!--         </w:r> -->
-<!--       </xsl:otherwise> -->
-
-<!--     </xsl:choose> -->
-  
-<!--   </xsl:for-each-group> -->
-<!-- </w:hyperlink> -->
-<!-- </xsl:template> -->
-
 
 <!--
   Returns a key for the run being processed
@@ -540,64 +426,64 @@
       
   To display the source XML simply use <xsl:apply-templates mode="xml"/>
 -->
-  <xsl:template match="*" mode="encode">
-    <xsl:value-of select="concat('&lt;',name())"
-      disable-output-escaping="yes" />
-    <xsl:apply-templates select="@*" mode="encode" />
-    <xsl:text>></xsl:text>
-    <xsl:apply-templates mode="encode" />
-    <xsl:value-of select="concat('&lt;',name(),'>')"
-      disable-output-escaping="yes" />
-  </xsl:template>
-  
-  <!-- encoding of element for uniqueness -->
-  <xsl:template match="*[not(node())]" mode="encode">
-    <xsl:value-of select="concat('&lt;',name())"
-      disable-output-escaping="yes" />
-    <xsl:apply-templates select="@*" mode="encode" />
-    <xsl:text>/></xsl:text>
-  </xsl:template>
-  
- <!-- encoding of attribute for uniqueness -->
-  <xsl:template match="@*" mode="encode">
-    <xsl:value-of select="concat(' ',name(),'=&quot;',.,'&quot;')" />
-  </xsl:template>
+<xsl:template match="*" mode="encode">
+  <xsl:value-of select="concat('&lt;',name())"
+    disable-output-escaping="yes" />
+  <xsl:apply-templates select="@*" mode="encode" />
+  <xsl:text>></xsl:text>
+  <xsl:apply-templates mode="encode" />
+  <xsl:value-of select="concat('&lt;',name(),'>')"
+    disable-output-escaping="yes" />
+</xsl:template>
 
-  <!-- output as text xml of elements -->
-  <xsl:template match="*[not(text()|*)]" mode="xml">
-    <xsl:text>&lt;</xsl:text>
-    <xsl:value-of select="name()" />
-    <xsl:apply-templates select="@*" mode="xml" />
-    <xsl:text>/&gt;</xsl:text>
-  </xsl:template>
+<!-- encoding of element for uniqueness -->
+<xsl:template match="*[not(node())]" mode="encode">
+  <xsl:value-of select="concat('&lt;',name())"
+    disable-output-escaping="yes" />
+  <xsl:apply-templates select="@*" mode="encode" />
+  <xsl:text>/></xsl:text>
+</xsl:template>
 
-  
-  <!-- output as text xml of elements -->
-  <xsl:template match="*[text()|*]" mode="xml">
-    <xsl:text>&lt;</xsl:text>
-    <xsl:value-of select="name()" />
-    <xsl:apply-templates select="@*" mode="xml" />
-    <xsl:text>&gt;</xsl:text>
-    <xsl:apply-templates select="*|text()" mode="xml" />
-    <xsl:text>&lt;/</xsl:text>
-    <xsl:value-of select="name()" />
-    <xsl:text>&gt;</xsl:text>
-  </xsl:template>
+<!-- encoding of attribute for uniqueness -->
+<xsl:template match="@*" mode="encode">
+  <xsl:value-of select="concat(' ',name(),'=&quot;',.,'&quot;')" />
+</xsl:template>
 
- 
-  <!-- output as text xml of elements -->
-  <xsl:template match="text()" mode="xml">
-    <xsl:value-of select="." />
-  </xsl:template>
+<!-- output as text xml of elements -->
+<xsl:template match="*[not(text()|*)]" mode="xml">
+  <xsl:text>&lt;</xsl:text>
+  <xsl:value-of select="name()" />
+  <xsl:apply-templates select="@*" mode="xml" />
+  <xsl:text>/&gt;</xsl:text>
+</xsl:template>
 
-  
-  <!-- output as text xml of elements -->
-  <xsl:template match="@*" mode="xml" priority="1">
-    <xsl:text> </xsl:text>
-    <xsl:value-of select="name()" />
-    ="
-    <xsl:value-of select="." />
-    <xsl:text>"</xsl:text>
-  </xsl:template>
-  
+
+<!-- output as text xml of elements -->
+<xsl:template match="*[text()|*]" mode="xml">
+  <xsl:text>&lt;</xsl:text>
+  <xsl:value-of select="name()" />
+  <xsl:apply-templates select="@*" mode="xml" />
+  <xsl:text>&gt;</xsl:text>
+  <xsl:apply-templates select="*|text()" mode="xml" />
+  <xsl:text>&lt;/</xsl:text>
+  <xsl:value-of select="name()" />
+  <xsl:text>&gt;</xsl:text>
+</xsl:template>
+
+
+<!-- output as text xml of elements -->
+<xsl:template match="text()" mode="xml">
+  <xsl:value-of select="." />
+</xsl:template>
+
+
+<!-- output as text xml of elements -->
+<xsl:template match="@*" mode="xml" priority="1">
+  <xsl:text> </xsl:text>
+  <xsl:value-of select="name()" />
+  ="
+  <xsl:value-of select="." />
+  <xsl:text>"</xsl:text>
+</xsl:template>
+
 </xsl:stylesheet>
