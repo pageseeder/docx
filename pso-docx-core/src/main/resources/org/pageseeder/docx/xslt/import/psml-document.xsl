@@ -39,11 +39,6 @@
     </xsl:choose>
   </document>
 
-  <!-- TODO Why is this applied twice?? -->
-  <xsl:if test="$generate-index-files">
-    <xsl:apply-templates select="$list-index" mode="index-files"/>
-  </xsl:if>
-
   <xsl:if test="$generate-index-files">
     <xsl:apply-templates select="$list-index" mode="index-files"/>
   </xsl:if>
