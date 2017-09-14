@@ -127,15 +127,15 @@ public final class PSMLProcessor {
     }
     // Add custom parameters
     parameters.putAll(this._builder.params());
-    
+
     // 4. Unnest
     log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import-unnest.xsl");
     File document = new File(unpacked, "word/document.xml");
     File newDocument = new File(unpacked, "word/new-document.xml");
 //    Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(document, newDocument, unnest, parameters);
-    
+
     //4.1 Unnest Endnotes file if it exists
     File endnotes = new File(unpacked, "word/endnotes.xml");
     if(endnotes.canRead()){
@@ -146,13 +146,12 @@ public final class PSMLProcessor {
     if(footnotes.canRead()){
     	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
     }
-    
+
     Templates renameImages = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-images.xsl");
     File imageList = new File(this._builder.working(), "image-list.txt");
     XSLT.transform(newDocument, imageList, renameImages, parameters);
     parameters.put("_imagelist", imageList.toURI().toString());
-    
-		
+
 		Scanner in = new Scanner(imageList);
 		while(in.hasNextLine()){
 			String line = in.nextLine();
@@ -164,23 +163,22 @@ public final class PSMLProcessor {
 			}
 		}
 		in.close();
-		
-	// 3. copy the media files
+
+	  // 3. copy the media files
     log("Copy media");
-    
+
     copyMedia(unpacked, folder, mediaFolderName);
-    
+
     Templates renameRels = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-rels.xsl");
     File rels = new File(unpacked, "word/_rels/document.xml.rels");
     File newRels = new File(unpacked, "word/_rels/new-document.xml.rels");
     XSLT.transform(rels, newRels, renameRels, parameters);
-    
+
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
     // Transform
     XSLT.transform(contentTypes, new File(folder, name + ".psml"), templates, parameters);
-    
-    
+
   }
 
   // Helpers

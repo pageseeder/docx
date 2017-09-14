@@ -1,8 +1,10 @@
 <!--
-  This is the default template to import a DOCX document as PSML.
+  Main XSLT module to import a DOCX document as PSML.
+
+  This module is applied against the `[content_types].xml` inside a docx package.
 
   Current functionalities:
-  
+
   1) Default options:
       a) convert all paragraph styles into:
           i)  para element or
@@ -10,14 +12,14 @@
       b) convert all character styles into:
           i)  plain text or
           ii) inline element with character style name as a label
-              
+
   2) Document Split according to:
      a) Selected Section Break
      b) Selected Outline Level
      c) Selected Paragraph Style
-     
+
      Naming of each file is defined as '[docx_filename]-[document-split-counter]'
-     
+
   3) Section Split according to:
      a) Selected Section Break
      b) Selected Outline Level
@@ -75,24 +77,35 @@
                 xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
                 exclude-result-prefixes="#all">
 
+<!-- Common utilities -->
 <xsl:import href="import/variables.xsl" />
-<xsl:import href="import/omml2mml.xsl" />
-<xsl:import href="import/endnotes.xsl" />
-<xsl:import href="import/footnotes.xsl" />
-<xsl:import href="import/mathml.xsl" />
-<xsl:import href="import/headings.xsl" />
 <xsl:import href="import/functions.xsl" />
-<xsl:import href="import/formatting.xsl" />
-<xsl:import href="import/images.xsl" />
-<xsl:import href="import/links.xsl" />
-<xsl:import href="import/paragraphs.xsl" />
+
+<!-- Splitting -->
 <xsl:import href="import/document-split-processed.xsl" />
 <xsl:import href="import/document-split-default.xsl" />
 <xsl:import href="import/section-split.xsl" />
-<xsl:import href="import/tables.xsl" />
-<xsl:import href="import/document.xsl" />
-<xsl:import href="import/lists.xsl" />
+
+<!-- Mapping to PSML elements -->
+<xsl:import href="import/psml-document.xsl" />
+<xsl:import href="import/psml-headings.xsl" />
+<xsl:import href="import/psml-images.xsl" />
+<xsl:import href="import/psml-links.xsl" />
+<xsl:import href="import/psml-tables.xsl" />
+<xsl:import href="import/psml-formatting.xsl" />
+<xsl:import href="import/psml-paragraphs.xsl" />
+<!-- TODO Changing the order of the import affects results: check for conflicts! -->
+<xsl:import href="import/psml-lists.xsl" />
+
+<!-- MathML support -->
+<xsl:import href="import/mathml.xsl" />
+<xsl:import href="import/omml2mml.xsl" />
+
+<!-- Other generated filed -->
+<xsl:import href="import/endnotes.xsl" />
+<xsl:import href="import/footnotes.xsl" />
 <xsl:import href="import/index.xsl" />
+
 
 <xsl:strip-space elements="*" />
 <xsl:preserve-space elements="para block" />

@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,7 +225,7 @@ public final class ImportTask extends Task {
     
     // 4. Unnest
     log("Unnest");
-    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/unnest.xsl");
+    Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import-unnest.xsl");
     File document = new File(unpacked, "word/document.xml");
     File newDocument = new File(unpacked, "word/new-document.xml");
     //Map<String, String> noParameters = Collections.emptyMap();
