@@ -26,17 +26,14 @@
   <xsl:choose>
     <xsl:when test="config:split-by-documents()">
       <xsl:choose>
-        <xsl:when test="not(w:p[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])">
+        <xsl:if test="not(w:p[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])">
           <section id="front">
             <fragment id="front">
             <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
               <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
-                <xsl:choose>
-                  <xsl:when test="position() = 1">
-                    <xsl:apply-templates select="current-group()" mode="content" />
-                  </xsl:when>
-                  <xsl:otherwise></xsl:otherwise>
-                </xsl:choose>
+                <xsl:if test="position() = 1">
+                  <xsl:apply-templates select="current-group()" mode="content" />
+                </xsl:if>
               </xsl:for-each-group>
             </xsl:for-each-group>
             </fragment>

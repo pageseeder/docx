@@ -280,17 +280,14 @@
 
 <!-- consolidate paragraphs hyperlinks, sdts, and smart tags -->
 <xsl:template match="w:p|w:hyperlink|w:sdt|w:smartTag" mode="consolidate">
-<xsl:element name="{./name()}">
-  <xsl:copy-of select="@*"/>
+  <xsl:element name="{./name()}">
+    <xsl:copy-of select="@*"/>
 
-  <xsl:variable name="paragraphTextRunProperties" as="element()">
+    <xsl:variable name="paragraphTextRunProperties" as="element()">
       <w:rPr>
-      <xsl:choose>
-        <xsl:when test="./w:pPr/w:rPr">
+      <xsl:if test="./w:pPr/w:rPr">
           <xsl:copy-of select="w:rPr/*"/>
-        </xsl:when>
-        <xsl:otherwise></xsl:otherwise>
-      </xsl:choose>
+      </xsl:if>
       </w:rPr>
     </xsl:variable>
 
@@ -427,19 +424,16 @@
   To display the source XML simply use <xsl:apply-templates mode="xml"/>
 -->
 <xsl:template match="*" mode="encode">
-  <xsl:value-of select="concat('&lt;',name())"
-    disable-output-escaping="yes" />
+  <xsl:value-of select="concat('&lt;',name())" disable-output-escaping="yes" />
   <xsl:apply-templates select="@*" mode="encode" />
   <xsl:text>></xsl:text>
   <xsl:apply-templates mode="encode" />
-  <xsl:value-of select="concat('&lt;',name(),'>')"
-    disable-output-escaping="yes" />
+  <xsl:value-of select="concat('&lt;',name(),'>')" disable-output-escaping="yes" />
 </xsl:template>
 
 <!-- encoding of element for uniqueness -->
 <xsl:template match="*[not(node())]" mode="encode">
-  <xsl:value-of select="concat('&lt;',name())"
-    disable-output-escaping="yes" />
+  <xsl:value-of select="concat('&lt;',name())" disable-output-escaping="yes" />
   <xsl:apply-templates select="@*" mode="encode" />
   <xsl:text>/></xsl:text>
 </xsl:template>

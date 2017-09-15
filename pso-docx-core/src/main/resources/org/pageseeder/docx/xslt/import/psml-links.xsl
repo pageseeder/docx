@@ -87,12 +87,6 @@
 -->
 <xsl:template match="w:r[w:t != ''][w:fldChar[@w:fldCharType='separate']][w:instrText[matches(text(),'PAGEREF|REF|HYPERLINK|SEQ Table')]]">
   <xsl:param name="in-heading" select="false()" />
-  <xsl:variable name="character-style-name">
-    <xsl:value-of select="w:rPr/w:rStyle/@w:val" />
-  </xsl:variable>
-  <xsl:variable name="inline-value">
-    <xsl:value-of select="config:get-inline-label-from-psml-element($character-style-name)" />
-  </xsl:variable>
 
   <xsl:variable name="field-type">
     <xsl:choose>

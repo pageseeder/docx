@@ -16,7 +16,7 @@
 
 <!--
   Match w:p inside of a list;
-  Creates a item for the current paragraph and checks if there are forther paragraphs to create list items or next level of lists
+  Creates a item for the current paragraph and checks if there are further paragraphs to create list items or next level of lists
   create list item
 -->
 <xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string) and not(w:pPr/w:numPr/w:numId/@w:val = '0') and config:get-psml-element(w:pPr/w:pStyle/@w:val) = '']" mode="content">
@@ -151,7 +151,7 @@
   </xsl:choose>
 </xsl:template>
 
-<!-- Template to handle a w:p inide of a list -->
+<!-- Template to handle a w:p inside of a list -->
 <xsl:template match="w:p" mode="insidelist">
   <xsl:variable name="level" select="fn:get-level-from-element(.)" />
   <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
@@ -253,7 +253,7 @@
 
 
 <!-- 
-Initial template to create lists as numbered paragraphs
+  Initial template to create lists as numbered paragraphs
 -->
 <xsl:template name="createlist">
   <xsl:param name="current" as="element()?" />

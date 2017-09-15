@@ -7,10 +7,10 @@
 
   @version 0.6.0
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="2.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 

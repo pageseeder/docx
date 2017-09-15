@@ -135,17 +135,6 @@
             </xsl:if>
           </xsl:if>
 
-          <xsl:variable name="isNumbered" as="xs:boolean">
-            <xsl:choose>
-              <xsl:when test="matches($full-text, config:numbering-match-list-string()) and config:convert-manual-numbering()">
-                <xsl:value-of select="true()" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="false()" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-
           <xsl:if test="config:numbering-list-prefix-exists()">
             <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="$full-text">
               <xsl:matching-substring>

@@ -11,7 +11,6 @@
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -42,8 +41,6 @@
  else '^No Selected Value$'"/>
 </xsl:function>
 
-  <!-- TODO Move config functions to a `config` module -->
-
 <!-- 
   Function to return the corresponding Abstract Number Id from word, from the input parameter, according to it's style
  -->
@@ -67,28 +64,6 @@
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="$numbering-document//w:abstractNum[w:lvl/w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]/@w:abstractNumId" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the level of the numbered paragraph for pageseeder heading levels.
-
-  @param current the node
-
-  @return the corresponding level
--->
-<xsl:function name="fn:get-preceding-heading-level-from-element" as="xs:string">
-  <xsl:param name="current" as="element()" />
-  <xsl:choose>
-    <xsl:when test="$current/w:pPr/w:numPr/w:ilvl">
-      <xsl:value-of select="'0'" />
-    </xsl:when>
-    <xsl:when test="$numbering-document//w:abstractNum/w:lvl[w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]">
-      <xsl:value-of select="count($numbering-document//w:abstractNum/w:lvl[w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]/preceding-sibling::w:lvl[matches(w:pStyle/@w:val,config:heading-paragraphs-list-string())])" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'0'" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -247,8 +222,6 @@
         select="count($current-node/preceding::w:p[w:pPr/w:pStyle/@w:val=$style][generate-id(.) = $current-node/preceding::w:p[w:pPr[w:pStyle[@w:val=$style]][w:numPr/w:numId]][1]/following-sibling::w:p[w:pPr/w:pStyle/@w:val=$style]/generate-id()]) + $numbering-offset + 1" />
     </xsl:when>
     <xsl:when test="$current-node/preceding::w:p[fn:get-abstract-num-id-from-element(.) = $current-abstract-num-id][number(fn:get-level-from-element(.)) &lt; $current-level][1]">
-      <xsl:variable name="reference-node" select="$current-node/preceding::w:p[fn:get-abstract-num-id-from-element(.) = $current-abstract-num-id][number(fn:get-level-from-element(.)) &lt; $current-level][1]"
-        as="element()" />
       <xsl:value-of
         select="count($current-node/preceding::w:p[w:pPr/w:pStyle[@w:val=$style]][@id = $current-node/preceding::w:p[fn:get-abstract-num-id-from-element(.) = $current-abstract-num-id][number(fn:get-level-from-element(.)) &lt; $current-level][1]/following-sibling::w:p[w:pPr/w:pStyle[@w:val=$style]]/@id]) + 1" />
     </xsl:when>
@@ -332,60 +305,60 @@
     <xsl:matching-substring>
       <xsl:value-of select="regex-group(1)" />
       <xsl:value-of
-        select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(2))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(2),$current-list),fn:get-format-value-from-level-value(regex-group(2),$current-list))" />
+        select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(2))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(2),$current-list),fn:get-format-value-from-level-value(regex-group(2),$current-list))" />
       <xsl:value-of select="regex-group(3)" />
       <xsl:if test="regex-group(4) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(4))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(4),$current-list),fn:get-format-value-from-level-value(regex-group(4),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(4))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(4),$current-list),fn:get-format-value-from-level-value(regex-group(4),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(5) != ''">
         <xsl:value-of select="regex-group(5)" />
       </xsl:if>
       <xsl:if test="regex-group(6) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(6))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(6),$current-list),fn:get-format-value-from-level-value(regex-group(6),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(6))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(6),$current-list),fn:get-format-value-from-level-value(regex-group(6),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(7) != ''">
         <xsl:value-of select="regex-group(7)" />
       </xsl:if>
       <xsl:if test="regex-group(8) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(8))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(8),$current-list),fn:get-format-value-from-level-value(regex-group(8),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(8))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(8),$current-list),fn:get-format-value-from-level-value(regex-group(8),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(9) != ''">
         <xsl:value-of select="regex-group(9)" />
       </xsl:if>
       <xsl:if test="regex-group(10) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(10))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(10),$current-list),fn:get-format-value-from-level-value(regex-group(10),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(10))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(10),$current-list),fn:get-format-value-from-level-value(regex-group(10),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(11) != ''">
         <xsl:value-of select="regex-group(11)" />
       </xsl:if>
       <xsl:if test="regex-group(12) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(12))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(12),$current-list),fn:get-format-value-from-level-value(regex-group(12),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(12))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(12),$current-list),fn:get-format-value-from-level-value(regex-group(12),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(13) != ''">
         <xsl:value-of select="regex-group(13)" />
       </xsl:if>
       <xsl:if test="regex-group(14) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(14))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(14),$current-list),fn:get-format-value-from-level-value(regex-group(14),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(14))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(14),$current-list),fn:get-format-value-from-level-value(regex-group(14),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(15) != ''">
         <xsl:value-of select="regex-group(15)" />
       </xsl:if>
       <xsl:if test="regex-group(16) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(16))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(16),$current-list),fn:get-format-value-from-level-value(regex-group(16),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(16))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(16),$current-list),fn:get-format-value-from-level-value(regex-group(16),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(17) != ''">
         <xsl:value-of select="regex-group(17)" />
       </xsl:if>
       <xsl:if test="regex-group(18) != ''">
         <xsl:value-of
-          select="fn:get-formated-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(18))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(18),$current-list),fn:get-format-value-from-level-value(regex-group(18),$current-list))" />
+          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(18))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(18),$current-list),fn:get-format-value-from-level-value(regex-group(18),$current-list))" />
       </xsl:if>
       <xsl:if test="regex-group(19) != ''">
         <xsl:value-of select="regex-group(19)" />
@@ -423,15 +396,15 @@
 </xsl:function>
 
 <!--
-  Returns the value of the numbering scheme depeding on format
+  Returns the value of the numbering scheme depending on format
 
   @param style current paragraph style
   @param current current node()
   @param paragraph current paragraph style
-  @param format current lsit formating value
+  @param format current list formatting value
   @return the corresponding number with the correct format.
 -->
-<xsl:function name="fn:get-formated-value-by-style" as="xs:string">
+<xsl:function name="fn:get-formatted-value-by-style" as="xs:string">
   <xsl:param name="parent-position" />
   <xsl:param name="current-position" />
   <xsl:param name="style" />
@@ -707,64 +680,6 @@
   </xsl:element>
 </xsl:template>
 
-<!--
-  Returns the generated document title based on position and title definitions
-
-  @param body the current document node
-
-  @return the current document title.
--->
-<xsl:function name="fn:generate-document-title" as="xs:string">
-  <xsl:param name="body" />
-
-  <!-- Title prefix will depend on first paragraph and numbering values -->
-  <xsl:variable name="title-prefix">
-    <xsl:variable name="style-name" select="$body/w:p[1]/w:pPr/w:pStyle/@w:val" />
-    <xsl:variable name="has-numbering-format" as="xs:boolean">
-      <xsl:choose>
-        <xsl:when test="matches($style-name,$numbering-paragraphs-list-string)">
-          <xsl:variable name="current-num-id">
-            <xsl:value-of select="fn:get-abstract-num-id-from-element($body/w:p[1])" />
-          </xsl:variable>
-          <xsl:variable name="current-level">
-            <xsl:value-of select="fn:get-level-from-element($body/w:p[1])" />
-          </xsl:variable>
-          <xsl:choose>
-            <xsl:when test="$numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$current-num-id]/w:lvl[@w:ilvl=$current-level]/w:numFmt/@w:val='bullet'">
-              <xsl:value-of select="false()" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="true()" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="false()" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="config:number-document-title() and matches($style-name,$numbering-paragraphs-list-string)">
-        <xsl:if test="$has-numbering-format">
-          <xsl:value-of select="fn:get-numbering-value-from-paragraph-style($body/w:p[1],$style-name)" />
-          <xsl:text> </xsl:text>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  <xsl:choose>
-    <xsl:when test="string-length(string-join($body/w:p[1]//w:t/text(),'')) &gt; (249 - string-length($title-prefix))">
-      <xsl:value-of select="concat($title-prefix,'','',substring(string-join($body/w:p[1]//w:t/text(),''),1,(249 - string-length($title-prefix))))" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat($title-prefix,'','',string-join($body/w:p[1]//w:t/text(),''))" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
 <!-- Checksum function to generate a unique value -->
 <xsl:function name="fn:checksum" as="xs:integer">
   <xsl:param name="str" as="xs:string"/>
@@ -789,4 +704,5 @@
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
+
 </xsl:stylesheet>

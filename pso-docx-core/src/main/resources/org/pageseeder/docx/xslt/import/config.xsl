@@ -112,6 +112,19 @@
   <xsl:sequence select="fn:items-to-regex($config-doc/config/split/document/splitstyle/@select)"/>
 </xsl:function>
 
+<!--
+  Returns the boolean if the current node matches a paragraph style document break or not.
+
+  @param current the current node
+
+  @return true or false
+-->
+<xsl:function name="config:matches-document-specific-split-styles" as="xs:boolean">
+  <xsl:param name="current" as="node()" />
+  <!-- TODO document what type of node/context it applies to -->
+  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())])"/>
+</xsl:function>
+
 <!-- String of list of bookmark start ids defined to split at fragment level -->
 <xsl:function name="config:bookmark-start-section-split-regex-string" as="xs:string">
   <xsl:sequence select="fn:items-to-regex($config-doc/config/split/section/bookmark/@select)"/>
@@ -191,6 +204,30 @@
 <xsl:function name="config:numbering-match-list-autonumbering-string" as="xs:string">
   <xsl:variable name="manual-numbering" select="$config-doc/config/lists/convert-manual-numbering"/>
   <xsl:sequence select="if ($manual-numbering/@select='true') then fn:items-to-start-regex($manual-numbering/value[autonumbering]/@match) else fn:items-to-start-regex(())"/>
+</xsl:function>
+
+<!--
+  Returns the boolean if the current node matches a section break bookmark start position.
+
+  @param current the current node
+
+  @return true or false
+-->
+<xsl:function name="config:matches-section-split-bookmarkstart" as="xs:boolean">
+  <xsl:param name="current" as="node()" />
+  <xsl:sequence select="exists($current[w:bookmarkStart[matches(@w:name, config:bookmark-start-section-split-regex-string())]])"/>
+</xsl:function>
+
+<!--
+  Returns the boolean if the current node matches a paragraph style section break or not. The content of this paragraph is ignored
+
+  @param current the current node
+
+  @return true or false
+-->
+<xsl:function name="config:matches-section-specific-split-styles" as="xs:boolean">
+  <xsl:param name="current" as="node()"/>
+  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:section-specific-split-styles-string())])"/>
 </xsl:function>
 
 <!--

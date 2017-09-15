@@ -17,7 +17,6 @@
                 xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
                 xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
                 xmlns:rs="http://schemas.openxmlformats.org/package/2006/relationships"
-                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -60,7 +59,6 @@
   If there is a caption it will be included in a block with label `caption`.
 -->
 <xsl:template match="w:pict" mode="content">
-  <xsl:param name="rels" tunnel="yes" />
   <xsl:for-each select=".//w:txbxContent/w:p[w:pPr/w:pStyle/@w:val='Caption']">
     <block label="caption">
       <xsl:value-of select="w:r/w:t" />
@@ -79,12 +77,11 @@
   Generate a PSML `image` from a Word `w:object` if it includes image data.
 -->
 <xsl:template match="w:object" mode="content" as="element(image)?">
-  <xsl:param name="rels" tunnel="yes" />
   <xsl:if test=".//v:shape/v:imagedata/@r:id">
     <xsl:variable name="rid" select=".//v:shape/v:imagedata/@r:id" />
     <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
     <xsl:variable name="alt" select="substring-after($target,'media/')" />
-    <image src="{concat($media-folder-name,substring-after($target,'media'))}" alt="{$alt}" />
+    <image src="{concat($media-folder-name, substring-after($target,'media'))}" alt="{$alt}" />
   </xsl:if>
 </xsl:template>
 

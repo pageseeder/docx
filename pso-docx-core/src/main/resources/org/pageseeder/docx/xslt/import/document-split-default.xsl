@@ -23,22 +23,19 @@
   <xsl:choose>
     <xsl:when test="config:split-by-documents()">
       <xsl:choose>
-        <xsl:when test="not(*[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or fn:matches-document-specific-split-styles(.)])">
+        <xsl:if test="not(*[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or config:matches-document-specific-split-styles(.)])">
           <section id="front">
             <fragment id="front">
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[fn:matches-document-specific-split-styles(.)] ">
-                  <xsl:choose>
-                    <xsl:when test="position() = 1">
-                      <xsl:variable name="body" as="element(body)">
-                        <body>
-                          <xsl:apply-templates select="current-group()" mode="bodycopy" />
-                        </body>
-                      </xsl:variable>
-                      <xsl:apply-templates select="$body" mode="content" />
-                    </xsl:when>
-                    <xsl:otherwise></xsl:otherwise>
-                  </xsl:choose>
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[config:matches-document-specific-split-styles(.)] ">
+                  <xsl:if test="position() = 1">
+                    <xsl:variable name="body" as="element(body)">
+                      <body>
+                        <xsl:apply-templates select="current-group()" mode="bodycopy" />
+                      </body>
+                    </xsl:variable>
+                    <xsl:apply-templates select="$body" mode="content" />
+                  </xsl:if>
                 </xsl:for-each-group>
               </xsl:for-each-group>
             </fragment>
@@ -48,7 +45,7 @@
               <!-- Document split for each section break first, then styles then outline level.
                  If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[fn:matches-document-specific-split-styles(.)] ">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[config:matches-document-specific-split-styles(.)] ">
                   <xsl:if test="not(position() = 1)">
 
                     <xsl:variable name="document-number">
@@ -150,7 +147,7 @@
               <!-- Document split for each section break first, then styles then outline level.
               If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] |w:p[fn:matches-document-specific-split-styles(.)]">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] |w:p[config:matches-document-specific-split-styles(.)]">
 
                   <xsl:variable name="document-number">
                     <xsl:value-of select="fn:count-preceding-documents(generate-id(current-group()[./name() = 'w:p'][string-join(w:r//text(), '') != ''][1]))" />
