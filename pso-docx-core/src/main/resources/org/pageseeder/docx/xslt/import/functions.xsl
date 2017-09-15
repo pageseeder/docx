@@ -480,7 +480,7 @@
 
   @param string the input string
   @param delimiter the delimiter to check for
-  @return the substring after the delimeter.
+  @return the substring after the delimiter.
 -->
 <xsl:function name="fn:string-after-last-delimiter" as="xs:string">
   <xsl:param name="string" />
@@ -497,7 +497,7 @@
 
   @param string the input string
   @param delimiter the delimiter to check for
-  @return the substring before the delimeter.
+  @return the substring before the delimiter.
 -->
 <xsl:function name="fn:string-before-last-delimiter" as="xs:string">
   <xsl:param name="string" />
@@ -656,28 +656,28 @@
 
 <!-- copy each w:bookmarkStart to the $body variable and include unique id as attribute -->
 <xsl:template match="w:bookmarkStart" mode="bodycopy">
-  <xsl:element name="{name()}">
+  <xsl:copy>
     <xsl:attribute name="id" select="generate-id()" />
     <xsl:copy-of select="@*" />
     <xsl:apply-templates mode="bodycopy" />
-  </xsl:element>
+  </xsl:copy>
 </xsl:template>
 
-<!-- copy each element to the listparas resultdocument as default: used only as debug -->
+<!-- copy each element to the listparas result document as default: used only as debug -->
 <xsl:template match="element()" mode="paracopy">
-  <xsl:element name="{name()}">
+  <xsl:copy>
     <xsl:copy-of select="@*" />
     <xsl:apply-templates mode="paracopy" />
-  </xsl:element>
+  </xsl:copy>
 </xsl:template>
 
 <!-- copy each element to the listparas resultdocument as default: used only as debug -->
 <xsl:template match="w:p" mode="paracopy">
-  <xsl:element name="w:p">
+  <xsl:copy>
     <xsl:attribute name="id" select="generate-id()" />
     <xsl:copy-of select="@*" />
     <xsl:apply-templates mode="paracopy" />
-  </xsl:element>
+  </xsl:copy>
 </xsl:template>
 
 <!-- Checksum function to generate a unique value -->

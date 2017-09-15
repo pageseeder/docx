@@ -32,7 +32,7 @@
     </documentinfo>
     <xsl:choose>
       <xsl:when test="$generate-processed-psml">
-        <xsl:apply-templates select="w:body" mode="processedpsml" />
+        <xsl:apply-templates select="w:body" mode="processed-psml" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates select="w:body" mode="content" />
@@ -49,11 +49,11 @@
   </xsl:if>
 
   <xsl:if test="doc-available($footnotes-file) and config:convert-footnotes()">
-    <xsl:apply-templates select="$footnotes" mode="footnotes"/>
+    <xsl:apply-templates select="document($footnotes-file)" mode="footnotes"/>
   </xsl:if>
 
   <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
-    <xsl:apply-templates select="$endnotes" mode="endnotes"/>
+    <xsl:apply-templates select="document($endnotes-file)" mode="endnotes"/>
   </xsl:if>
 </xsl:template>
 

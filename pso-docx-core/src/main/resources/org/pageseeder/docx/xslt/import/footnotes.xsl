@@ -2,22 +2,21 @@
 <!--
   XSLT module to handle the generate foot notes.
 
-  End notes are store in a separate PSML file `footnotes/footnotes.psml`.
+  Foot notes are store in a separate PSML file `footnotes/footnotes.psml`.
+
+  In OOXML, the `w:footnotes` element contains a sequence of `w:footnote` elements.
 
   @author Hugo Inacio
   @author Christophe Lauret
 
   @version 0.6.0
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="2.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
-
-<!-- Map a key to `checksum-id` for a more efficient access -->
-<!-- TODO This key is probably pointless, it doesn't seem to be used anywhere! and it is declared elsewhere -->
-<xsl:key name="math-checksum-id" match="@checksum-id" use="." />
 
 <!--
   Generate `footnotes/footnotes.psml` file from the `w:footnotes` element.
@@ -34,11 +33,11 @@
         <xsl:choose>
           <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
             <xref-fragment id="body">
-              <xsl:apply-templates mode="footnotes-generate-files" />
+              <xsl:apply-templates select="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-files" />
             </xref-fragment>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:apply-templates mode="footnotes-generate-fragments" />
+            <xsl:apply-templates select="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-fragments" />
           </xsl:otherwise>
         </xsl:choose>
       </section>
@@ -47,7 +46,7 @@
 </xsl:template>
 
 <!-- Template to match each footnote and generate a heading for it and it's content for each fragment-->
-<xsl:template match="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-fragments">
+<xsl:template match="w:footnote" mode="footnotes-generate-fragments">
   <fragment id="{@w:id}">
     <heading level="4"><xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(count(preceding-sibling::w:footnote[not(@w:id='-1')][not(@w:id='0')]) + 1,'footnote'),']')"/></heading>
     <xsl:apply-templates mode="content"/>
@@ -55,7 +54,7 @@
 </xsl:template>
 
 <!-- Template to match each footnote and generate a heading for it and it's content for each document-->
-<xsl:template match="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-files">
+<xsl:template match="w:footnote" mode="footnotes-generate-files">
   <blockxref href="{concat('footnotes',@w:id,'.psml')}" frag="default"><xsl:value-of select="concat('Footnote ',@w:id)" /></blockxref>
   <xsl:result-document href="{concat($_outputfolder,'footnotes/footnotes',@w:id,'.psml')}">
     <document level="portable">

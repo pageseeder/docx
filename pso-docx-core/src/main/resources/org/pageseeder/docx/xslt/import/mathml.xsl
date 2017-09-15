@@ -15,10 +15,6 @@
                 xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
-<!-- apply templates to smart Tags:
-  transform them into inline labels or just keep them as text, according to the option set on the configuration document -->
-<xsl:key name="math-checksum-id" match="@checksum-id" use="." />
-
 <!-- template to generate mathml objects in pageseeder -->
 <xsl:template match="w:body" mode="mathml">
   <xsl:for-each select="distinct-values(m:math/@checksum-id)">
@@ -42,6 +38,7 @@
 <xsl:template match="m:oMath[not(ancestor::m:oMathPara)][config:generate-mathml-files()]
                     |m:oMath[ancestor::m:oMathPara and ancestor::w:p][config:generate-mathml-files()]"
               mode="content" as="element(xref)">
+  <!-- TODO The pattern used in this template should be revieved -->
   <xsl:variable name="current">
     <xsl:apply-templates select="." mode="xml"/>
   </xsl:variable>

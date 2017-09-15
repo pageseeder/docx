@@ -152,7 +152,7 @@
 </xsl:template>
 
 <!-- Template to handle a w:p inside of a list -->
-<xsl:template match="w:p" mode="insidelist">
+<xsl:template match="w:p" mode="inside-list">
   <xsl:variable name="level" select="fn:get-level-from-element(.)" />
   <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
 
@@ -176,7 +176,7 @@
         select="following-sibling::w:p
             [fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id][1]
             [fn:get-level-from-element(preceding-sibling::w:p[1]) &gt; $level]"
-        mode="insidelist">
+        mode="inside-list">
       </xsl:apply-templates>
     </xsl:when>
     <xsl:otherwise>
@@ -184,7 +184,7 @@
       <xsl:apply-templates
         select="following-sibling::w:p[1]
             [fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
-        mode="insidelist">
+        mode="inside-list">
       </xsl:apply-templates>
     </xsl:otherwise>
   </xsl:choose>
@@ -207,7 +207,7 @@
         <xsl:if test="config:convert-to-list-roles() and $style-name != ''">
           <xsl:attribute name="role" select="$style-name"/>
         </xsl:if>
-        <xsl:apply-templates select="." mode="insidelist" />
+        <xsl:apply-templates select="." mode="inside-list" />
       </list>
     </xsl:when>
     <xsl:otherwise>
@@ -245,26 +245,10 @@
           <xsl:value-of select="$numberingdoc/w:numbering/w:abstractNum[@w:abstractNumId=$abstract-id]/w:lvl[@w:ilvl=$level]/w:numFmt/@w:val"/>
         </xsl:attribute>
        -->
-        <xsl:apply-templates select="." mode="insidelist" />
+        <xsl:apply-templates select="." mode="inside-list" />
       </nlist>
     </xsl:otherwise>
   </xsl:choose>
-</xsl:template>
-
-
-<!-- 
-  Initial template to create lists as numbered paragraphs
--->
-<xsl:template name="createlist">
-  <xsl:param name="current" as="element()?" />
-  <xsl:param name="level" />
-  <xsl:param name="numid" />
-  <xsl:param name="paragraph-style" />
-
-  <xsl:call-template name="create-item">
-    <xsl:with-param name="current" select="$current" />
-  </xsl:call-template>
-
 </xsl:template>
 
 <!-- 
@@ -283,13 +267,8 @@
     <xsl:apply-templates select="$current/*"  mode="content"/>
   </para>
   <xsl:for-each select="$nested-list">
-    <xsl:variable name="nlist-id" select="fn:get-numid-from-style(.)" />
-    <xsl:variable name="nlist-level" select="fn:get-level-from-element(.)" />
-    <xsl:variable name="nestedlist-paragraph-style" select="$nested-list/w:pPr/w:pStyle/@w:val" />
     <xsl:call-template name="nested-lists">
       <xsl:with-param name="current" select="$nested-list" />
-      <xsl:with-param name="level" select="$nlist-level" />
-      <xsl:with-param name="numid" select="$nlist-id" />
     </xsl:call-template>
   </xsl:for-each>
 
@@ -331,8 +310,6 @@
 -->
 <xsl:template name="nested-lists">
   <xsl:param name="current" as="node()" />
-  <xsl:param name="level" />
-  <xsl:param name="numid" />
   <xsl:call-template name="create-item">
     <xsl:with-param name="current" select="$current" />
   </xsl:call-template>

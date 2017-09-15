@@ -56,14 +56,8 @@
 <!-- Footnote  file path -->
 <xsl:variable name="footnotes-file" select="concat($_rootfolder,'/word/new-footnotes.xml')"/>
 
-<!-- Footnote document file -->
-<xsl:variable name="footnotes" select="document($footnotes-file)"/>
-
 <!-- Endnote file path -->
 <xsl:variable name="endnotes-file" select="concat($_rootfolder,'/word/new-endnotes.xml')"/>
-
-<!-- Endnote document file -->
-<xsl:variable name="endnotes" select="document($endnotes-file)"/>
 
 <!-- Variable that defines name of the tile for the main document -->
 <xsl:variable name="document-title" as="xs:string?">
@@ -267,14 +261,7 @@ Returns the boolean if the current node matches a section document break or not.
 -->
 <xsl:function name="fn:matches-document-split-sectionbreak" as="xs:boolean">
   <xsl:param name="current" as="node()" />
-  <xsl:choose>
-    <xsl:when test="$current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val,config:document-split-sectionbreak-string())]][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:sequence select="exists($current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val,config:document-split-sectionbreak-string())]][not(fn:matches-ignore-paragraph-match-list(.))])"/>
 </xsl:function>
 
 <!--
@@ -287,30 +274,28 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-document-split-outline" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when
-      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
-      <xsl:value-of select="true()" />
+    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[w:basedOn/@w:val][not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
       <xsl:variable name="basedon" select="$styles-document/w:styles/w:style[@w:styleId = $current/w:pPr/w:pStyle/@w:val]/w:basedOn/@w:val" />
       <xsl:choose>
         <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
-          <xsl:value-of select="true()" />
+          <xsl:sequence select="true()" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="false()" />
+          <xsl:sequence select="false()" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
     <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:when>
-    <xsl:when
-      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId]][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:value-of select="true()" />
+    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId]][not(fn:matches-ignore-paragraph-match-list(.))]">
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -337,27 +322,25 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-section-split-outline" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when
-      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
-      <xsl:value-of select="true()" />
+    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[w:basedOn/@w:val][not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
       <xsl:variable name="basedon" select="$styles-document/w:styles/w:style[@w:styleId = $current/w:pPr/w:pStyle/@w:val]/w:basedOn/@w:val" />
       <xsl:choose>
         <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
-          <xsl:value-of select="true()" />
+          <xsl:sequence select="true()" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="false()" />
+          <xsl:sequence select="false()" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
-    <xsl:when
-      test="$current[w:pPr/w:pStyle/@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:value-of select="true()" />
+    <xsl:when test="$current[w:pPr/w:pStyle/@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
+      <xsl:sequence select="true()" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="false()" />
+      <xsl:sequence select="false()" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -373,14 +356,9 @@ Returns the boolean if the current node matches a outline level document break o
 -->
 <xsl:function name="fn:matches-section-split-styles" as="xs:boolean">
   <xsl:param name="current" as="node()" />
-  <xsl:choose>
-    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, (config:section-split-styles-string())) or matches(w:bookmarkstart/@w:name, config:bookmark-start-section-split-regex-string())][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:section-split-styles-string())
+                              or matches(w:bookmarkstart/@w:name, config:bookmark-start-section-split-regex-string())]
+                                [not(fn:matches-ignore-paragraph-match-list(.))])"/>
 </xsl:function>
 
 <!--
@@ -409,12 +387,9 @@ Returns the boolean if the current node matches a outline level document break o
 -->
 <xsl:function name="fn:count-preceding-documents"  as="xs:integer">
   <xsl:param name="currentid" />
-  <xsl:variable name="currentCounter"
-    select="count($list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[config:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
-
+  <xsl:variable name="currentCounter" select="count($list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[config:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
   <xsl:choose>
-    <xsl:when
-      test="$list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[not(config:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
+    <xsl:when test="$list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[not(config:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
       <xsl:value-of select="number($currentCounter) + 1" />
     </xsl:when>
     <xsl:otherwise>
@@ -470,12 +445,9 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:get-document-position" as="xs:string">
   <xsl:param name="bookmarkRefId" />
 
-  <xsl:variable name="currentCounter"
-    select="count($list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[fn:matches-document-split-sectionbreak(.) or config:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
-
+  <xsl:variable name="currentCounter" select="count($list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[fn:matches-document-split-sectionbreak(.) or config:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
   <xsl:choose>
-    <xsl:when
-      test="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[not(fn:matches-document-split-sectionbreak(.) or config:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
+    <xsl:when test="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[not(fn:matches-document-split-sectionbreak(.) or config:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
       <xsl:value-of select="number($currentCounter) + 1" />
     </xsl:when>
     <xsl:otherwise>
@@ -498,7 +470,7 @@ Returns the boolean if the current node matches a outline level document break o
   <xsl:choose>
     <xsl:when test="matches($style-name, $numbering-paragraphs-list-string)">
       <xsl:variable name="currentNumId">
-        <xsl:value-of select="fn:get-numid-from-style($current)" />
+        <xsl:sequence select="fn:get-numid-from-style($current)" />
       </xsl:variable>
       <xsl:variable name="currentAbstractNumId">
         <xsl:value-of select="fn:get-abstract-num-id-from-num-id($currentNumId)" />
@@ -508,10 +480,10 @@ Returns the boolean if the current node matches a outline level document break o
       </xsl:variable>
       <xsl:choose>
         <xsl:when test="$numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$currentAbstractNumId]/w:lvl[@w:ilvl=$currentLevel]/w:numFmt/@w:val='bullet'">
-          <xsl:value-of select="false()" />
+          <xsl:sequence select="false()" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="true()" />
+          <xsl:sequence select="true()" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
@@ -545,15 +517,15 @@ Returns the boolean if the current node matches a outline level document break o
           </xsl:variable>
           <xsl:choose>
             <xsl:when test="$numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$current-num-id]/w:lvl[@w:ilvl=$current-level]/w:numFmt/@w:val='bullet'">
-              <xsl:value-of select="false()" />
+              <xsl:sequence select="false()" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="true()" />
+              <xsl:sequence select="true()" />
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="false()" />
+          <xsl:sequence select="false()" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -571,10 +543,10 @@ Returns the boolean if the current node matches a outline level document break o
   </xsl:variable>
   <xsl:choose>
     <xsl:when test="string-length(string-join($body/w:p[1]//w:t/text(),'')) &gt; (249 - string-length($title-prefix))">
-      <xsl:value-of select="concat($title-prefix,'','',substring(string-join($body/w:p[1]//w:t/text(),''),1,(249 - string-length($title-prefix))))" />
+      <xsl:value-of select="concat($title-prefix,'',substring(string-join($body/w:p[1]//w:t/text(),''),1,(249 - string-length($title-prefix))))" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="concat($title-prefix,'','',string-join($body/w:p[1]//w:t/text(),''))" />
+      <xsl:value-of select="concat($title-prefix,'',string-join($body/w:p[1]//w:t/text(),''))" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>

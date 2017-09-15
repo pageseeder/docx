@@ -15,7 +15,7 @@
                 xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
-<!-- TODO Suspicious template match of `body` element (no longer in PSML) -->
+<!-- TODO Suspicious template match of `body` element (no longer in PSML or is it `w:body` ? -->
 
 <!--
   Template to split each document as sections according to the definitions in the configuration file
@@ -52,8 +52,10 @@
         <fragment id="title">
           <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-section-split-sectionbreak(.) or w:bookmarkEnd[matches(@w:id,$bookmark-end-section-split-regex-ids-string)]]">
             <xsl:variable name="relative-position" select="position()" />
-            <xsl:for-each-group select="current-group()"
-              group-starting-with="w:p[fn:matches-section-split-outline(.) or fn:matches-section-split-styles(.) or config:matches-section-split-bookmarkstart(.)]|w:p[config:matches-section-specific-split-styles(.)]">
+            <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-section-split-outline(.)
+                                                                               or fn:matches-section-split-styles(.)
+                                                                               or config:matches-section-split-bookmarkstart(.)]
+                                                                             |w:p[config:matches-section-specific-split-styles(.)]">
               <xsl:choose>
                 <xsl:when test="position()*$relative-position = 1">
                   <xsl:if test="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">

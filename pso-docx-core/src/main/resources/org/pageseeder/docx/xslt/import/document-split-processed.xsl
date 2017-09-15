@@ -20,7 +20,7 @@
          Match w:body
          Sections are created for every level of headings
      ============================================================= -->
-<xsl:template match="w:body" mode="processedpsml">
+<xsl:template match="w:body" mode="processed-psml">
 
   <!-- master document will contain link to all split files  -->
   <xsl:choose>
