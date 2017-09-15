@@ -12,7 +12,8 @@
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:rs="http://schemas.openxmlformats.org/package/2006/relationships"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -20,7 +21,7 @@
 -->
 <xsl:template match="w:smartTag" mode="content">
   <xsl:choose>
-    <xsl:when test="$keep-smart-tags">
+    <xsl:when test="config:keep-smart-tags()">
       <inline label="{concat('st-',@w:element)}">
         <xsl:apply-templates mode="content" />
       </inline>
@@ -40,10 +41,10 @@
   <xsl:variable name="character-style-name" select="./w:rPr[1]/w:rStyle[1]/@w:val[1]" />
 
   <!-- Variable to define if an element has been defined for this current style  -->
-  <xsl:variable name="inline-value" select="fn:get-inline-label-from-psml-element($character-style-name)" />
+  <xsl:variable name="inline-value" select="config:get-inline-label-from-psml-element($character-style-name)" />
 
   <!-- bold italic, underline, subscript and superscript are processed recursively -->
-  <xsl:variable name="monospace" select="if (fn:get-psml-element($character-style-name) = 'monospace') then 'true' else 'false'" />
+  <xsl:variable name="monospace" select="if (config:get-psml-element($character-style-name) = 'monospace') then 'true' else 'false'" />
   <xsl:variable name="bold" select="if (current()[w:rPr/w:b[not(@w:val = '0')]]) then 'true' else 'false'" />
   <xsl:variable name="italic" select="if (current()[w:rPr/w:i[not(@w:val = '0')]]) then 'true' else 'false'" />
   <xsl:variable name="underline" select="if (current()[w:rPr/w:u[not(@w:val = '0')]]) then 'true' else 'false'" />
@@ -56,7 +57,7 @@
     <!-- TODO Simplify -->
     <xsl:variable name="is-numbered" as="xs:boolean">
       <xsl:choose>
-        <xsl:when test="$position = 0 and matches($full-text,$numbering-match-list-string) and $convert-manual-numbering">
+        <xsl:when test="$position = 0 and matches($full-text,config:numbering-match-list-string()) and config:convert-manual-numbering()">
           <xsl:value-of select="true()" />
         </xsl:when>
         <xsl:otherwise>
@@ -148,10 +149,10 @@
       <xsl:when test="current()/name() = 'w:pict' and not($in-heading)">
         <xsl:apply-templates select="current()" mode="content" />
       </xsl:when>
-      <xsl:when test="current()/name() = 'w:footnoteReference' and $convert-footnotes">
+      <xsl:when test="current()/name() = 'w:footnoteReference' and config:convert-footnotes()">
         <sup>
           <xsl:choose>
-          <xsl:when test="$convert-footnotes-type = 'generate-files'">
+          <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
             <xref frag="default" display="manual" type="none" title="{concat('[',fn:get-formated-footnote-endnote-value(@w:id,'footnote'),']')}"
             reverselink="true" reversetitle="" reversetype="none" labels="footnote"
             href="footnotes/footnotes{@w:id}.psml">
@@ -168,10 +169,10 @@
           </xsl:choose>
         </sup>
       </xsl:when>
-      <xsl:when test="current()/name() = 'w:endnoteReference' and $convert-endnotes">
+      <xsl:when test="current()/name() = 'w:endnoteReference' and config:convert-endnotes()">
         <sup>
           <xsl:choose>
-          <xsl:when test="$convert-endnotes-type = 'generate-files'">
+          <xsl:when test="config:convert-endnotes-type() = 'generate-files'">
             <xref frag="default" display="manual" type="none" title="{concat('[',fn:get-formated-footnote-endnote-value(@w:id,'endnote'),']')}"
             reverselink="true" reversetitle="" reversetype="none" labels="endnote"
             href="endnotes/endnotes{@w:id}.psml">
@@ -363,8 +364,8 @@
     </xsl:when>
     <xsl:otherwise>
       <xsl:choose>
-        <xsl:when test="$numbering-list-prefix-exists and $is-numbered and matches($text/text(),$numbering-match-list-prefix-string) ">
-          <xsl:analyze-string regex="({$numbering-match-list-prefix-string})(.*)" select="$text">
+        <xsl:when test="config:numbering-list-prefix-exists() and $is-numbered and matches($text/text(),config:numbering-match-list-prefix-string()) ">
+          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="$text">
             <xsl:matching-substring>
               <xsl:call-template name="process-text-runs">
                 <xsl:with-param name="text" select="regex-group(2)" />
@@ -383,8 +384,8 @@
             </xsl:non-matching-substring>
           </xsl:analyze-string>
         </xsl:when>
-        <xsl:when test="$numbering-list-autonumbering-exists and $is-numbered and matches($text/text(),$numbering-match-list-autonumbering-string) ">
-          <xsl:analyze-string regex="({$numbering-match-list-autonumbering-string})(.*)" select="$text">
+        <xsl:when test="config:numbering-list-autonumbering-exists() and $is-numbered and matches($text/text(), config:numbering-match-list-autonumbering-string()) ">
+          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="$text">
             <xsl:matching-substring>
               <xsl:call-template name="process-text-runs">
                 <xsl:with-param name="text" select="regex-group(2)" />
@@ -403,8 +404,8 @@
             </xsl:non-matching-substring>
           </xsl:analyze-string>
         </xsl:when>
-        <xsl:when test="$is-numbered and matches($text,$numbering-match-list-inline-string) ">
-          <xsl:analyze-string regex="({$numbering-match-list-inline-string})(.*)" select="$text">
+        <xsl:when test="$is-numbered and matches($text, config:numbering-match-list-inline-string()) ">
+          <xsl:analyze-string regex="({config:numbering-match-list-inline-string()})(.*)" select="$text">
             <xsl:matching-substring>
               <xsl:variable name="context-string" select="$text" />
               <xsl:for-each select="$config-doc/config/lists/convert-manual-numbering/value[inline/@label]">
@@ -475,7 +476,7 @@
             </xsl:attribute>
             <xsl:attribute name="frag">
               <xsl:choose>
-              <xsl:when test="$split-by-sections">
+              <xsl:when test="config:split-by-sections()">
                  <xsl:value-of select="fn:get-fragment-position($bookmark-ref)" />
               </xsl:when>
               <xsl:otherwise>
@@ -485,7 +486,7 @@
             </xsl:attribute>
             <xsl:attribute name="href">
               <xsl:choose>
-                <xsl:when test="$split-by-documents">
+                <xsl:when test="config:split-by-documents()">
                    <xsl:variable name="document-number">
                     <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
                   </xsl:variable>
@@ -542,7 +543,7 @@
           </xsl:attribute>
             <xsl:attribute name="frag">
            <xsl:choose>
-             <xsl:when test="$bookmark-ref != '' and $split-by-sections">
+             <xsl:when test="$bookmark-ref != '' and config:split-by-sections()">
                 <xsl:value-of select="fn:get-fragment-position($bookmark-ref)" />
              </xsl:when>
              <xsl:otherwise>
@@ -552,7 +553,7 @@
           </xsl:attribute>
             <xsl:attribute name="href">
            <xsl:choose>
-            <xsl:when test="$split-by-documents">
+            <xsl:when test="config:split-by-documents()">
               <xsl:variable name="document-number">
                 <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
               </xsl:variable>

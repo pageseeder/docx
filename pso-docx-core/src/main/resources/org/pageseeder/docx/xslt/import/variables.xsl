@@ -13,38 +13,12 @@
                 xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- TODO Move config functions to a `config` module -->
-
-<!-- location of the configuration file -->
-<xsl:variable name="config-doc" select="document($_configfileurl)" as="node()"/>
-
-<!-- default value of the character styles input -->
-<xsl:variable name="character-styles" as="xs:string?">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/default/characterStyles/@value">
-      <xsl:value-of select="$config-doc/config/styles/default/characterStyles/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'inline'" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- default value of the paragraph styles input -->
-<xsl:variable name="paragraph-styles" as="xs:string?">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/default/paragraphStyles/@value = 'para'">
-      <xsl:value-of select="'para'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'block'" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
 
 <!-- location of the numbering file from the input docx -->
 <xsl:variable name="numbering" select="concat($_rootfolder,'/word/numbering.xml')" as="xs:string?"/>
@@ -90,38 +64,18 @@
 </xsl:variable>
 
 <!-- Count of total number of files: used to be referenced from xrefs, and also numbering split files -->
-<xsl:variable name="number-of-splits" select="count($maindocument//w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|$maindocument//w:p[fn:matches-document-specific-split-styles(.)]) + 1"  as="xs:integer"/>
+<xsl:variable name="number-of-splits" select="count($maindocument//w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|$maindocument//w:p[fn:matches-document-specific-split-styles(.)]) + 1"  as="xs:integer"/>
 
+<!-- TODO move function to fn: -->
 <!-- Variable used to sort output files -->
 <xsl:variable name="zeropadding" as="xs:string">
   <xsl:choose>
-    <xsl:when test="$number-of-splits &lt; 10">
-      <xsl:value-of select="'0'" />
-    </xsl:when>
-    <xsl:when test="$number-of-splits &lt; 100">
-      <xsl:value-of select="'00'" />
-    </xsl:when>
-    <xsl:when test="$number-of-splits &lt; 1000">
-      <xsl:value-of select="'000'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'0000'" />
-    </xsl:otherwise>
+    <xsl:when test="$number-of-splits &lt; 10">0</xsl:when>
+    <xsl:when test="$number-of-splits &lt; 100">00</xsl:when>
+    <xsl:when test="$number-of-splits &lt; 1000">000</xsl:when>
+    <xsl:otherwise>0000</xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
-
-<!-- Function to test if a paragraph stype is part of the config ignore list -->
-<xsl:function name="fn:matches-ignore-paragraph-match-list" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:choose>
-    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val,$ignore-paragraph-match-list-string)]">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
 
 <!--
   variable used to do calculations of document position of:
@@ -135,9 +89,9 @@
           xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml"
           xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
           xmlns:xs="http://www.w3.org/2001/XMLSchema"
-          xmlns:fn="http://www.pageseeder.com/function">
+          xmlns:fn="http://pageseeder.org/docx/function">
 
-  <xsl:for-each select="$maindocument//w:p[not(parent::w:tc)][not(matches(w:pPr/w:pStyle/@w:val, $ignore-paragraph-match-list-string))][string-join(w:r//text(), '') != '']|$maindocument//w:bookmarkStart|$maindocument//w:tc|$maindocument//w:p[matches(w:pPr/w:pStyle/@w:val, $document-specific-split-styles-string)]|$maindocument//w:p[matches(w:pPr/w:pStyle/@w:val, $section-specific-split-styles-string)]">
+  <xsl:for-each select="$maindocument//w:p[not(parent::w:tc)][not(matches(w:pPr/w:pStyle/@w:val, config:ignore-paragraph-match-list-string()))][string-join(w:r//text(), '') != '']|$maindocument//w:bookmarkStart|$maindocument//w:tc|$maindocument//w:p[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())]|$maindocument//w:p[matches(w:pPr/w:pStyle/@w:val, config:section-specific-split-styles-string())]">
       <xsl:element name="{name()}">
         <xsl:attribute name="id" select="generate-id(.)" />
         <xsl:copy-of select="@*" />
@@ -168,7 +122,7 @@
 <xsl:variable name="list-index" as="element()">
   <w:body xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
           xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  <xsl:for-each select="$maindocument//w:r[w:instrText[matches(text(),'XE')]]">
+    <xsl:for-each select="$maindocument//w:r[w:instrText[matches(text(),'XE')]]">
       <xsl:element name="{name()}">
         <xsl:copy-of select="@*" />
         <xsl:apply-templates mode="paracopy" />
@@ -189,8 +143,8 @@
       </xsl:variable>
       <m:math>
         <xsl:attribute name="checksum-id" select="fn:checksum($current)"/>
-          <xsl:apply-templates select="@*" mode="mathml" />
-          <xsl:apply-templates mode="mathml" />
+        <xsl:apply-templates select="@*" mode="mathml" />
+        <xsl:apply-templates mode="mathml" />
       </m:math>
     </xsl:for-each>
     <xsl:for-each select="$maindocument//m:oMathPara">
@@ -199,95 +153,17 @@
       </xsl:variable>
       <m:math>
         <xsl:attribute name="checksum-id" select="fn:checksum($current)"/>
-          <xsl:apply-templates select="@*" mode="mathml" />
-          <xsl:apply-templates mode="mathml" />
+        <xsl:apply-templates select="@*" mode="mathml" />
+        <xsl:apply-templates mode="mathml" />
       </m:math>
     </xsl:for-each>
-
   </w:body>
-</xsl:variable>
-
-<!-- boolean variable to set or not mathml files -->
-<xsl:variable name="generate-mathml-files" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/mathml[@select= 'true'][@output= 'generate-files']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
- <!-- boolean variable to convert or not mathml files -->
-<xsl:variable name="convert-omml-to-mml" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/mathml[@select= 'true'][@convert-to-mml= 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- boolean variable to convert or not footnote files -->
-<xsl:variable name="convert-footnotes" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/footnotes[@select= 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- variable to define what type of conversion to be used for footnotes-->
-<xsl:variable name="convert-footnotes-type" as="xs:string?">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/footnotes[@select= 'true'][@output='generate-files']">
-      <xsl:value-of select="'generate-files'" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/footnotes[@select= 'true'][@output='generate-fragments']">
-      <xsl:value-of select="'generate-fragments'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'generate-fragments'" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- boolean variable to convert or not endnote files -->
-<xsl:variable name="convert-endnotes" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/endnotes[@select= 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- variable to define what type of conversion to be used for endnotes-->
-<xsl:variable name="convert-endnotes-type" as="xs:string?">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/endnotes[@select= 'true'][@output='generate-files']">
-      <xsl:value-of select="'generate-files'" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/endnotes[@select= 'true'][@output='generate-fragments']">
-      <xsl:value-of select="'generate-fragments'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="'generate-fragments'" />
-    </xsl:otherwise>
-  </xsl:choose>
 </xsl:variable>
 
 <!--
   Key to match XE text
 -->
+<!-- TODO Does not appear to be used, check... -->
 <xsl:key name="index" match="w:r/w:instrText/text()" use="." />
 
 <!--
@@ -348,87 +224,6 @@
 </root>
 </xsl:variable>
 
-<!-- List of numbering regular expressions to be captured in the config file -->
-<xsl:variable name="document-split-styles" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="not($config-doc/config/split/document/wordstyle)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$config-doc/config/split/document/wordstyle/@select">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of numbering regular expressions to be captured in the config file -->
-<xsl:variable name="document-split-styles-string" select="string-join($document-split-styles,'')" as="xs:string"/>
-
-<!--  List of numbering regular expressions to be captured in the config file -->
-<xsl:variable name="document-specific-split-styles" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/splitstyle/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="not($config-doc/config/split/document/splitstyle)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$config-doc/config/split/document/splitstyle/@select">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of numbering regular expressions to be captured in the config file -->
-<xsl:variable name="document-specific-split-styles-string" select="string-join($document-specific-split-styles,'')" as="xs:string"/>
-
-<!-- List of bookmark start ids defined to split at fragment level -->
-<xsl:variable name="bookmark-start-section-split-regex" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/bookmark/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="not($config-doc/config/split/section/bookmark)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$config-doc/config/split/section/bookmark/@select">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of bookmark start ids defined to split at fragment level -->
-<xsl:variable name="bookmark-start-section-split-regex-string" select="string-join($bookmark-start-section-split-regex,'')" as="xs:string"/>
-
 <!--  List of bookmark end ids defined to split at fragment level -->
 <xsl:variable name="bookmark-end-section-split-regex-ids" as="xs:string *">
   <xsl:choose>
@@ -439,7 +234,7 @@
       <xsl:value-of select="concat('^','No Submitted Value','$')" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:for-each select="$maindocument//w:bookmarkStart[matches(@w:name,$bookmark-start-section-split-regex-string)]">
+      <xsl:for-each select="$maindocument//w:bookmarkStart[matches(@w:name, config:bookmark-start-section-split-regex-string())]">
         <xsl:choose>
           <xsl:when test="position() = last()">
             <xsl:value-of select="concat('^',@w:id,'$')" />
@@ -456,219 +251,6 @@
 <!-- String of list of bookmark end ids defined to split at fragment level -->
 <xsl:variable name="bookmark-end-section-split-regex-ids-string" select="string-join($bookmark-end-section-split-regex-ids,'')" as="xs:string"/>
 
-<!-- list of valid pageseeder list types -->
-<xsl:variable name="pageseeder-list-types" select="'^arabic$|^upperalpha$|^loweralpha$|^upperroman$|^lowerroman$'" as="xs:string"/>
-
-<!-- Values come from configuration file: list of values that specify on what outline levels to split the document -->
-<xsl:variable name="document-split-outline" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="not($config-doc/config/split/document/outlinelevel)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/outlinelevel/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$config-doc/config/split/document/outlinelevel/@select">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of outline levels defined to split at document level -->
-<xsl:variable name="document-split-outline-string" select="string-join($document-split-outline,'')" as="xs:string"/>
-
-<!-- Values come from configuration file: list of values that specify on what section breaks to split the document -->
-<xsl:variable name="document-split-sectionbreak" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/sectionbreak/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="not($config-doc/config/split/document/sectionbreak)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$config-doc/config/split/document/sectionbreak/@select">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of section breaks defined to split at document level -->
-<xsl:variable name="document-split-sectionbreak-string" select="string-join($document-split-sectionbreak,'')" as="xs:string"/>
-
-<!-- list of convert manual numbering matching regular expressions -->
-<xsl:variable name="numbering-match-list" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering/@select = 'true'">
-      <xsl:for-each select="$config-doc/config/lists/convert-manual-numbering/value">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',@match)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',@match,'|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- string of lis of convert manual numbering matching regular expressions -->
-<xsl:variable name="numbering-match-list-string" select="string-join($numbering-match-list,'')" as="xs:string"/>
-
-<!-- list of convert inline labels matching regular expressions -->
-<xsl:variable name="numbering-match-list-inline" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering/@select = 'true' and $config-doc/config/lists/convert-manual-numbering/value[inline]">
-      <xsl:for-each select="$config-doc/config/lists/convert-manual-numbering/value[inline]">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',@match)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',@match,'|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- string of list of convert inline labels matching regular expressions -->
-<xsl:variable name="numbering-match-list-inline-string" select="string-join($numbering-match-list-inline,'')" as="xs:string"/>
-
-<!-- configuration value to generate or not index files -->
-<xsl:variable name="generate-index-files" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/default/generate-index-files[@select= 'true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- check if prefix generation for conversion of manual numbering exists -->
-<xsl:variable name="numbering-list-prefix-exists" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering/value[prefix]">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- check if autonumbering generation for conversion of manual numbering exists -->
-<xsl:variable name="numbering-list-autonumbering-exists" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering/value[autonumbering]">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- list of prefix manual conversion regular expressions -->
-<xsl:variable name="numbering-match-list-prefix" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering/@select = 'true'">
-      <xsl:for-each select="$config-doc/config/lists/convert-manual-numbering/value[prefix]">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',@match)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',@match,'|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of prefix manual conversion regular expressions -->
-<xsl:variable name="numbering-match-list-prefix-string" select="string-join($numbering-match-list-prefix,'')" as="xs:string"/>
-
-<!-- list of autonumbering manual conversion regular expressions -->
-<xsl:variable name="numbering-match-list-autonumbering" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering/@select = 'true' and $numbering-list-autonumbering-exists">
-      <xsl:for-each select="$config-doc/config/lists/convert-manual-numbering/value[autonumbering]">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',@match)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',@match,'|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of autonumbering manual conversion regular expressions -->
-<xsl:variable name="numbering-match-list-autonumbering-string" select="string-join($numbering-match-list-autonumbering,'')" as="xs:string"/>
-
-<!-- list of paragraph styles to ignore -->
-<xsl:variable name="ignore-paragraph-match-list" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/ignore/wordstyle">
-      <xsl:for-each select="$config-doc/config/styles/ignore/wordstyle">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',@value,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',@value,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of paragraph styles to ignore -->
-<xsl:variable name="ignore-paragraph-match-list-string" select="string-join($ignore-paragraph-match-list,'')" as="xs:string"/>
-
 <!-- node of numbering document -->
 <xsl:variable name="numbering-document" select="if (doc-available($numbering)) then document($numbering) else ." as="node()"/>
 
@@ -678,236 +260,10 @@
 <!-- node of relationship document -->
 <xsl:variable name="relationship-document" select="document($rels)" as="node()"/>
 
-<!-- list of paragraph styles that belong to a list -->
-<xsl:variable name="numbering-paragraphs-list" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$numbering-document/w:numbering/w:abstractNum//w:pStyle/@w:val">
-      <xsl:for-each select="$numbering-document/w:numbering/w:abstractNum//w:pStyle/@w:val">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
 <!-- String of list of paragraph styles that belong to a list -->
-<xsl:variable name="numbering-paragraphs-list-string" select="string-join($numbering-paragraphs-list,'')" as="xs:string"/>
-
-<!-- list of paragraph styles that are set to transform into headings in the configuration file -->
-<xsl:variable name="heading-paragraphs-list" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@psmlelement='heading']/@name">
-      <xsl:for-each select="$config-doc/config/styles/wordstyle[@psmlelement='heading']/@name">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
+<xsl:variable name="numbering-paragraphs-list-string" as="xs:string">
+  <xsl:sequence select="fn:items-to-regex($numbering-document/w:numbering/w:abstractNum//w:pStyle/@w:val)"/>
 </xsl:variable>
-
-<!-- String of list of paragraph styles that are set to transform into headings in the configuration file -->
-<xsl:variable name="heading-paragraphs-list-string" select="string-join($heading-paragraphs-list,'')" as="xs:string"/>
-
-<!-- list of paragraph styles that are set to transform into para in the configuration file -->
-<xsl:variable name="para-paragraphs-list" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@psmlelement='para']/@name">
-      <xsl:for-each select="$config-doc/config/styles/wordstyle[@psmlelement='para']/@name">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of paragraph styles that are set to transform into para in the configuration file -->
-<xsl:variable name="para-paragraphs-list-string" select="string-join($para-paragraphs-list,'')" as="xs:string"/>
-
-<!-- list of paragraph styles that are set to split sections in the configuration file -->
-<xsl:variable name="section-split-styles" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/wordstyle/@select">
-      <xsl:choose>
-        <xsl:when test="$config-doc/config/split/section/wordstyle/@select = ''">
-          <xsl:value-of select="concat('^','No Submitted Value','$')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$config-doc/config/split/section/wordstyle/@select">
-            <xsl:choose>
-              <xsl:when test="position() = last()">
-                <xsl:value-of select="concat('^',.,'$')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('^',.,'$','|')" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of paragraph styles that are set to split sections in the configuration file -->
-<xsl:variable name="section-split-styles-string" select="string-join($section-split-styles, '')" as="xs:string"/>
-
-<!-- list of paragraph styles that are only used set to split sections in the configuration file; the content of these is then deleted -->
-<xsl:variable name="section-specific-split-styles" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/splitstyle/@select">
-      <xsl:choose>
-        <xsl:when test="$config-doc/config/split/section/splitstyle/@select = ''">
-          <xsl:value-of select="concat('^','No Submitted Value','$')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$config-doc/config/split/section/splitstyle/@select">
-            <xsl:choose>
-              <xsl:when test="position() = last()">
-                <xsl:value-of select="concat('^',.,'$')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('^',.,'$','|')" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of paragraph styles that are only used set to split sections in the configuration file; the content of these is then deleted -->
-<xsl:variable name="section-specific-split-styles-string" select="string-join($section-specific-split-styles,'')" as="xs:string"/>
-
-<!-- list of outline levels that are set to split sections in the configuration file -->
-<xsl:variable name="section-split-outline" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/outlinelevel/@select">
-      <xsl:choose>
-        <xsl:when test="$config-doc/config/split/section/outlinelevel/@select = ''">
-          <xsl:value-of select="'^','No Submitted Value','$'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$config-doc/config/split/section/outlinelevel/@select">
-
-            <xsl:choose>
-              <xsl:when test="position() = last()">
-                <xsl:value-of select="concat('^',.,'$')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('^',.,'$','|')" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of outline levels that are set to split sections in the configuration file -->
-<xsl:variable name="section-split-outline-string" select="string-join($section-split-outline,'')" as="xs:string"/>
-
-<!-- list of sectionbreak styles that are set to split sections in the configuration file -->
-<xsl:variable name="section-split-sectionbreak" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/sectionbreak/@select">
-      <xsl:choose>
-        <xsl:when test="$config-doc/config/split/section/sectionbreak/@select = ''">
-          <xsl:value-of select="'^','No Submitted Value','$'" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$config-doc/config/split/section/sectionbreak/@select">
-
-            <xsl:choose>
-              <xsl:when test="position() = last()">
-                <xsl:value-of select="concat('^',.,'$')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('^',.,'$','|')" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat('^','No Selected Value','$')" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of sectionbreak styles that are set to split sections in the configuration file -->
-<xsl:variable name="section-split-sectionbreak-string" select="string-join($section-split-sectionbreak,'')" as="xs:string"/>
-
-<!-- list of references that are set to split sections in the configuration file -->
-<!--   <xsl:variable name="section-split-reference"> -->
-<!--     <xsl:choose> -->
-<!--       <xsl:when test="$config-doc/config/split/section/type[@name = 'references']/@select = ''"> -->
-<!--         <xsl:value-of select="concat('^','No Selected Value','$')" /> -->
-<!--       </xsl:when> -->
-<!--       <xsl:otherwise> -->
-<!--         <xsl:value-of select="$config-doc/config/split/document/type[@name = 'references']/@select" /> -->
-<!--       </xsl:otherwise> -->
-<!--     </xsl:choose> -->
-<!--   </xsl:variable> -->
-
-<!-- list of element names that are in the configuration file -->
-<!--   <xsl:variable name="element-property-list"> -->
-<!--     <xsl:choose> -->
-<!--       <xsl:when test="$config-doc/config/styles/wordstyle/@name"> -->
-<!--         <xsl:for-each select="$config-doc/config/styles/wordstyle/@name"> -->
-<!--           <xsl:choose> -->
-<!--             <xsl:when test="position() = last()"> -->
-<!--               <xsl:value-of select="concat('^',.,'$')" /> -->
-<!--             </xsl:when> -->
-<!--             <xsl:otherwise> -->
-<!--               <xsl:value-of select="concat('^',.,'$','|')" /> -->
-<!--             </xsl:otherwise> -->
-<!--           </xsl:choose> -->
-<!--         </xsl:for-each> -->
-<!--       </xsl:when> -->
-<!--       <xsl:otherwise> -->
-<!--         <xsl:value-of select="concat('^','No Selected Value','$')" /> -->
-<!--       </xsl:otherwise> -->
-<!--     </xsl:choose> -->
-<!--   </xsl:variable> -->
 
 <!-- List of valid integer numbering values -->
 <xsl:variable name="numbering-decimal" as="xs:integer*"
@@ -931,7 +287,7 @@ Returns the boolean if the current node matches a section document break or not.
 <xsl:function name="fn:matches-document-split-sectionbreak" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val,($document-split-sectionbreak-string))]][not(fn:matches-ignore-paragraph-match-list(.))]">
+    <xsl:when test="$current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val,config:document-split-sectionbreak-string())]][not(fn:matches-ignore-paragraph-match-list(.))]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -985,29 +341,10 @@ Returns the boolean if the current node matches a outline level document break o
 
   @return true or false
 -->
-<xsl:function name="fn:matches-document-split-styles" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:choose>
-    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, ($document-split-styles-string))][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the boolean if the current node matches a paragraph style document break or not.
-
-  @param current the current node
-
-  @return true or false
--->
 <xsl:function name="fn:matches-document-specific-split-styles" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, ($document-specific-split-styles-string))]">
+    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1026,7 +363,7 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-section-split-sectionbreak" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val,($section-split-sectionbreak-string))]][not(fn:matches-ignore-paragraph-match-list(.))]">
+    <xsl:when test="$current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val, config:section-split-sectionbreak-string())]][not(fn:matches-ignore-paragraph-match-list(.))]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1046,13 +383,13 @@ Returns the boolean if the current node matches a outline level document break o
   <xsl:param name="current" as="node()" />
   <xsl:choose>
     <xsl:when
-      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val,($section-split-outline-string))]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
+      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[w:basedOn/@w:val][not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
       <xsl:variable name="basedon" select="$styles-document/w:styles/w:style[@w:styleId = $current/w:pPr/w:pStyle/@w:val]/w:basedOn/@w:val" />
       <xsl:choose>
-        <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val,($section-split-outline-string))]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
+        <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
           <xsl:value-of select="true()" />
         </xsl:when>
         <xsl:otherwise>
@@ -1061,7 +398,7 @@ Returns the boolean if the current node matches a outline level document break o
       </xsl:choose>
     </xsl:when>
     <xsl:when
-      test="$current[w:pPr/w:pStyle/@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val,($section-split-outline-string))]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
+      test="$current[w:pPr/w:pStyle/@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1080,7 +417,7 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-section-split-bookmarkstart" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current[w:bookmarkStart[matches(@w:name,$bookmark-start-section-split-regex-string)]]">
+    <xsl:when test="$current[w:bookmarkStart[matches(@w:name, config:bookmark-start-section-split-regex-string())]]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1099,7 +436,7 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-section-specific-split-styles" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, ($section-specific-split-styles-string))]">
+    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, config:section-specific-split-styles-string())]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1118,7 +455,7 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-section-split-styles" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, ($section-split-styles-string)) or matches(w:bookmarkstart/@w:name,$bookmark-start-section-split-regex-string)][not(fn:matches-ignore-paragraph-match-list(.))]">
+    <xsl:when test="$current[matches(w:pPr/w:pStyle/@w:val, (config:section-split-styles-string())) or matches(w:bookmarkstart/@w:name, config:bookmark-start-section-split-regex-string())][not(fn:matches-ignore-paragraph-match-list(.))]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1137,7 +474,7 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:matches-preceding-paragraph-as-split-level" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:choose>
-    <xsl:when test="$current/preceding::w:p[1][fn:matches-document-specific-split-styles(.) or fn:matches-document-split-outline(.) or fn:matches-document-split-styles(.)  or matches(w:bookmarkstart/@w:name,$bookmark-start-section-split-regex-string)]">
+    <xsl:when test="$current/preceding::w:p[1][fn:matches-document-specific-split-styles(.) or fn:matches-document-split-outline(.) or config:matches-document-split-styles(.)  or matches(w:bookmarkstart/@w:name, config:bookmark-start-section-split-regex-string())]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
@@ -1156,11 +493,11 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:function name="fn:count-preceding-documents"  as="xs:integer">
   <xsl:param name="currentid" />
   <xsl:variable name="currentCounter"
-    select="count($list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[fn:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
+    select="count($list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[fn:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
 
   <xsl:choose>
     <xsl:when
-      test="$list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[not(fn:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
+      test="$list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[not(fn:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
       <xsl:value-of select="number($currentCounter) + 1" />
     </xsl:when>
     <xsl:otherwise>
@@ -1180,7 +517,7 @@ Returns the boolean if the current node matches a outline level document break o
   <xsl:param name="bookmarkRefId" />
   <xsl:variable name="precedingDocumentNodeId"
     select="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p
-  [fn:matches-document-split-sectionbreak(.) or fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or fn:matches-document-specific-split-styles(.) or w:bookmarkEnd[matches(@w:id,$bookmark-end-section-split-regex-ids-string)]][1]/@id" />
+  [fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or fn:matches-document-specific-split-styles(.) or w:bookmarkEnd[matches(@w:id,$bookmark-end-section-split-regex-ids-string)]][1]/@id" />
   <xsl:variable name="fragment-position">
     <xsl:choose>
       <xsl:when test="$precedingDocumentNodeId = ''">
@@ -1217,394 +554,17 @@ Returns the boolean if the current node matches a outline level document break o
   <xsl:param name="bookmarkRefId" />
 
   <xsl:variable name="currentCounter"
-    select="count($list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[fn:matches-document-split-sectionbreak(.) or fn:matches-document-specific-split-styles(.) or fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
+    select="count($list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[fn:matches-document-split-sectionbreak(.) or fn:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
 
   <xsl:choose>
     <xsl:when
-      test="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[not(fn:matches-document-split-sectionbreak(.) or fn:matches-document-specific-split-styles(.) or fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
+      test="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[not(fn:matches-document-split-sectionbreak(.) or fn:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
       <xsl:value-of select="number($currentCounter) + 1" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="number($currentCounter)" />
     </xsl:otherwise>
   </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the type of output that the manual numbering of the current level should have.
-
-  @param currentLevel the current level of the current node
-
-  @return type of output
--->
-<xsl:function name="fn:get-numbered-paragraph-value" as="xs:string">
-  <xsl:param name="currentLevel" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-to-numbered-paragraphs[not(@select='true')]">
-      <xsl:value-of select="'Nothing Selected'" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/lists/convert-to-numbered-paragraphs[@select='true']/not(level[@value=$currentLevel])">
-      <xsl:value-of select="'Nothing Selected'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$config-doc/config/lists/convert-to-numbered-paragraphs[@select='true']/level[@value=$currentLevel]/@output" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the type of numbering that the current element should have. Specific for heading
-
-  @param style-name the current word style name
-
-  @return type of value
--->
-<xsl:function name="fn:get-numbered-heading-value" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@name=$style-name]/numbering[not(@select='true')]">
-      <xsl:value-of select="'Nothing Selected'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/numbering[@select='true']/@value" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the inline label that the current element should have. Specific for heading
-
-  @param style-name the current word style name
-
-  @return inline label value
--->
-<xsl:function name="fn:get-inline-heading-value" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="string($config-doc/config/styles/wordstyle[@name=$style-name]/numbering[@select='true']/label/@value)" />
-</xsl:function>
-
-<!--
-  Returns the type of numbering that the current element should have. Specific for para
-
-  @param style-name the current word style name
-
-  @return type of value
--->
-<xsl:function name="fn:get-numbered-para-value" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@name=$style-name]/numbering[not(@select='true')]">
-      <xsl:value-of select="'Nothing Selected'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/numbering[@select='true']/@value" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the inline label that the current element should have. Specific for para
-
-  @param style-name the current word style name
-
-  @return inline label value
--->
-<xsl:function name="fn:get-inline-para-value"  as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="string($config-doc/config/styles/wordstyle[@name=$style-name]/numbering[@select='true']/label/@value)" />
-</xsl:function>
-
-<!--
-  Returns the label that the current element should have.
-
-  @param style-name the current word style name
-
-  @return label value
--->
-<xsl:function name="fn:get-label-from-psml-element" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="string($config-doc/config/styles/wordstyle[@name=$style-name]/label/@value)" />
-</xsl:function>
-
-<!--
-  Returns the document label that the main references document has.
-
-  @return document label value
--->
-<xsl:function name="fn:document-label-for-main-document"  as="xs:string">
-  <xsl:value-of select="string($config-doc/config/split/main/label)"/>
-</xsl:function>
-
-<!--
-  Returns the document type that the main references document has.
-
-  @return document type value
--->
-<xsl:function name="fn:document-type-for-main-document"  as="xs:string">
-  <xsl:value-of select="string($config-doc/config/split/main/type)"/>
-</xsl:function>
-
-<!--
-  Returns the document label that the split style should have.
-
-  @param style-name the current word style name
-
-  @return document label value
--->
-<xsl:function name="fn:document-label-for-split-style"  as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle[@select=$style-name]/label">
-      <xsl:value-of select="$config-doc/config/split/document/wordstyle[@select=$style-name]/label" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/splitstyle[@select=$style-name]/label">
-      <xsl:value-of select="$config-doc/config/split/document/splitstyle[@select=$style-name]/label" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the document type that the split style should have.
-
-  @param style-name the current word style name
-
-  @return document type value
--->
-<xsl:function name="fn:document-type-for-split-style" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/document/wordstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/splitstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/document/splitstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the blockxref level that the split style should have.
-
-  @param style-name the current word style name
-
-  @return blockxref level value
--->
-<xsl:function name="fn:document-level-for-split-style" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle[@select=$style-name]/level/@value">
-      <xsl:value-of select="$config-doc/config/split/document/wordstyle[@select=$style-name]/level/@value" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/splitstyle[@select=$style-name]/level/@value">
-      <xsl:value-of select="$config-doc/config/split/document/splitstyle[@select=$style-name]/level/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the fragment type that the split style should have.
-
-  @param style-name the current word style name
-
-  @return fragment type value
--->
-<xsl:function name="fn:fragment-type-for-split-style" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/wordstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/section/wordstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/section/splitstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/section/splitstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the inline label from style name.
-
-  @param style-name the current word style name
-
-  @return inline label value
--->
-<xsl:function name="fn:get-inline-label-from-psml-element" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@name=$style-name][@psmlelement='inline']/label/@value">
-      <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name][@psmlelement='inline']/label/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the block label from style name.
-
-  @param style-name the current word style name
-
-  @return block label value
--->
-<xsl:function name="fn:get-block-label-from-psml-element" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name][@psmlelement='block']/label/@value" />
-</xsl:function>
-
-<!--
-  Returns the indent value from style name.
-
-  @param style-name the current word style name
-
-  @return indent value value
--->
-<xsl:function name="fn:get-para-indent-value" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@name=$style-name]/indent/@level">
-      <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/indent/@level" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the word caption element style for a specific table style value.
-
-  @param style-name the current word style name
-
-  @return  word caption element style
--->
-<xsl:function name="fn:get-caption-table-value" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/wordstyle[@name=$style-name]/@table">
-      <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/@table" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the psml element for a specific style value.
-
-  @param style-name the current word style name
-
-  @return psml element
--->
-<xsl:function name="fn:get-psml-element" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/@psmlelement" />
-</xsl:function>
-
-<!--
-  Returns the psml element for a specific paragraph node.
-
-  @param paragraph the current paragraph node
-
-  @return psml element
--->
-<xsl:function name="fn:get-psml-element-from-paragraph" as="xs:string">
-  <xsl:param name="paragraph" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$paragraph/w:pPr/w:pStyle/@w:val]/@psmlelement" />
-</xsl:function>
-
-<!--
-  Returns the block label for a specific style name. For headings only
-
-  @param style-name the current word style name
-
-  @return psml block label
--->
-<xsl:function name="fn:get-heading-block-label" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/label[@type='block']/@value" />
-</xsl:function>
-
-<!--
-  Returns the inline label for a specific style name. For headings only
-
-  @param style-name the current word style name
-
-  @return psml inline label
--->
-<xsl:function name="fn:get-heading-inline-label" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/label[@type='inline']/@value" />
-</xsl:function>
-
-<!--
-  Returns the heading level for a specific style name.
-
-  @param style-name the current word style name
-  @param document-level the current document level
-
-  @return psml heading level
--->
-<xsl:function name="fn:get-heading-level" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:param name="document-level" />
-<!--     <xsl:message select="$document-level"/> -->
-  <xsl:choose>
-    <xsl:when test="$document-level != '0'">
-      <xsl:value-of select="if(number($config-doc/config/styles/wordstyle[@name=$style-name]/level/@value) - number($document-level) &gt; 0) then ($config-doc/config/styles/wordstyle[@name=$style-name]/level/@value - number($document-level)) else $config-doc/config/styles/wordstyle[@name=$style-name]/level/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/level/@value" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the block label for a specific style name. para elements only
-
-  @param style-name the current word style name
-
-  @return psml block label
--->
-<xsl:function name="fn:get-para-block-label" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/label[@type='block']/@value" />
-</xsl:function>
-
-<!--
-  Returns the inline label for a specific style name. para elements only
-
-  @param style-name the current word style name
-
-  @return psml inline label
--->
-<xsl:function name="fn:get-para-inline-label" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/label[@type='inline']/@value" />
-</xsl:function>
-
-<!--
-  Returns the indent level for a specific style name. para elements only
-
-  @param style-name the current word style name
-
-  @return psml indent level
--->
-<xsl:function name="fn:get-para-indent" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/indent/@value" />
 </xsl:function>
 
 <!--
@@ -1643,134 +603,6 @@ Returns the boolean if the current node matches a outline level document break o
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
-
-<!--
-  Checks if the the convert numbered paragraphs is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="convert-to-numbered-paragraphs" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-to-numbered-paragraphs[@select='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the split fragments is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="split-by-sections" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section[@select='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the generate real titles for file names is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="generate-titles" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document[@use-real-titles='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the split documents is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="split-by-documents" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document[@select='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the number documents is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="number-document-title" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/add-numbering-to-document-titles[@select='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the convert list styles into list roles is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="convert-to-list-roles" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-to-list-roles[@select='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the transform smart tags into inline elements is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="keep-smart-tags" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/styles/default/smart-tag/@keep = 'true'">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!--
-  Checks if the convert manual numbers into numbering in pageseeder is set in configuration
-
-  @return true or false
--->
-<xsl:variable name="convert-manual-numbering" as="xs:boolean">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/lists/convert-manual-numbering[@select='true']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
 
 <!--
   Path for the media folder

@@ -11,7 +11,8 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- TODO Remove big chunks of commented code -->
@@ -41,7 +42,7 @@
 <!--             </xsl:attribute> -->
 <!--           <xsl:attribute name="frag"> -->
 <!--           <xsl:choose> -->
-<!--           <xsl:when test="$split-by-sections"> -->
+<!--           <xsl:when test="config:split-by-sections()"> -->
 <!--              <xsl:value-of select="fn:get-fragment-position($bookmark-ref)" /> -->
 <!--           </xsl:when> -->
 <!--           <xsl:otherwise> -->
@@ -52,7 +53,7 @@
 <!--         </xsl:attribute> -->
 <!--           <xsl:attribute name="href"> -->
 <!--             <xsl:choose> -->
-<!--               <xsl:when test="$split-by-documents"> -->
+<!--               <xsl:when test="config:split-by-documents()"> -->
 <!--                  <xsl:variable name="document-number"> -->
 <!--                   <xsl:value-of select="fn:get-document-position($bookmark-ref)" /> -->
 <!--                 </xsl:variable> -->
@@ -90,7 +91,7 @@
     <xsl:value-of select="w:rPr/w:rStyle/@w:val" />
   </xsl:variable>
   <xsl:variable name="inline-value">
-    <xsl:value-of select="fn:get-inline-label-from-psml-element($character-style-name)" />
+    <xsl:value-of select="config:get-inline-label-from-psml-element($character-style-name)" />
   </xsl:variable>
 
   <xsl:variable name="field-type">
@@ -110,7 +111,7 @@
       </xsl:call-template>
     </xsl:when>
 
-    <xsl:when test="$field-type= 'index' and $generate-index-files">
+    <xsl:when test="$field-type= 'index' and config:generate-index-files()">
       <xsl:variable name="index-location" select="translate(fn:get-index-text(w:instrText,'XE'),':','/')" />
       <xref display="manual" frag="default" type="none" reverselink="true" reversetitle="" reversetype="none"
             title="{fn:get-index-text(w:instrText, 'XE')}"
@@ -126,7 +127,7 @@
 </xsl:template>
 
 <!-- Text for index entries -->
-<xsl:template match="w:r[w:instrText[matches(text(),'XE')]][$generate-index-files]" mode="content">
+<xsl:template match="w:r[w:instrText[matches(text(),'XE')]][config:generate-index-files()]" mode="content">
   <xsl:variable name="temp-index-location" select="translate(translate(fn:get-index-text(w:instrText/text(),'XE'),'/','_'),':','/')" />
   <xsl:variable name="index-location">
     <xsl:for-each select="tokenize($temp-index-location, '/')">
@@ -167,10 +168,10 @@
   </xsl:variable>
   <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
         title="{string-join($current//w:t//text(),'')}"
-        frag="{if ($split-by-sections) then fn:get-fragment-position($bookmark-ref) else 'default'}">
+        frag="{if (config:split-by-sections()) then fn:get-fragment-position($bookmark-ref) else 'default'}">
     <xsl:attribute name="href">
       <xsl:choose>
-        <xsl:when test="$split-by-documents">
+        <xsl:when test="config:split-by-documents()">
           <xsl:variable name="document-number">
             <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
           </xsl:variable>
@@ -207,7 +208,7 @@
             title="{string-join(.//w:t//text(),'')}">
         <xsl:attribute name="frag">
           <xsl:choose>
-            <xsl:when test="$split-by-sections and $bookmark-ref != ''">
+            <xsl:when test="config:split-by-sections() and $bookmark-ref != ''">
               <xsl:value-of select="fn:get-fragment-position($bookmark-ref)" />
             </xsl:when>
             <xsl:otherwise>
@@ -217,7 +218,7 @@
         </xsl:attribute>
         <xsl:attribute name="href">
           <xsl:choose>
-            <xsl:when test="$split-by-documents">
+            <xsl:when test="config:split-by-documents()">
               <xsl:variable name="document-number">
                 <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
               </xsl:variable>

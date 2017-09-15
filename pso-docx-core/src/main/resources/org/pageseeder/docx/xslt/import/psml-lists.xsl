@@ -10,7 +10,8 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -18,7 +19,7 @@
   Creates a item for the current paragraph and checks if there are forther paragraphs to create list items or next level of lists
   create list item
 -->
-<xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string) and not(w:pPr/w:numPr/w:numId/@w:val = '0') and fn:get-psml-element(w:pPr/w:pStyle/@w:val) = '']" mode="content">
+<xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string) and not(w:pPr/w:numPr/w:numId/@w:val = '0') and config:get-psml-element(w:pPr/w:pStyle/@w:val) = '']" mode="content">
   <xsl:variable name="style-name" select="w:pPr/w:pStyle/@w:val" />
   <xsl:variable name="has-numbering-format" select="fn:has-numbering-format($style-name,current())" as="xs:boolean"/>
   <xsl:variable name="current-num-id" select="fn:get-abstract-num-id-from-element(.)"/>
@@ -33,10 +34,10 @@
     select="if ($numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$current-abstract-num-id]/w:lvl[@w:ilvl=$current-level]/w:numFmt/@w:val='bullet') then true() else false()" />
 
   <xsl:choose>
-    <xsl:when test="not($convert-to-numbered-paragraphs)">
+    <xsl:when test="not(config:convert-to-numbered-paragraphs())">
       <xsl:choose>
         <!-- Numbered paragraph -->
-        <xsl:when test="preceding::w:p[1][matches(w:pPr/w:pStyle/@w:val,$heading-paragraphs-list-string)]">
+        <xsl:when test="preceding::w:p[1][matches(w:pPr/w:pStyle/@w:val,config:heading-paragraphs-list-string())]">
           <xsl:call-template name="list">
             <xsl:with-param name="abstract-id" select="$current-num-id" />
             <xsl:with-param name="level" select="$current-level" />
@@ -44,7 +45,7 @@
           </xsl:call-template>
         </xsl:when>
         <xsl:when
-          test="preceding::w:p[1][matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string)][not(matches(w:pPr/w:pStyle/@w:val,$heading-paragraphs-list-string))][fn:get-abstract-num-id-from-element(.) =$current-num-id][parent::* = current()/parent::*][not(matches(fn:get-psml-element-from-paragraph(.),'para'))]">
+          test="preceding::w:p[1][matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string)][not(matches(w:pPr/w:pStyle/@w:val,config:heading-paragraphs-list-string()))][fn:get-abstract-num-id-from-element(.) =$current-num-id][parent::* = current()/parent::*][not(matches(config:get-psml-element-from-paragraph(.),'para'))]">
         </xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="list">
@@ -59,24 +60,24 @@
       <para>
         <xsl:attribute name="indent" select="number($current-level) - number(fn:get-preceding-heading-level-from-element(.)) + 1" />
         <xsl:choose>
-          <xsl:when test="not($is-bullet) and fn:get-numbered-paragraph-value($current-level + 1)='numbering'">
+          <xsl:when test="not($is-bullet) and config:get-numbered-paragraph-value($current-level + 1)='numbering'">
             <xsl:attribute name="numbered" select="'true'" />
           </xsl:when>
-          <xsl:when test="not($is-bullet) and fn:get-numbered-paragraph-value($current-level + 1)='prefix' and $list-paragraphs/w:p[@id = current()/@id]">
+          <xsl:when test="not($is-bullet) and config:get-numbered-paragraph-value($current-level + 1)='prefix' and $list-paragraphs/w:p[@id = current()/@id]">
             <xsl:if test="$has-numbering-format and fn:get-numbering-value-from-paragraph-style(.,$style-name) != ''">
               <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style(.,$style-name)" />
             </xsl:if>
           </xsl:when>
-          <xsl:when test="matches(fn:get-numbered-paragraph-value($current-level + 1),'inline=[\w|-|_]+') and $list-paragraphs/w:p[@id = current()/@id]">
+          <xsl:when test="matches(config:get-numbered-paragraph-value($current-level + 1),'inline=[\w|-|_]+') and $list-paragraphs/w:p[@id = current()/@id]">
             <xsl:if test="$has-numbering-format and fn:get-numbering-value-from-paragraph-style(.,$style-name) != ''">
-              <xsl:variable name="inline-label" select="substring-after(fn:get-numbered-paragraph-value($current-level + 1),'inline=')" />
+              <xsl:variable name="inline-label" select="substring-after(config:get-numbered-paragraph-value($current-level + 1),'inline=')" />
               <inline label="{$inline-label}">
                 <xsl:value-of select="fn:get-numbering-value-from-paragraph-style(.,$style-name)" />
                 <xsl:text> </xsl:text>
               </inline>
             </xsl:if>
           </xsl:when>
-          <xsl:when test="fn:get-numbered-paragraph-value($current-level + 1) = 'text'">
+          <xsl:when test="config:get-numbered-paragraph-value($current-level + 1) = 'text'">
             <xsl:if test="$has-numbering-format">
               <xsl:value-of select="fn:get-numbering-value-from-paragraph-style(.,$style-name)" />
               <xsl:text> </xsl:text>
@@ -92,7 +93,7 @@
 </xsl:template>
   
 <!-- template to handle list creation -->
-<xsl:template match="w:p[w:pPr/w:numPr[w:ilvl][w:numId] and not(matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string)) and not(w:pPr/w:numPr/w:numId/@w:val = '0') and fn:get-psml-element(w:pPr/w:pStyle/@w:val) = '']" mode="content">
+<xsl:template match="w:p[w:pPr/w:numPr[w:ilvl][w:numId] and not(matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string)) and not(w:pPr/w:numPr/w:numId/@w:val = '0') and config:get-psml-element(w:pPr/w:pStyle/@w:val) = '']" mode="content">
   <xsl:variable name="style-name" select="w:pPr/w:pStyle/@w:val" />
   <xsl:variable name="has-numbering-format" select="fn:has-numbering-format($style-name,current())" as="xs:boolean" />
   <xsl:variable name="listID" select="w:pPr/w:numPr/w:numId/@w:val" />
@@ -102,7 +103,7 @@
     select="if ($numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$abstractNumId]/w:lvl[@w:ilvl=$current-level]/w:numFmt/@w:val='bullet') then true() else false()" />
 
   <xsl:choose>
-    <xsl:when test="not($convert-to-numbered-paragraphs)">
+    <xsl:when test="not(config:convert-to-numbered-paragraphs())">
       <xsl:choose>
         <xsl:when test="preceding-sibling::w:p[1][./w:pPr/w:numPr/w:numId/@w:val]" />
         <xsl:otherwise>
@@ -118,24 +119,24 @@
       <para>
         <xsl:attribute name="indent" select="number($current-level) - number(fn:get-preceding-heading-level-from-element(.)) + 1" />
         <xsl:choose>
-          <xsl:when test="not($is-bullet) and fn:get-numbered-paragraph-value($current-level + 1)='numbering'">
+          <xsl:when test="not($is-bullet) and config:get-numbered-paragraph-value($current-level + 1)='numbering'">
             <xsl:attribute name="numbered" select="'true'" />
           </xsl:when>
-          <xsl:when test="not($is-bullet) and fn:get-numbered-paragraph-value($current-level + 1)='prefix' and $list-paragraphs/w:p[@id = current()/@id]">
+          <xsl:when test="not($is-bullet) and config:get-numbered-paragraph-value($current-level + 1)='prefix' and $list-paragraphs/w:p[@id = current()/@id]">
             <xsl:if test="$has-numbering-format and fn:get-numbering-value-from-paragraph-style(.,$style-name) != ''">
               <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style(.,$style-name)" />
             </xsl:if>
           </xsl:when>
-          <xsl:when test="matches(fn:get-numbered-paragraph-value($current-level + 1),'inline=[\w|-|_]+') and $list-paragraphs/w:p[@id = current()/@id]">
+          <xsl:when test="matches(config:get-numbered-paragraph-value($current-level + 1),'inline=[\w|-|_]+') and $list-paragraphs/w:p[@id = current()/@id]">
             <xsl:if test="$has-numbering-format and fn:get-numbering-value-from-paragraph-style(.,$style-name) != ''">
-              <xsl:variable name="inline-label" select="substring-after(fn:get-numbered-paragraph-value($current-level + 1),'inline=')" />
+              <xsl:variable name="inline-label" select="substring-after(config:get-numbered-paragraph-value($current-level + 1),'inline=')" />
               <inline label="{$inline-label}">
                 <xsl:value-of select="fn:get-numbering-value-from-paragraph-style(.,$style-name)" />
                 <xsl:text> </xsl:text>
               </inline>
             </xsl:if>
           </xsl:when>
-          <xsl:when test="fn:get-numbered-paragraph-value($current-level + 1) = 'text'">
+          <xsl:when test="config:get-numbered-paragraph-value($current-level + 1) = 'text'">
             <xsl:if test="$has-numbering-format and fn:get-numbering-value-from-paragraph-style(.,$style-name) != ''">
               <xsl:value-of select="fn:get-numbering-value-from-paragraph-style(.,$style-name)" />
               <xsl:text> </xsl:text>
@@ -156,7 +157,7 @@
   <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
 
   <xsl:variable name="nested-list"
-    select="following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-abstract-num-id-from-element(.) = $abstract-num-id][not(matches(fn:get-psml-element-from-paragraph(.),'para'))]" />
+    select="following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-abstract-num-id-from-element(.) = $abstract-num-id][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
   <item>
     <xsl:apply-templates  mode="content"/>
     <xsl:for-each select="$nested-list">
@@ -203,7 +204,7 @@
   <xsl:choose>
     <xsl:when test="$numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$abstract-id]/w:lvl[@w:ilvl=$level]/w:numFmt/@w:val='bullet'">
       <list>
-        <xsl:if test="$convert-to-list-roles and $style-name != ''">
+        <xsl:if test="config:convert-to-list-roles() and $style-name != ''">
           <xsl:attribute name="role" select="$style-name"/>
         </xsl:if>
         <xsl:apply-templates select="." mode="insidelist" />
@@ -211,7 +212,7 @@
     </xsl:when>
     <xsl:otherwise>
       <nlist>
-        <xsl:if test="$convert-to-list-roles and $style-name != ''">
+        <xsl:if test="config:convert-to-list-roles() and $style-name != ''">
           <xsl:attribute name="role" select="$style-name"/>
         </xsl:if>
 
@@ -274,7 +275,7 @@ Initial template to create lists as numbered paragraphs
   <xsl:variable name="current-num-id" select="fn:get-numid-from-style($current)" />
   <xsl:variable name="level" select="fn:get-level-from-element($current)" />
   <xsl:variable name="current-paragraph-style" select="$current/w:pPr/w:pStyle/@w:val" />
-  <xsl:variable name="nested-list" select="$current/following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-numid-from-style(.) = $current-num-id][not(matches(fn:get-psml-element-from-paragraph(.),'para'))]" />
+  <xsl:variable name="nested-list" select="$current/following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-numid-from-style(.) = $current-num-id][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
 
   <para>
     <xsl:attribute name="indent" select="$level" />

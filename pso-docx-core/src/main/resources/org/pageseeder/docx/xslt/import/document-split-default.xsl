@@ -9,7 +9,8 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- TODO Remove big chunks of commented content -->
@@ -20,13 +21,13 @@
 <xsl:template match="w:body" mode="content">
   <!-- master document will contain link to all split files  -->
   <xsl:choose>
-    <xsl:when test="$split-by-documents">
+    <xsl:when test="config:split-by-documents()">
       <xsl:choose>
-        <xsl:when test="not(*[1][fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or fn:matches-document-specific-split-styles(.)])">
+        <xsl:when test="not(*[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or fn:matches-document-specific-split-styles(.)])">
           <section id="front">
             <fragment id="front">
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[fn:matches-document-specific-split-styles(.)] ">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[fn:matches-document-specific-split-styles(.)] ">
                   <xsl:choose>
                     <xsl:when test="position() = 1">
                       <xsl:variable name="body" as="element(body)">
@@ -47,7 +48,7 @@
               <!-- Document split for each section break first, then styles then outline level.
                  If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[fn:matches-document-specific-split-styles(.)] ">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[fn:matches-document-specific-split-styles(.)] ">
                   <xsl:if test="not(position() = 1)">
 
                     <xsl:variable name="document-number">
@@ -65,7 +66,7 @@
 
                     <xsl:variable name="document-full-filename">
                       <xsl:choose>
-                        <xsl:when test="$generate-titles">
+                        <xsl:when test="config:generate-titles()">
                           <xsl:value-of select="translate($document-title,'\W','_')" />
                         </xsl:when>
                         <xsl:otherwise>
@@ -78,8 +79,8 @@
 
                     <xsl:variable name="level">
                       <xsl:choose>
-                        <xsl:when test="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                          <xsl:value-of select="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                        <xsl:when test="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                          <xsl:value-of select="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:text>0</xsl:text>
@@ -88,20 +89,20 @@
                     </xsl:variable>
 
                     <xsl:result-document
-                      href="{concat($_outputfolder,if($generate-titles) then translate($document-title,'\W','_') else concat(encode-for-uri($filename),'-',format-number(number($document-number), $zeropadding)),'.psml')}">
+                      href="{concat($_outputfolder,if (config:generate-titles()) then translate($document-title,'\W','_') else concat(encode-for-uri($filename),'-',format-number(number($document-number), $zeropadding)),'.psml')}">
 
                       <document level="portable">
-                        <xsl:if test="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                          <xsl:attribute name="type" select="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                        <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                          <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                         </xsl:if>
                         <documentinfo>
                           <uri title="{$document-title}">
                             <displaytitle>
                               <xsl:value-of select="$document-title" />
                             </displaytitle>
-                            <xsl:if test="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                            <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
                               <labels>
-                                <xsl:value-of select="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                                <xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                               </labels>
                             </xsl:if>
                           </uri>
@@ -125,7 +126,7 @@
                   </xsl:if>
                 </xsl:for-each-group>
               </xsl:for-each-group>
-              <xsl:if test="doc-available($footnotes-file) and $convert-footnotes">
+              <xsl:if test="doc-available($footnotes-file) and config:convert-footnotes()">
                 <blockxref title="{concat($document-title,' footnotes')}" frag="default" display="document"
                            type="embed" reverselink="true" reversetitle="" reversetype="none"
                            href="footnotes/footnotes.psml">
@@ -133,7 +134,7 @@
                 </blockxref>
               </xsl:if>
 
-              <xsl:if test="doc-available($endnotes-file) and $convert-endnotes">
+              <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
                 <blockxref title="{concat($document-title,' endnotes')}" frag="default" display="document"
                            type="embed" reverselink="true" reversetitle="" reversetype="none"
                            href="endnotes/endnotes.psml">
@@ -149,7 +150,7 @@
               <!-- Document split for each section break first, then styles then outline level.
               If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] |w:p[fn:matches-document-specific-split-styles(.)]">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] |w:p[fn:matches-document-specific-split-styles(.)]">
 
                   <xsl:variable name="document-number">
                     <xsl:value-of select="fn:count-preceding-documents(generate-id(current-group()[./name() = 'w:p'][string-join(w:r//text(), '') != ''][1]))" />
@@ -166,7 +167,7 @@
 
                   <xsl:variable name="document-full-filename">
                     <xsl:choose>
-                      <xsl:when test="$generate-titles">
+                      <xsl:when test="config:generate-titles()">
                         <xsl:value-of select="translate($document-title,'\W','_')" />
                       </xsl:when>
                       <xsl:otherwise>
@@ -177,8 +178,8 @@
 
                   <xsl:variable name="level">
                     <xsl:choose>
-                      <xsl:when test="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                        <xsl:value-of select="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                      <xsl:when test="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                        <xsl:value-of select="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:text>0</xsl:text>
@@ -187,20 +188,20 @@
                   </xsl:variable>
 
                   <xsl:result-document
-                    href="{concat($_outputfolder,if($generate-titles) then translate($document-title,'\W','_') else concat(encode-for-uri($filename),'-',format-number(number($document-number), $zeropadding)),'.psml')}">
+                    href="{concat($_outputfolder,if(config:generate-titles()) then translate($document-title,'\W','_') else concat(encode-for-uri($filename),'-',format-number(number($document-number), $zeropadding)),'.psml')}">
                     <xsl:message><xsl:value-of select="concat('Generating document ',$document-number,'/',$number-of-splits,':',$document-title)" /></xsl:message>
                     <document level="portable">
-                      <xsl:if test="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                        <xsl:attribute name="type" select="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                      <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                        <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                       </xsl:if>
                       <documentinfo>
                         <uri title="{$document-title}">
                           <displaytitle>
                             <xsl:value-of select="$document-title" />
                           </displaytitle>
-                          <xsl:if test="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                          <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
                             <labels>
-                              <xsl:value-of select="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                              <xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                             </labels>
                           </xsl:if>
                         </uri>
@@ -224,7 +225,7 @@
                   </blockxref>
                 </xsl:for-each-group>
               </xsl:for-each-group>
-              <xsl:if test="doc-available($footnotes-file) and $convert-footnotes">
+              <xsl:if test="doc-available($footnotes-file) and config:convert-footnotes()">
                 <blockxref title="{concat($document-title,' footnotes')}" frag="default" display="document"
                            type="embed" reverselink="true" reversetitle="" reversetype="none"
                            href="footnotes/footnotes.psml">
@@ -232,7 +233,7 @@
                 </blockxref>
               </xsl:if>
 
-              <xsl:if test="doc-available($endnotes-file) and $convert-endnotes">
+              <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
                 <blockxref title="{concat($document-title,' endnotes')}" frag="default" display="document"
                            type="embed" reverselink="true" reversetitle="" reversetype="none"
                            href="endnotes/endnotes.psml">
@@ -254,7 +255,7 @@
 
       <xsl:apply-templates select="$body" mode="section-split"/>
 
-      <xsl:if test="doc-available($footnotes-file) and $convert-footnotes">
+      <xsl:if test="doc-available($footnotes-file) and config:convert-footnotes()">
         <xref-fragment id="footnotes">
           <blockxref title="{concat($document-title,' footnotes')}" frag="default" display="document"
                      type="embed" reverselink="true" reversetitle="" reversetype="none"
@@ -264,7 +265,7 @@
         </xref-fragment>
       </xsl:if>
 
-      <xsl:if test="doc-available($endnotes-file) and $convert-endnotes">
+      <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
         <xref-fragment id="endnotes">
           <blockxref title="{concat($document-title,' endnotes')}" frag="default" display="document"
                      type="embed" reverselink="true" reversetitle="" reversetype="none"

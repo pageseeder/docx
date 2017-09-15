@@ -11,7 +11,8 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- Map a key to `checksum-id` for a more efficient access -->
@@ -31,7 +32,7 @@
       </documentinfo>
       <section id="body">
         <xsl:choose>
-          <xsl:when test="$convert-footnotes-type = 'generate-files'">
+          <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
             <xref-fragment id="body">
               <xsl:apply-templates mode="footnotes-generate-files" />
             </xref-fragment>

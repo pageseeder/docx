@@ -11,7 +11,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- TODO Suspicious template match of `body` element (no longer in PSML) -->
@@ -22,7 +23,7 @@
 <xsl:template match="body" mode="section-split">
   <xsl:param name="document-level" tunnel="yes" />
   <xsl:choose>
-    <xsl:when test="$split-by-sections">
+    <xsl:when test="config:split-by-sections()">
       <xsl:variable name="is-multi-valued-group" as="xs:boolean">
         <xsl:variable name="group-value">
           <groups>
@@ -55,8 +56,8 @@
               group-starting-with="w:p[fn:matches-section-split-outline(.) or fn:matches-section-split-styles(.) or fn:matches-section-split-bookmarkstart(.)]|w:p[fn:matches-section-specific-split-styles(.)]">
               <xsl:choose>
                 <xsl:when test="position()*$relative-position = 1">
-                  <xsl:if test="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
-                    <xsl:attribute name="type" select="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
+                  <xsl:if test="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
+                    <xsl:attribute name="type" select="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
                   </xsl:if>
                   <xsl:apply-templates select="current-group()[position() = 1]" mode="content">
                     <xsl:with-param name="document-level" select="$document-level" tunnel="yes" />
@@ -77,8 +78,8 @@
               <xsl:choose>
                 <xsl:when test="position()*$relative-position != 1">
                   <fragment id="{concat($relative-position,'-',position())}">
-                    <xsl:if test="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
-                      <xsl:attribute name="type" select="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
+                    <xsl:if test="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
+                      <xsl:attribute name="type" select="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
                     </xsl:if>
                     <xsl:apply-templates select="current-group()" mode="content">
                       <xsl:with-param name="document-level" select="$document-level" tunnel="yes" />
@@ -88,8 +89,8 @@
                 <xsl:otherwise>
                   <xsl:if test="current-group()[position() = 2]">
                     <fragment id="{concat($relative-position,'-',position())}">
-                      <xsl:if test="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
-                        <xsl:attribute name="type" select="fn:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
+                      <xsl:if test="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1]) != ''">
+                        <xsl:attribute name="type" select="config:fragment-type-for-split-style(current-group()//w:pPr[1]/w:pStyle/@w:val[1])" />
                       </xsl:if>
                       <xsl:apply-templates select="current-group()[position() != 1]" mode="content">
                         <xsl:with-param name="document-level" select="$document-level" tunnel="yes" />

@@ -9,11 +9,40 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
-<!-- TODO Move config functions to a `config` module -->
+<!--
+  Returns the list of document label specific ignore inline labels.
+
+  @param document-label the value of the document label
+
+  @return the list of inline labels
+-->
+<xsl:function name="fn:items-to-regex" as="xs:string">
+  <xsl:param name="items"/>
+  <xsl:value-of select="if ($items and $items != '')
+   then string-join(for $i in $items return concat('^', $i ,'$'), '|')
+   else '^No Selected Value$'"/>
+</xsl:function>
+
+<!--
+  Returns the list of document label specific ignore inline labels.
+
+  @param document-label the value of the document label
+
+  @return the list of inline labels
+-->
+<xsl:function name="fn:items-to-start-regex" as="xs:string">
+  <xsl:param name="items"/>
+  <xsl:value-of select="if ($items and $items != '')
+ then string-join(for $i in $items return concat('^', $i), '|')
+ else '^No Selected Value$'"/>
+</xsl:function>
+
+  <!-- TODO Move config functions to a `config` module -->
 
 <!-- 
   Function to return the corresponding Abstract Number Id from word, from the input parameter, according to it's style
@@ -56,7 +85,7 @@
       <xsl:value-of select="'0'" />
     </xsl:when>
     <xsl:when test="$numbering-document//w:abstractNum/w:lvl[w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]">
-      <xsl:value-of select="count($numbering-document//w:abstractNum/w:lvl[w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]/preceding-sibling::w:lvl[matches(w:pStyle/@w:val,$heading-paragraphs-list-string)])" />
+      <xsl:value-of select="count($numbering-document//w:abstractNum/w:lvl[w:pStyle/@w:val = $current/w:pPr/w:pStyle/@w:val]/preceding-sibling::w:lvl[matches(w:pStyle/@w:val,config:heading-paragraphs-list-string())])" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="'0'" />
@@ -677,7 +706,7 @@
     <xsl:apply-templates mode="paracopy" />
   </xsl:element>
 </xsl:template>
-  
+
 <!--
   Returns the generated document title based on position and title definitions
 
@@ -715,7 +744,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="$number-document-title and matches($style-name,$numbering-paragraphs-list-string)">
+      <xsl:when test="config:number-document-title() and matches($style-name,$numbering-paragraphs-list-string)">
         <xsl:if test="$has-numbering-format">
           <xsl:value-of select="fn:get-numbering-value-from-paragraph-style($body/w:p[1],$style-name)" />
           <xsl:text> </xsl:text>

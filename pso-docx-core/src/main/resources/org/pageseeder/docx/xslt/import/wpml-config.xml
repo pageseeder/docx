@@ -3,106 +3,106 @@
 <!-- This stylesheet transform openXML into PS Format @author Hugo Inacio @copyright Allette Systems Pty Ltd -->
 
 <config version="0.4.14">
-	<!-- =======================SPLIT PROPERTIES======================= -->
-	<split>
-		<document select="true">
-			<!--<sectionbreak select="continuous" />
-			 Values accepted: continuous,evenPage,oddPage,  -->
-			<outlinelevel select="0|1" />
-			<!-- Values accepted: outlineLevel[0-5], -->
-			<wordstyle select="Heading1,Heading2" />
-			<!-- Values accepted: name of style available in word file, -->
-		</document>
-		<section select="true">
-			<!--<sectionbreak select="continuous|evenPage" />
-			 Values accepted: continuous, evenPage, oddPage,  -->
-			<outlinelevel select="0|1|2|3" />
-			<!-- Values accepted: outlineLevel[0-5],  -->
-			<wordstyle select="Heading1|Heading2|Heading3|Heading4" />
-			<!-- Values accepted: name of style available in word file,  -->
-		</section>
-	</split>
+  <!-- =======================SPLIT PROPERTIES======================= -->
+  <split>
+    <document select="true">
+      <!--<sectionbreak select="continuous" />
+       Values accepted: continuous,evenPage,oddPage,  -->
+      <outlinelevel select="0|1" />
+      <!-- Values accepted: outlineLevel[0-5], -->
+      <wordstyle select="Heading1,Heading2" />
+      <!-- Values accepted: name of style available in word file, -->
+    </document>
+    <section select="true">
+      <!--<sectionbreak select="continuous|evenPage" />
+       Values accepted: continuous, evenPage, oddPage,  -->
+      <outlinelevel select="0|1|2|3" />
+      <!-- Values accepted: outlineLevel[0-5],  -->
+      <wordstyle select="Heading1|Heading2|Heading3|Heading4" />
+      <!-- Values accepted: name of style available in word file,  -->
+    </section>
+  </split>
 
-	<!--  <toc convert="false" /> Values accepted: true() or false() -->
+  <!--  <toc convert="false" /> Values accepted: true() or false() -->
 
-	<lists>
-		<add-numbering-to-document-titles select="true" />
-		<convert-to-list-roles select="false" />
-		<!-- generate numbered attribute to paragraphs for lists -->
-		<convert-to-numbered-paragraphs select="false">
-			<level value="1" output="prefix" />
-			<!-- prefix or numbering or inline=[label] or text -->
-			<level value="2" output="prefix" />
-			<level value="3" output="prefix" />
-			<level value="4" output="prefix" />
-			<level value="5" output="prefix" />
-			<level value="6" output="prefix" />
-		</convert-to-numbered-paragraphs>
-		<!-- generate numbered paragraphs for document titles -->
+  <lists>
+    <add-numbering-to-document-titles select="true" />
+    <convert-to-list-roles select="false" />
+    <!-- generate numbered attribute to paragraphs for lists -->
+    <convert-to-numbered-paragraphs select="false">
+      <level value="1" output="prefix" />
+      <!-- prefix or numbering or inline=[label] or text -->
+      <level value="2" output="prefix" />
+      <level value="3" output="prefix" />
+      <level value="4" output="prefix" />
+      <level value="5" output="prefix" />
+      <level value="6" output="prefix" />
+    </convert-to-numbered-paragraphs>
+    <!-- generate numbered paragraphs for document titles -->
 
-		<!-- adds an inline label around the true number of each numbered paragraph ( in the future will be set to prefix...) -->
+    <!-- adds an inline label around the true number of each numbered paragraph ( in the future will be set to prefix...) -->
 
-		<convert-manual-numbering select="false">
-			<value match="^[\(|\[|\{][a-z]+[\)|\]|\}]">
-				<inline label="numbering-lowercase" />
-			</value>
-			<value match="^[\(|\[|\{][A-Z]+[\)|\]|\}]">
-				<prefix />
-			</value>
-			<value match="^[\(|\[|\{][ivx]+[\)|\]|\}]">
-				<inline label="numbering-roman" />
-				<!--<list role="[list role]"/> -->
-			</value>
-		</convert-manual-numbering>
-	</lists>
+    <convert-manual-numbering select="false">
+      <value match="^[\(|\[|\{][a-z]+[\)|\]|\}]">
+        <inline label="numbering-lowercase" />
+      </value>
+      <value match="^[\(|\[|\{][A-Z]+[\)|\]|\}]">
+        <prefix />
+      </value>
+      <value match="^[\(|\[|\{][ivx]+[\)|\]|\}]">
+        <inline label="numbering-roman" />
+        <!--<list role="[list role]"/> -->
+      </value>
+    </convert-manual-numbering>
+  </lists>
 
-	<!-- =======================STYLE PROPERTIES======================= -->
+  <!-- =======================STYLE PROPERTIES======================= -->
 
-	<!-- Values accepted: name of style available in word file -->
-	<styles>
-		<ignore>
-			<wordstyle value="TOC1" />
-			<wordstyle value="TOC2" />
-			<wordstyle value="TOC3" />
-			<wordstyle value="TOC4" />
+  <!-- Values accepted: name of style available in word file -->
+  <styles>
+    <ignore>
+      <wordstyle value="TOC1" />
+      <wordstyle value="TOC2" />
+      <wordstyle value="TOC3" />
+      <wordstyle value="TOC4" />
 
-		</ignore>
-		<default>
-			<paragraphStyles value="block" />
-			<!-- possible values: 'para' or 'block' -->
-			<characterStyles value="inlineLabel" />
-			<!-- possible values: 'none' or 'inlineLabel' -->
-			<smart-tag keep="true" />
-			<!--  <property name="prefix" value="true" /> possible values: 'false' or 'true' -->
-		</default>
+    </ignore>
+    <default>
+      <paragraphStyles value="block" />
+      <!-- possible values: 'para' or 'block' -->
+      <characterStyles value="inlineLabel" />
+      <!-- possible values: 'none' or 'inlineLabel' -->
+      <smart-tag keep="true" />
+      <!--  <property name="prefix" value="true" /> possible values: 'false' or 'true' -->
+    </default>
 
-		<wordstyle name="Title" psmlelement="title" />
+    <wordstyle name="Title" psmlelement="title" />
 
-		<!-- Values accepted: name of style available in word file -->
-		<wordstyle name="Heading1" psmlelement="heading">
-			<level value="1" />
-		</wordstyle>
+    <!-- Values accepted: name of style available in word file -->
+    <wordstyle name="Heading1" psmlelement="heading">
+      <level value="1" />
+    </wordstyle>
 
-		<wordstyle name="Heading2" psmlelement="heading">
-			<level value="2" />
-		</wordstyle>
+    <wordstyle name="Heading2" psmlelement="heading">
+      <level value="2" />
+    </wordstyle>
 
-		<wordstyle name="Heading3" psmlelement="heading">
-			<level value="3" />
-		</wordstyle>
+    <wordstyle name="Heading3" psmlelement="heading">
+      <level value="3" />
+    </wordstyle>
 
-		<wordstyle name="Heading4" psmlelement="heading">
-			<level value="4" />
-		</wordstyle>
+    <wordstyle name="Heading4" psmlelement="heading">
+      <level value="4" />
+    </wordstyle>
 
-		<wordstyle name="Heading5" psmlelement="heading">
-			<level value="5" />
-		</wordstyle>
+    <wordstyle name="Heading5" psmlelement="heading">
+      <level value="5" />
+    </wordstyle>
 
-		<wordstyle name="Heading6" psmlelement="heading">
-			<level value="6" />
-		</wordstyle>
+    <wordstyle name="Heading6" psmlelement="heading">
+      <level value="6" />
+    </wordstyle>
 
-	</styles>
+  </styles>
 
 </config>

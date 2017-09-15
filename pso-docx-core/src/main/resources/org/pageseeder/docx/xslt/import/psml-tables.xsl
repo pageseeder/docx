@@ -10,7 +10,8 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -38,8 +39,8 @@
     </xsl:if>
 
     <xsl:variable name="style-name" select="preceding-sibling::*[1][name() = 'w:p']/w:pPr/w:pStyle/@w:val"/>
-    <xsl:if test="(not(w:tblPr/w:tblStyle/@w:val) and preceding-sibling::*[1][name() = 'w:p'] and fn:get-caption-table-value($style-name) = 'default')
-                          or  (w:tblPr/w:tblStyle/@w:val= fn:get-caption-table-value($style-name) and  preceding-sibling::*[1][name() = 'w:p'] and fn:get-caption-table-value($style-name) != '' )">
+    <xsl:if test="(not(w:tblPr/w:tblStyle/@w:val) and preceding-sibling::*[1][name() = 'w:p'] and config:get-caption-table-value($style-name) = 'default')
+                          or  (w:tblPr/w:tblStyle/@w:val= config:get-caption-table-value($style-name) and  preceding-sibling::*[1][name() = 'w:p'] and config:get-caption-table-value($style-name) != '' )">
 
       <caption><xsl:value-of select="preceding-sibling::*[1][name() = 'w:p']//text()"/></caption>
     </xsl:if>

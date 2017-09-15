@@ -78,6 +78,7 @@
                 exclude-result-prefixes="#all">
 
 <!-- Common utilities -->
+<xsl:import href="import/config.xsl" />
 <xsl:import href="import/variables.xsl" />
 <xsl:import href="import/functions.xsl" />
 
@@ -139,7 +140,7 @@
 <xsl:template match="ct:Dummy"/>
 
 <xsl:template match="/">
-	<xsl:apply-templates select="document($main)" mode="content" />
+  <xsl:apply-templates select="document($main)" mode="content" />
 </xsl:template>
 
 </xsl:stylesheet>

@@ -10,7 +10,8 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:fn="http://www.pageseeder.com/function"
+                xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!-- TODO Quite a bit of copy and paste to clean up here! -->
@@ -23,13 +24,13 @@
 
   <!-- master document will contain link to all split files  -->
   <xsl:choose>
-    <xsl:when test="$split-by-documents">
+    <xsl:when test="config:split-by-documents()">
       <xsl:choose>
-        <xsl:when test="not(w:p[1][fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])">
+        <xsl:when test="not(w:p[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])">
           <section id="front">
             <fragment id="front">
             <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-              <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
+              <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
                 <xsl:choose>
                   <xsl:when test="position() = 1">
                     <xsl:apply-templates select="current-group()" mode="content" />
@@ -46,7 +47,7 @@
               If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
 
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
                   <xsl:if test="not(position() = 1)">
                     <xsl:variable name="document-number">
                     <xsl:value-of select="fn:count-preceding-documents(generate-id(current-group()[./name() = 'w:p'][string-join(w:r//text(), '') != ''][1]))" />
@@ -62,7 +63,7 @@
 
                     <xsl:variable name="document-full-filename">
                       <xsl:choose>
-                        <xsl:when test="$generate-titles">
+                        <xsl:when test="config:generate-titles()">
                           <xsl:value-of select="translate($document-title,'\W','_')"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -73,8 +74,8 @@
 
                     <xsl:variable name="level">
                       <xsl:choose>
-                        <xsl:when test="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                          <xsl:value-of select="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                        <xsl:when test="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                          <xsl:value-of select="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:text>0</xsl:text>
@@ -90,16 +91,16 @@
                       </xsl:if>
 
                       <document level="processed">
-                        <xsl:if test="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                          <xsl:attribute name="type" select="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/>
+                        <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                          <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/>
                         </xsl:if>
                         <documentinfo>
                           <uri title="{$document-title}">
                             <displaytitle>
                               <xsl:value-of select="$document-title" />
                             </displaytitle>
-                            <xsl:if test="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                              <labels><xsl:value-of select="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/></labels>
+                            <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                              <labels><xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/></labels>
                             </xsl:if>
                           </uri>
 
@@ -123,7 +124,7 @@
               <!-- Document split for each section break first, then styles then outline level.
               If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[fn:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != ''] ">
 
                   <xsl:variable name="document-number">
                     <xsl:value-of select="fn:count-preceding-documents(generate-id(current-group()[./name() = 'w:p'][string-join(w:r//text(), '') != ''][1]))" />
@@ -139,7 +140,7 @@
 
                   <xsl:variable name="document-full-filename">
                     <xsl:choose>
-                      <xsl:when test="$generate-titles">
+                      <xsl:when test="config:generate-titles()">
                         <xsl:value-of select="translate($document-title,'\W','_')"/>
                       </xsl:when>
                       <xsl:otherwise>
@@ -153,23 +154,23 @@
                              href="{encode-for-uri(concat($document-full-filename,'.psml'))}">
 
                     <document level="processed">
-                      <xsl:if test="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                        <xsl:attribute name="type" select="fn:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/>
+                      <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                        <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/>
                       </xsl:if>
                       <documentinfo>
                         <uri title="{$document-title}">
                           <displaytitle>
                             <xsl:value-of select="$document-title" />
                           </displaytitle>
-                           <xsl:if test="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                            <labels><xsl:value-of select="fn:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/></labels>
+                           <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                            <labels><xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/></labels>
                           </xsl:if>
                         </uri>
                       </documentinfo>
                       <xsl:variable name="level">
                         <xsl:choose>
-                          <xsl:when test="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                            <xsl:value-of select="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                          <xsl:when test="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                            <xsl:value-of select="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                           </xsl:when>
                           <xsl:otherwise>
                             <xsl:text>0</xsl:text>
@@ -185,8 +186,8 @@
 
                   <xsl:variable name="level">
                     <xsl:choose>
-                      <xsl:when test="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                        <xsl:value-of select="fn:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                      <xsl:when test="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                        <xsl:value-of select="config:document-level-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:text>0</xsl:text>
