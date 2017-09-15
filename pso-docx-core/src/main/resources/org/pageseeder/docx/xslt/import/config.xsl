@@ -16,10 +16,6 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-                xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:dcterms="http://purl.org/dc/terms/"
-                xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
                 xmlns:config="http://pageseeder.org/docx/config"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
@@ -163,34 +159,10 @@
   <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:ignore-paragraph-match-list-string())])"/>
 </xsl:function>
 
-<!-- TODO convert to function and move to confgi namespace-->
-
-<!-- Values come from configuration file: list of values that specify on what outline levels to split the document -->
-<xsl:variable name="document-split-outline" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="not($config-doc/config/split/document/outlinelevel)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/outlinelevel/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$config-doc/config/split/document/outlinelevel/@select">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',.,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',.,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
 <!-- String of list of outline levels defined to split at document level -->
-<xsl:variable name="document-split-outline-string" select="string-join($document-split-outline,'')" as="xs:string"/>
+<xsl:function name="config:document-split-outline-string" as="xs:string">
+  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/document/outlinelevel/@select)"/>
+</xsl:function>
 
 <!-- String of list of section breaks defined to split at document level -->
 <xsl:function name="config:document-split-sectionbreak-string" as="xs:string">

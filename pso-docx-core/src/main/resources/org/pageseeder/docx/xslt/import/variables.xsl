@@ -66,7 +66,7 @@
 <!-- Count of total number of files: used to be referenced from xrefs, and also numbering split files -->
 <xsl:variable name="number-of-splits" select="count($maindocument//w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|$maindocument//w:p[fn:matches-document-specific-split-styles(.)]) + 1"  as="xs:integer"/>
 
-<!-- TODO move function to fn: -->
+<!-- TODO move function to fn namespace ?-->
 <!-- Variable used to sort output files -->
 <xsl:variable name="zeropadding" as="xs:string">
   <xsl:choose>
@@ -307,13 +307,13 @@ Returns the boolean if the current node matches a outline level document break o
   <xsl:param name="current" as="node()" />
   <xsl:choose>
     <xsl:when
-      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val,($document-split-outline-string))]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
+      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[w:basedOn/@w:val][not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
       <xsl:variable name="basedon" select="$styles-document/w:styles/w:style[@w:styleId = $current/w:pPr/w:pStyle/@w:val]/w:basedOn/@w:val" />
       <xsl:choose>
-        <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val,($document-split-outline-string))]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
+        <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
           <xsl:value-of select="true()" />
         </xsl:when>
         <xsl:otherwise>
@@ -325,7 +325,7 @@ Returns the boolean if the current node matches a outline level document break o
       <xsl:value-of select="false()" />
     </xsl:when>
     <xsl:when
-      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val,($document-split-outline-string))]/@w:styleId]][not(fn:matches-ignore-paragraph-match-list(.))]">
+      test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId]][not(fn:matches-ignore-paragraph-match-list(.))]">
       <xsl:value-of select="true()" />
     </xsl:when>
     <xsl:otherwise>
