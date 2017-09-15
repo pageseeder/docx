@@ -26,7 +26,7 @@
   <xsl:choose>
     <xsl:when test="config:split-by-documents()">
       <xsl:choose>
-        <xsl:if test="not(w:p[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])">
+        <xsl:when test="not(w:p[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])">
           <section id="front">
             <fragment id="front">
             <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
