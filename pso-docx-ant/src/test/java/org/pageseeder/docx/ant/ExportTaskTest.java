@@ -289,7 +289,7 @@ public final class ExportTaskTest {
     testIndividual("inline-default-style-with-inline-psstyle");
   }
 
-  // TODO fix roles so this test passes
+  @Test
   public void testListDefaultWithRoleSet() throws IOException, SAXException {
     testIndividual("list-default-with-role-set", "document,numbering");
   }

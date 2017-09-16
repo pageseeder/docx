@@ -178,7 +178,7 @@
       <!-- List item -->
       <xsl:when test="ancestor::item[1]">
         <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist)"/>
-        <xsl:variable name="role"      select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/@role"/>
+        <xsl:variable name="role"      select="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
         <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
         <xsl:choose>
           <xsl:when test="config:list-wordstyle-for-document-label($labels,$role,$level,$list-type) != ''">

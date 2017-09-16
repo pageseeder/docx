@@ -1041,14 +1041,16 @@
 
 
 <!--
-  List of all individual ps:lists
+  All lists not containing @type
 
-  @return a node() witl all of the ps:list and ps:nlist values
 -->
+<!-- TODO remove unused attributes and code (e.g. @level always "0") -->
 <xsl:variable name="all-different-lists" as="node()">
 <lists>
-  <xsl:for-each select=".//nlist[not(@type) and not(descendant::nlist/@type)][not(ancestor::*[name() = 'list' or name() = 'nlist'])]"> <!--  or @role or @start] -->
-    <xsl:variable name="role" select="config:get-style-from-role(@role,.)"/>
+  <xsl:for-each select=".//*[name() = 'list' or name() = 'nlist'][not(ancestor-or-self::*[name() = 'list' or
+      name() = 'nlist'][last()]/descendant::*[name() = 'list' or name() = 'nlist']/@type)]">
+    <xsl:variable name="role" select="ancestor-or-self::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
+    <xsl:variable name="role-style" select="config:get-style-from-role($role,.)"/>
     <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
     <xsl:variable name="list-type" select="./name()"/>
     <xsl:variable name="labels">
@@ -1061,26 +1063,10 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="paragraph-style" >
-      <xsl:choose>
-        <xsl:when test="$role != ''">
-          <xsl:value-of select="document(concat($_dotxfolder,$styles-template))//w:style[w:name/@w:val = $role]/@w:styleId"/>
-        </xsl:when>
-        <xsl:when test="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-          <xsl:value-of select="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
-        </xsl:when>
-        <xsl:when test="config:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-          <xsl:value-of select="config:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
     <xsl:variable name="paragraph-style-name" >
       <xsl:choose>
-        <xsl:when test="$role != ''">
-          <xsl:value-of select="$role"/>
+        <xsl:when test="$role-style != ''">
+          <xsl:value-of select="$role-style"/>
         </xsl:when>
         <xsl:when test="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
           <xsl:value-of select="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
@@ -1102,7 +1088,7 @@
           <xsl:attribute name="level">
               <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
           </xsl:attribute>
-          <xsl:attribute name="role" select="$role"/>
+          <xsl:attribute name="role" select="$role-style"/>
           <xsl:attribute name="labels" select="$labels"/>
           <xsl:attribute name="level1" select="$level"/>
           <xsl:attribute name="pstylename">
@@ -1119,7 +1105,7 @@
           <xsl:attribute name="level">
             <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
           </xsl:attribute>
-          <xsl:attribute name="role" select="$role"/>
+          <xsl:attribute name="role" select="$role-style"/>
           <xsl:attribute name="labels" select="$labels"/>
           <xsl:attribute name="level1" select="$level"/>
           <xsl:attribute name="pstylename">
@@ -1138,14 +1124,13 @@
 </xsl:variable>
 
 <!--
-  List of all type of individual ps:lists
+  Numbering definitions for all top level lists containing @type
 
-  @return a node() with all of the w:abstractNum values
 -->
-<!-- TODO fix list role not working -->
 <xsl:variable name="all-type-lists" as="node()">
   <lists>
-  <xsl:for-each select=".//nlist[@role !='' or descendant::nlist/@role !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
+  <xsl:for-each select=".//*[name() = 'list' or name() = 'nlist'][@type !='' or descendant::nlist/@type !='' or
+      descendant::list/@type !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
     <xsl:variable name="max-abstract-num" select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
     <w:abstractNum w:abstractNumId="{$max-abstract-num + position()}">
       <w:multiLevelType w:val="multilevel"/>
@@ -1196,20 +1181,6 @@
         </xsl:variable>
 
         <xsl:choose>
-          <xsl:when test="$current-nlist-level-type != ''">
-            <w:lvl w:ilvl="{.}">
-              <w:start w:val="{if ($current-nlist-level-start != '') then $current-nlist-level-start else '1'}"/>
-              <w:numFmt w:val="{fn:return-word-numbering-style($current-nlist-level-type)}"/>
-              <w:lvlText w:val="%1."/>
-              <w:lvlJc w:val="left"/>
-              <w:pPr>
-                <w:tabs>
-                  <w:tab w:val="num" w:pos="{360 * number(.)}"/>
-                </w:tabs>
-                <w:ind w:left="{360 * number(.)}" w:hanging="360"/>
-              </w:pPr>
-            </w:lvl>
-          </xsl:when>
           <xsl:when test="$current-nlist-level-name = 'list'">
             <w:lvl w:ilvl="{.}">
               <w:start w:val="1"/>
@@ -1222,6 +1193,20 @@
               <w:rPr>
                 <w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:hint="default"/>
               </w:rPr>
+            </w:lvl>
+          </xsl:when>
+          <xsl:when test="$current-nlist-level-type != ''">
+            <w:lvl w:ilvl="{.}">
+              <w:start w:val="{if ($current-nlist-level-start != '') then $current-nlist-level-start else '1'}"/>
+              <w:numFmt w:val="{fn:return-word-numbering-style($current-nlist-level-type)}"/>
+              <w:lvlText w:val="%1."/>
+              <w:lvlJc w:val="left"/>
+              <w:pPr>
+                <w:tabs>
+                  <w:tab w:val="num" w:pos="{360 * number(.)}"/>
+                </w:tabs>
+                <w:ind w:left="{360 * number(.)}" w:hanging="360"/>
+              </w:pPr>
             </w:lvl>
           </xsl:when>
           <xsl:otherwise>
@@ -1243,7 +1228,8 @@
      </w:abstractNum>
     </xsl:for-each>
 
-    <xsl:for-each select=".//nlist[@type !='' or descendant::nlist/@type !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
+    <xsl:for-each select=".//*[name() = 'list' or name() = 'nlist'][@type !='' or descendant::nlist/@type !='' or
+      descendant::list/@type !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])]">
       <xsl:variable name="max-abstract-num" select="max(document(concat($_dotxfolder,$numbering-template))//w:abstractNum/number(@w:abstractNumId))" />
       <xsl:variable name="max-num-id" select="max(document(concat($_dotxfolder,$numbering-template))//w:num/number(@w:numId))" />
       <w:num w:numId="{$max-num-id + count($all-different-lists/*) + position()}">

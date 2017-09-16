@@ -149,91 +149,57 @@
         </w:rPr>
       </xsl:if>
       <xsl:choose>
-        <!-- TODO Code is near copy of item template -->
         <xsl:when test="ancestor::item">
-          <xsl:variable name="role" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/@role"/>
-          <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist)"/>
-          <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
           <xsl:choose>
-          <xsl:when test="position()=1">
-            <xsl:choose>
-              <xsl:when test="config:list-wordstyle-for-document-label($labels, $role, $level, $list-type) != ''">
-                <xsl:call-template name="apply-style" />
-              </xsl:when>
-              <xsl:when test="config:list-wordstyle-for-default-document($role, $level, $list-type) != ''">
-                <xsl:call-template name="apply-style" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:call-template name="apply-style" />
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:variable name="max-num-id">
-              <xsl:choose>
-                <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
-                  <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
-                </xsl:when>
-                <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-          <w:numPr>
-            <xsl:variable name="adjusted-level">
-              <xsl:choose>
-                <xsl:when test="ancestor::item/parent::*[@role]">
-                  <xsl:value-of select="config:get-level-from-role(ancestor::item/parent::*/@role,.)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="count(ancestor::list)+count(ancestor::nlist) - 1"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <w:ilvl w:val="{$adjusted-level}" />
-            <xsl:variable name="current-pstyle">
-              <xsl:variable name="call-style">
-                <xsl:call-template name="apply-style" />
+            <xsl:when test="position()=1">
+              <xsl:call-template name="apply-style" />
+              <xsl:variable name="max-num-id">
+                <xsl:choose>
+                  <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
+                    <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
+                  </xsl:when>
+                  <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
+                </xsl:choose>
               </xsl:variable>
-              <xsl:value-of select="$call-style//@w:val"/>
-            </xsl:variable>
-            <xsl:variable name="current-num-id">
+              <w:numPr>
+                <w:ilvl w:val="{count(ancestor::list)+count(ancestor::nlist) - 1}" />
+                <xsl:variable name="current-pstyle">
+                  <xsl:variable name="call-style">
+                    <xsl:call-template name="apply-style" />
+                  </xsl:variable>
+                  <xsl:value-of select="$call-style//@w:val"/>
+                </xsl:variable>
+                <xsl:variable name="current-num-id">
+                  <xsl:choose>
+                    <xsl:when test="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/descendant::*[name() = 'list' or name() = 'nlist'][@type !='']">
+                      <xsl:value-of select="$max-num-id + count($all-different-lists/*) + fn:count-preceding-lists-with-type(.) + 1"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$max-num-id + fn:count-ancestor-preceding-lists-without-type(.)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <w:numId w:val="{$current-num-id}" />
+              </w:numPr>
+  
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:variable name="list-level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
               <xsl:choose>
-                <xsl:when test="ancestor::nlist[@type !='']">
-                  <!-- all lists inside the template + all normal lists inside psml document + preceding lists with @type + itself -->
-                  <xsl:value-of select="$max-num-id + count($all-different-lists/*) + count(preceding::nlist[@type]) + 1"/>
+                <xsl:when test="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered) != ''">
+                  <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered)"/>
+                  <w:pStyle w:val="{document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
                 </xsl:when>
-                <xsl:when test="ancestor::list and document(concat($_dotxfolder,$numbering-template))//w:abstractNum/w:lvl/w:pStyle/@w:val = $current-pstyle">
-                  <xsl:variable name="current-numid" select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $current-pstyle]/@w:abstractNumId"/>
-                  <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:num[w:abstractNumId/@w:val = $current-numid][1]/@w:numId"/>
-                </xsl:when>
-                <xsl:when test="parent::*[@role]">
-                  <xsl:value-of select="$max-num-id + count(preceding::*[name()='nlist'][@start][not(@type != '')]) + 1"/>
+                <xsl:when test="config:para-list-level-paragraph-for-default-document($list-level, @numbered) != ''">
+                  <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-default-document($list-level, @numbered)"/>
+                  <w:pStyle w:val="{document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="$max-num-id + count(ancestor::*[name()='nlist'][last()]/
-                                        preceding::*[name()='nlist']
-                                        [not(ancestor::list or ancestor::nlist)][not(@type != '')]) + 1"/>
+                  <w:pStyle w:val="BodyText"/>
                 </xsl:otherwise>
               </xsl:choose>
-            </xsl:variable>
-            <w:numId w:val="{$current-num-id}" />
-          </w:numPr>
-
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:variable name="list-level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
-            <xsl:choose>
-              <xsl:when test="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered) != ''">
-                <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered)"/>
-                <w:pStyle w:val="{document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
-              </xsl:when>
-              <xsl:when test="config:para-list-level-paragraph-for-default-document($list-level, @numbered) != ''">
-                <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-default-document($list-level, @numbered)"/>
-                <w:pStyle w:val="{document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <w:pStyle w:val="BodyText"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:otherwise>
-        </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="apply-style" />

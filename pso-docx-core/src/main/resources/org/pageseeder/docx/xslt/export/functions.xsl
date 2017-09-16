@@ -251,6 +251,38 @@
 </xsl:function>
 
 <!--
+  Counts preceding top level lists containing @type
+
+  @param current  the current node
+
+  @return the count
+-->
+<xsl:function name="fn:count-preceding-lists-with-type" as="xs:integer">
+  <xsl:param name="current" as="node()" />
+  
+  <xsl:value-of select="count($current/preceding::*[name() = 'list' or name() = 'nlist'][@type !='' or descendant::nlist/@type !='' or
+      descendant::list/@type !=''][not(ancestor::*[name() = 'list' or name() = 'nlist'])])" />
+</xsl:function>
+
+<!--
+  Counts ancestor lists of current and preceding lists of the ancestor list not containing @type
+
+  @param current  the current node
+
+  @return the count
+-->
+<xsl:function name="fn:count-ancestor-preceding-lists-without-type" as="xs:integer">
+  <xsl:param name="current" as="node()" />
+  
+  <xsl:value-of select="count($current/ancestor::*[name() = 'list' or name() = 'nlist'][not(ancestor-or-self::*[name() = 'list' or
+      name() = 'nlist'][last()]/descendant::*[name() = 'list' or name() = 'nlist']/@type)]) +
+      count($current/ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::*[name() = 'list' or
+      name() = 'nlist'][not(ancestor-or-self::*[name() = 'list' or
+      name() = 'nlist'][last()]/descendant::*[name() = 'list' or name() = 'nlist']/@type)])" />
+</xsl:function>
+
+
+<!--
   Returns the roman value of a numeric value
 
   @param roman-number the roman number to convert value
