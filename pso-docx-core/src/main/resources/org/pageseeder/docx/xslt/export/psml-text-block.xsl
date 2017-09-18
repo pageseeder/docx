@@ -169,17 +169,9 @@
                   </xsl:variable>
                   <xsl:value-of select="$call-style//@w:val"/>
                 </xsl:variable>
-                <xsl:variable name="current-num-id">
-                  <xsl:choose>
-                    <xsl:when test="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/descendant::*[name() = 'list' or name() = 'nlist'][@type !='']">
-                      <xsl:value-of select="$max-num-id + count($all-different-lists/*) + fn:count-preceding-lists-with-type(.) + 1"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="$max-num-id + fn:count-ancestor-preceding-lists-without-type(.)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:variable>
-                <w:numId w:val="{$current-num-id}" />
+                <!-- count ancestor lists of current + preceding lists of the parent list -->
+                <w:numId w:val="{$max-num-id + count(./ancestor::*[name() = 'list' or name() = 'nlist']) +
+                    count(./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::*[name() = 'list' or name() = 'nlist'])}" />
               </w:numPr>
   
             </xsl:when>

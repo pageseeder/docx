@@ -140,7 +140,7 @@
         </item>
       </nlist>
       <heading level="3">Maximum multi-level un-numbered list:</heading>
-      <heading level="4">- level 1-4 type set: square, circle, disc, none</heading>
+      <heading level="4">- level 1-4 type set: square, circle, disc, none (ignored)</heading>
       <list type="square">
         <item>
           Bananas
@@ -187,7 +187,7 @@
         </item>
       </list>
       <heading level="3">Maximum multi-level numbered list:</heading>
-      <heading level="4">- level 1-5 type set: lowerroman, upperroman, loweralpha, upperalpha, arabic</heading>
+      <heading level="4">- level 1-5 type set: lowerroman, upperroman, loweralpha, upperalpha, arabic (ignored)</heading>
       <heading level="4">- level 5-7 start set: 2, 3, 4</heading>
       <nlist type="lowerroman">
         <item>
@@ -235,7 +235,7 @@
         </item>
       </nlist>
       <heading level="3">Mixed list:</heading>
-      <heading level="4">- level 1 type loweralpha, level 2 type circle:</heading>
+      <heading level="4">- level 1 type loweralpha, level 2 type circle (ignored)</heading>
       <nlist type="loweralpha">
         <item>One</item>
         <item>Two</item>

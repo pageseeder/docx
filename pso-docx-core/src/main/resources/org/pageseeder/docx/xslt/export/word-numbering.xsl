@@ -26,7 +26,6 @@
     <xsl:copy-of select="@*" />
     <xsl:comment><xsl:apply-templates select="$all-different-lists" mode="xml"/></xsl:comment>
     <xsl:apply-templates select="*[name() = 'w:abstractNum']" mode="numbering" />
-    <xsl:copy-of select="$all-type-lists/*"/>
     <xsl:apply-templates select="*[name() = 'w:num']" mode="numbering" />
     <xsl:variable name="max-num-id" select="max(//w:num/number(@w:numId))" />
     <xsl:for-each select="$all-different-lists/*">
