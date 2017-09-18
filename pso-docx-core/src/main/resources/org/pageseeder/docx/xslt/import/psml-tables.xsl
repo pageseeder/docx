@@ -136,7 +136,7 @@
 
   <xsl:variable name="cell"
     select="$row/w:tc[count(preceding-sibling::w:tc) + 1 +
-                      sum(preceding-sibling::w:tc/w:tcPr/w:gridSpan/@w:val) -
+                        sum(preceding-sibling::w:tc/w:tcPr/w:gridSpan/@w:val) -
                       count(preceding-sibling::w:tc/w:tcPr/w:gridSpan[@w:val]) = $colnum]" />
   <xsl:choose>
     <xsl:when test="not($cell)">

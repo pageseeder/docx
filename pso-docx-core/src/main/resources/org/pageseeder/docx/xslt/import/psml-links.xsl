@@ -90,11 +90,11 @@
 
   <xsl:variable name="field-type">
     <xsl:choose>
-      <xsl:when test="contains(w:instrText,('PAGEREF'))">link</xsl:when>
-      <xsl:when test="contains(w:instrText,('REF'))">link</xsl:when>
-      <xsl:when test="contains(w:instrText,('HYPERLINK'))">link</xsl:when>
-      <xsl:when test="contains(w:instrText,('XE'))">index</xsl:when>
-      <xsl:when test="contains(w:instrText,('SEQ Table'))">table</xsl:when>
+      <xsl:when test="contains(w:instrText, 'PAGEREF')">link</xsl:when>
+      <xsl:when test="contains(w:instrText, 'REF')">link</xsl:when>
+      <xsl:when test="contains(w:instrText, 'HYPERLINK')">link</xsl:when>
+      <xsl:when test="contains(w:instrText, 'XE')">index</xsl:when>
+      <xsl:when test="contains(w:instrText, 'SEQ Table')">table</xsl:when>
     </xsl:choose>
   </xsl:variable>
 
@@ -106,7 +106,7 @@
     </xsl:when>
 
     <xsl:when test="$field-type= 'index' and config:generate-index-files()">
-      <xsl:variable name="index-location" select="translate(fn:get-index-text(w:instrText,'XE'),':','/')" />
+      <xsl:variable name="index-location" select="translate(fn:get-index-text(w:instrText,'XE'), ':', '/')" />
       <xref display="manual" frag="default" type="none" reverselink="true" reversetitle="" reversetype="none"
             title="{fn:get-index-text(w:instrText, 'XE')}"
             href="{encode-for-uri($index-location)}">
@@ -122,19 +122,8 @@
 
 <!-- Text for index entries -->
 <xsl:template match="w:r[w:instrText[matches(text(),'XE')]][config:generate-index-files()]" mode="content">
-  <xsl:variable name="temp-index-location" select="translate(translate(fn:get-index-text(w:instrText/text(),'XE'),'/','_'),':','/')" />
-  <xsl:variable name="index-location">
-    <xsl:for-each select="tokenize($temp-index-location, '/')">
-      <xsl:choose>
-        <xsl:when test="position() != last()">
-          <xsl:value-of select="concat(encode-for-uri(.), '/')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="encode-for-uri(.)" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
-  </xsl:variable>
+  <xsl:variable name="temp-index-location" select="translate(translate(fn:get-index-text(w:instrText/text(), 'XE'), '/', '_'), ':', '/')" />
+  <xsl:variable name="index-location" select="string-join(for $i in tokenize($temp-index-location, '/') return encode-for-uri($i), '/')"/>
 
   <xref display="manual" frag="default" type="none" reverselink="true" reversetitle="" reversetype="none"
         title="{fn:get-index-text(w:instrText/text(), 'XE')}"
@@ -161,7 +150,7 @@
     </xsl:choose>
   </xsl:variable>
   <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
-        title="{string-join($current//w:t//text(),'')}"
+        title="{string-join($current//w:t//text(), '')}"
         frag="{if (config:split-by-sections()) then fn:get-fragment-position($bookmark-ref) else 'default'}">
     <xsl:attribute name="href">
       <xsl:choose>
@@ -169,10 +158,10 @@
           <xsl:variable name="document-number">
             <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
           </xsl:variable>
-          <xsl:value-of select="encode-for-uri(concat($filename,'-',format-number($document-number, $zeropadding),'.psml'))" />
+          <xsl:value-of select="encode-for-uri(concat($filename, '-' ,format-number($document-number, $zeropadding), '.psml'))" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="encode-for-uri(concat($filename,'.psml'))" />
+          <xsl:value-of select="encode-for-uri(concat($filename, '.psml'))" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
@@ -199,7 +188,7 @@
   <xsl:choose>
     <xsl:when test="$bookmark-ref != ''">
       <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
-            title="{string-join(.//w:t//text(),'')}">
+            title="{string-join(.//w:t//text(), '')}">
         <xsl:attribute name="frag">
           <xsl:choose>
             <xsl:when test="config:split-by-sections() and $bookmark-ref != ''">
@@ -216,10 +205,10 @@
               <xsl:variable name="document-number">
                 <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
               </xsl:variable>
-              <xsl:value-of select="encode-for-uri(concat($filename,'-',format-number($document-number, $zeropadding),'.psml'))" />
+              <xsl:value-of select="encode-for-uri(concat($filename, '-', format-number($document-number, $zeropadding), '.psml'))" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="encode-for-uri(concat($filename,'.psml'))" />
+              <xsl:value-of select="encode-for-uri(concat($filename, '.psml'))" />
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
