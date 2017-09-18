@@ -47,17 +47,17 @@
       <nlist>
         <item>One</item>
         <item>Two</item>
-        <item>Three</item>
+        <item>Three
+          <list>
+            <item>Bananas</item>
+          </list>
+        </item>
+        <item>Four
+          <list>
+            <item>Apples</item>
+          </list>        
+        </item>
       </nlist>
-      <list>
-        <item>Bananas</item>
-      </list>
-      <nlist>
-        <item>Four</item>
-      </nlist>
-      <list>
-        <item>Apples</item>
-      </list>
       <heading level="3">Multi-level un-numbered list:</heading>
       <list>
         <item>

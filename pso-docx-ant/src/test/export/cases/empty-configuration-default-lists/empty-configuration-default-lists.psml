@@ -86,7 +86,7 @@
         <item>List item 6</item>
       </nlist>
       <para />
-      <para>Numbered list, sequential level:</para>
+      <para>Numbered list, sequential level, starting at 3:</para>
       <nlist start="3">
         <item>
           List item 1
@@ -117,7 +117,7 @@
       </nlist>
       <para />
       <para />
-      <para>Numbered list, mixed levels:</para>
+      <para>Numbered list, mixed levels, starting at 3:</para>
       <nlist start="3">
         <item>
           List item 1
