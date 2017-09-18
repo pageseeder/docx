@@ -105,6 +105,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testCustomTemplateListsWithRole() throws IOException, SAXException {
+    testIndividual("custom-template-lists-with-role", "document,numbering");
+  }
+
+  @Test
   public void testCustomTemplateTables() throws IOException, SAXException {
     testIndividual("custom-template-tables");
   }
@@ -292,6 +297,11 @@ public final class ExportTaskTest {
   @Test
   public void testListDefaultWithRoleSet() throws IOException, SAXException {
     testIndividual("list-default-with-role-set", "document,numbering");
+  }
+
+  @Test
+  public void testListDefaultWithTypeSet() throws IOException, SAXException {
+    testIndividual("list-default-with-type-set", "document,numbering");
   }
 
   @Test

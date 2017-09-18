@@ -1140,8 +1140,8 @@
        <xsl:for-each select="tokenize($levels, ',')">
         <xsl:variable name="current-nlist-level-type" as="xs:string">
           <xsl:choose>
-            <xsl:when test="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) != NaN]/@type">
-              <xsl:value-of select="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(.)]/@type"/>
+            <xsl:when test="($current-list//*[name() = 'nlist' or name()='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(current())])[1]/@type">
+              <xsl:value-of select="($current-list//*[name() = 'nlist' or name()='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(current())])[1]/@type"/>
             </xsl:when>
             <xsl:when test="$current-list/@type and number(.) = 0">
               <xsl:value-of select="$current-list/@type"/>
@@ -1151,11 +1151,10 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-
         <xsl:variable name="current-nlist-level-start" as="xs:string">
           <xsl:choose>
-            <xsl:when test="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) != NaN]/@start">
-              <xsl:value-of select="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(.)]/@start"/>
+            <xsl:when test="($current-list//*[name() = 'nlist' or name()='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(current())])[1]/@start">
+              <xsl:value-of select="($current-list//*[name() = 'nlist' or name()='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(current())])[1]/@start"/>
             </xsl:when>
             <xsl:when test="$current-list/@start and number(.) = 0">
               <xsl:value-of select="$current-list/@start"/>
@@ -1168,8 +1167,8 @@
 
         <xsl:variable name="current-nlist-level-name">
           <xsl:choose>
-            <xsl:when test="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) != NaN]/name()">
-              <xsl:value-of select="$current-list//*[name() = 'nlist' or name='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(.)]/name()"/>
+            <xsl:when test="($current-list//*[name() = 'nlist' or name()='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(current())])[1]/name()">
+              <xsl:value-of select="($current-list//*[name() = 'nlist' or name()='list'][count(ancestor::*[name() = 'list' or name() = 'nlist']) = number(current())])[1]/name()"/>
             </xsl:when>
             <xsl:when test="$current-list/name() and number(.) = 0">
               <xsl:value-of select="$current-list/name()"/>
@@ -1185,13 +1184,36 @@
             <w:lvl w:ilvl="{.}">
               <w:start w:val="1"/>
               <w:numFmt w:val="bullet"/>
-              <w:lvlText w:val=""/>
+              <xsl:choose>
+                <xsl:when test="$current-nlist-level-type = 'circle'">
+                  <w:lvlText w:val="o" />
+                </xsl:when>
+                <xsl:when test="$current-nlist-level-type = 'square'">
+                  <w:lvlText w:val="" />
+                </xsl:when>
+                <xsl:when test="$current-nlist-level-type = 'none'">
+                  <w:lvlText w:val="" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <w:lvlText w:val=""/>
+                </xsl:otherwise>
+              </xsl:choose>
               <w:lvlJc w:val="left"/>
               <w:pPr>
-                <w:ind w:left="{720 * number(.)}" w:hanging="360"/>
+                <w:ind w:left="{360 * number(.) + 360}" w:hanging="360"/>
               </w:pPr>
               <w:rPr>
-                <w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:hint="default"/>
+              <xsl:choose>
+                <xsl:when test="$current-nlist-level-type = 'circle'">
+                  <w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" w:hint="default"/>
+                </xsl:when>
+                <xsl:when test="$current-nlist-level-type = 'square'">
+                  <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings" w:hint="default"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:hint="default"/>
+                </xsl:otherwise>
+              </xsl:choose>                
               </w:rPr>
             </w:lvl>
           </xsl:when>
@@ -1199,13 +1221,10 @@
             <w:lvl w:ilvl="{.}">
               <w:start w:val="{if ($current-nlist-level-start != '') then $current-nlist-level-start else '1'}"/>
               <w:numFmt w:val="{fn:return-word-numbering-style($current-nlist-level-type)}"/>
-              <w:lvlText w:val="%1."/>
+              <w:lvlText w:val="%{number(.) + 1}."/>
               <w:lvlJc w:val="left"/>
               <w:pPr>
-                <w:tabs>
-                  <w:tab w:val="num" w:pos="{360 * number(.)}"/>
-                </w:tabs>
-                <w:ind w:left="{360 * number(.)}" w:hanging="360"/>
+                <w:ind w:left="{360 * number(.) + 360}" w:hanging="360"/>
               </w:pPr>
             </w:lvl>
           </xsl:when>
@@ -1213,13 +1232,10 @@
             <w:lvl w:ilvl="{.}">
               <w:start w:val="{if ($current-nlist-level-start != '') then $current-nlist-level-start else 1}"/>
               <w:numFmt w:val="{fn:return-word-numbering-style(.)}"/>
-              <w:lvlText w:val="%1."/>
+              <w:lvlText w:val="%{number(.) + 1}."/>
               <w:lvlJc w:val="left"/>
               <w:pPr>
-                <w:tabs>
-                  <w:tab w:val="num" w:pos="{360 * number(.)}"/>
-                </w:tabs>
-                <w:ind w:left="{360 * number(.)}" w:hanging="360"/>
+                <w:ind w:left="{360 * number(.) + 360}" w:hanging="360"/>
               </w:pPr>
             </w:lvl>
           </xsl:otherwise>

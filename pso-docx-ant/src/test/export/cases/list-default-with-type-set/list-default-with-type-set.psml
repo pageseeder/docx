@@ -1,0 +1,270 @@
+<document id="186967" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <documentinfo>
+    <uri id="186967" scheme="https" host="ps.pageseeder.com" port="443"
+      path="/ps/dev/docx/Documents/Test_Files/Numbering.psml"
+      decodedpath="/ps/dev/docx/Documents/Test_Files/Numbering.psml"
+      mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T09:44:38+11:00"
+      title="Numbering">
+      <displaytitle>Numbering</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960"
+        href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1"
+        urititle="Test Files – Master" id="455297" title="Test Files"
+        type="none" forwardtype="embed" />
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103102" fragment="1" editid="455316"
+      modified="2013-01-29T11:09:00+11:00" />
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Numbering</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <heading level="3">Un-numbered list:</heading>
+      <list>
+        <item>Bananas</item>
+        <item>Strawberries</item>
+        <item>Apples</item>
+        <item>Oranges</item>
+        <item>Pineapples</item>
+        <item>Mangoes</item>
+      </list>
+      <heading level="3">Numbered list:</heading>
+      <nlist>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+        <item>Five</item>
+      </nlist>
+      <heading level="3"> Maximum multi-level un-numbered list:
+      </heading>
+      <list>
+        <item>
+          Bananas
+          <list>
+            <item>
+              Strawberries
+              <list>
+                <item>
+                  Apples
+                  <list>
+                    <item>
+                      Oranges
+                      <list>
+                        <item>
+                          Pineapples
+                          <list>
+                            <item>
+                              Mangoes 6
+                              <list>
+                                <item>
+                                  Oranges 7
+                                  <list>
+                                    <item>
+                                      Pineapples 8
+                                      <list>
+                                        <item>
+                                          Mangoes 9
+                                        </item>
+                                      </list>
+                                    </item>
+                                  </list>
+                                </item>
+                              </list>
+                            </item>
+                          </list>
+                        </item>
+                      </list>
+                    </item>
+                  </list>
+                </item>
+              </list>
+            </item>
+          </list>
+        </item>
+      </list>
+      <heading level="3">
+        <br />
+        Maximum multi-level numbered list:
+      </heading>
+      <nlist>
+        <item>
+          One
+          <nlist>
+            <item>
+              Two
+              <nlist>
+                <item>
+                  Three
+                  <nlist>
+                    <item>
+                      Four
+                      <nlist>
+                        <item>
+                          Five
+                          <nlist>
+                            <item>
+                              Six
+                              <nlist>
+                                <item>
+                                  Seven
+                                  <nlist>
+                                    <item>
+                                      Eight
+                                      <nlist>
+                                        <item>
+                                          Nine
+                                        </item>
+                                      </nlist>
+                                    </item>
+                                  </nlist>
+                                </item>
+                              </nlist>
+                            </item>
+                          </nlist>
+                        </item>
+                      </nlist>
+                    </item>
+                  </nlist>
+                </item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
+      </nlist>
+      <heading level="3">Maximum multi-level un-numbered list:</heading>
+      <heading level="4">- level 1-4 type set: square, circle, disc, none</heading>
+      <list type="square">
+        <item>
+          Bananas
+          <list type="circle">
+            <item>
+              Strawberries
+              <list type="disc">
+                <item>
+                  Apples
+                  <list type="none">
+                    <item>
+                      Oranges
+                      <list>
+                        <item>
+                          Pineapples
+                          <list>
+                            <item>
+                              Mangoes 6
+                              <list>
+                                <item>
+                                  Oranges 7
+                                  <list>
+                                    <item>
+                                      Pineapples 8
+                                      <list>
+                                        <item>
+                                          Mangoes 9
+                                        </item>
+                                      </list>
+                                    </item>
+                                  </list>
+                                </item>
+                              </list>
+                            </item>
+                          </list>
+                        </item>
+                      </list>
+                    </item>
+                  </list>
+                </item>
+              </list>
+            </item>
+          </list>
+        </item>
+      </list>
+      <heading level="3">Maximum multi-level numbered list:</heading>
+      <heading level="4">- level 1-5 type set: lowerroman, upperroman, loweralpha, upperalpha, arabic</heading>
+      <heading level="4">- level 5-7 start set: 2, 3, 4</heading>
+      <nlist type="lowerroman">
+        <item>
+          One
+          <nlist type="upperroman">
+            <item>
+              Two
+              <nlist type="loweralpha">
+                <item>
+                  Three
+                  <nlist type="upperalpha">
+                    <item>
+                      Four
+                      <nlist type="arabic" start="2">
+                        <item>
+                          Five
+                          <nlist start="3">
+                            <item>
+                              Six
+                              <nlist start="4">
+                                <item>
+                                  Seven
+                                  <nlist>
+                                    <item>
+                                      Eight
+                                      <nlist>
+                                        <item>
+                                          Nine
+                                        </item>
+                                      </nlist>
+                                    </item>
+                                  </nlist>
+                                </item>
+                              </nlist>
+                            </item>
+                          </nlist>
+                        </item>
+                      </nlist>
+                    </item>
+                  </nlist>
+                </item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
+      </nlist>
+      <heading level="3">Mixed list:</heading>
+      <heading level="4">- level 1 type loweralpha, level 2 type circle:</heading>
+      <nlist type="loweralpha">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three
+          <list type="circle">
+            <item>Bananas</item>
+          </list>
+        </item>
+        <item>Four
+          <list type="circle">
+            <item>Apples</item>
+          </list>        
+        </item>
+      </nlist>
+      <heading level="3">Mixed list:</heading>
+      <nlist>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three
+          <list>
+            <item>Bananas</item>
+          </list>
+        </item>
+        <item>Four
+          <list>
+            <item>Apples</item>
+          </list>        
+        </item>
+      </nlist>
+    </fragment>
+  </section>
+</document>

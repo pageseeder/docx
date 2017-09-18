@@ -3,8 +3,8 @@
 <config>
 	<elements>
 		<tables>
-			<table  default="Table Grid"/>
-			<table  role="tablea" tablestyle="Table Grid 2"/>
+			<table  default="PS Table"/>
+			<table  role="tablea" tablestyle="Table Grid"/>
 		</tables>
 	</elements>
 </config>

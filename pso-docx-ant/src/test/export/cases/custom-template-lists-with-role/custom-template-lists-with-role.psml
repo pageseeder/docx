@@ -1,0 +1,197 @@
+<document id="186967" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Custom template lists</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <heading level="3">Un-numbered list:</heading>
+      <list role="highlight">
+        <item>Bananas</item>
+        <item>Strawberries</item>
+        <item>Apples</item>
+        <item>Oranges</item>
+        <item>Pineapples</item>
+        <item>Mangoes</item>
+      </list>
+      <heading level="3">Numbered list:</heading>
+      <nlist>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+        <item>Five</item>
+      </nlist>
+      <heading level="3">Mixed list:</heading>
+      <nlist>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three
+          <list>
+            <item>Bananas</item>
+          </list>
+        </item>
+        <item>Four
+          <list>
+            <item>Apples</item>
+          </list>        
+        </item>
+      </nlist>
+      <heading level="3">Multi-level un-numbered list:</heading>
+      <list>
+        <item>
+          Bananas
+          <br />
+          <list>
+            <item>Strawberries</item>
+          </list>
+        </item>
+        <item>
+          Apples
+          <br />
+          <list>
+            <item>
+              Oranges
+              <br />
+              <list>
+                <item>Pineapples</item>
+                <item>Mangoes</item>
+              </list>
+            </item>
+          </list>
+        </item>
+        <item>Blackberries</item>
+      </list>
+      <heading level="3">Multi-level numbered list:</heading>
+      <nlist>
+        <item>
+          One
+          <br />
+          <nlist>
+            <item>Two</item>
+          </nlist>
+        </item>
+        <item>
+          Three
+          <br />
+          <nlist>
+            <item>
+              Four
+              <br />
+              <nlist>
+                <item>Five</item>
+                <item>Six</item>
+              </nlist>
+            </item>
+            <item>
+              Seven
+              <nlist>
+                <item>Eight</item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
+        <item>Eight</item>
+      </nlist>
+      <heading level="3"> Maximum multi-level un-numbered list:
+      </heading>
+      <list>
+        <item>
+          Bananas
+          <list>
+            <item>
+              Strawberries
+              <list>
+                <item>
+                  Apples
+                  <list>
+                    <item>
+                      Oranges
+                      <list>
+                        <item>
+                          Pineapples
+                          <list>
+                            <item>
+                              Mangoes 6
+                              <list>
+                                <item>
+                                  Oranges 7
+                                  <list>
+                                    <item>
+                                      Pineapples 8
+                                      <list>
+                                        <item>
+                                          Mangoes 9
+                                        </item>
+                                      </list>
+                                    </item>
+                                  </list>
+                                </item>
+                              </list>
+                            </item>
+                          </list>
+                        </item>
+                      </list>
+                    </item>
+                  </list>
+                </item>
+              </list>
+            </item>
+          </list>
+        </item>
+      </list>
+      <heading level="3">
+        <br />
+        Maximum multi-level numbered list:
+      </heading>
+      <nlist>
+        <item>
+          One
+          <nlist>
+            <item>
+              Two
+              <nlist>
+                <item>
+                  Three
+                  <nlist>
+                    <item>
+                      Four
+                      <nlist>
+                        <item>
+                          Five
+                          <nlist>
+                            <item>
+                              Six
+                              <nlist>
+                                <item>
+                                  Seven
+                                  <nlist>
+                                    <item>
+                                      Eight
+                                      <nlist>
+                                        <item>
+                                          Nine
+                                        </item>
+                                      </nlist>
+                                    </item>
+                                  </nlist>
+                                </item>
+                              </nlist>
+                            </item>
+                          </nlist>
+                        </item>
+                      </nlist>
+                    </item>
+                  </nlist>
+                </item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
+      </nlist>
+      <para> </para>
+    </fragment>
+  </section>
+</document>

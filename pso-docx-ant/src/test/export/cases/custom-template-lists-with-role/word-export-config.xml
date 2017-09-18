@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<config>
+  <elements>
+    <nlist>
+      <default>
+        <level value="1" wordstyle="List Number" />
+        <level value="2" wordstyle="List Number 2" />
+        <level value="3" wordstyle="List Number 3" />
+        <level value="4" wordstyle="List Number 4" />
+        <level value="5" wordstyle="List Number 5" />
+        <level value="6" wordstyle="List Number 6" />
+        <level value="7" wordstyle="List Number 7" />
+        <level value="8" wordstyle="List Number 8" />
+        <level value="9" wordstyle="List Number 9" />
+      </default>
+    </nlist>
+
+    <list>
+      <default>
+        <level value="1" wordstyle="List Bullet" />
+        <level value="2" wordstyle="List Bullet 2" />
+        <level value="3" wordstyle="List Bullet 3" />
+        <level value="4" wordstyle="List Bullet 4" />
+        <level value="5" wordstyle="List Bullet 5" />
+        <level value="6" wordstyle="List Bullet 6" />
+        <level value="7" wordstyle="List Bullet 7" />
+        <level value="8" wordstyle="List Bullet 8" />
+        <level value="9" wordstyle="List Bullet 9" />
+      </default>
+      <role value="highlight">
+        <level value="1" wordstyle="Highlight List Bullet" />
+      </role>
+    </list>
+  </elements>
+</config>
