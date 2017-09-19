@@ -29,6 +29,24 @@
 
       <!-- TODO The code below should be implemented using a specific mode so that it is more extensible and easier to document -->
 
+      <!-- Paragraphs within table -->
+      <xsl:when test="self::para and ancestor::table">
+        <xsl:variable name="table" select="ancestor::table[1]" />
+        <xsl:variable name="row" select="ancestor::row[1]" />
+        <xsl:variable name="cell" select="(ancestor::*[name()='cell' or name()='hcell'])[1]" />
+        <!-- TODO how should colspan and rowspan be handled for header? -->
+        <xsl:variable name="header" select="$row/@part='header' or
+            $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />        
+        <xsl:choose>
+          <xsl:when test="$header">
+            <xsl:value-of select="config:table-head-style($labels, $table/@role)" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="config:table-body-style($labels, $table/@role)" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      
       <!-- Paragraphs within blocks -->
       <xsl:when test="self::para and parent::block">
         <xsl:choose>

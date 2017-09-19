@@ -412,6 +412,82 @@
 </xsl:function>
 
 <!--
+  Returns the document label and table role specific table head style
+  otherwise the document label specific table head style
+  otherwise the document role specific table head style
+  otherwise the default table head style
+  otherwise the default paragraph style.
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the word table width type
+-->
+<xsl:function name="config:table-head-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@headstyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@headstyle"/>
+  <xsl:variable name="role-style" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@headstyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@headstyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-style != ''">
+      <xsl:value-of select="$label-role-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$role-style != ''">
+      <xsl:value-of select="$role-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$default-paragraph-style" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and table role specific table body style
+  otherwise the document label specific table body style
+  otherwise the document role specific table body style
+  otherwise the default table body style
+  otherwise the default paragraph style.
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the word table width type
+-->
+<xsl:function name="config:table-body-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@bodystyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@bodystyle"/>
+  <xsl:variable name="role-style" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@bodystyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@bodystyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-style != ''">
+      <xsl:value-of select="$label-role-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$role-style != ''">
+      <xsl:value-of select="$role-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$default-paragraph-style" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the default table width type.
 
   @return the word table with type

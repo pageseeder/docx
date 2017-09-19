@@ -124,50 +124,6 @@
 </xsl:variable>
 
 <!--
-  Returns the value of the numbering id to create in the numbering.xml file
--->
-<xsl:function name="fn:get-numbering-id">
-  <xsl:param name="current" as="element()" />
-  <xsl:choose>
-    <xsl:when
-        test="$current/ancestor::*[name() = 'list' or 'nlist']/parent::block and
-          $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label = $config-doc/config/lists/list/@name and
-          $config-doc/config/lists/(list|nlist)[@name = $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label][@style != '']">
-      <xsl:variable name="style-name"
-                    select="$config-doc/config/lists/(list|nlist)[@name = $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label]/@style" />
-      <xsl:value-of
-          select="document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num[w:abstractNumId/@w:val = document(concat($_dotxfolder,$numbering-template))/w:numbering/w:abstractNum[w:numStyleLink[@w:val = $style-name]]/@w:abstractNumId]/@w:numId" />
-    </xsl:when>
-    <xsl:when
-        test="$current/ancestor::*[name() = 'list' or 'nlist']/parent::block and
-          $current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label = $config-doc/config/lists/(list|nlist)/@name">
-      <xsl:variable name="style-name"
-                    select="$current/ancestor::*[name() = 'list' or 'nlist']/parent::block/@label" />
-      <xsl:variable name="max-num-id"
-                    select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))" />
-      <xsl:variable name="position"
-                    select="count($config-doc/config/lists/(list|nlist)) - count($config-doc/config/lists/(list|nlist)[@name=$style-name]/following-sibling::*[name() = 'list' or 'nlist'][@style=''])" />
-      <xsl:value-of select="$max-num-id + $position" />
-    </xsl:when>
-    <xsl:when test="$current/parent::*[name() = 'nlist']">
-
-      <xsl:variable name="max-num-id"
-                    select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))" />
-      <xsl:variable name="default-position"
-                    select="count($config-doc/config/lists/(list|nlist)) - count($config-doc/config/lists/nlist[@name='default']/following-sibling::*[name() = 'list' or 'nlist'][@style=''])" />
-      <xsl:value-of select="$max-num-id + $default-position" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:variable name="max-num-id"
-                    select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))" />
-      <xsl:variable name="default-position"
-                    select="count($config-doc/config/lists/(list|nlist)) - count($config-doc/config/lists/list[@name='default']/following-sibling::*[name() = 'list' or 'nlist'][@style=''])" />
-      <xsl:value-of select="$max-num-id + $default-position" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
   Automates the creation of a prefix for a heading defined by the expression set in configuration for document label specific documents.
 
   @param document-label the value of the current document label

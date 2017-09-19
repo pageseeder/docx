@@ -100,8 +100,10 @@
 
     <!-- default options:"[existing table style]|TableGrid" -->
     <tables>
-      <table default="[existing word table style]"/>
-      <table role="[existing table role]" tablestyle="[existing word table style]" />
+      <table default="[existing word table style]"
+          headstyle="[word para style]" bodystyle="[word para style]"/>
+      <table role="[existing table role]" tablestyle="[existing word table style]"
+          headstyle="[word para style]" bodystyle="[word para style]"/>
     </tables>
     
     <preformat wordstyle="[valid word paragraph style]"/>
