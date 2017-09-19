@@ -24,7 +24,7 @@
 -->
 <xsl:template match="image" mode="psml">
   <xsl:choose>
-    <xsl:when test="parent::fragment or (parent::block and fn:has-block-elements(parent::block))">
+    <xsl:when test="parent::fragment">
       <!-- We need to wrap in paragraph -->
       <w:p>
         <xsl:apply-templates select="." mode="psml-run"/>

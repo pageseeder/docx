@@ -320,26 +320,11 @@
 </xsl:function>
 
 <!--
-  Checks if the current element contains block elements or not
+  Checks if the current element contains block elements or not (image is treated as inline)
  -->
 <xsl:function name="fn:has-block-elements" as="xs:boolean">
   <xsl:param name="element" />
-  <xsl:sequence select="$element/block or $element/para or $element/heading or $element/code or $element/nlist or $element/table or $element/list or $element/blockxref"/>
-</xsl:function>
-
-<!-- 
-  Checks if the current element is a block element or not
--->
-<xsl:function name="fn:is-block-element">
-  <xsl:param name="element" />
-  <xsl:choose>
-    <xsl:when test="$element[name()='heading' or contains(name(),'list') or name()='para' or name()='block' or name()='table' or name()='preformat' or name()='blockxref']">
-      <xsl:value-of select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:sequence select="$element/block or $element/para or $element/heading or $element/preformat or $element/nlist or $element/table or $element/list or $element/blockxref"/>
 </xsl:function>
 
 <!--

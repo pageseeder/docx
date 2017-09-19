@@ -200,6 +200,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testHeadingsBlockParaKeephWithNext() throws IOException, SAXException {
+    testIndividual("headings-block-para-keep-with-next");
+  }
+
+  @Test
   public void testHeadingsStyleSet() throws IOException, SAXException {
     testIndividual("headings-style-set");
   }

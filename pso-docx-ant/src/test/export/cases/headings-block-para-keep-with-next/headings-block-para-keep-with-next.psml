@@ -1,0 +1,72 @@
+<document id="186965" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <documentinfo>
+    <uri id="186965" scheme="https" host="ps.pageseeder.com" port="443"
+      path="/ps/dev/docx/Documents/Test_Files/Headings.psml"
+      decodedpath="/ps/dev/docx/Documents/Test_Files/Headings.psml"
+      mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T09:33:10+11:00"
+      title="Headings">
+      <displaytitle>Headings</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960"
+        href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1"
+        urititle="Test Files – Master" id="455285" title="Test Files"
+        type="none" forwardtype="embed" />
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103098" fragment="1" editid="455288"
+      modified="2013-01-29T09:36:39+11:00" />
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Headings</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <heading level="1">Heading 1</heading>
+      <para>Sample text</para>
+      <heading level="2">Heading 2</heading>
+      <para>Sample text</para>
+      <heading level="3">Heading 3</heading>
+      <para>Sample text</para>
+      <heading level="4">Heading 4 - keep with next</heading>
+      <para>Sample text</para>
+      <heading level="5">Heading 5 - keep with next</heading>
+      <para>Sample text</para>
+      <heading level="6">Heading 6</heading>
+      <para>Sample text</para>
+      <heading level="1" numbered="true">Heading 1</heading>
+      <para>Sample text</para>
+      <heading level="2" numbered="true">Heading 2</heading>
+      <para>Sample text</para>
+      <heading level="3" numbered="true">Heading 3</heading>
+      <para>Sample text</para>
+      <heading level="4" numbered="true">Heading 4 - keep with next</heading>
+      <para>Sample text</para>
+      <heading level="5" numbered="true">Heading 5 - keep with next</heading>
+      <para>Sample text</para>
+      <heading level="6" numbered="true">Heading 6</heading>
+      <para>Sample text</para>
+      <heading level="1">Blocks</heading>
+      <block label="heading1">Block</block>
+      <para>Sample text</para>
+      <block label="heading2">Block - keep with next</block>
+      <para>Sample text</para>
+      <block label="heading2">
+        <para>Block first</para>
+        <para>Block second - keep with next</para>
+      </block>
+      <para>Sample text</para>
+      <block label="heading2"> </block>
+      <para>Sample text after empty block</para>
+      <heading level="1">Paras</heading>
+      <para indent="1">Para</para>
+      <para>Sample text</para>
+      <para indent="2">Para - keep with next</para>
+      <para>Sample text</para>
+    </fragment>
+  </section>
+</document>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+    <block>
+      <label value="heading1" wordstyle="heading 1" />
+      <label value="heading2" wordstyle="heading 2">
+        <keep-paragraph-with-next />
+      </label>
+    </block>
+		<heading>
+			<level value="1" wordstyle="heading 1"/>
+			<level value="2" wordstyle="heading 2"/>
+			<level value="3" wordstyle="heading 3"/>
+			<level value="4" wordstyle="heading 4">
+        <keep-paragraph-with-next />
+      </level>
+			<level value="5" wordstyle="heading 5">
+        <keep-paragraph-with-next />
+      </level>
+			<level value="6" wordstyle="heading 6"/>
+      <level value="1" numbered="true" wordstyle="Heading Numbered 1"/>
+      <level value="2" numbered="true" wordstyle="Heading Numbered 2"/>
+      <level value="3" numbered="true" wordstyle="Heading Numbered 3"/>
+      <level value="4" numbered="true" wordstyle="Heading Numbered 4">
+        <keep-paragraph-with-next />
+      </level>
+      <level value="5" numbered="true" wordstyle="Heading Numbered 5">
+        <keep-paragraph-with-next />
+      </level>
+      <level value="6" numbered="true" wordstyle="Heading Numbered 6"/>
+		</heading>
+    <para>
+      <indent level="1" wordstyle="heading 1" />
+      <indent level="2" wordstyle="heading 2">
+        <keep-paragraph-with-next />
+      </indent>
+    </para>
+   </elements>
+</config>

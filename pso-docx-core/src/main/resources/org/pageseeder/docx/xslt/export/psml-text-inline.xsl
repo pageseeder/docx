@@ -145,11 +145,6 @@
 <xsl:template match="inline" mode="psml">
   <xsl:param name="labels" tunnel="yes"/>
   <xsl:choose>
-    <xsl:when test="parent::block and fn:has-block-elements(parent::block)">
-      <w:p>
-        <xsl:apply-templates mode="psml" />
-      </w:p>
-    </xsl:when>
     <xsl:when test="matches(@label, config:inline-ignore-labels-with-document-label($labels))"/>
     <xsl:when test="matches(@label, config:default-inline-ignore-labels())"/>
     <xsl:otherwise>
@@ -182,27 +177,20 @@
 </xsl:template>
 
 <!--
-  Matches line breaks; create paragraph if not inside a block element
+  Matches line breaks; create paragraph if fragment is parent
 -->
 <xsl:template match="br" mode="psml">
   <xsl:choose>
-    <xsl:when test="preceding-sibling::*[fn:is-block-element(.)='true']
-                 or following-sibling::*[fn:is-block-element(.)='true']">
-      <w:p>
-        <w:pPr>
-          <xsl:call-template name="apply-style" />
-        </w:pPr>
-        <w:r>
-          <w:br />
-        </w:r>
-      </w:p>
-    </xsl:when>
     <xsl:when test="parent::fragment">
       <w:p>
         <w:r>
           <w:br />
         </w:r>
       </w:p>
+    </xsl:when>
+    <xsl:when test="fn:has-block-elements(parent::*)">
+      <xsl:message>DOCX EXPORT ERROR: <br/> must be wrapped by a block level element (URI ID: <xsl:value-of
+        select="/document/documentinfo/uri/@id" />)</xsl:message>
     </xsl:when>
     <xsl:otherwise>
       <w:r>

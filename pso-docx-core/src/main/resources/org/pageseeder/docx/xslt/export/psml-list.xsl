@@ -37,7 +37,7 @@
   <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
   <xsl:choose>
     <xsl:when test="text() or link or bold or italic or sup or sub or xref or inline or image or monospace">
-      <xsl:message>DOCX EXPORT ERROR: Inline content inside &lt;item&gt; must be wrapped in a &lt;para&gt; (URI ID: <xsl:value-of
+      <xsl:message>DOCX EXPORT ERROR: Inline content inside <item/> must be wrapped in a <para/> (URI ID: <xsl:value-of
         select="/document/documentinfo/uri/@id" />)</xsl:message>
     </xsl:when>
     <xsl:otherwise>

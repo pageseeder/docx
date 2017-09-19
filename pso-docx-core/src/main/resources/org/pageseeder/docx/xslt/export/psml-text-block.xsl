@@ -34,23 +34,17 @@
 -->
 <xsl:template match="heading" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
+  <xsl:variable name="vanish" select="config:labels-keep-heading-with-next($labels, @level, @numbered) or
+      config:default-keep-heading-with-next(@level, @numbered)" />
   <w:p>
     <w:pPr>
       <xsl:call-template name="apply-style" />
-      <xsl:choose>
-        <xsl:when test="config:labels-keep-heading-with-next($labels, @level, @numbered)">
-          <w:rPr>
-            <w:vanish/>
-            <w:specVanish/>
-          </w:rPr>
-        </xsl:when>
-        <xsl:when test="config:default-keep-heading-with-next(@level, @numbered)">
-          <w:rPr>
-            <w:vanish/>
-            <w:specVanish/>
-          </w:rPr>
-        </xsl:when>
-      </xsl:choose>
+      <xsl:if test="$vanish">
+        <w:rPr>
+          <w:vanish/>
+          <w:specVanish/>
+        </w:rPr>
+      </xsl:if>
     </w:pPr>
     <!-- TODO check how prefixes work -->
     <xsl:if test="@prefix">
@@ -74,6 +68,11 @@
       </xsl:choose>
     </xsl:if>
     <xsl:apply-templates mode="psml" />
+    <xsl:if test="$vanish">
+      <w:r>
+        <w:t xml:space="preserve"> </w:t>
+      </w:r>      
+    </xsl:if>
   </w:p>
 </xsl:template>
 
@@ -83,9 +82,6 @@
 <xsl:template match="block" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
   <xsl:param name="cell-align" tunnel="yes" />
-    <!--
-      if paraLabel contains only inline elements or text, create w:p here,
-    -->
   <xsl:choose>
     <!-- when containing other block elements, including mixed content -->
     <!-- will not create w:p here -->
@@ -94,37 +90,16 @@
     <xsl:when test="fn:has-block-elements(.)">
       <xsl:apply-templates mode="psml" />
     </xsl:when>
+    <xsl:when test="node()">
+      <xsl:message>DOCX EXPORT ERROR: Inline content inside <block/> must be wrapped in a <para/> (URI ID: <xsl:value-of
+        select="/document/documentinfo/uri/@id" />)</xsl:message>
+    </xsl:when>
+    <!-- empty block only contains style marker for post processing -->
     <xsl:otherwise>
-      <!-- when containing only inline elements or text()-->
       <w:p>
         <w:pPr>
-          <xsl:if test="$cell-align != '' and  (ancestor::cell or ancestor::hcell)">
-             <w:jc w:val="{$cell-align}"/>
-          </xsl:if>
           <xsl:call-template name="apply-style" />
-          <xsl:choose>
-            <xsl:when test="config:labels-keep-block-with-next($labels, @label) or config:default-keep-block-with-next(@label)">
-              <w:rPr>
-                <w:vanish/>
-                <w:specVanish/>
-              </w:rPr>
-            </xsl:when>
-          </xsl:choose>
-          <xsl:if test="ancestor::item">
-            <xsl:choose>
-              <xsl:when test="position()=1">
-                <w:numPr>
-                  <w:ilvl w:val="{count(ancestor::list)+count(ancestor::nlist)-1}" />
-                  <w:numId w:val="{fn:get-numbering-id(current())}" />
-                </w:numPr>
-              </xsl:when>
-              <xsl:otherwise>
-                <w:ind w:left="{720*(count(ancestor::list)+count(ancestor::nlist))}" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:if>
         </w:pPr>
-        <xsl:apply-templates mode="psml" />
       </w:p>
     </xsl:otherwise>
   </xsl:choose>
@@ -136,13 +111,18 @@
 <xsl:template match="para" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
   <xsl:param name="cell-align" tunnel="yes" />
+  <!-- if vanish on parent block and last para in block then vanish -->
+  <xsl:variable name="vanish-block" select="parent::block and position()=last() and
+      (config:labels-keep-block-with-next($labels, parent::block/@label) or
+      config:default-keep-block-with-next(parent::block/@label))"/>
+  <xsl:variable name="vanish" select="$vanish-block or config:labels-keep-para-with-next($labels, @indent, @numbered)
+               or config:default-keep-para-with-next(@indent, @numbered)" />
   <w:p>
     <w:pPr>
       <xsl:if test="$cell-align != '' and (ancestor::cell or ancestor::hcell)">
         <w:jc w:val="{$cell-align}"/>
       </xsl:if>
-      <xsl:if test="config:labels-keep-para-with-next($labels, @indent, @numbered)
-                 or config:default-keep-para-with-next(@indent, @numbered)">
+      <xsl:if test="$vanish">
         <w:rPr>
           <w:vanish/>
           <w:specVanish/>
@@ -197,7 +177,7 @@
           <xsl:call-template name="apply-style" />
         </xsl:otherwise>
       </xsl:choose>
-
+      <!-- TODO <w:r> not allowed inside <w:pPr> check prefix functionality -->
       <xsl:if test="@prefix">
         <xsl:choose>
           <xsl:when test="config:para-prefix-select-for-document-label($labels, @indent, @numbered)">
@@ -225,6 +205,11 @@
       </xsl:if>
     </w:pPr>
     <xsl:apply-templates mode="psml" />
+    <xsl:if test="$vanish">
+      <w:r>
+        <w:t xml:space="preserve"> </w:t>
+      </w:r>      
+    </xsl:if>
   </w:p>
 </xsl:template>
 

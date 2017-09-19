@@ -80,7 +80,7 @@
 <!--
   Process block content to ensure that adjacent nodes which are not block-level elements are wrapped in a paragraph.
 
-  Note: this differs from the item and cell processing by allowing headings and images to be included directly within
+  Note: this differs from the item and cell processing by allowing headings to be included directly within
   a block label
 -->
 <xsl:template match="block" mode="unnest">
@@ -89,7 +89,7 @@
     <xsl:for-each-group select="node()"
                         group-adjacent="if  (self::list or self::nlist or self::para or self::block
                                           or self::table or self::blockxref or self::preformat
-                                          or self::heading or self::image)
+                                          or self::heading)
                                         then 2
                                         else 1">
       <xsl:choose>
