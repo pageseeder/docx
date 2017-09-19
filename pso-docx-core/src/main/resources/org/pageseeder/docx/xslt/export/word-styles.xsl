@@ -31,7 +31,7 @@
     <xsl:copy-of select="@*" />
     <xsl:apply-templates mode="styles"/>
     <xsl:for-each select="$inline-labels/label">
-     <xsl:variable name="id" select="concat('psinline', @name)"/>
+     <xsl:variable name="id" select="concat('ps_inl_', @name)"/>
       <w:style w:type="character" w:styleId="{$id}">
         <w:name w:val="{$id}" />
         <w:basedOn w:val="Normal" />
@@ -39,7 +39,7 @@
       </w:style>
     </xsl:for-each>
     <xsl:for-each select="$block-labels/label">
-      <xsl:variable name="id" select="concat('psblock', @name)"/>
+      <xsl:variable name="id" select="concat('ps_blk_', @name)"/>
       <w:style w:type="paragraph" w:styleId="{$id}">
         <w:name w:val="{$id}" />
         <w:basedOn w:val="Normal" />

@@ -654,7 +654,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="document-label"/>
   <xsl:param name="inline-label"/>
   <xsl:variable name="style" select="$config-doc/config/elements[@label = $document-label]/inline/label[@value=$inline-label]/@wordstyle"/>
-  <xsl:value-of select="if ($style = 'generate-ps-style') then concat('psinline', $inline-label) else string($style)"/>
+  <xsl:value-of select="if ($style = 'generate-ps-style') then concat('ps_inl_', $inline-label) else string($style)"/>
 </xsl:function>
 
 <!--

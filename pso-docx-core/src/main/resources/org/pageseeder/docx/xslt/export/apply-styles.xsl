@@ -33,25 +33,25 @@
       <xsl:when test="self::para and parent::block">
         <xsl:choose>
           <xsl:when test="config:block-wordstyle-for-document-label($labels, parent::block/@label) = 'generate-ps-style'">
-            <xsl:value-of select="concat('psblock',parent::block/@label)"/>
+            <xsl:value-of select="concat('ps_blk_',parent::block/@label)"/>
           </xsl:when>
           <xsl:when test="config:block-wordstyle-for-document-label($labels, parent::block/@label)!=''">
             <xsl:value-of select="config:block-wordstyle-for-document-label($labels, parent::block/@label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-document-label($labels) = 'generate-ps-style'">
-            <xsl:value-of select="concat('psblock', parent::block/@label)"/>
+            <xsl:value-of select="concat('ps_blk_', parent::block/@label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-document-label($labels) != ''">
             <xsl:value-of select="config:block-default-wordstyle-for-document-label($labels)"/>
           </xsl:when>
           <xsl:when test="config:block-wordstyle-for-default-document(parent::block/@label)='generate-ps-style'">
-            <xsl:value-of select="concat('psblock', parent::block/@label)"/>
+            <xsl:value-of select="concat('ps_blk_', parent::block/@label)"/>
           </xsl:when>
           <xsl:when test="config:block-wordstyle-for-default-document(parent::block/@label)!=''">
             <xsl:value-of select="config:block-wordstyle-for-default-document(parent::block/@label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-default-document() = 'generate-ps-style'">
-            <xsl:value-of select="concat('psblock', parent::block/@label)"/>
+            <xsl:value-of select="concat('ps_blk_', parent::block/@label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-default-document() !=''">
             <xsl:value-of select="config:block-default-wordstyle-for-default-document()"/>
@@ -85,25 +85,25 @@
       <xsl:when test="self::block">
         <xsl:choose>
           <xsl:when test="config:block-wordstyle-for-document-label($labels, @label)='generate-ps-style'">
-            <xsl:value-of select="concat('psblock', @label)"/>
+            <xsl:value-of select="concat('ps_blk_', @label)"/>
           </xsl:when>
           <xsl:when test="config:block-wordstyle-for-document-label($labels, @label)!=''">
             <xsl:value-of select="config:block-wordstyle-for-document-label($labels, @label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-document-label($labels) = 'generate-ps-style'">
-            <xsl:value-of select="concat('psblock', @label)"/>
+            <xsl:value-of select="concat('ps_blk_', @label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-document-label($labels) != ''">
             <xsl:value-of select="config:block-default-wordstyle-for-document-label($labels)"/>
           </xsl:when>
           <xsl:when test="config:block-wordstyle-for-default-document(@label)='generate-ps-style'">
-            <xsl:value-of select="concat('psblock', @label)"/>
+            <xsl:value-of select="concat('ps_blk_', @label)"/>
           </xsl:when>
           <xsl:when test="config:block-wordstyle-for-default-document(@label)!=''">
             <xsl:value-of select="config:block-wordstyle-for-default-document(@label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-default-document() = 'generate-ps-style'">
-            <xsl:value-of select="concat('psblock', @label)"/>
+            <xsl:value-of select="concat('ps_blk_', @label)"/>
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-default-document() !=''">
             <xsl:value-of select="config:block-default-wordstyle-for-default-document()"/>
@@ -134,25 +134,25 @@
         <!-- TODO Use a variable for label attribute -->
         <xsl:choose>
           <xsl:when test="config:inline-wordstyle-for-document-label($labels, ancestor::inline[1]/@label)='generate-ps-style'">
-            <xsl:value-of select="concat('psinline', ancestor::inline[1]/@label)"/>
+            <xsl:value-of select="concat('ps_inl_', ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="config:inline-wordstyle-for-document-label($labels, ancestor::inline[1]/@label)!=''">
             <xsl:value-of select="config:inline-wordstyle-for-document-label($labels, ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="config:inline-default-wordstyle-for-document-label($labels) = 'generate-ps-style'">
-            <xsl:value-of select="concat('psinline', ancestor::inline[1]/@label)"/>
+            <xsl:value-of select="concat('ps_inl_', ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="config:inline-default-wordstyle-for-document-label($labels) != ''">
             <xsl:value-of select="config:inline-default-wordstyle-for-document-label($labels)"/>
           </xsl:when>
           <xsl:when test="config:inline-wordstyle-for-default-document(ancestor::inline[1]/@label)='generate-ps-style'">
-            <xsl:value-of select="concat('psinline', ancestor::inline[1]/@label)"/>
+            <xsl:value-of select="concat('ps_inl_', ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="config:inline-wordstyle-for-default-document(ancestor::inline[1]/@label)!=''">
             <xsl:value-of select="config:inline-wordstyle-for-default-document(ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="config:inline-default-wordstyle-for-default-document() = 'generate-ps-style'">
-            <xsl:value-of select="concat('psinline', ancestor::inline[1]/@label)"/>
+            <xsl:value-of select="concat('ps_inl_', ancestor::inline[1]/@label)"/>
           </xsl:when>
           <xsl:when test="config:inline-default-wordstyle-for-default-document() != ''">
             <xsl:value-of select="config:inline-default-wordstyle-for-default-document()"/>
