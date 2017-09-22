@@ -16,5 +16,10 @@
       <level value="5" numbered="true" wordstyle="Heading Numbered 5"/>
       <level value="6" numbered="true" wordstyle="Heading Numbered 6"/>
 		</heading>
+    <block>
+      <label value="heading1" wordstyle="My"/>
+      <label value="heading2" wordstyle="My&quot;Headingx 2"/>
+      <label value="heading3" wordstyle="My(Headingx 3"/>
+    </block>
 	</elements>
 </config>

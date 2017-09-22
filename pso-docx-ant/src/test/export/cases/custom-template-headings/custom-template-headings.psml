@@ -50,6 +50,10 @@
       <para>Sample text</para>
       <heading level="6" numbered="true">Heading 6</heading>
       <para>Sample text</para>
+      <heading level="1">Blocks</heading>
+      <block label="heading1">My,Headingx 1</block>  
+      <block label="heading2">My"Headingx 2</block>  
+      <block label="heading3">My(Headingx 3</block>  
     </fragment>
   </section>
 </document>
