@@ -1,0 +1,403 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.4.18">
+
+	<xs:element name="config">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="core" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="toc" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="default" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="elements" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="core">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="creator" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="description" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="subject" minOccurs="0" maxOccurs="1" />
+				<xs:element name="title" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+				<xs:element ref="category" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="version" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="revision" minOccurs="0" maxOccurs="1" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="creator">
+		<xs:complexType>			
+			<xs:attribute name="select" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="description">
+		<xs:complexType>			
+			<xs:attribute name="select" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="subject">
+		<xs:complexType>			
+			<xs:attribute name="select" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="category">
+		<xs:complexType>			
+			<xs:attribute name="select" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="version">
+		<xs:complexType>			
+			<xs:attribute name="select" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="revision">
+		<xs:complexType>			
+			<xs:attribute name="select" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+  <xs:element name="keep-paragraph-with-next">
+    <xs:complexType/>
+  </xs:element>
+
+	<xs:element name="toc">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="headings" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="outline" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="paragraph" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="generate" type="xs:boolean"/>
+			<xs:attribute name="style" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="headings">
+		<xs:complexType>
+			<xs:attribute name="generate" type="xs:boolean"/>
+			<xs:attribute name="select">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]"/>
+						<xs:pattern value="[0-9]-[0-9]"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="outline">
+		<xs:complexType>
+			<xs:attribute name="generate" type="xs:boolean"/>
+			<xs:attribute name="select">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]"/>
+            <xs:pattern value="[0-9]-[0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="paragraph">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="style" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="generate" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="style">
+		<xs:complexType>
+			<xs:attribute name="value" type="xs:string"/>
+			<xs:attribute name="indent" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="default">
+		<xs:complexType>
+      <xs:choice>
+  			<xs:sequence>
+  				<xs:element ref="defaultparagraphstyle" minOccurs="0" maxOccurs="1" />
+  				<xs:element ref="defaultcharacterstyle" minOccurs="0" maxOccurs="1" />
+  				<xs:element ref="comments" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="xref" minOccurs="0" maxOccurs="1" />
+  			</xs:sequence>
+        <xs:sequence>
+          <xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="defaultparagraphstyle">
+		<xs:complexType>
+			<xs:attribute name="wordstyle" type="xs:string" default="Body Text"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="defaultcharacterstyle">
+		<xs:complexType>
+			<xs:attribute name="wordstyle" type="xs:string" default="Default Paragraph Font"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="comments">
+		<xs:complexType>
+			<xs:attribute name="generate" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+  
+  <xs:element name="mathml">
+    <xs:complexType>
+      <xs:attribute name="generate" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="footnotes">
+    <xs:complexType>
+      <xs:attribute name="generate" type="xs:boolean"/>
+      <xs:attribute name="xref-labels" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="endnotes">
+    <xs:complexType>
+      <xs:attribute name="generate" type="xs:boolean"/>
+      <xs:attribute name="xref-labels" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="xref">
+    <xs:complexType>      
+      <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
+    </xs:complexType>
+  </xs:element>
+
+	<xs:element name="elements">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="block" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="tables" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="preformat" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="heading" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="para" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="title" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="nlist" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="list" minOccurs="0" maxOccurs="1" />
+			</xs:all>
+			<xs:attribute name="label" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="block">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="label" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ignore" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="default" type="xs:string" default="generate-ps-style"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="inline">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="label" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ignore" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="tab" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="fieldcode" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="default" type="xs:string" default="generate-ps-style"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ignore">
+		<xs:complexType>
+			<xs:attribute name="label" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="preformat">
+		<xs:complexType>
+			<xs:attribute name="wordstyle" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="label">
+		<xs:complexType>
+      <xs:sequence>
+        <xs:element ref="keep-paragraph-with-next" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+			<xs:attribute name="value" type="xs:string"/>
+			<xs:attribute name="wordstyle" type="xs:string" default="generate-ps-style"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tab">
+		<xs:complexType>
+			<xs:attribute name="label" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="fieldcode">
+		<xs:complexType>
+			<xs:attribute name="label" type="xs:string"/>
+			<xs:attribute name="value" type="xs:string"/>
+			<xs:attribute name="regexp" type="xs:string" default="%arabic%"/>
+			<xs:attribute name="type" type="xs:string" default="SEQ"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tables">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="table" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="table">
+		<xs:complexType>
+      <xs:sequence>
+        <xs:element ref="width" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+			<xs:attribute name="default" type="xs:string"/>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="tablestyle" type="xs:string"/>
+      <xs:attribute name="headstyle" type="xs:string"/>
+      <xs:attribute name="bodystyle" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+  
+  <xs:element name="width">
+    <xs:complexType>
+      <xs:attribute name="type" type="xs:string" default="pct"/>
+      <xs:attribute name="value" type="xs:string" default="5000"/>
+    </xs:complexType>
+  </xs:element>
+  
+	<xs:element name="heading">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="level">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="prefix" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="numbered" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="keep-paragraph-with-next" minOccurs="0" maxOccurs="1" />
+			</xs:all>
+			<xs:attribute name="value">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="9"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="wordstyle" type="xs:string"/>
+      <xs:attribute name="numbered" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="numbered">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="fieldcode" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="select" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="prefix">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="fieldcode" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="select" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="para">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="indent" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="indent">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="prefix" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="numbered" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="keep-paragraph-with-next" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="level">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="9"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="wordstyle" type="xs:string" default="Body Text"/>
+      <xs:attribute name="numbered" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+  <xs:element name="title">
+    <xs:complexType>      
+      <xs:attribute name="wordstyle" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+	<xs:element name="nlist">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="default" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="role" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="default" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="role" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="role">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="value" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>	
+
+</xs:schema>
