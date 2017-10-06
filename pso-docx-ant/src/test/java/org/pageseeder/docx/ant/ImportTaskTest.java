@@ -351,6 +351,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testMathmlGenerateFiles() throws IOException, SAXException {
+    testIndividual("mathml-generate-files");
+  }
+
+  @Test
   public void testMonospaceMultiCharacterStyle() throws IOException, SAXException {
     testIndividual("monospace-multi-character-style");
   }

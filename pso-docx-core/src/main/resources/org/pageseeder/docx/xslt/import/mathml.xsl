@@ -45,7 +45,7 @@
   <xsl:variable name="math-checksum" select="fn:checksum($current)"/>
   <xref display="manual" frag="default" type="none" reverselink="true" reversetitle="" reversetype="none"
         title="{$math-checksum}"
-        href="mathml/{$math-checksum}.mml'">
+        href="mathml/{$math-checksum}.mml">
     <xsl:value-of select="$math-checksum" />
   </xref>
 </xsl:template>
