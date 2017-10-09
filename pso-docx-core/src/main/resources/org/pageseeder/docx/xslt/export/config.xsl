@@ -1099,13 +1099,15 @@ Returns the default table width value based on a table role.
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered) then (numbered/@select =  $numbered) else not(numbered)][if($prefix) then prefix else not(prefix)]"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered)
+    then @numbered='true' else not(@numbered='true')][if($prefix)
+    then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
-      <xsl:value-of select="$indent[@level='0']/@wordstyle" />
+      <xsl:value-of select="$indent[@level='0'][1]/@wordstyle" />
     </xsl:when>
     <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
-      <xsl:value-of select="$indent[@level=$indent-level]/@wordstyle" />
+      <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
@@ -1125,14 +1127,15 @@ Returns the default table width value based on a table role.
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-  <!-- TODO check how prefixes work (removed [if($prefix) then prefix else not(prefix)] from all xpaths) -->
-
+  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered)
+    then @numbered='true' else not(@numbered='true')][if($prefix)
+    then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
-    <xsl:when test="not($indent-level) and $config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level='0']/@wordstyle" />
+    <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
+      <xsl:value-of select="$indent[@level='0'][1]/@wordstyle" />
     </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@level=$indent-level]/@wordstyle" />
+    <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
+      <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />

@@ -3,56 +3,34 @@
 <config>
   <elements>
     <para>
-      <indent level="0" wordstyle="Body Text">
-        <!--
-        <prefix select="true" output="fieldcode"/>
-        -->
-      </indent>
-      <indent level="1" wordstyle="List Continue">
-        <prefix select="true"/>
-      </indent>
-      <indent level="2" wordstyle="List Continue 2">
-        <prefix select="true"/>
-      </indent>
-      <indent level="3" wordstyle="List Continue 3">
-        <prefix select="true"/>
-      </indent>
-      <indent level="4" wordstyle="List Continue 4">
-        <prefix select="true"/>
-      </indent>
-      <indent level="5" wordstyle="List Continue 5">
-        <prefix select="true"/>
-      </indent>
-      <indent level="6" wordstyle="List Continue 6">
-        <prefix select="true"/>
-      </indent>
-      <indent level="7" wordstyle="List Continue 7">
-        <prefix select="true"/>
-      </indent>
-      <indent level="8" wordstyle="List Continue 8">
-        <prefix select="true"/>
-      </indent>
-      <indent level="9" wordstyle="List Continue 9">
-        <prefix select="true"/>
-      </indent>
-      <indent level="1" numbered="true" wordstyle="List Number">
-      </indent>
-      <indent level="2" numbered="true" wordstyle="List Number 2">
-      </indent>
-      <indent level="3" numbered="true" wordstyle="List Number 3">
-      </indent>
-      <indent level="4" numbered="true" wordstyle="List Number 4">
-      </indent>
-      <indent level="5" numbered="true" wordstyle="List Number 5">
-      </indent>
-      <indent level="6" numbered="true" wordstyle="List Number 6">
-      </indent>
-      <indent level="7" numbered="true" wordstyle="List Number 7">
-      </indent>
-      <indent level="8" numbered="true" wordstyle="List Number 8">
-      </indent>
-      <indent level="9" numbered="true" wordstyle="List Number 9">
-      </indent>
+      <indent level="0" wordstyle="Body Text"/>
+      <indent level="1" wordstyle="List Continue"/>
+      <indent level="2" wordstyle="List Continue 2"/>
+      <indent level="3" wordstyle="List Continue 3"/>
+      <indent level="4" wordstyle="List Continue 4"/>
+      <indent level="5" wordstyle="List Continue 5"/>
+      <indent level="6" wordstyle="List Continue 6"/>
+      <indent level="7" wordstyle="List Continue 7"/>
+      <indent level="8" wordstyle="List Continue 8"/>
+      <indent level="9" wordstyle="List Continue 9"/>
+      <indent level="1" prefixed="true" wordstyle="List Manual"/>
+      <indent level="2" prefixed="true" wordstyle="List Manual 2"/>
+      <indent level="3" prefixed="true" wordstyle="List Manual 3"/>
+      <indent level="4" prefixed="true" wordstyle="List Manual 4"/>
+      <indent level="5" prefixed="true" wordstyle="List Manual 5"/>
+      <indent level="6" prefixed="true" wordstyle="List Manual 6"/>
+      <indent level="7" prefixed="true" wordstyle="List Manual 7"/>
+      <indent level="8" prefixed="true" wordstyle="List Manual 8"/>
+      <indent level="9" prefixed="true" wordstyle="List Manual 9"/>
+      <indent level="1" numbered="true" wordstyle="List Number"/>
+      <indent level="2" numbered="true" wordstyle="List Number 2"/>
+      <indent level="3" numbered="true" wordstyle="List Number 3"/>
+      <indent level="4" numbered="true" wordstyle="List Number 4"/>
+      <indent level="5" numbered="true" wordstyle="List Number 5"/>
+      <indent level="6" numbered="true" wordstyle="List Number 6"/>
+      <indent level="7" numbered="true" wordstyle="List Number 7"/>
+      <indent level="8" numbered="true" wordstyle="List Number 8"/>
+      <indent level="9" numbered="true" wordstyle="List Number 9"/>
     </para>
 	</elements>
 </config>
