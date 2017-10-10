@@ -27,7 +27,7 @@
           <section id="front">
             <fragment id="front">
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
-                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[config:matches-document-specific-split-styles(.)] ">
+                <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[config:matches-document-specific-split-styles(.)]">
                   <xsl:if test="position() = 1">
                     <xsl:variable name="body" as="element(body)">
                       <body>

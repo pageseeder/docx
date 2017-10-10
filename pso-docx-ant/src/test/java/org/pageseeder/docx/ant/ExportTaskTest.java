@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 import org.xmlunit.matchers.CompareMatcher;
 
@@ -504,6 +505,7 @@ public final class ExportTaskTest {
     File export_config = new File(test, "word-export-config.xml");
     Assert.assertThat(export_config, XML.validates("word-export-config.xsd"));
     task.setConfig(export_config);
+
     File template = new File(test, "word-export-template.dotx");
     if (!template.exists()) {
       template = new File(test, "word-export-template.docx");
@@ -546,10 +548,10 @@ public final class ExportTaskTest {
       File actfile = new File(result, "actual-" + actual.getName());
       System.err.println("Expected: " + expfile.getCanonicalPath());
       System.err.println("Actual: " + actfile.getCanonicalPath());
-      org.pageseeder.docx.util.Files.copy(expected, expfile);
-      org.pageseeder.docx.util.Files.copy(actual, actfile);
+      Files.copy(expected, expfile);
+      Files.copy(actual, actfile);
       // uncomment the following to bulk update expected files for changes effecting all documents
-      //org.pageseeder.docx.util.Files.copy(actual, expected);
+      //Files.copy(actual, expected);
       throw error;
     }
   }
