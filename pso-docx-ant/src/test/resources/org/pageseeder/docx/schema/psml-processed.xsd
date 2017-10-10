@@ -1,0 +1,1911 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?stylesheet format="schema" xsl-rootelement="root"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.10">
+
+  <xs:annotation>
+    <xs:documentation>This is the XML schema for PSML document processed content.</xs:documentation>
+  </xs:annotation>
+
+  <!--
+   =================================================================
+       document element
+   =================================================================
+  -->
+  <xs:element name="document">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="documentinfo" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="fragmentinfo" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="metadata"     minOccurs="0" maxOccurs="1" />
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="section" /> <!-- portable only -->
+          <xs:element ref="toc" /> <!-- portable only -->
+          <xs:element ref="fragments" /> <!-- metadata only -->
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="level" use="required">
+        <xs:annotation>
+          <xs:documentation>The level of the PSML: "portable", "processed" or "metadata".</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="portable" />
+            <xs:enumeration value="processed" />
+            <xs:enumeration value="metadata" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="schemaversion" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The version of the PSML schema: currently set to "0.9". INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="document-type">
+        <xs:annotation>
+          <xs:documentation>The PSML document type. Overrides uri/@documentype on upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="edit" type="xs:boolean" default="true">
+        <xs:annotation>
+          <xs:documentation>Whether or not this document is editable.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="lockstructure" type="xs:boolean" default="false">
+        <xs:annotation>
+          <xs:documentation>Whether or not the fragments can be moved/added/deleted.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="version" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The version of the document, the name of the version, "original" or "current". INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="date" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The date of the latest change on the document, it could be a version date or edit date. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="status" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The status of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The URI ID of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+    <xs:key name="section-id">
+      <xs:selector xpath="section" />
+      <xs:field xpath="@id"></xs:field>
+    </xs:key>
+    <xs:key name="fragment-id">
+      <xs:selector xpath="section/fragment | section/xref-fragment | section/properties-fragment | section/media-fragment" />
+      <xs:field xpath="@id"></xs:field>
+    </xs:key>
+  </xs:element>
+
+  <!--
+   =================================================================
+       fragments element (level="metadata" only)
+   =================================================================
+  -->
+  <xs:element name="fragments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="fragment"            minOccurs="0" />
+          <xs:element ref="media-fragment"      minOccurs="0" />
+          <xs:element ref="xref-fragment"       minOccurs="0" />
+          <xs:element ref="properties-fragment" minOccurs="0" />
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--
+   =================================================================
+       section element
+   =================================================================
+  -->
+  <xs:element name="section">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="title"  minOccurs="0" type="xs:string" />
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="fragment"            minOccurs="0" />
+          <xs:element ref="media-fragment"        minOccurs="0" />
+          <xs:element ref="xref-fragment"       minOccurs="0" />
+          <xs:element ref="properties-fragment" minOccurs="0" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="id" type="section-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The section ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title for the section.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="fragmenttype" type="fragment-type">
+        <xs:annotation>
+          <xs:documentation>A fragment type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="lockstructure" type="xs:boolean" default="true">
+        <xs:annotation>
+          <xs:documentation>Whether or not the fragments can be moved/added/deleted.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="overwrite" type="xs:boolean" default="true">
+        <xs:annotation>
+          <xs:documentation>Whether or not the section can be overwritten on an upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="edit" type="xs:boolean" default="true">
+        <xs:annotation>
+          <xs:documentation>Whether or not the section can be edited via the interface.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       toc element
+   =================================================================
+  -->
+  <xs:element name="toc">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tocref" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       tocref elements (for TOC)
+   =================================================================
+  -->
+  <xs:element name="tocref">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="level" type="xs:integer" use="required">
+            <xs:annotation>
+              <xs:documentation>The value of this level.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="idref" type="xs:string" use="required">
+            <xs:annotation>
+              <xs:documentation>The ref ID in the TOC (the headings will have a corresponding tocid attribute added).</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="canonical" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>The canonical value of the numbered prefix (e.g. 1.0.3 or 1.1.4).</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="prefix" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>The value of the numbered prefix with the scheme applied (e.g. 1.3 or 1.a.iv).</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       fragment element
+   =================================================================
+  -->
+  <xs:element name="fragment">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:group ref="block-style-group"     minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="id" type="fragment-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The fragment ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="fragment-type">
+        <xs:annotation>
+          <xs:documentation>The template type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>The fragment's labels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       media-fragment element
+   =================================================================
+  -->
+  <xs:element name="media-fragment">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="fragment-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The fragment ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="fragment-type">
+        <xs:annotation>
+          <xs:documentation>A template type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>The fragment's labels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="mediatype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>A MIME type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       xref-fragment element
+   =================================================================
+  -->
+  <xs:element name="xref-fragment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="blockxref" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="fragment-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The fragment ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="fragment-type">
+        <xs:annotation>
+          <xs:documentation>The template type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>The fragment's labels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       properties-fragment element
+   =================================================================
+  -->
+  <xs:element name="properties-fragment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="id" type="fragment-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The fragment ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="fragment-type">
+        <xs:annotation>
+          <xs:documentation>The template type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>The fragment's labels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       property element
+   =================================================================
+  -->
+  <xs:element name="property">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="value" minOccurs="0" maxOccurs="unbounded" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>The property's values (if multiple)</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="xref" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="markdown" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The property's title (for UI).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="label" use="required">
+        <xs:annotation>
+          <xs:documentation>The property's name.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="value" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The property's value (if single).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="datatype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The property's data type (e.g. date, xref or markdown).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="count" default="1">
+        <xs:annotation>
+          <xs:documentation>The property's value count or 'n' for unbounded (ignored for markdown).</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9n]+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="markdown">
+    <xs:annotation>
+      <xs:documentation>Markdown or PSML formatted content for a property.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:group ref="block-style-group"     minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element> 
+
+  <!--
+      **************************************************************************************************
+
+        Metadata elements
+
+      **************************************************************************************************
+   -->
+
+  <!--
+   =================================================================
+       documentinfo element
+   =================================================================
+  -->
+  <xs:element name="documentinfo">
+    <xs:annotation>
+      <xs:documentation>Metadata at the document level</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="uri" />
+        <xs:element ref="compareto"    minOccurs="0" />
+        <xs:element ref="versions"     minOccurs="0" />
+        <xs:element ref="reversexrefs" minOccurs="0" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       uri element
+   =================================================================
+  -->
+  <xs:element name="uri">
+    <xs:annotation>
+      <xs:documentation>The uri of the document</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="displaytitle" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>User entered title if any otherwise filename. INFORMATIONAL - ignored by upload.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="description" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>A brief description</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="labels" minOccurs="0" />
+      </xs:all>
+      <xs:attribute name="id" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>Unique and permanent URI identifier. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="docid" type="document-id">
+        <xs:annotation>
+          <xs:documentation>User entered unique document identifier.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="scheme" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Document URI scheme (e.g. http, https). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="host" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Document URI host (e.g. mycompany.com). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="port" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Document URI port number (e.g. 80, 443). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="path" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Document URI path (e.g. /ps/acme/specs/product.xml). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="decodedpath" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Document URI path not URL encoded (e.g. /ps/acme/specs/my product.xml). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title of the URI</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="created" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Date time the document URI was created in ISO 8601 format (e.g. 2012-05-23T15:33:52+10:00). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="modified" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Date time the document URI was last modified in ISO 8601 format (e.g. 2012-05-23T15:33:52+10:00). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="documenttype" type="document-type">
+        <xs:annotation>
+          <xs:documentation>Document type (aka document config). Used by upload if no document/@type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="mediatype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Document media type (e.g. text/html). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="external" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>If 'true' this is a URL (external URI). INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="folder" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>If 'true' this is a folder (for external URI only).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="size" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The file size in bytes (non PSML only).  INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       compareto element
+   =================================================================
+  -->
+  <xs:element name="compareto">
+    <xs:annotation>
+      <xs:documentation>The version this document is being compared to. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="title" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>User entered title of the compare document</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="description" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>A brief description of the compare document</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="labels" minOccurs="0" />
+        <xs:element ref="metadata" minOccurs="0" />
+        <xs:element ref="structure" minOccurs="0" />
+      </xs:all>
+      <xs:attribute name="version" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The name of the version or "Original".</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="date" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The creation date of the version.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="docid" type="document-id">
+        <xs:annotation>
+          <xs:documentation>The docid of the compare document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       structure element
+   =================================================================
+  -->
+  <xs:element name="structure">
+    <xs:annotation>
+      <xs:documentation>The structure of the document being compared with. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="section-ref" />
+        <xs:element name="toc-ref" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       seciton-ref element
+   =================================================================
+  -->
+  <xs:element name="section-ref">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="fragment-ref"        minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="id" type="section-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The Section ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       fragment-ref element
+   =================================================================
+  -->
+  <xs:element name="fragment-ref">
+    <xs:complexType>
+      <xs:attribute name="id" type="fragment-id" use="required">
+        <xs:annotation>
+          <xs:documentation>The Fragment ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       versions element
+   =================================================================
+  -->
+  <xs:element name="versions">
+    <xs:annotation>
+      <xs:documentation>The list of existing versions. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="version" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       version element
+   =================================================================
+  -->
+  <xs:element name="version">
+    <xs:annotation>
+      <xs:documentation>A version of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="description" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>A brief description</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="author" minOccurs="0"/>
+        <xs:element ref="labels"     minOccurs="0"/>
+      </xs:all>
+      <xs:attribute name="id" type="xs:long" use="required">
+        <xs:annotation>
+          <xs:documentation>The ID of the release</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="created" type="xs:dateTime" use="required">
+        <xs:annotation>
+          <xs:documentation>The creation date of the release</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>The version (e.g. 0.01)</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       reversexrefs element
+   =================================================================
+  -->
+  <xs:element name="reversexrefs">
+    <xs:annotation>
+      <xs:documentation>The list of reverse cross-references. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="reversexref" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="limitreached" type="xs:boolean" default="false">
+        <xs:annotation>
+          <xs:documentation>Whether the maxReverseXRefs limit has been reached.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       reversexref element
+   =================================================================
+  -->
+  <xs:element name="reversexref">
+    <xs:annotation>
+      <xs:documentation>A cross-reference from another document. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="uriid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The ID of the source document</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="docid" type="document-id">
+        <xs:annotation>
+          <xs:documentation>The Doc ID of the source document</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="frag" type="fragment-id">
+        <xs:annotation>
+          <xs:documentation>The fragment of the source - 'default' if no specific fragment</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="href" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The path of the source document</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The manual reverse title of the XRef</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="forwardtitle" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title of the XRef</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="urititle" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title of the source document</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="level">
+        <xs:annotation>
+          <xs:documentation>The number the heading levels of the target document should be incremented by when processed (1 to 5)</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:pattern value="[1-5]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="id" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The ID of the XLink</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type">
+        <xs:annotation>
+          <xs:documentation>Type for reverse link processing (only 'none' is currently supported)</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="none" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="forwardtype">
+        <xs:annotation>
+          <xs:documentation>Type for forward link processing. The following values are allowed:
+            - none: no special processing;
+            - alternate: An alternate representations of the current document;
+            - embed: Replace this element's content with the document/fragment pointed to when publishing (only valid for blockxref);
+            - transclude: Replace this element's content with the document/fragment pointed to when displaying (only valid for blockxref);
+            - image: Replace this element's src with the image pointed to when displaying (only valid for image).
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="none" />
+            <xs:enumeration value="alternate" />
+            <xs:enumeration value="embed" />
+            <xs:enumeration value="transclude" />
+            <xs:enumeration value="image" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="forwarddisplay">
+        <xs:annotation>
+          <xs:documentation>Display format for the forward link text (default is 'document'). The following values are allowed:
+            - document: [document title];
+            - document+manual: [document title]: [manual title];
+            - document+fragment: [document title]: [target fragment id];
+            - manual: [manual title].</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="document" />
+            <xs:enumeration value="document+manual" />
+            <xs:enumeration value="document+fragment" />
+            <xs:enumeration value="manual" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="forwardfrag" type="fragment-id">
+        <xs:annotation>
+          <xs:documentation>The fragment of the target - 'default' if no specific fragment</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>The labels of the cross-reference</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="mediatype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The source document's media type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="documenttype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The source document type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       author element
+   =================================================================
+  -->
+  <xs:element name="author">
+    <xs:annotation>
+      <xs:documentation>The author of a version. INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="fullname"  type="xs:string">
+          <xs:annotation>
+            <xs:documentation>The author member's first name followed by surname</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The ID of the author member</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="firstname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The first name of the author member</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="surname" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The surname of the author member</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       labels element
+   =================================================================
+  -->
+  <xs:element name="labels" type="label-list">
+    <xs:annotation>
+      <xs:documentation>The labels of the document or fragment</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <!--
+   =================================================================
+       metadata element
+   =================================================================
+  -->
+  <xs:element name="metadata">
+    <xs:annotation>
+      <xs:documentation>Metadata for document</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="properties"   minOccurs="0" />
+        <xs:element ref="notes"        minOccurs="0" />
+      </xs:all>
+      <xs:attribute name="modified" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The last edit date. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="editid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The XLink ID for the latest edit. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       properties element
+   =================================================================
+  -->
+  <xs:element name="properties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       fragmentinfo element
+   =================================================================
+  -->
+  <xs:element name="fragmentinfo">
+    <xs:annotation>
+      <xs:documentation>Metadata at the fragment level</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="locator" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       locator element
+   =================================================================
+  -->
+  <xs:element name="locator">
+    <xs:annotation>
+      <xs:documentation>Metadata of a locator</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="labels"       minOccurs="0" />
+        <xs:element ref="notes"        minOccurs="0" />
+        <xs:element ref="reversexrefs" minOccurs="0" />
+        <xs:element ref="compare"      minOccurs="0" />
+      </xs:all>
+      <xs:attribute name="id" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The Locator ID. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="fragment" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>The fragment ID</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="modified" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The last edit date. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="editid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The XLink ID for the latest edit. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       notes element
+   =================================================================
+  -->
+  <xs:element name="notes">
+    <xs:annotation>
+      <xs:documentation>The notes on the last notification of the fragment</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="note" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       note element
+   =================================================================
+  -->
+  <xs:element name="note">
+    <xs:annotation>
+      <xs:documentation>The notes on the last notification of the fragment</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="content" maxOccurs="unbounded" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>The content of the notes</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="labels" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title of the notes</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="id" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The XLink ID of the notes</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="modified" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The creation/modification date of the notes</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       compare element
+   =================================================================
+  -->
+  <xs:element name="compare">
+    <xs:annotation>
+      <xs:documentation>Details of previous fragment content if different from current (used when doing a compare). INFORMATIONAL - ignored by upload.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="labels" minOccurs="0" />
+        <xs:element ref="content" />
+        <xs:element ref="diff" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       diff element
+   =================================================================
+  -->
+  <xs:element name="diff">
+    <xs:annotation>
+      <xs:documentation>Diffx compare of previous document content with current (used when doing a compare)</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       content element
+   =================================================================
+  -->
+  <xs:element name="content">
+    <xs:annotation>
+      <xs:documentation>Previous document content if different from current (used when doing a compare)</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+      **************************************************************************************************
+
+        Block elements
+
+      **************************************************************************************************
+   -->
+  <xs:group name="block-style-group">
+    <xs:choice>
+      <xs:element ref="block" />
+      <xs:element ref="blockxref" />
+      <xs:element ref="heading" />
+      <xs:element ref="para" />
+      <xs:element ref="image" />
+      <xs:element ref="list" />
+      <xs:element ref="nlist" />
+      <xs:element ref="table" />
+      <xs:element ref="preformat" />
+    </xs:choice>
+  </xs:group>
+
+  <!--
+   =================================================================
+       para element
+   =================================================================
+  -->
+  <xs:element name="para">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="character-style-group" />
+        <xs:element ref="image" />
+      </xs:choice>
+      <xs:attribute name="indent">
+        <xs:annotation>
+          <xs:documentation>Number of levels to indent (1 to 6).</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:pattern value="[1-6]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="prefix" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Prefix for paragraph (used for numbered paragraphs).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="numbered" type="xs:boolean" default="false">
+        <xs:annotation>
+          <xs:documentation>If this paragraph is numbered.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       block element
+   =================================================================
+  -->
+  <xs:element name="block">
+    <xs:annotation>
+      <xs:documentation>Labeled block (previously paraLabel)</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="block-style-group"     minOccurs="0" maxOccurs="unbounded" />
+        <xs:group ref="character-style-group" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="label" type="label" use="required">
+        <xs:annotation>
+          <xs:documentation>Label of this block</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       blockxref element
+   =================================================================
+  -->
+  <xs:element name="blockxref">
+    <xs:annotation>
+      <xs:documentation>A block level cross reference.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="xref-type">
+          <xs:attribute name="type">
+            <xs:annotation>
+              <xs:documentation>Type for link processing (default is 'embed'). The following values are allowed:
+                - none: No link processing;
+                - alternate: An alternate representations of the current document;
+                - embed: Replace this element's content with the document/fragment pointed to when publishing;
+                - transclude: Replace this element's content with the document/fragment pointed to when displaying.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none" />
+                <xs:enumeration value="alternate" />
+                <xs:enumeration value="embed" />
+                <xs:enumeration value="transclude" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       heading element
+   =================================================================
+  -->
+  <xs:element name="heading">
+    <xs:complexType mixed="true">
+      <xs:group ref="character-style-group" minOccurs="0" maxOccurs="unbounded" />
+      <xs:attribute name="level" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>The level of the heading.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="prefix" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Prefix for heading (used for numbered headings).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="numbered" type="xs:boolean" default="false">
+        <xs:annotation>
+          <xs:documentation>If this heading is numbered.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>An ID for the TOC section (if the TOC has been generated).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       image element
+   =================================================================
+  -->
+  <xs:element name="image">
+    <xs:annotation>
+      <xs:documentation>A reference to an image.
+        Requires at least one of the following: src, docid, uriid.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="document" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="src" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Path for image (overrides docid and uriid).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="docid" type="document-id">
+        <xs:annotation>
+          <xs:documentation>The Document Id of the target image (overrides uriid).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="uriid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The URI Id of the target image.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>Width in pixels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>Height in pixels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="alt" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Alternative description for non-visual readers.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="unresolved" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>If 'true' the target image doesn't exsist. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       preformat element
+   =================================================================
+  -->
+  <xs:element name="preformat">
+    <xs:annotation>
+      <xs:documentation>Used for computer source code typically with a monospaced font (previously code).</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:group ref="character-style-group" minOccurs="0" maxOccurs="unbounded" />
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       table element
+   =================================================================
+  -->
+  <xs:element name="table">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="caption" maxOccurs="1" minOccurs="0" type="character-style" />
+        <xs:element ref="col" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="row" maxOccurs="unbounded" />
+      </xs:sequence>
+	    <xs:attribute name="role" type="role">
+	      <xs:annotation>
+	        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+	      </xs:annotation>
+	    </xs:attribute>
+      <xs:attribute name="width">
+        <xs:annotation>
+          <xs:documentation>Width of table in pixels or percent (pixels if no px or % suffix)</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9\.]+(px|%)?"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="height">
+        <xs:annotation>
+          <xs:documentation>Height of table in pixels (may have px suffix).</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]+(px)?"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="cellspacing" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The number of pixels between the border of the cell and the table frame or other cells. DEPRECATED - use @role.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="cellpadding" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The number of pixels between the border of the cell and its contents. DEPRECATED - use @role.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="border" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The width (in pixels) of the border around table cells. DEPRECATED - use @role.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="summary" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Summary of tables purpose for non-visual readers. DEPRECATED - use caption.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       col element
+   =================================================================
+  -->
+  <xs:element name="col">
+    <xs:annotation>
+      <xs:documentation>For defining column properties (starting from left - not all columns need be defined)</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+	    <xs:attribute name="role" type="role">
+	      <xs:annotation>
+	        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+	      </xs:annotation>
+	    </xs:attribute>
+       <xs:attribute name="span" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>Number of columns this applies to.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width">
+        <xs:annotation>
+          <xs:documentation>Width of column in pixels or percent (pixels if no px or % suffix)</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9\.]+(px|%)?"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="align">
+        <xs:annotation>
+          <xs:documentation>Horizontal alignment.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="left" />
+            <xs:enumeration value="center" />
+            <xs:enumeration value="right" />
+            <xs:enumeration value="justify" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="part">
+        <xs:annotation>
+          <xs:documentation>Which part of the table this is (default is 'body')</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="header" />
+            <xs:enumeration value="footer" />
+            <xs:enumeration value="body" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       row element
+   =================================================================
+  -->
+  <xs:element name="row">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="cell" />
+        <xs:element ref="hcell" />
+      </xs:choice>
+	    <xs:attribute name="role" type="role">
+	      <xs:annotation>
+	        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+	      </xs:annotation>
+	    </xs:attribute>
+      <xs:attribute name="align">
+        <xs:annotation>
+          <xs:documentation>Horizontal alignment.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="left" />
+            <xs:enumeration value="center" />
+            <xs:enumeration value="right" />
+            <xs:enumeration value="justify" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="part">
+        <xs:annotation>
+          <xs:documentation>Which part of the table this is (default is 'body')</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="header" />
+            <xs:enumeration value="footer" />
+            <xs:enumeration value="body" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       cell and hcell elements
+   =================================================================
+  -->
+  <xs:element name="cell" type="cell-style">
+    <xs:annotation>
+      <xs:documentation>For body of a table.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="hcell" type="cell-style">
+    <xs:annotation>
+      <xs:documentation>For header of a table. DEPRECATED - use @part.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="cell-style" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="character-style-group" />
+      <xs:element ref="list" />
+      <xs:element ref="nlist" />
+      <xs:element ref="para" />
+      <xs:element ref="block" />
+      <xs:element ref="blockxref" />
+      <xs:element ref="image" />
+      <xs:element ref="preformat" />
+    </xs:choice>
+    <xs:attribute name="role" type="role">
+      <xs:annotation>
+        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="colspan" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation>Number of columns spanned.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rowspan" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation>Number of rows spanned.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="align">
+      <xs:annotation>
+        <xs:documentation>Horizontal alignment.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="center" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="justify" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="valign">
+      <xs:annotation>
+        <xs:documentation>Vertical alignment. DEPRECATED - use @role.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="top" />
+          <xs:enumeration value="middle" />
+          <xs:enumeration value="bottom" />
+          <xs:enumeration value="baseline" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="width">
+      <xs:annotation>
+        <xs:documentation>Width of cell in pixels or percent (pixels if no px or % suffix). DEPRECATED - use col/@width.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9\.]+(px|%)?"/>
+          </xs:restriction>
+        </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!--
+   =================================================================
+       list element
+   =================================================================
+  -->
+  <xs:element name="list">
+    <xs:annotation>
+      <xs:documentation>Unnumbered list.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element ref="item" />
+      </xs:sequence>
+      <xs:attribute name="type">
+        <xs:annotation>
+          <xs:documentation>Label for list items.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="none" />
+            <xs:enumeration value="disc" />
+            <xs:enumeration value="circle" />
+            <xs:enumeration value="square" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       nlist element
+   =================================================================
+  -->
+  <xs:element name="nlist">
+    <xs:annotation>
+      <xs:documentation>Auto-numbered list.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element ref="item" />
+      </xs:sequence>
+      <xs:attribute name="start" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>Number to start the list at</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="arabic" />
+            <xs:enumeration value="upperalpha" />
+            <xs:enumeration value="loweralpha" />
+            <xs:enumeration value="upperroman" />
+            <xs:enumeration value="lowerroman" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       item element
+   =================================================================
+  -->
+  <xs:element name="item">
+    <xs:annotation>
+      <xs:documentation>Item in a list or an nlist.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="character-style-group" />
+        <xs:element ref="list" />
+        <xs:element ref="nlist" />
+        <xs:element ref="para" />
+        <xs:element ref="block" />
+        <xs:element ref="blockxref" />
+        <xs:element ref="image" />
+        <xs:element ref="preformat" />
+        <xs:element ref="table" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+      **************************************************************************************************
+
+        Character style elements
+
+      **************************************************************************************************
+   -->
+  <xs:complexType name="character-style" mixed="true">
+    <xs:group ref="character-style-group" minOccurs="0" maxOccurs="unbounded" />
+  </xs:complexType>
+  <xs:group name="character-style-group">
+    <xs:choice>
+      <xs:element ref="bold" />
+      <xs:element ref="italic" />
+      <xs:element ref="underline" />
+      <xs:element ref="br" />
+      <xs:element ref="sub" />
+      <xs:element ref="sup" />
+      <xs:element ref="xref" />
+      <xs:element ref="link" />
+      <xs:element ref="anchor" />
+      <xs:element ref="inline" />
+      <xs:element ref="monospace" />
+    </xs:choice>
+  </xs:group>
+
+  <!--
+   =================================================================
+       simple elements
+   =================================================================
+  -->
+  <xs:element name="bold"      type="character-style" />
+  <xs:element name="italic"    type="character-style" />
+  <xs:element name="underline" type="character-style" />
+  <xs:element name="sup"       type="character-style" />
+  <xs:element name="sub"       type="character-style" />
+  <xs:element name="monospace" type="character-style" />
+  <xs:element name="br" />
+
+  <!--
+   =================================================================
+       inline element
+   =================================================================
+  -->
+  <xs:element name="inline">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="character-style-group" />
+        <xs:element ref="image" />
+      </xs:choice>
+      <xs:attribute name="label" type="label" use="required">
+        <xs:annotation>
+          <xs:documentation>Label of this inline content</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       link element
+   =================================================================
+  -->
+  <xs:element name="link">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="character-style-group" />
+        <xs:element ref="image" />
+      </xs:choice>
+      <xs:attribute name="href" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>URL for link target.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       anchor element
+   =================================================================
+  -->
+  <xs:element name="anchor">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="character-style-group" />
+        <xs:element ref="image" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:NCName" use="required">
+        <xs:annotation>
+          <xs:documentation>Name for anchor ID.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--
+   =================================================================
+       xref element
+   =================================================================
+  -->
+  <xs:element name="xref">
+    <xs:annotation>
+      <xs:documentation>An in-line cross reference.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="xref-type">
+          <xs:attribute name="type">
+            <xs:annotation>
+              <xs:documentation>Type for link processing (default is 'none'). The following values are allowed:
+                - none: No link processing;
+                - alternate: An alternate representations of the current document.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none" />
+                <xs:enumeration value="alternate" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       xref type
+   =================================================================
+  -->
+  <xs:complexType name="xref-type" mixed="true">
+    <xs:annotation>
+      <xs:documentation>A Cross Reference between two locations in documents.
+        The attribute frag is required plus at least one of the following: href, docid, uriid.
+        The content is INFORMATIONAL - ignored by upload as the link display text is generated.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="document" />
+      <xs:element ref="locator" />
+      <xs:element ref="fragment" />
+      <xs:element ref="media-fragment" />
+      <xs:element ref="xref-fragment" />
+      <xs:element ref="properties-fragment" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:long">
+      <xs:annotation>
+        <xs:documentation>XLink ID of the cross reference. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="docid" type="document-id">
+      <xs:annotation>
+        <xs:documentation>The Document Id of the target document (overrides uriid).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="href" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>When uploading this may be a path relative to the current document or an absolute path beginning with /
+        and must be URL encoded (overrides docid and uriid).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="uriid" type="xs:long">
+      <xs:annotation>
+        <xs:documentation>The URI Id of the target document (ignored if uploading to different PS server).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="frag" type="fragment-id" use="required">
+      <xs:annotation>
+        <xs:documentation>The target fragment id - 'default' if no specific fragment (required).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="title" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The manually entered title to appear on the target link.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="level" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation>The level that the heading numbering of the target document should start from.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="display">
+      <xs:annotation>
+        <xs:documentation>Display format for the target link text (Default is 'document'). The following values are allowed:
+          - document: [document title];
+          - document+manual: [document title]: [manual title];
+          - document+fragment: [document title]: [target fragment id];
+          - manual: [manual title].</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="document" />
+          <xs:enumeration value="document+manual" />
+          <xs:enumeration value="document+fragment" />
+          <xs:enumeration value="manual" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="labels" type="label-list">
+      <xs:annotation>
+        <xs:documentation>Comma separated list of XRef labels (e.g. Concept,Broader).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="urititle" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The target document's title. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mediatype" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The target document's media type. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="documenttype" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The target document's type. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="reverselink" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>If 'true' then a reverse link to the source also appear on the target document (Default is 'true').</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="reversetitle" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The manually entered title to appear on the reverse link.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="reversetype">
+      <xs:annotation>
+        <xs:documentation>Type for link processing of reverse link (only 'none' is currently supported)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="none" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="reversefrag" type="fragment-id">
+      <xs:annotation>
+        <xs:documentation>The fragment of the source - 'default' if no specific fragment. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="unresolved" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>If 'true' the target document doesn't exsist. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="external" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>If 'true' the target is a URL (external URI). INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!--
+   =================================================================
+       Simple types
+   =================================================================
+  -->
+
+  <xs:simpleType name="document-id">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="document-type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="section-id">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-\.]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="fragment-id">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_=,&amp;\-\.]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="fragment-type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-\.]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="role">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="label">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="label-list">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-,]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

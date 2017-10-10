@@ -2,17 +2,14 @@ package org.pageseeder.docx.ant;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
-
-import junit.framework.AssertionFailedError;
+import org.xmlunit.matchers.CompareMatcher;
 
 public class ImportTaskTest {
 
@@ -603,11 +600,9 @@ public class ImportTaskTest {
   }
 
   private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
-    FileReader exp = new FileReader(expected);
-    FileReader got = new FileReader(actual);
     try {
-      XMLAssert.assertXMLEqual(exp, got);
-    } catch (AssertionFailedError error) {
+      Assert.assertThat(actual, CompareMatcher.isIdenticalTo(expected));
+    } catch (AssertionError error) {
       System.err.println("Expected:");
       copyToSystemErr(expected);
       System.err.println();

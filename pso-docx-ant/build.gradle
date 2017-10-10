@@ -16,10 +16,14 @@ dependencies {
     'org.apache.ant:ant:1.8.1'
   )
 
+  // Test dependencies
   testCompile (
-    'xmlunit:xmlunit:1.6',
-    'junit:junit:4+',
-    'org.apache.ant:ant:1.8.1'
+    'org.apache.ant:ant:1.8.1',
+    'junit:junit:4.12',
+    'org.hamcrest:java-hamcrest:2.0.0.0',
+    'org.hamcrest:hamcrest-junit:2.0.0.0',
+    'org.xmlunit:xmlunit-core:2.3.0',
+    'org.xmlunit:xmlunit-matchers:2.3.0'
   )
 
   testRuntime (
