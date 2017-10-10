@@ -50,6 +50,18 @@
       <para>Sample text</para>
       <heading level="6" numbered="true">Heading 6</heading>
       <para>Sample text</para>
+      <heading level="1" prefix="1">Heading 1</heading>
+      <para>Sample text</para>
+      <heading level="2" prefix="1.1">Heading 2</heading>
+      <para>Sample text</para>
+      <heading level="3" prefix="1.1.1">Heading 3 (no prefix)</heading>
+      <para>Sample text</para>
+      <heading level="4" prefix="1.1.1.1">Heading 4</heading>
+      <para>Sample text</para>
+      <heading level="5" prefix="1.1.1.1.1">Heading 5 (no prefix)</heading>
+      <para>Sample text</para>
+      <heading level="6" prefix="1.1.1.1.1.1">Heading 6</heading>
+      <para>Sample text</para>
     </fragment>
   </section>
 </document>

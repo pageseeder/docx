@@ -14,8 +14,12 @@
       <indent level="8" wordstyle="List Continue 8"/>
       <indent level="9" wordstyle="List Continue 9"/>
       <indent level="1" prefixed="true" wordstyle="List Manual"/>
-      <indent level="2" prefixed="true" wordstyle="List Manual 2"/>
-      <indent level="3" prefixed="true" wordstyle="List Manual 3"/>
+      <indent level="2" prefixed="true" wordstyle="List Manual 2">
+        <prefix select="true"/>
+      </indent>
+      <indent level="3" prefixed="true" wordstyle="List Manual 3">
+        <prefix select="false"/>
+      </indent>
       <indent level="4" prefixed="true" wordstyle="List Manual 4"/>
       <indent level="5" prefixed="true" wordstyle="List Manual 5"/>
       <indent level="6" prefixed="true" wordstyle="List Manual 6"/>

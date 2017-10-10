@@ -46,7 +46,6 @@
         </w:rPr>
       </xsl:if>
     </w:pPr>
-    <!-- TODO check how prefixes work -->
     <xsl:if test="@prefix">
       <xsl:choose>
         <xsl:when test="config:heading-prefix-select-for-document-label($labels, @level, @numbered)">
@@ -55,6 +54,14 @@
         <xsl:when test="config:heading-prefix-select-for-default-document(@level, @numbered)">
           <xsl:sequence select="fn:heading-prefix-value-for-default-document(@level, current(), @numbered)" />
         </xsl:when>
+        <xsl:otherwise>
+          <w:r>
+            <w:t xml:space="preserve"><xsl:value-of select="@prefix"/></w:t>
+          </w:r>
+          <w:r>
+            <w:tab/>
+          </w:r>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
     <xsl:if test="@numbered = 'true'">

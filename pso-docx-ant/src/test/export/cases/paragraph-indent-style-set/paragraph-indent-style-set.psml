@@ -50,7 +50,7 @@
       <para>text</para>
       <para indent="2" prefix="A.A">Outline level 2 – Prefix A.A text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
       <para>text</para>
-      <para indent="3" prefix="A.A.A">Outline level 3 – Prefix A.A.A text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+      <para indent="3" prefix="A.A.A">Outline level 3 – No Prefix text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
       <para>text</para>
       <para indent="1" prefix="B">Outline level 1 – Prefix B</para>
       <para>text</para>

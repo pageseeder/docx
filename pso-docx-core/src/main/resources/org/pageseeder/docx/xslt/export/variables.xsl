@@ -206,18 +206,18 @@
           <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
         </w:r>
       </xsl:if>
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']">
       <w:r>
-        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+        <w:tab/>
       </w:r>
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
-
     </xsl:when>
     <xsl:otherwise>
       <w:r>
-        <w:t xml:space="preserve"/>
+        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+      </w:r>
+      <w:r>
+        <w:tab/>
       </w:r>
     </xsl:otherwise>
   </xsl:choose>
@@ -394,17 +394,18 @@
           <w:t xml:space="preserve"><xsl:value-of select="$string-after-regexp"/></w:t>
         </w:r>
       </xsl:if>
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'true']">
       <w:r>
-        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+        <w:tab/>
       </w:r>
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/prefix[@select = 'false']">
     </xsl:when>
     <xsl:otherwise>
       <w:r>
-        <w:t xml:space="preserve"/>
+        <w:t xml:space="preserve"><xsl:value-of select="$current/@prefix"/></w:t>
+      </w:r>
+      <w:r>
+        <w:tab/>
       </w:r>
     </xsl:otherwise>
   </xsl:choose>
