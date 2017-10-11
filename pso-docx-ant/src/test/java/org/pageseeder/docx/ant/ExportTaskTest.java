@@ -145,8 +145,8 @@ public final class ExportTaskTest {
   }
 
   @Test
-  public void testEmptyConfigurationDefaultLists() throws IOException, SAXException {
-    testIndividual("empty-configuration-default-lists", "document,numbering");
+  public void testEmptyConfigurationListsStartSet() throws IOException, SAXException {
+    testIndividual("empty-configuration-lists-start-set", "document,numbering");
   }
 
   @Test

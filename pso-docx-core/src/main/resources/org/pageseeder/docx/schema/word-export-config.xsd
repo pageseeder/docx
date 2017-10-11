@@ -377,27 +377,25 @@
 	<xs:element name="nlist">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="default" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="role" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
+      <xs:attribute name="liststyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="list">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="default" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="role" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
+      <xs:attribute name="liststyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="role">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
-			</xs:sequence>
 			<xs:attribute name="value" type="xs:string"/>
+      <xs:attribute name="liststyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>	
 

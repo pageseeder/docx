@@ -1002,10 +1002,8 @@
 
 
 <!--
-  All lists not containing @type
-
+  All lists
 -->
-<!-- TODO remove unused attributes and code (e.g. @level1) -->
 <xsl:variable name="all-different-lists" as="node()">
 <lists>
   <xsl:for-each select=".//*[name() = 'list' or name() = 'nlist']">
@@ -1023,58 +1021,65 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="paragraph-style-name" >
+    <xsl:variable name="list-style-name" >
       <xsl:choose>
         <xsl:when test="$role-style != ''">
           <xsl:value-of select="$role-style"/>
         </xsl:when>
-        <xsl:when test="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type) != ''">
-          <xsl:value-of select="config:list-wordstyle-for-document-label($labels,@role,$level,$list-type)"/>
+        <xsl:when test="config:list-style-for-document-label($labels,@role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-document-label($labels,@role,$list-type)"/>
         </xsl:when>
-        <xsl:when test="config:list-wordstyle-for-default-document(@role,$level,$list-type) != ''">
-          <xsl:value-of select="config:list-wordstyle-for-default-document(@role,$level,$list-type)"/>
+        <xsl:when test="config:list-style-for-default-document(@role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-default-document(@role,$list-type)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>
+          <xsl:value-of select="''" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
-    <xsl:variable name="paragraph-style" select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $paragraph-style-name]/@w:styleId"/>
+    <xsl:variable name="list-style" select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $list-style-name]/@w:styleId"/>
 
+    <xsl:variable name="abstract-num" select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:styleLink/@w:val = $list-style]"/>
+    
+    <xsl:variable name="abstract-num-id">
+      <xsl:choose>
+        <!-- if abstractNum not found try to find default -->
+        <xsl:when test="not($abstract-num)">
+          <xsl:variable name="paragraph-style-id" select="if ($list-type = 'nlist') then 'ListNumber' else 'ListBullet'" />
+          <xsl:variable name="num-id" select="document(concat($_dotxfolder, $styles-template))//w:style[@w:styleId = $paragraph-style-id]/w:pPr/w:numPr/w:numId/@w:val"/>
+          <xsl:choose>
+            <!-- if no number ID then error -->
+            <xsl:when test="not($num-id)">
+              <xsl:message>DOCX EXPORT ERROR: No style found for <xsl:value-of
+                select="$list-type"/> with role=<xsl:value-of select="$role"/> (URI ID: <xsl:value-of
+                select="/document/documentinfo/uri/@id" />)</xsl:message>
+              <xsl:value-of select="'0'" />  
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="document(concat($_dotxfolder, $numbering-template))//w:num[@w:numId=$num-id]/w:abstractNumId/@w:val"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$abstract-num/@w:abstractNumId" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <xsl:choose>
       <xsl:when test="$list-type = 'nlist'">
         <nlist start="{if (@start) then @start else 1}" >
-          <xsl:attribute name="level">
-              <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
-          </xsl:attribute>
           <xsl:attribute name="role" select="$role-style"/>
-          <xsl:attribute name="labels" select="$labels"/>
-          <xsl:attribute name="level1" select="$level"/>
-          <xsl:attribute name="pstylename">
-            <xsl:value-of select="$paragraph-style-name"/>
-          </xsl:attribute>
-          <xsl:attribute name="pstyle">
-            <xsl:value-of select="$paragraph-style"/>
-          </xsl:attribute>
-          <xsl:value-of select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
+          <xsl:attribute name="level" select="$level - 1"/>
+          <xsl:value-of select="$abstract-num-id" />
         </nlist>
       </xsl:when>
       <xsl:otherwise>
         <list>
-          <xsl:attribute name="level">
-            <xsl:value-of select="count(document(concat($_dotxfolder, $numbering-template))//w:abstractNum/w:lvl[w:pStyle/@w:val = $paragraph-style]/preceding-sibling::w:lvl)"/>
-          </xsl:attribute>
           <xsl:attribute name="role" select="$role-style"/>
-          <xsl:attribute name="labels" select="$labels"/>
-          <xsl:attribute name="level1" select="$level"/>
-          <xsl:attribute name="pstylename">
-            <xsl:value-of select="$paragraph-style-name"/>
-          </xsl:attribute>
-          <xsl:attribute name="pstyle">
-            <xsl:value-of select="$paragraph-style"/>
-          </xsl:attribute>
-          <xsl:value-of select="document(concat($_dotxfolder,$numbering-template))//w:abstractNum[w:lvl/w:pStyle/@w:val = $paragraph-style]/@w:abstractNumId"/>
+          <xsl:attribute name="level" select="$level - 1"/>
+          <xsl:value-of select="$abstract-num-id" />
         </list>
       </xsl:otherwise>
     </xsl:choose>
