@@ -16,7 +16,7 @@ public final class ExportTaskTest {
 
   private static final File CASES = new File("src/test/export/cases");
 
-  private static final File RESULTS = new File("build/test/export/results");
+  private static final File RESULTS = new File("test/export/results");
 
   @Test
   public void testBlockDefaultNone() throws IOException, SAXException {

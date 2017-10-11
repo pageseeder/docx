@@ -195,7 +195,7 @@
               urititle="fn" mediatype="application/vnd.pageseeder.psml+xml">9</xref></sup></para>
       </block>
     </fragment>
-    <fragment id="28508-11">
+    <fragment id="28508-12">
       <heading level="4">Xref with Sup inside of Inline Label
       </heading>
       <para><inline label="example10"><sup>Example

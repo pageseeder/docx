@@ -15,7 +15,7 @@ public class ImportTaskTest {
 
   private static final File CASES = new File("src/test/import/cases");
 
-  private static final File RESULTS = new File("build/test/import/results");
+  private static final File RESULTS = new File("test/import/results");
 
   @Test
   public void testBlockMultipleParagraphStyles() throws IOException, SAXException {
