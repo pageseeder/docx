@@ -13,6 +13,7 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -28,8 +29,9 @@
       <w:document>
         <w:body>
           <!-- TODO Suspicious use of the `fragment-[id]` for a document, use `document-[id]` and update `psml-link.xsl` when fragment is default -->
-          <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-          <w:bookmarkEnd w:id="{count(preceding::*)}" />
+          <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+          <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+          <w:bookmarkEnd w:id="{$bookmark-id}" />
           <xsl:apply-templates select="section|toc" mode="psml">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
           </xsl:apply-templates>
@@ -46,11 +48,12 @@
       </w:document>
     </xsl:when>
     <xsl:otherwise>
-      <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
+      <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+      <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
       <xsl:apply-templates mode="psml" >
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
-      <w:bookmarkEnd w:id="{count(preceding::*)}"/>
+      <w:bookmarkEnd w:id="{$bookmark-id}"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
@@ -83,31 +86,35 @@
      <w:commentRangeEnd w:id="{$id}"/>
     </w:p>
   </xsl:if>
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
+  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
     <xsl:apply-templates mode="psml" />
-  <w:bookmarkEnd  w:id="{count(preceding::*)}" />
+  <w:bookmarkEnd  w:id="{$bookmark-id}" />
 </xsl:template>
 
 <!--
   Match xref-fragment of pageseeder document
 -->
 <xsl:template match="xref-fragment" mode="psml">
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
+  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
   <xsl:apply-templates mode="psml" />
-  <w:bookmarkEnd w:id="{count(preceding::*)}" />
+  <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
 
 <!--
   Match media-fragment of pageseeder document
 -->
 <xsl:template match="media-fragment" mode="psml">
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
-  <w:bookmarkEnd w:id="{count(preceding::*)}" />
+  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+  <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
 
   <!-- Template to match properties fragment and transform it into a table -->
 <xsl:template match="properties-fragment" mode="psml">
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{count(preceding::*)}"/>
+  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
   <w:tbl>
     <w:tblPr>
       <w:tblBorders>
@@ -121,7 +128,7 @@
     </w:tblPr>
     <xsl:apply-templates mode="psml" />
   </w:tbl>
-  <w:bookmarkEnd w:id="{count(preceding::*)}"/>
+  <w:bookmarkEnd w:id="{$bookmark-id}"/>
 </xsl:template>
 
 <!-- Template to handle each `property` -->

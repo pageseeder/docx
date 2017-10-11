@@ -19,6 +19,18 @@
 <!-- TODO Indicate return type -->
 
 <!--
+  Calculate a unique bookmark ID.
+
+  @param current the current PSML element
+
+  @return the unique number
+-->
+<xsl:function name="fn:bookmark-id" as="xs:integer">
+  <xsl:param name="current" />
+  <xsl:value-of select="count($current/preceding::*) + count($current/ancestor::*)" />
+</xsl:function>
+
+<!--
   Returns type of Word numbering style based on the current pageseeder list style.
 
   @param list-style the PSML list style

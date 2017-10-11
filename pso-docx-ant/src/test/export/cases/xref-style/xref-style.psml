@@ -7,6 +7,18 @@
     </fragment>
   </section>
   <section id="content">
+    <!-- Embed to test for duplicate bookmark ID -->
+    <xref-fragment id="content">
+      <blockxref uriid="28509" title="Test" frag="default" display="document"
+        type="embed" reverselink="true" reversetitle="" reversetype="none"
+        href="test.psml">
+        <document id="28509" level="processed">
+          <section id="title">
+            <fragment id="title" />
+          </section>
+        </document>
+      </blockxref>
+    </xref-fragment>
     <fragment id="28508-2">
       <heading level="4">Xref with Sup</heading>
       <para>
