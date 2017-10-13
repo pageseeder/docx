@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 
 <config>
-	
+  <elements>
+    <nlist liststyle="Numbered List"/>
+    <list liststyle="Bulleted List"/>
+  </elements>
 </config>

@@ -1008,7 +1008,6 @@
 <lists>
   <xsl:for-each select=".//*[name() = 'list' or name() = 'nlist']">
     <xsl:variable name="role" select="ancestor-or-self::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
-    <xsl:variable name="role-style" select="config:get-style-from-role($role,.)"/>
     <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
     <xsl:variable name="list-type" select="./name()"/>
     <xsl:variable name="labels">
@@ -1023,14 +1022,11 @@
     </xsl:variable>
     <xsl:variable name="list-style-name" >
       <xsl:choose>
-        <xsl:when test="$role-style != ''">
-          <xsl:value-of select="$role-style"/>
+        <xsl:when test="config:list-style-for-document-label($labels,$role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-document-label($labels,$role,$list-type)"/>
         </xsl:when>
-        <xsl:when test="config:list-style-for-document-label($labels,@role,$list-type) != ''">
-          <xsl:value-of select="config:list-style-for-document-label($labels,@role,$list-type)"/>
-        </xsl:when>
-        <xsl:when test="config:list-style-for-default-document(@role,$list-type) != ''">
-          <xsl:value-of select="config:list-style-for-default-document(@role,$list-type)"/>
+        <xsl:when test="config:list-style-for-default-document($role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-default-document($role,$list-type)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="''" />
@@ -1070,14 +1066,14 @@
     <xsl:choose>
       <xsl:when test="$list-type = 'nlist'">
         <nlist start="{if (@start) then @start else 1}" >
-          <xsl:attribute name="role" select="$role-style"/>
+          <xsl:attribute name="role" select="$role"/>
           <xsl:attribute name="level" select="$level - 1"/>
           <xsl:value-of select="$abstract-num-id" />
         </nlist>
       </xsl:when>
       <xsl:otherwise>
         <list>
-          <xsl:attribute name="role" select="$role-style"/>
+          <xsl:attribute name="role" select="$role"/>
           <xsl:attribute name="level" select="$level - 1"/>
           <xsl:value-of select="$abstract-num-id" />
         </list>

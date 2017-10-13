@@ -1046,7 +1046,6 @@ Returns the default table width value based on a table role.
   <xsl:variable name="list-style" select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $list-style-name]/@w:styleId"/>
   <xsl:variable name="abstract-num" select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:styleLink/@w:val = $list-style]"/>
   <xsl:variable name="para-style" select="$abstract-num/w:lvl[@w:ilvl=number($list-level - 1)]/w:pStyle/@w:val" />
-  <xsl:message>$para-style=<xsl:value-of select="$para-style"/></xsl:message>
   <xsl:value-of select="if ($para-style) then $para-style else ''"/>
 </xsl:function>
 
@@ -1190,39 +1189,6 @@ Returns the default table width value based on a table role.
     </xsl:when>
     <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
       <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the configured ps:(n)list w:style for a specific role
-
-  @param role the current list role
-  @param current the current node
-
-  @return the w:style
--->
-<xsl:function name="config:get-style-from-role" as="xs:string">
-  <xsl:param name="role"/>
-  <xsl:param name="current" as="node()"/>
-  <xsl:variable name="document-label" select="$current/ancestor::document[1]/documentinfo/uri/labels"/>
-  <xsl:variable name="list-type" select="$current/name()"/>
-  <xsl:variable name="level" select="count($current/ancestor::*[name() = 'nlist' or name() = 'list']) + 1"/>
-  <xsl:choose>
-    <xsl:when test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/level[@value=$level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/role[@value=$role]/level[@value=$level]/@wordstyle" />
-    </xsl:when>
-    <xsl:when test="$document-label != '' and $config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/level[@value=$level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/role[@value=$role]/level[@value=$level]/@wordstyle" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name()=$list-type]/default/level[@value=$level]/@wordstyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
