@@ -3,7 +3,6 @@
 <config>
 	<lists>
 	  <convert-to-numbered-paragraphs select="true">
-		<level value="0" output="numbering"/> 
 	    <level value="1" output="numbering"/> <!-- prefix or numbering or inline=[label] or text -->
 	    <level value="2" output="numbering"/>
 	    <level value="3" output="numbering"/>

@@ -46,7 +46,6 @@
         </w:rPr>
       </xsl:if>
     </w:pPr>
-    <!-- TODO check how prefixes work -->
     <xsl:if test="@prefix">
       <xsl:choose>
         <xsl:when test="config:heading-prefix-select-for-document-label($labels, @level, @numbered)">
@@ -55,6 +54,14 @@
         <xsl:when test="config:heading-prefix-select-for-default-document(@level, @numbered)">
           <xsl:sequence select="fn:heading-prefix-value-for-default-document(@level, current(), @numbered)" />
         </xsl:when>
+        <xsl:otherwise>
+          <w:r>
+            <w:t xml:space="preserve"><xsl:value-of select="@prefix"/></w:t>
+          </w:r>
+          <w:r>
+            <w:tab/>
+          </w:r>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
     <xsl:if test="@numbered = 'true'">
@@ -177,33 +184,35 @@
           <xsl:call-template name="apply-style" />
         </xsl:otherwise>
       </xsl:choose>
-      <!-- TODO <w:r> not allowed inside <w:pPr> check prefix functionality -->
-      <xsl:if test="@prefix">
-        <xsl:choose>
-          <xsl:when test="config:para-prefix-select-for-document-label($labels, @indent, @numbered)">
-            <xsl:sequence select="fn:para-prefix-value-for-document-label($labels, @indent, current(), @numbered)" />
-          </xsl:when>
-          <xsl:when test="config:para-prefix-select-for-default-document(@indent, @numbered)">
-            <xsl:sequence select="fn:para-prefix-value-for-default-document(@indent, current(), @numbered)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <w:r>
-              <w:t xml:space="preserve"><xsl:value-of select="@prefix" /> </w:t>
-            </w:r>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
-      <xsl:if test="@numbered = 'true'">
-        <xsl:choose>
-          <xsl:when test="config:para-numbered-select-for-document-label($labels,@indent,@numbered)">
-            <xsl:sequence select="fn:para-numbered-value-for-document-label($labels,@indent,current(),@numbered)" />
-          </xsl:when>
-          <xsl:when test="config:para-numbered-select-for-default-document(@indent,@numbered)">
-            <xsl:sequence select="fn:para-numbered-value-for-default-document(@indent,current(),@numbered)" />
-          </xsl:when>
-        </xsl:choose>
-      </xsl:if>
     </w:pPr>
+    <xsl:if test="@prefix">
+      <xsl:choose>
+        <xsl:when test="config:para-prefix-select-for-document-label($labels, @indent, @numbered)">
+          <xsl:sequence select="fn:para-prefix-value-for-document-label($labels, @indent, current(), @numbered)" />
+        </xsl:when>
+        <xsl:when test="config:para-prefix-select-for-default-document(@indent, @numbered)">
+          <xsl:sequence select="fn:para-prefix-value-for-default-document(@indent, current(), @numbered)" />
+        </xsl:when>
+        <xsl:otherwise>
+          <w:r>
+            <w:t xml:space="preserve"><xsl:value-of select="@prefix" /></w:t>
+          </w:r>
+          <w:r>
+            <w:tab/>
+          </w:r>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+    <xsl:if test="@numbered = 'true'">
+      <xsl:choose>
+        <xsl:when test="config:para-numbered-select-for-document-label($labels,@indent,@numbered)">
+          <xsl:sequence select="fn:para-numbered-value-for-document-label($labels,@indent,current(),@numbered)" />
+        </xsl:when>
+        <xsl:when test="config:para-numbered-select-for-default-document(@indent,@numbered)">
+          <xsl:sequence select="fn:para-numbered-value-for-default-document(@indent,current(),@numbered)" />
+        </xsl:when>
+      </xsl:choose>
+    </xsl:if>
     <xsl:apply-templates mode="psml" />
     <xsl:if test="$vanish">
       <w:r>

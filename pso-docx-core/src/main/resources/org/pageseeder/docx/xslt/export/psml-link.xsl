@@ -12,6 +12,7 @@
                 xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -219,7 +220,7 @@
       <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:when test="@name">
-      <xsl:variable name="bookmark-id" select="count(preceding::*)"/>
+      <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
       <w:bookmarkStart w:id="{$bookmark-id}" w:name="anchor-{@name}"/>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
     </xsl:when>

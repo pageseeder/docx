@@ -79,8 +79,8 @@
     <default>
       <paragraphStyles value="block" />
       <!-- possible values: 'para' or 'block' -->
-      <characterStyles value="inlineLabel" />
-      <!-- possible values: 'none' or 'inlineLabel' -->
+      <characterStyles value="inline" />
+      <!-- possible values: 'none' or 'inline' -->
       <smart-tag keep="true" />
       <!--  <property name="prefix" value="true" /> possible values: 'false' or 'true' -->
     </default>

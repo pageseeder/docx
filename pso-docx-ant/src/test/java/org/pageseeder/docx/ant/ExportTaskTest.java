@@ -1,18 +1,13 @@
 package org.pageseeder.docx.ant;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
-
-import junit.framework.AssertionFailedError;
+import org.xmlunit.matchers.CompareMatcher;
 
 /**
  * Test cases for export task
@@ -21,7 +16,7 @@ public final class ExportTaskTest {
 
   private static final File CASES = new File("src/test/export/cases");
 
-  private static final File RESULTS = new File("build/test/export/results");
+  private static final File RESULTS = new File("test/export/results");
 
   @Test
   public void testBlockDefaultNone() throws IOException, SAXException {
@@ -150,8 +145,8 @@ public final class ExportTaskTest {
   }
 
   @Test
-  public void testEmptyConfigurationDefaultLists() throws IOException, SAXException {
-    testIndividual("empty-configuration-default-lists", "document,numbering");
+  public void testEmptyConfigurationListsStartSet() throws IOException, SAXException {
+    testIndividual("empty-configuration-lists-start-set", "document,numbering");
   }
 
   @Test
@@ -207,11 +202,6 @@ public final class ExportTaskTest {
   @Test
   public void testHeadingsStyleSet() throws IOException, SAXException {
     testIndividual("headings-style-set");
-  }
-
-  @Test
-  public void testHeadingsStyleSetNumberingFalse() throws IOException, SAXException {
-    testIndividual("headings-style-set-numbering-false");
   }
 
   @Test
@@ -505,8 +495,17 @@ public final class ExportTaskTest {
   private void process(File test, File result, boolean saveWorking) {
 
     ExportTask task = new ExportTask();
-    task.setSrc(new File(test, test.getName() + ".psml"));
-    task.setConfig(new File(test, "word-export-config.xml"));
+
+    // validate test PSML
+    File psml = new File(test, test.getName() + ".psml");
+    Assert.assertThat(psml, XML.validates("psml-processed.xsd"));
+    task.setSrc(psml);
+
+    // validate config file
+    File export_config = new File(test, "word-export-config.xml");
+    Assert.assertThat(export_config, XML.validates("word-export-config.xsd"));
+    task.setConfig(export_config);
+
     File template = new File(test, "word-export-template.dotx");
     if (!template.exists()) {
       template = new File(test, "word-export-template.docx");
@@ -542,37 +541,19 @@ public final class ExportTaskTest {
   }
 
   private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
-    FileReader exp = new FileReader(expected);
-    FileReader got = new FileReader(actual);
     try {
-      XMLAssert.assertXMLEqual(exp, got);
-    } catch (AssertionFailedError error) {
+      Assert.assertThat(actual, CompareMatcher.isIdenticalTo(expected));
+    } catch (AssertionError error) {
       File expfile = new File(result, "expected-" + actual.getName());
       File actfile = new File(result, "actual-" + actual.getName());
       System.err.println("Expected: " + expfile.getCanonicalPath());
-      //copyToSystemErr(expected);
-      //System.err.println();
       System.err.println("Actual: " + actfile.getCanonicalPath());
-      //copyToSystemErr(actual);
-      //System.err.println();
       Files.copy(expected, expfile);
       Files.copy(actual, actfile);
       // uncomment the following to bulk update expected files for changes effecting all documents
       //Files.copy(actual, expected);
       throw error;
     }
-  }
-
-  private static void copyToSystemErr(File f) throws IOException {
-    InputStream in = new FileInputStream(f);
-
-    // Transfer bytes from in to out
-    byte[] buf = new byte[1024];
-    int len;
-    while ((len = in.read(buf)) > 0) {
-      System.err.write(buf, 0, len);
-    }
-    in.close();
   }
 
 }

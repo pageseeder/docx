@@ -27,8 +27,8 @@
   <xs:element name="main">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="type" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
-        <xs:element name="label" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+        <xs:element name="type" minOccurs="0" maxOccurs="1" type="xs:string" />
+        <xs:element name="label" minOccurs="0" maxOccurs="1" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -79,9 +79,10 @@
   <xs:element name="document">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="outlinelevel" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="sectionbreak" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="outlinelevel" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="wordstyle" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="splitstyle" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
       <xs:attribute name="select" type="xs:boolean" />
     </xs:complexType>
@@ -90,9 +91,10 @@
   <xs:element name="section">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="outlinelevel" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="sectionbreak" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="outlinelevel" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="wordstyle" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="splitstyle" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
       <xs:attribute name="select" type="xs:boolean" />
       <xs:attribute name="use-real-titles" type="xs:boolean" />
@@ -106,6 +108,9 @@
           <xs:restriction base="xs:string">
             <xs:enumeration value="evenPage" />
             <xs:enumeration value="oddPage" />
+            <xs:enumeration value="continuous" />
+            <xs:enumeration value="nextColumn" />
+            <xs:enumeration value="nextPage" />
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -122,6 +127,12 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="splitstyle">
+    <xs:complexType>
+      <xs:attribute name="select" type="xs:string"/>
     </xs:complexType>
   </xs:element>
 
@@ -265,17 +276,17 @@
     
    <xs:element name="wordstyle">
     <xs:complexType>
-        <xs:sequence>
-          <xs:element name="label" minOccurs="0" maxOccurs="1" type="xs:string" />
+        <xs:all>
+          <xs:element ref="label" minOccurs="0" maxOccurs="1" />
           <xs:element name="type" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element ref="level" minOccurs="0" maxOccurs="1" />
           <xs:element ref="numbering" minOccurs="0" maxOccurs="1" />
           <xs:element ref="indent" minOccurs="0" maxOccurs="1" />
-        </xs:sequence>
+        </xs:all>
         <xs:attribute name="select" type="xs:string" />
         <xs:attribute name="value" type="xs:string" />
-          <xs:attribute name="name" type="xs:string" />
-          <xs:attribute name="table" type="xs:string" />
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="table" type="xs:string" />
         <xs:attribute name="psmlelement">
             <xs:simpleType>
               <xs:restriction base="xs:string">

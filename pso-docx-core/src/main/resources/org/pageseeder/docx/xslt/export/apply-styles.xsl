@@ -199,11 +199,11 @@
         <xsl:variable name="role"      select="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
         <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
         <xsl:choose>
-          <xsl:when test="config:list-wordstyle-for-document-label($labels,$role,$level,$list-type) != ''">
-            <xsl:value-of select="config:list-wordstyle-for-document-label($labels,$role,$level,$list-type)"/>
+          <xsl:when test="config:list-paragraphstyle-for-document-label($labels,$role,$level,$list-type) != ''">
+            <xsl:value-of select="config:list-paragraphstyle-for-document-label($labels,$role,$level,$list-type)"/>
           </xsl:when>
-          <xsl:when test="config:list-wordstyle-for-default-document($role,$level,$list-type) != ''">
-            <xsl:value-of select="config:list-wordstyle-for-default-document($role,$level,$list-type)"/>
+          <xsl:when test="config:list-paragraphstyle-for-default-document($role,$level,$list-type) != ''">
+            <xsl:value-of select="config:list-paragraphstyle-for-default-document($role,$level,$list-type)"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="fn:default-list-wordstyle($level,$list-type)"/>

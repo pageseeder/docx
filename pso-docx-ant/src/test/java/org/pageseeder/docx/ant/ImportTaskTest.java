@@ -2,23 +2,20 @@ package org.pageseeder.docx.ant;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
-
-import junit.framework.AssertionFailedError;
+import org.xmlunit.matchers.CompareMatcher;
 
 public class ImportTaskTest {
 
   private static final File CASES = new File("src/test/import/cases");
 
-  private static final File RESULTS = new File("build/test/import/results");
+  private static final File RESULTS = new File("test/import/results");
 
   @Test
   public void testBlockMultipleParagraphStyles() throws IOException, SAXException {
@@ -48,11 +45,6 @@ public class ImportTaskTest {
   @Test
   public void testDefaultParagraphStylePara() throws IOException, SAXException {
     testIndividual("default-paragraph-style-para");
-  }
-
-  @Test
-  public void testDefaultParagraphStyleSomethingElse() throws IOException, SAXException {
-    testIndividual("default-paragraph-style-something-else");
   }
 
   @Test
@@ -138,6 +130,11 @@ public class ImportTaskTest {
   @Test
   public void testDocumentSplitParagraphStyle() throws IOException, SAXException {
     testIndividual("document-split-paragraph-style");
+  }
+
+  @Test
+  public void testDocumentSplitSplitstyle() throws IOException, SAXException {
+    testIndividual("document-split-splitstyle");
   }
 
   @Test
@@ -351,6 +348,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testMathmlGenerateFiles() throws IOException, SAXException {
+    testIndividual("mathml-generate-files");
+  }
+
+  @Test
   public void testMonospaceMultiCharacterStyle() throws IOException, SAXException {
     testIndividual("monospace-multi-character-style");
   }
@@ -541,6 +543,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testSectionSplitSplitstyle() throws IOException, SAXException {
+    testIndividual("section-split-splitstyle");
+  }
+
+  @Test
   public void testSmartTagFalse() throws IOException, SAXException {
     testIndividual("smart-tag-false");
   }
@@ -587,22 +594,29 @@ public class ImportTaskTest {
   private File process(File test, File result) {
     ImportTask task = new ImportTask();
     task.setSrc(new File(test, test.getName() + ".docx"));
-    task.setConfig(new File(test, "word-import-config.xml"));
+
+    // validate config file
+    File import_config = new File(test, "word-import-config.xml");
+    Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
+    task.setConfig(import_config);
+
     task.setDest(result);
     Parameter parameter = task.createParam();
     parameter.setName("generate-processed-psml");
     parameter.setValue("true");
     task.execute();
 
-    return new File(result, test.getName() + ".psml");
+    // validate result PSML
+    File actual = new File(result, test.getName() + ".psml");
+    Assert.assertThat(actual, XML.validates("psml-processed.xsd"));
+
+    return actual;
   }
 
   private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
-    FileReader exp = new FileReader(expected);
-    FileReader got = new FileReader(actual);
     try {
-      XMLAssert.assertXMLEqual(exp, got);
-    } catch (AssertionFailedError error) {
+      Assert.assertThat(actual, CompareMatcher.isIdenticalTo(expected));
+    } catch (AssertionError error) {
       System.err.println("Expected:");
       copyToSystemErr(expected);
       System.err.println();
