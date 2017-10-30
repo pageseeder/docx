@@ -163,6 +163,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testEmptyConfigurationImagesBrackets() throws IOException, SAXException {
+    testIndividual("empty-configuration-(images)");
+  }
+
+  @Test
   public void testEmptyConfigurationMultilevelLists() throws IOException, SAXException {
     testIndividual("empty-configuration-multilevel-lists");
   }

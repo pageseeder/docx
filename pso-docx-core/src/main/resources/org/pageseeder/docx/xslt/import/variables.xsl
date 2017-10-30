@@ -581,10 +581,10 @@ Returns the boolean if the current node matches a outline level document break o
 <xsl:variable name="media-folder-name" as="xs:string">
   <xsl:choose>
     <xsl:when test="$_mediafoldername = ''">
-      <xsl:value-of select="iri-to-uri(concat($_docxfilename,'_files'))" />
+      <xsl:value-of select="encode-for-uri(concat($_docxfilename,'_files'))" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="iri-to-uri($_mediafoldername)" />
+      <xsl:value-of select="encode-for-uri($_mediafoldername)" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
