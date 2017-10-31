@@ -85,6 +85,7 @@
         <xs:element ref="splitstyle" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
       <xs:attribute name="select" type="xs:boolean" />
+      <xs:attribute name="use-real-titles" type="xs:boolean" />
     </xs:complexType>
   </xs:element>
 
