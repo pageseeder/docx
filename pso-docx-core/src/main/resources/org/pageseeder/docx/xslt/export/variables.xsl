@@ -35,6 +35,9 @@
 <!-- The name of the docx file -->
 <xsl:variable name="filename" select="substring-before($_docxfilename,'.docx')" as="xs:string"/>
 
+<!-- The uri element of the root PSML document -->
+<xsl:variable name="root-uri" select="/document/documentinfo/uri" />
+
 <!-- The document node of the numbering template -->
 <xsl:variable name="numbering-template" select="document($_content-types-template)/ct:Types/ct:Override[fn:string-after-last-delimiter(@ContentType,'\.') = 'numbering+xml']/@PartName" />
 

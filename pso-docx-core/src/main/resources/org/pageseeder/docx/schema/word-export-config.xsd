@@ -26,6 +26,21 @@
 				<xs:element ref="category" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="version" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="revision" minOccurs="0" maxOccurs="1" />
+        <xs:element name="keywords" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="created" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="modified" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
 			</xs:all>
 		</xs:complexType>
 	</xs:element>

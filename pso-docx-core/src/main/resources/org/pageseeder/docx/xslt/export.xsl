@@ -46,7 +46,7 @@
 <!-- Parameter that sets the core property in word -->
 <xsl:param name="manual-core"/>
 
-<!-- Parameter that sets the crestor property in word -->
+<!-- Parameter that sets the creator property in word -->
 <xsl:param name="manual-creator"/>
 
 <!-- Parameter that sets the revision property in word -->
@@ -54,6 +54,12 @@
 
 <!-- Parameter that sets the created property in word -->
 <xsl:param name="manual-created"/>
+
+<!-- Parameter that sets the modified property in word -->
+<xsl:param name="manual-modified"/>
+
+<!-- Parameter that sets the keywords property in word -->
+<xsl:param name="manual-keywords"/>
 
 <!-- Parameter that sets the version property in word -->
 <xsl:param name="manual-version"/>
@@ -69,6 +75,9 @@
 
 <!-- Parameter that sets the description property in word -->
 <xsl:param name="manual-description"/>
+
+<!-- The full name of the current user (sets the [ps-current-user] value) -->
+<xsl:param name="current-user"/>
 
 <!-- The root folder where the DOCX files will be created -->
 <xsl:param name="_outputfolder"/>

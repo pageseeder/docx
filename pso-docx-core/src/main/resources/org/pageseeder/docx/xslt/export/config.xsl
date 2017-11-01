@@ -31,6 +31,88 @@
 -->
 <xsl:variable name="config-doc" select="document($_configfileurl)" />
 
+<!--
+  Substitute a PageSeeder token with the corresponding value. The supported tokens are:
+    [ps-current-user]
+    [ps-document-description]
+    [ps-document-title]
+    [ps-document-created]
+    [ps-document-modified]
+    [ps-current-date]
+    [ps-document-labels]
+  
+  @param token   the token string
+  
+  @return the substituted value or the original token if not recognized
+-->
+<xsl:function name="config:ps-token" as="xs:string">
+  <xsl:param name="token"/>
+  <xsl:choose>
+    <xsl:when test="$token = '[ps-current-user]'">
+      <xsl:value-of select="$current-user"/>
+    </xsl:when>
+    <xsl:when test="$token = '[ps-document-description]'">
+      <xsl:value-of select="$root-uri/description"/>
+    </xsl:when>
+    <xsl:when test="$token = '[ps-document-title]'">
+      <xsl:value-of select="if ($root-uri/@title) then $root-uri/@title else substring-before($root-uri/displaytitle,'.psml')"/>
+    </xsl:when>
+    <xsl:when test="$token = '[ps-document-created]'">
+      <xsl:value-of select="$root-uri/@created"/>
+    </xsl:when>
+    <xsl:when test="$token = '[ps-document-modified]'">
+      <xsl:value-of select="$root-uri/@modified"/>
+    </xsl:when>
+    <xsl:when test="$token = '[ps-current-date]'">
+      <xsl:value-of select="fn:get-current-date()"/>
+    </xsl:when>
+    <xsl:when test="$token = '[ps-document-labels]'">
+      <xsl:value-of select="$root-uri/labels"/>
+    </xsl:when>
+    <!-- for backward compatibility only -->
+    <xsl:when test="$manual-created = 'Pageseeder Document Creation Date'">
+      <xsl:value-of select="$root-uri/@created" />
+    </xsl:when>
+    <!-- for backward compatibility only -->
+    <xsl:when test="$manual-created = 'Current Date'">
+      <xsl:value-of select="fn:get-current-date()" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$token"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the modified property -->
+<xsl:function name="config:modified" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:modified"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/modified/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-modified"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the created property -->
+<xsl:function name="config:created" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/dcterms:created"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/created/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-created"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
 <!-- The value of the creator property -->
 <xsl:function name="config:creator" as="xs:string">
   <xsl:choose>
@@ -42,6 +124,21 @@
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="$manual-creator"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!-- The value of the keywords property -->
+<xsl:function name="config:keywords" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$manual-core = 'Template'">
+      <xsl:value-of select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:keywords"/>
+    </xsl:when>
+    <xsl:when test="$manual-core = 'Config'">
+      <xsl:value-of select="$config-doc/config/core/keywords/@select"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$manual-keywords"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
