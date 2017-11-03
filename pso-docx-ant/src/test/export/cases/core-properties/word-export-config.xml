@@ -13,18 +13,6 @@
     <category select="My category" />
     <version select="1.0" />
     <revision select="1" />
-    <!--
-    <creator select="[ps-current-user]" />
-    <description select="[ps-document-description]" />
-    <title select="[ps-document-title]" />
-    <modified select="[ps-document-modified]" />
-    <created select="[ps-current-date]" />
-    <keywords select="[ps-document-labels]" />
-    <subject select="" />
-    <category select="" />
-    <version select="1.0" />
-    <revision select="1" />
-    -->
   </core>
 	
 </config>

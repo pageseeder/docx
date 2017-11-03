@@ -362,8 +362,7 @@
   @return the current date in format.
 -->
 <xsl:function name="fn:get-current-date" as="xs:string">
-  <!-- TODO Use date formatter!!! -->
-  <xsl:value-of select="concat(year-from-dateTime(current-dateTime()),'-',format-number(number(month-from-dateTime(current-dateTime())), '00'),'-',format-number(number(day-from-dateTime(current-dateTime())), '00'),'T',format-number(number(hours-from-dateTime(current-dateTime())), '00'),':',format-number(number(minutes-from-dateTime(current-dateTime())), '00'),':00')"/>
+  <xsl:value-of select="format-dateTime(current-dateTime(),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01][Z]')"/>
 </xsl:function>
 
 <!--

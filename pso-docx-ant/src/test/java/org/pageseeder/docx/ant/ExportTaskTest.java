@@ -94,6 +94,16 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testCorePropertiesPartial() throws IOException, SAXException {
+    testIndividual("core-properties-partial", "document,core");
+  }
+
+  @Test
+  public void testCorePropertiesTokens() throws IOException, SAXException {
+    testIndividual("core-properties-tokens", "document,core");
+  }
+
+  @Test
   public void testCustomTemplateHeadings() throws IOException, SAXException {
     testIndividual("custom-template-headings");
   }

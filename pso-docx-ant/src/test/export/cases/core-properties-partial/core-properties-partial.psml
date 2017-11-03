@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable">
+	<documentinfo>
+    <uri id="22165" scheme="http" host="localhost" port="80" path="/ps/test/local1/documents/core-properties.psml"
+        decodedpath="/ps/test/local1/documents/core-properties.psml" external="false"
+        mediatype="application/vnd.pageseeder.psml+xml" created="2017-07-26T17:55:09+10:00"
+        modified="2017-11-01T16:03:01+11:00">
+      <displaytitle>core_properties.psml</displaytitle>
+      <description>Core description</description>
+      <labels>core1,core2</labels>
+    </uri>
+  </documentinfo>
+	<section id="title">
+		<fragment id="title">
+			<para>Test Case 1</para>
+			<para>Basic Document without any configuration.</para>
+		</fragment>
+	</section>	
+</document>
