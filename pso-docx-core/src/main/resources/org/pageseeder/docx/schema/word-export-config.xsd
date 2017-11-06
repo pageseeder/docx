@@ -351,6 +351,15 @@
 				<xs:element ref="fieldcode" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 			<xs:attribute name="select" type="xs:boolean"/>
+      <xs:attribute name="separator">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tab" />
+            <xs:enumeration value="space" />
+            <xs:enumeration value="none" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
 		</xs:complexType>
 	</xs:element>
 

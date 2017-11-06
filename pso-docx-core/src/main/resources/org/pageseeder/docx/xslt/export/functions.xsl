@@ -19,6 +19,30 @@
 <!-- TODO Indicate return type -->
 
 <!--
+  Returns the markup for the prefix separator based on type (defaults to tab)
+
+  @param type  the type of separator (tab, space or none)
+
+  @return the corresponding word markup
+-->
+<xsl:function name="fn:prefix-separator">
+  <xsl:param name="type" />
+  <xsl:choose>
+    <xsl:when test="$type = 'none'"></xsl:when>
+    <xsl:when test="$type = 'space'">
+      <w:r>
+        <w:t xml:space="preserve"> </w:t>
+      </w:r>
+    </xsl:when>
+    <xsl:otherwise>
+      <w:r>
+        <w:tab/>
+      </w:r>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Calculate a unique bookmark ID.
 
   @param current the current PSML element
