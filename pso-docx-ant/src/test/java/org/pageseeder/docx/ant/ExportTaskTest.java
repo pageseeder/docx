@@ -88,6 +88,20 @@ public final class ExportTaskTest {
     testIndividual("comments-true");
   }
 
+  @Test
+  public void testCoreProperties() throws IOException, SAXException {
+    testIndividual("core-properties", "document,core");
+  }
+
+  @Test
+  public void testCorePropertiesPartial() throws IOException, SAXException {
+    testIndividual("core-properties-partial", "document,core");
+  }
+
+  @Test
+  public void testCorePropertiesTokens() throws IOException, SAXException {
+    testIndividual("core-properties-tokens", "document,core");
+  }
 
   @Test
   public void testCustomTemplateHeadings() throws IOException, SAXException {
@@ -474,7 +488,10 @@ public final class ExportTaskTest {
         process(dir, result, saveWorking);
         String[] names = filenames.split(",");
         for (String name : names) {
-          File actual = new File(result, (!"document".equals(name) ? "working/prepacked/word/" : "") + name + ".xml");
+          File actual = new File(result,
+              ("document".equals(name) ? "" :
+                "core".equals(name) ? "working/prepacked/docProps/" :
+                "working/prepacked/word/") + name + ".xml");
           File expected = new File(dir, name + ".xml");
 
           // Check that the files exist
@@ -525,6 +542,15 @@ public final class ExportTaskTest {
     Parameter parameter = task.createParam();
     parameter.setName("generate-processed-psml");
     parameter.setValue("true");
+
+    Parameter parameter2 = task.createParam();
+    parameter2.setName("current-user");
+    parameter2.setValue("Jane Smith");
+
+    Parameter parameter3 = task.createParam();
+    parameter3.setName("manual-core");
+    parameter3.setValue("Config");
+
     task.execute();
 
     return;

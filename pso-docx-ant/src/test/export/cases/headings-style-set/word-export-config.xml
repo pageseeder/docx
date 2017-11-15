@@ -5,16 +5,20 @@
 		<heading>
 			<level value="1" wordstyle="heading 1"/>
 			<level value="2" wordstyle="heading 2">
-        <prefix select="true"/>
+        <prefix select="true" separator="space"/>
       </level>
 			<level value="3" wordstyle="heading 3">
         <prefix select="false"/>
       </level>
-			<level value="4" wordstyle="heading 4"/>
+			<level value="4" wordstyle="heading 4">
+        <prefix select="true"  separator="none"/>
+      </level>
 			<level value="5" wordstyle="heading 5">
         <prefix select="false"/>
       </level>
-			<level value="6" wordstyle="heading 6"/>
+			<level value="6" wordstyle="heading 6">
+        <prefix select="true"/>
+      </level>
       <level value="1" numbered="true" wordstyle="Heading Numbered 1"/>
       <level value="2" numbered="true" wordstyle="Heading Numbered 2"/>
       <level value="3" numbered="true" wordstyle="Heading Numbered 3"/>

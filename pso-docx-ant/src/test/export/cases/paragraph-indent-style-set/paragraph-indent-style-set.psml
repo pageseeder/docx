@@ -46,11 +46,15 @@
       <para indent="2" numbered="true">Outline level 2 – Index 2</para>
       <para>text</para>
       <para>Prefixed:</para>
-      <para indent="1" prefix="A">Outline Level 1 – Prefix A text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+      <para indent="1" prefix="A">Outline Level 1 – (prefix) text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
       <para>text</para>
-      <para indent="2" prefix="A.A">Outline level 2 – Prefix A.A text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+      <para indent="2" prefix="A.A">Outline level 2 – (no separator) text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
       <para>text</para>
-      <para indent="3" prefix="A.A.A">Outline level 3 – No Prefix text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+      <para indent="3" prefix="A.A.A">Outline level 3 – (no prefix) text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+      <para>text</para>
+      <para indent="4" prefix="A.A.A.A">Outline level 4 – (space separator) text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+      <para>text</para>
+      <para indent="5" prefix="A.A.A.A.A">Outline level 5 – (prefix) text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
       <para>text</para>
       <para indent="1" prefix="B">Outline level 1 – Prefix B</para>
       <para>text</para>

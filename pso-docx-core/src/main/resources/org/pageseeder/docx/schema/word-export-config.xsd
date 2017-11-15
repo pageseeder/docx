@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.4.18">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.6.2">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -26,6 +26,21 @@
 				<xs:element ref="category" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="version" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="revision" minOccurs="0" maxOccurs="1" />
+        <xs:element name="keywords" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="created" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="modified" minOccurs="0" maxOccurs="1">
+          <xs:complexType>      
+            <xs:attribute name="select" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
 			</xs:all>
 		</xs:complexType>
 	</xs:element>
@@ -336,6 +351,15 @@
 				<xs:element ref="fieldcode" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 			<xs:attribute name="select" type="xs:boolean"/>
+      <xs:attribute name="separator">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tab" />
+            <xs:enumeration value="space" />
+            <xs:enumeration value="none" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
 		</xs:complexType>
 	</xs:element>
 

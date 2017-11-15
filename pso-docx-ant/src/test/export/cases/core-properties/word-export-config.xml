@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<config>
+
+  <core>
+    <creator select="My self" />
+    <description select="My description" />
+    <title select="My title" />
+    <modified select="2016-11-01T16:03:01+11:00" />
+    <created select="2016-07-26T17:55:09+10:00" />
+    <keywords select="test1,test2" />
+    <subject select="My subject" />
+    <category select="My category" />
+    <version select="1.0" />
+    <revision select="1" />
+  </core>
+	
+</config>

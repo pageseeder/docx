@@ -19,6 +19,30 @@
 <!-- TODO Indicate return type -->
 
 <!--
+  Returns the markup for the prefix separator based on type (defaults to tab)
+
+  @param type  the type of separator (tab, space or none)
+
+  @return the corresponding word markup
+-->
+<xsl:function name="fn:prefix-separator">
+  <xsl:param name="type" />
+  <xsl:choose>
+    <xsl:when test="$type = 'none'"></xsl:when>
+    <xsl:when test="$type = 'space'">
+      <w:r>
+        <w:t xml:space="preserve"> </w:t>
+      </w:r>
+    </xsl:when>
+    <xsl:otherwise>
+      <w:r>
+        <w:tab/>
+      </w:r>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Calculate a unique bookmark ID.
 
   @param current the current PSML element
@@ -362,8 +386,7 @@
   @return the current date in format.
 -->
 <xsl:function name="fn:get-current-date" as="xs:string">
-  <!-- TODO Use date formatter!!! -->
-  <xsl:value-of select="concat(year-from-dateTime(current-dateTime()),'-',format-number(number(month-from-dateTime(current-dateTime())), '00'),'-',format-number(number(day-from-dateTime(current-dateTime())), '00'),'T',format-number(number(hours-from-dateTime(current-dateTime())), '00'),':',format-number(number(minutes-from-dateTime(current-dateTime())), '00'),':00')"/>
+  <xsl:value-of select="format-dateTime(current-dateTime(),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01][Z]')"/>
 </xsl:function>
 
 <!--

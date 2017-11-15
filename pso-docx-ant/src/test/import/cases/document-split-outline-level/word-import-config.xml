@@ -2,7 +2,7 @@
 
 <config>
 	<split>
-    <document select="true">
+    <document select="true" use-real-titles="true">
       <outlinelevel select="0" />
     </document>
   </split>
