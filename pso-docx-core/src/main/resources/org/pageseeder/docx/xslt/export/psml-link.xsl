@@ -141,12 +141,6 @@
     <xsl:when test="@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' and $manual-master = 'true'">
       <w:p>
         <w:pPr>
-          <!-- TODO We copy this twice? maybe we can put this in variable to avoid recomputing -->
-          <xsl:copy-of select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
-        </w:pPr>
-      </w:p>
-      <w:p>
-        <w:pPr>
           <xsl:copy-of select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
         </w:pPr>
         <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])))}"/>
