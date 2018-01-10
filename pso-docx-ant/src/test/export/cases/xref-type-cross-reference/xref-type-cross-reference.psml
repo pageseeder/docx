@@ -2,12 +2,29 @@
 <document id="28508" schemaversion="0.10" date="2017-08-18T12:22:36+10:00"
   version="current" level="portable">
   <section id="title">
-    <fragment id="28508-1">
-      <heading level="1">Xref style</heading>
+    <fragment id="28508-0">
+      <heading level="1">Xref type="cross-refernce"</heading>
     </fragment>
   </section>
   <section id="content">
-    <!-- Embed to test for duplicate bookmark ID -->
+    <fragment id="28508-101">
+      <heading level="4">XRefs to numbered para</heading>
+      <para><xref id="64977" title="2" frag="103" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-103" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2</xref> Referencing 2.</para>
+      <para><xref id="64977" title="2.1 (a)" frag="105" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-105" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2.1 (a)</xref> Referencing 2.1 (a).</para>
+      <para><xref id="64977" title="2.2" frag="106" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-106" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2.2</xref> Referencing 2.2.</para>
+    </fragment>
     <xref-fragment id="content">
       <blockxref uriid="28509" title="Test" frag="default" display="document"
         type="embed" reverselink="true" reversetitle="" reversetype="none"
@@ -211,11 +228,29 @@
       <heading level="4">Xref with Sup inside of Inline Label
       </heading>
       <para><inline label="example10"><sup>Example
-        <xref id="65030" title="10" frag="1" reversefrag="11"
+        <xref id="65030" title="10" frag="default" reversefrag="11"
             reversetitle="" reverselink="true" reversetype="none"
             display="manual" type="none" uriid="28508"
             href="#28508" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">10</xref></sup></inline></para>
+    </fragment>
+    <fragment id="28508-1">
+      <para>Target</para>
+    </fragment>
+    <fragment id="28508-102">
+      <para indent="1" numbered="true">Outline Level 1 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-103">
+      <para indent="1" numbered="true">Outline Level 1 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-104">
+      <para indent="2" numbered="true">Outline Level 2 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-105">
+      <para indent="3" numbered="true">Outline Level 3 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-106">
+      <para indent="2" numbered="true">Outline Level 2 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
     </fragment>
   </section>
 </document>

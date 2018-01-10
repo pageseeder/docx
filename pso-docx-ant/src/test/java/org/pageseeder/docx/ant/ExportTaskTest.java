@@ -459,6 +459,11 @@ public final class ExportTaskTest {
     testIndividual("xref-style");
   }
 
+  @Test
+  public void testXrefTypeCrossReference() throws IOException, SAXException {
+    testIndividual("xref-type-cross-reference");
+  }
+
   public void testAll() throws IOException, SAXException {
     File[] tests = CASES.listFiles();
     for (File test : tests) {

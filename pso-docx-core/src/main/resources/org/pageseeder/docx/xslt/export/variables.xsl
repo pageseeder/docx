@@ -44,11 +44,6 @@
 <!-- The location of the styles template -->
 <xsl:variable name="styles-template" select="'/word/styles.xml'" as="xs:string"/>
 
-<!-- The word style of the configuration file for xref elements -->
-<xsl:variable name="xref-style" as="xs:string">
-  <xsl:value-of select="string($config-doc/config/elements/xref/@style)"/>
-</xsl:variable>
-
 <!-- Node containing all inline label configured values -->
 <xsl:variable name="inline-labels" as="element(inlinelabels)">
   <!-- TODO Only used in `content_types.xml` -->

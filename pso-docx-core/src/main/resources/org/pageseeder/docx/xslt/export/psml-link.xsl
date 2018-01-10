@@ -20,25 +20,6 @@
 -->
 <xsl:template match="xref" mode="psml">
   <xsl:choose>
-    <!-- TODO check requirements for generate-cross-references -->
-    <xsl:when test="config:generate-cross-references()">
-      <w:r>
-        <w:fldChar w:fldCharType="begin"/>
-      </w:r>
-      <w:r>
-        <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ',replace(concat(@uriid,if(@frag != 'default') then '_' else '',if(@frag != 'default') then @frag else ''),'\W','_'),' \r \h ')"/></w:instrText>
-      </w:r>
-      <w:r>
-        <w:fldChar w:fldCharType="separate"/>
-      </w:r>
-      <w:r>
-        <xsl:call-template name="apply-run-style" />
-        <w:t><xsl:value-of select="."/></w:t>
-      </w:r>
-      <w:r>
-        <w:fldChar w:fldCharType="end"/>
-      </w:r>
-    </xsl:when>
 
     <!-- Cross-reference to a URL -->
     <xsl:when test="@external = 'true'">
@@ -86,17 +67,7 @@
     <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
       <w:hyperlink w:anchor="{@href}" w:history="1">
         <w:r>
-          <w:rPr>
-            <xsl:choose>
-              <xsl:when test="$xref-style != ''">
-                <w:rStyle w:val="{$xref-style}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <w:color w:val="0000FF"/>
-                <w:u w:val="single"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </w:rPr>
+          <xsl:call-template name="apply-run-style" />
           <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
         </w:r>
       </w:hyperlink>
@@ -112,21 +83,34 @@
 
     <!-- Internal cross-reference (i.e. to another fragment) -->
     <xsl:otherwise>
-      <w:hyperlink w:anchor="{concat('fragment-', substring-after(@href, '#'))}" w:history="1">
-        <w:r>
-          <xsl:choose>
-            <xsl:when test="$xref-style != ''">
-              <w:rPr>
-                <w:rStyle w:val="{$xref-style}"/>
-              </w:rPr>
-            </xsl:when>
-            <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="config:generate-cross-references()">
+          <w:r>
+            <w:fldChar w:fldCharType="begin"/>
+          </w:r>
+          <w:r>
+            <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','fragment-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
+          </w:r>
+          <w:r>
+            <w:fldChar w:fldCharType="separate"/>
+          </w:r>
+          <w:r>
+            <xsl:call-template name="apply-run-style" />
+            <w:t><xsl:value-of select="."/></w:t>
+          </w:r>
+          <w:r>
+            <w:fldChar w:fldCharType="end"/>
+          </w:r>
+        </xsl:when>
+        <xsl:otherwise>
+          <w:hyperlink w:anchor="{concat('fragment-', substring-after(@href, '#'))}" w:history="1">
+            <w:r>
               <xsl:call-template name="apply-run-style" />
-            </xsl:otherwise>
-          </xsl:choose>
-          <w:t><xsl:value-of select="." /></w:t>
-        </w:r>
-      </w:hyperlink>
+              <w:t><xsl:value-of select="." /></w:t>
+            </w:r>
+          </w:hyperlink>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 
