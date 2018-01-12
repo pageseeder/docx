@@ -28,9 +28,8 @@
     <xsl:when test="not(ancestor::document)">
       <w:document>
         <w:body>
-          <!-- TODO Suspicious use of the `fragment-[id]` for a document, use `document-[id]` and update `psml-link.xsl` when fragment is default -->
           <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-          <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+          <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
           <w:bookmarkEnd w:id="{$bookmark-id}" />
           <xsl:apply-templates select="section|toc" mode="psml">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
@@ -49,7 +48,7 @@
     </xsl:when>
     <xsl:otherwise>
       <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-      <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+      <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
       <xsl:apply-templates mode="psml" >
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
@@ -87,7 +86,7 @@
     </w:p>
   </xsl:if>
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+  <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
     <xsl:apply-templates mode="psml" />
   <w:bookmarkEnd  w:id="{$bookmark-id}" />
 </xsl:template>
@@ -97,7 +96,7 @@
 -->
 <xsl:template match="xref-fragment" mode="psml">
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+  <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
   <xsl:apply-templates mode="psml" />
   <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
@@ -107,14 +106,14 @@
 -->
 <xsl:template match="media-fragment" mode="psml">
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+  <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
   <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
 
   <!-- Template to match properties fragment and transform it into a table -->
 <xsl:template match="properties-fragment" mode="psml">
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-  <w:bookmarkStart w:name="fragment-{@id}" w:id="{$bookmark-id}"/>
+  <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
   <w:tbl>
     <w:tblPr>
       <w:tblBorders>

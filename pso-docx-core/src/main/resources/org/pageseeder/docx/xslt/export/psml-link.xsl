@@ -89,7 +89,7 @@
             <w:fldChar w:fldCharType="begin"/>
           </w:r>
           <w:r>
-            <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','fragment-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
+            <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','f-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
           </w:r>
           <w:r>
             <w:fldChar w:fldCharType="separate"/>
@@ -103,7 +103,7 @@
           </w:r>
         </xsl:when>
         <xsl:otherwise>
-          <w:hyperlink w:anchor="{concat('fragment-', substring-after(@href, '#'))}" w:history="1">
+          <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
             <w:r>
               <xsl:call-template name="apply-run-style" />
               <w:t><xsl:value-of select="." /></w:t>
@@ -158,7 +158,7 @@
 <xsl:template match="link" mode="psml">
   <xsl:choose>
     <xsl:when test="@href[starts-with(., '#')]">
-      <xsl:variable name="internal-reference" select="concat('anchor-', substring-after(@href, '#'))" />
+      <xsl:variable name="internal-reference" select="concat('a-', substring-after(@href, '#'))" />
       <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
         <w:r>
           <w:rPr>
@@ -199,7 +199,7 @@
     </xsl:when>
     <xsl:when test="@name">
       <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-      <w:bookmarkStart w:id="{$bookmark-id}" w:name="anchor-{@name}"/>
+      <w:bookmarkStart w:id="{$bookmark-id}" w:name="a-{@name}"/>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
     </xsl:when>
     <xsl:otherwise>

@@ -2,7 +2,7 @@
 <document id="28508" schemaversion="0.10" date="2017-08-18T12:22:36+10:00"
   version="current" level="portable">
   <section id="title">
-    <fragment id="28508-1">
+    <fragment id="28508-0">
       <heading level="1">Xref style</heading>
     </fragment>
   </section>
@@ -216,6 +216,9 @@
             display="manual" type="none" uriid="28508"
             href="#28508" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">10</xref></sup></inline></para>
+    </fragment>
+    <fragment id="28508-1">
+      <para>Target</para>
     </fragment>
   </section>
 </document>
