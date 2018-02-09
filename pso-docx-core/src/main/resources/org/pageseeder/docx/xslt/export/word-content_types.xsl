@@ -172,7 +172,7 @@
           <xsl:for-each select="//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']">
             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + position()))}"
                           Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument"
-                          Target="{if (config:master-select() = 'uriid') then concat(@uriid,'.docx') else @urititle}"
+                          Target="{if (config:master-select() = 'uriid') then concat(@uriid,'.docx') else encode-for-uri(@urititle)}"
                           TargetMode="External"/>
           </xsl:for-each>
         </xsl:if>
