@@ -317,6 +317,7 @@
           <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
         </xsl:apply-templates>
       </block>
+      <xsl:apply-templates mode="textbox" /> 
     </xsl:when>
     <xsl:otherwise>
       <para>
