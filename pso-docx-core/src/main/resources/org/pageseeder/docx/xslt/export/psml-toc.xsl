@@ -35,13 +35,13 @@
     </xsl:variable>
     <w:p>
       <w:r>
-        <w:fldChar w:fldCharType="begin" />
+        <w:fldChar w:fldCharType="begin" w:dirty="true" />
       </w:r>
       <w:r>
         <w:instrText xml:space="preserve"><xsl:value-of select="$toc-text" /></w:instrText>
       </w:r>
       <w:r>
-        <w:fldChar w:fldCharType="end" />
+        <w:fldChar w:fldCharType="end" w:dirty="true" />
       </w:r>
     </w:p>
   </xsl:if>
