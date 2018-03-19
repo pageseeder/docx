@@ -330,7 +330,7 @@
   @return true or false
 -->
 <xsl:function name="config:generate-mathml" as="xs:boolean">
-  <xslsequence select="$config-doc/config/default/mathml/@generate = 'true'"/>
+  <xsl:sequence select="$config-doc/config/default/mathml/@generate = 'true'"/>
 </xsl:function>
 
 <!--
