@@ -102,6 +102,10 @@
 <xsl:import href="import/mathml.xsl" />
 <xsl:import href="import/omml2mml.xsl" />
 
+<!-- Shapes support -->
+<xsl:import href="import/textbox.xsl" />
+
+
 <!-- Other generated filed -->
 <xsl:import href="import/endnotes.xsl" />
 <xsl:import href="import/footnotes.xsl" />
