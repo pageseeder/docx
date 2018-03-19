@@ -562,6 +562,11 @@ public class ImportTaskTest {
     testIndividual("smart-tag-true");
   }
 
+  @Test
+  public void testTextBox() throws IOException, SAXException {
+    testIndividual("textbox");
+  }
+
   public void testAll() throws IOException, SAXException {
     File[] tests = CASES.listFiles();
     for (File test : tests) {
