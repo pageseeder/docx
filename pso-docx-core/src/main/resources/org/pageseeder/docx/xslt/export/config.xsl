@@ -69,14 +69,6 @@
     <xsl:when test="$token = '[ps-document-labels]'">
       <xsl:value-of select="$root-uri/labels"/>
     </xsl:when>
-    <!-- for backward compatibility only -->
-    <xsl:when test="$manual-created = 'Pageseeder Document Creation Date'">
-      <xsl:value-of select="$root-uri/@created" />
-    </xsl:when>
-    <!-- for backward compatibility only -->
-    <xsl:when test="$manual-created = 'Current Date'">
-      <xsl:value-of select="fn:get-current-date()" />
-    </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="$token"/>
     </xsl:otherwise>
