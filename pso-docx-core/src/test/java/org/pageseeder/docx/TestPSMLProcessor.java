@@ -14,12 +14,13 @@ public class TestPSMLProcessor {
 
   @Test
   public void TestProcess() {
-    File source = new File("test/source/sample-1.psml");
-    File media = new File("test/source/media");
+    File source = new File("test/source/sample-1.docx");
+    File config = new File("test/source/sample-1.config");
+
 
     System.out.println("source exist " + source.exists());
 
-    File destination = new File("test/destination/sample-1.docx");
+    File destination = new File("test/destination/sample-1.psml");
     if (!destination.getParentFile().exists()) {
       destination.getParentFile().mkdirs();
     }
@@ -29,10 +30,11 @@ public class TestPSMLProcessor {
     }
 
     try {
-      DOCXProcessor process = new DOCXProcessor.Builder()
+      PSMLProcessor process = new PSMLProcessor.Builder()
           .source(source)
           .destination(destination)
-          .media(media)
+          .config(config)
+          .media("media")
           .log(new PrintWriter(System.out))
           .build();
       process.process();

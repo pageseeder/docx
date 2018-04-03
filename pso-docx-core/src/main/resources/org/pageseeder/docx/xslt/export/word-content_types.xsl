@@ -133,7 +133,19 @@
                 </xsl:if>
                 <xsl:if test="config:created() != ''">
                   <dcterms:created xsi:type="dcterms:W3CDTF">
-                    <xsl:value-of select="config:ps-token(config:created())" />
+                    <xsl:choose>
+                      <!-- for backward compatibility only -->
+                      <xsl:when test="$manual-created = 'Pageseeder Document Creation Date'">
+                        <xsl:value-of select="$root-uri/@created" />
+                      </xsl:when>
+                      <!-- for backward compatibility only -->
+                      <xsl:when test="$manual-created = 'Current Date'">
+                        <xsl:value-of select="fn:get-current-date()" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="config:ps-token(config:created())" />
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </dcterms:created>
                 </xsl:if>
                 <xsl:if test="config:modified() != ''">

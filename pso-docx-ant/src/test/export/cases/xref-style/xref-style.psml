@@ -217,6 +217,16 @@
             href="#28508" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">10</xref></sup></inline></para>
     </fragment>
+    <fragment id="28508-13">
+      <heading level="4">Xref to _external
+      </heading>
+      <para>Example
+        <xref id="65030" title="10" frag="1" reversefrag="11"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28509"
+            href="_external/test.psml" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">_external test</xref></para>
+    </fragment>
     <fragment id="28508-1">
       <para>Target</para>
     </fragment>
