@@ -35,7 +35,6 @@ public class TestDOCXInspector {
     Assert.assertFalse(this.inspector.supportsMediaType(""));
     Assert.assertTrue(this.inspector.supportsMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
     Assert.assertTrue(this.inspector.supportsMediaType("docx"));
-    Assert.assertTrue(this.inspector.supportsMediaType("DOCX"));
     Assert.assertFalse(this.inspector.supportsMediaType("application/msword"));
   }
 
