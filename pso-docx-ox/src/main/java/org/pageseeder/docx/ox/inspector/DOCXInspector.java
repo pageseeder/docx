@@ -49,7 +49,11 @@ public class DOCXInspector implements PackageInspector {
    */
   @Override
   public boolean supportsMediaType(String mediatype) {
-    return "application/vnd.openxmlformats-officedocument.wordprocessingml.document".equals(mediatype);
+    /* 
+     * In linux environment is quite impossible to get the media type, then most of the times on this environment the ox
+     * core will send the extension. 
+     */
+    return "application/vnd.openxmlformats-officedocument.wordprocessingml.document".equals(mediatype) || "docx".equalsIgnoreCase(mediatype);
   }
 
   /**

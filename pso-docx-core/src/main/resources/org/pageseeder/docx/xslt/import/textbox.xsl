@@ -18,7 +18,7 @@
                 exclude-result-prefixes="#all">
 
       
- <xsl:template match="wps:txbx" mode="textbox">
+ <xsl:template match="v:textbox" mode="textbox">
    <block label="ps_textbox">
      <xsl:for-each select="w:txbxContent/w:p[normalize-space(.)!='']">
        <para><xsl:value-of select="." /></para>
