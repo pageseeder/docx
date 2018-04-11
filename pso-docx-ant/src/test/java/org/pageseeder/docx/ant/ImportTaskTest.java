@@ -438,6 +438,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testOrientation() throws IOException, SAXException {
+    testIndividual("endsection-orientation-block");
+  }
+  
+  @Test
   public void testParaMultipleParagraphStyles() throws IOException, SAXException {
     testIndividual("para-multiple-paragraph-styles");
   }
