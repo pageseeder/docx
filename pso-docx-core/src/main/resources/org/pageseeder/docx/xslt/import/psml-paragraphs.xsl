@@ -355,7 +355,9 @@
 
 <xsl:template match="w:sectPr/w:pgSz" mode="content">
   <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
-  <block label="{$type-page}" />
+  <xsl:if test="$type-page = 'ps_landscape_end'">
+    <block label="{$type-page}" />
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
