@@ -320,7 +320,7 @@
       <xsl:apply-templates mode="textbox" /> 
     </xsl:when>
     <xsl:when test="w:pPr/w:sectPr/w:pgSz">
-      <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'landscape_end' else 'portrait_end'" />
+      <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
       <block label="{$type-page}" />
     </xsl:when>
     <xsl:otherwise>
@@ -354,7 +354,7 @@
 -->
 
 <xsl:template match="w:sectPr/w:pgSz" mode="content">
-  <xsl:variable name="type-page" select="if (@w:orient) then 'landscape_end' else 'portrait_end'" />
+  <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
   <block label="{$type-page}" />
 </xsl:template>
 
