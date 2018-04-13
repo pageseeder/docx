@@ -319,6 +319,10 @@
       </block>
       <xsl:apply-templates mode="textbox" /> 
     </xsl:when>
+    <xsl:when test="w:pPr/w:sectPr/w:pgSz">
+      <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+      <block label="{$type-page}" />
+    </xsl:when>
     <xsl:otherwise>
       <para>
         <xsl:if test="config:numbering-list-prefix-exists()">
@@ -341,6 +345,19 @@
       </para>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<!--
+  Template to match the end of section word page
+
+  Adds the block label and analysis if this section it is portrait or landscape
+-->
+
+<xsl:template match="w:sectPr/w:pgSz" mode="content">
+  <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+  <xsl:if test="$type-page = 'ps_landscape_end'">
+    <block label="{$type-page}" />
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
