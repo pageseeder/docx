@@ -312,11 +312,19 @@
   <xsl:choose>
     <!-- if the element is set to create a block in the config file -->
     <xsl:when test="$paragraph-styles = 'block' and w:pPr/w:pStyle/@w:val !=''">
-      <block label="{w:pPr/w:pStyle/@w:val}">
-        <xsl:apply-templates select="*" mode="content">
-          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
-        </xsl:apply-templates>
-      </block>
+      <xsl:choose>
+        <xsl:when test="w:pPr/w:sectPr/w:pgSz">
+          <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+          <block label="{$type-page}" />
+        </xsl:when>
+        <xsl:otherwise>
+          <block label="{w:pPr/w:pStyle/@w:val}">
+            <xsl:apply-templates select="*" mode="content">
+              <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
+            </xsl:apply-templates>
+          </block>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates mode="textbox" /> 
     </xsl:when>
     <xsl:when test="w:pPr/w:sectPr/w:pgSz">
@@ -324,25 +332,33 @@
       <block label="{$type-page}" />
     </xsl:when>
     <xsl:otherwise>
-      <para>
-        <xsl:if test="config:numbering-list-prefix-exists()">
-          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
-            <xsl:matching-substring>
-              <xsl:attribute name="prefix" select="regex-group(1)"/>
-            </xsl:matching-substring>
-          </xsl:analyze-string>
-        </xsl:if>
-        <xsl:if test="config:numbering-list-autonumbering-exists()">
-          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
-            <xsl:matching-substring>
-              <xsl:attribute name="numbered" select="'true'"/>
-            </xsl:matching-substring>
-          </xsl:analyze-string>
-        </xsl:if>
-        <xsl:apply-templates select="*" mode="content">
-          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
-        </xsl:apply-templates>
-      </para>
+      <xsl:choose>
+        <xsl:when test="w:pPr/w:sectPr/w:pgSz">
+          <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+          <block label="{$type-page}" />
+        </xsl:when>
+        <xsl:otherwise>
+		      <para>
+		        <xsl:if test="config:numbering-list-prefix-exists()">
+		          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
+		            <xsl:matching-substring>
+		              <xsl:attribute name="prefix" select="regex-group(1)"/>
+		            </xsl:matching-substring>
+		          </xsl:analyze-string>
+		        </xsl:if>
+		        <xsl:if test="config:numbering-list-autonumbering-exists()">
+		          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
+		            <xsl:matching-substring>
+		              <xsl:attribute name="numbered" select="'true'"/>
+		            </xsl:matching-substring>
+		          </xsl:analyze-string>
+		        </xsl:if>
+		        <xsl:apply-templates select="*" mode="content">
+		          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
+		        </xsl:apply-templates>
+		      </para>
+        </xsl:otherwise>
+      </xsl:choose>  
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
@@ -353,7 +369,7 @@
   Adds the block label and analysis if this section it is portrait or landscape
 -->
 
-<xsl:template match="w:sectPr/w:pgSz" mode="content">
+<xsl:template match="w:sectPr/w:pgSz[not(ancestor::w:p)]" mode="content">
   <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
   <xsl:if test="$type-page = 'ps_landscape_end'">
     <block label="{$type-page}" />
