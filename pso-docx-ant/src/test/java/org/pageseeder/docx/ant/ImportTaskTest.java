@@ -443,6 +443,11 @@ public class ImportTaskTest {
   }
   
   @Test
+  public void testOrientationStartsPortraitPage() throws IOException, SAXException {
+    testIndividual("endsection-orientation-block-starts-document-portrait-page");
+  }
+
+  @Test
   public void testParaMultipleParagraphStyles() throws IOException, SAXException {
     testIndividual("para-multiple-paragraph-styles");
   }
