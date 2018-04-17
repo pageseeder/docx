@@ -167,6 +167,10 @@
         <xsl:with-param name="id" select="@id" />
       </xsl:call-template>
     </xsl:for-each>
+    <xsl:if test="w:pPr/w:sectPr/w:pgSz">
+      <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+      <block label="{$type-page}" />
+    </xsl:if>
   </item>
 
   <xsl:choose>
