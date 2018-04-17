@@ -438,13 +438,13 @@ public class ImportTaskTest {
   }
 
   @Test
-  public void testOrientation() throws IOException, SAXException {
-    testIndividual("endsection-orientation-block");
+  public void testOrientationStartsLandscapePage() throws IOException, SAXException {
+    testIndividual("orientation-starts-landscape-page");
   }
   
   @Test
   public void testOrientationStartsPortraitPage() throws IOException, SAXException {
-    testIndividual("endsection-orientation-block-starts-document-portrait-page");
+    testIndividual("orientation-starts-portrait-page");
   }
 
   @Test
