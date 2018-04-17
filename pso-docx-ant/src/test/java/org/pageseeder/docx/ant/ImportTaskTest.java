@@ -438,13 +438,18 @@ public class ImportTaskTest {
   }
 
   @Test
-  public void testOrientationStartsLandscapePage() throws IOException, SAXException {
-    testIndividual("orientation-starts-landscape-page");
+  public void testOrientationEndOfBlock() throws IOException, SAXException {
+    testIndividual("orientation-end-of-block");
   }
   
   @Test
-  public void testOrientationStartsPortraitPage() throws IOException, SAXException {
-    testIndividual("orientation-starts-portrait-page");
+  public void testOrientationEndOfPara() throws IOException, SAXException {
+    testIndividual("orientation-end-of-para");
+  }
+
+  @Test
+  public void testOrientationInsideList() throws IOException, SAXException {
+    testIndividual("orientation-inside-list");
   }
 
   @Test
