@@ -332,35 +332,27 @@
       <block label="{$type-page}" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:choose>
-        <xsl:when test="w:pPr/w:sectPr/w:pgSz">
-          <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
-          <block label="{$type-page}" />
-        </xsl:when>
-        <xsl:otherwise>
-		      <para>
-		        <xsl:if test="config:numbering-list-prefix-exists()">
-		          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
-		            <xsl:matching-substring>
-		              <xsl:attribute name="prefix" select="regex-group(1)"/>
-		            </xsl:matching-substring>
-		          </xsl:analyze-string>
-		        </xsl:if>
-		        <xsl:if test="config:numbering-list-autonumbering-exists()">
-		          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
-		            <xsl:matching-substring>
-		              <xsl:attribute name="numbered" select="'true'"/>
-		            </xsl:matching-substring>
-		          </xsl:analyze-string>
-		        </xsl:if>
-		        <xsl:apply-templates select="*" mode="content">
-		          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
-		        </xsl:apply-templates>
-		      </para>
-        </xsl:otherwise>
-      </xsl:choose>  
-    </xsl:otherwise>
-  </xsl:choose>
+      <para>
+        <xsl:if test="config:numbering-list-prefix-exists()">
+          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
+            <xsl:matching-substring>
+              <xsl:attribute name="prefix" select="regex-group(1)"/>
+            </xsl:matching-substring>
+          </xsl:analyze-string>
+        </xsl:if>
+        <xsl:if test="config:numbering-list-autonumbering-exists()">
+          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
+            <xsl:matching-substring>
+              <xsl:attribute name="numbered" select="'true'"/>
+            </xsl:matching-substring>
+          </xsl:analyze-string>
+        </xsl:if>
+        <xsl:apply-templates select="*" mode="content">
+          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
+        </xsl:apply-templates>
+      </para>
+      </xsl:otherwise>
+    </xsl:choose>  
 </xsl:template>
 
 <!--
