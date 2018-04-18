@@ -317,34 +317,44 @@
           <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
         </xsl:apply-templates>
       </block>
+      <xsl:if test="w:pPr/w:sectPr/w:pgSz">
+        <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+	      <block label="{$type-page}" />
+	    </xsl:if>
       <xsl:apply-templates mode="textbox" /> 
     </xsl:when>
-    <xsl:when test="w:pPr/w:sectPr/w:pgSz">
-      <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
-      <block label="{$type-page}" />
-    </xsl:when>
     <xsl:otherwise>
-      <para>
-        <xsl:if test="config:numbering-list-prefix-exists()">
-          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
-            <xsl:matching-substring>
-              <xsl:attribute name="prefix" select="regex-group(1)"/>
-            </xsl:matching-substring>
-          </xsl:analyze-string>
-        </xsl:if>
-        <xsl:if test="config:numbering-list-autonumbering-exists()">
-          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
-            <xsl:matching-substring>
-              <xsl:attribute name="numbered" select="'true'"/>
-            </xsl:matching-substring>
-          </xsl:analyze-string>
-        </xsl:if>
-        <xsl:apply-templates select="*" mode="content">
-          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
-        </xsl:apply-templates>
-      </para>
+      <xsl:variable name="content-para">
+	      <para>
+	        <xsl:if test="config:numbering-list-prefix-exists()">
+	          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
+	            <xsl:matching-substring>
+	              <xsl:attribute name="prefix" select="regex-group(1)"/>
+	            </xsl:matching-substring>
+	          </xsl:analyze-string>
+	        </xsl:if>
+	        <xsl:if test="config:numbering-list-autonumbering-exists()">
+	          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
+	            <xsl:matching-substring>
+	              <xsl:attribute name="numbered" select="'true'"/>
+	            </xsl:matching-substring>
+	          </xsl:analyze-string>
+	        </xsl:if>
+	        <xsl:apply-templates select="*" mode="content">
+	          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
+	        </xsl:apply-templates>
+	      </para>
+      </xsl:variable>  
+      <!-- don't output empty para containing section break -->
+      <xsl:if test="$content-para/para/node() or not(w:pPr/w:sectPr/w:pgSz)">
+        <xsl:copy-of select="$content-para" />       
+      </xsl:if>
+      <xsl:if test="w:pPr/w:sectPr/w:pgSz">
+        <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+        <block label="{$type-page}" />
+      </xsl:if>
     </xsl:otherwise>
-  </xsl:choose>
+  </xsl:choose>  
 </xsl:template>
 
 <!--
@@ -353,7 +363,7 @@
   Adds the block label and analysis if this section it is portrait or landscape
 -->
 
-<xsl:template match="w:sectPr/w:pgSz" mode="content">
+<xsl:template match="w:sectPr/w:pgSz[not(ancestor::w:p)]" mode="content">
   <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
   <xsl:if test="$type-page = 'ps_landscape_end'">
     <block label="{$type-page}" />
