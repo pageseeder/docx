@@ -453,6 +453,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testOrientationWithWordImportConfigStyles() throws IOException, SAXException {
+    testIndividual("orientation-with-word-import-config-styles");
+  }
+
+  @Test
   public void testParaMultipleParagraphStyles() throws IOException, SAXException {
     testIndividual("para-multiple-paragraph-styles");
   }
@@ -580,6 +585,11 @@ public class ImportTaskTest {
   @Test
   public void testTextBox() throws IOException, SAXException {
     testIndividual("textbox");
+  }
+
+  @Test
+  public void testTextBoxWithWordImportConfigStyles() throws IOException, SAXException {
+    testIndividual("textbox-with-word-import-config-styles");
   }
 
   public void testAll() throws IOException, SAXException {
