@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config>
+  <styles>
+    <wordstyle name="BodyText10" psmlelement="block">
+      <label value="Body-Text1"/>
+    </wordstyle>
+  </styles>
+</config>
