@@ -377,16 +377,9 @@
 
   Adds the block label and analysis if this section it is portrait or landscape
 -->
-<!-- <xsl:template match="w:sectPr/w:pgSz[ancestor::w:p]" mode="content">
-  <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
-  <block label="{$type-page}" />
-</xsl:template> -->
-
-
 <xsl:template match="w:sectPr/w:pgSz[ancestor::w:pPr[w:pStyle/@w:val = $config-doc/config/styles/wordstyle/@name]]" mode="content">
   <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
   <block label="{$type-page}" />
 </xsl:template>    
-
 
 </xsl:stylesheet>
