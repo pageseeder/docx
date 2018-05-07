@@ -317,6 +317,32 @@
 </xsl:function>
 
 <!--
+  Returns the style ID for the configured hyperlink style.
+
+  @return the style ID
+-->
+<xsl:function name="config:hyperlink-styleid" as="xs:string">
+  <xsl:variable name="style" select="if ($config-doc/config/default/xref/@hyperlinkstyle) then
+    $config-doc/config/default/xref/@hyperlinkstyle else 'PS Hyperlink'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured reference style.
+
+  @return the style ID
+-->
+<xsl:function name="config:reference-styleid" as="xs:string">
+  <xsl:variable name="style" select="if ($config-doc/config/default/xref/@referencestyle) then
+    $config-doc/config/default/xref/@hyperlinkstyle else 'PS Reference'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+</xsl:function>
+
+<!--
   Returns the confirmation of creation of comments.
 
   @return true or false

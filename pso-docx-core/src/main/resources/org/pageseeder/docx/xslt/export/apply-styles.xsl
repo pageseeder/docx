@@ -285,61 +285,55 @@
   5. bold
   6. italic
   7. underline
+  Must be inside a <w:rPr> element.
 -->
 <xsl:template name="apply-run-style">
   <xsl:param name="labels" tunnel="yes"/>
-  <w:rPr>
-   <!-- Inline labels -->
-    <xsl:if test="ancestor::inline">
-      <!-- if parent is an inline label -->
-      <xsl:choose>
-        <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-fieldcode-labels-with-document-label($labels))"/>
-        <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-fieldcode-labels())"/>
-        <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-index-labels-with-document-label($labels))"/>
-        <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-index-labels())"/>
-        <xsl:when test="ancestor::inline[@label]">
-          <xsl:call-template name="apply-style" />
-        </xsl:when>
-        <!-- otherwise, inherit style from paragraph -->
-      </xsl:choose>
-    </xsl:if>
-    <!-- `monospace` -->
-    <xsl:if test="ancestor::monospace">
-      <w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/>
-    </xsl:if>
-    <!-- `superscript` -->
-    <xsl:if test="ancestor::sup">
-      <w:vertAlign w:val="superscript" />
-    </xsl:if>
-    <!-- `subscript` -->
-    <xsl:if test="ancestor::sub">
-      <w:vertAlign w:val="subscript" />
-    </xsl:if>
-    <!-- `bold` -->
-    <xsl:if test="ancestor::bold">
-      <w:b />
-    </xsl:if>
-    <!-- `italic` -->
-    <xsl:if test="ancestor::italic ">
-      <w:i />
-    </xsl:if>
-    <!-- `underline` -->
-    <xsl:if test="ancestor::underline">
-      <w:u w:val="single" />
-    </xsl:if>
-    <!-- `xref` -->
-    <xsl:if test="self::xref">
-      <w:color w:val="0000FF"/>
-      <w:u w:val="single"/>
-    </xsl:if>
-    <!-- TODO Handling of diff elements -->
+  <!-- Inline labels -->
+  <xsl:if test="ancestor::inline">
+    <!-- if parent is an inline label -->
+    <xsl:choose>
+      <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-fieldcode-labels-with-document-label($labels))"/>
+      <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-fieldcode-labels())"/>
+      <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-index-labels-with-document-label($labels))"/>
+      <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-index-labels())"/>
+      <xsl:when test="ancestor::inline[@label]">
+        <xsl:call-template name="apply-style" />
+      </xsl:when>
+      <!-- otherwise, inherit style from paragraph -->
+    </xsl:choose>
+  </xsl:if>
+  <!-- `monospace` -->
+  <xsl:if test="ancestor::monospace">
+    <w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/>
+  </xsl:if>
+  <!-- `superscript` -->
+  <xsl:if test="ancestor::sup">
+    <w:vertAlign w:val="superscript" />
+  </xsl:if>
+  <!-- `subscript` -->
+  <xsl:if test="ancestor::sub">
+    <w:vertAlign w:val="subscript" />
+  </xsl:if>
+  <!-- `bold` -->
+  <xsl:if test="ancestor::bold">
+    <w:b />
+  </xsl:if>
+  <!-- `italic` -->
+  <xsl:if test="ancestor::italic ">
+    <w:i />
+  </xsl:if>
+  <!-- `underline` -->
+  <xsl:if test="ancestor::underline">
+    <w:u w:val="single" />
+  </xsl:if>
+<!-- TODO Handling of diff elements -->
 <!--             <xsl:if test="ancestor::dfx:del"> -->
 <!--               <w:highlight w:val="red"/> -->
 <!--             </xsl:if> -->
 <!--             <xsl:if test="ancestor::dfx:ins"> -->
 <!--               <w:highlight w:val="yellow"/> -->
 <!--             </xsl:if> -->
-  </w:rPr>
 </xsl:template>
 
 </xsl:stylesheet>

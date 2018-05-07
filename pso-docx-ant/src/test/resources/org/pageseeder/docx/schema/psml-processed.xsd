@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?stylesheet format="schema" xsl-rootelement="root"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.10">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.12">
 
   <xs:annotation>
     <xs:documentation>This is the XML schema for PSML document processed content.</xs:documentation>
@@ -73,6 +73,16 @@
       <xs:attribute name="id" type="xs:string">
         <xs:annotation>
           <xs:documentation>The URI ID of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="publicationid" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The publication ID of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="position" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>The position (instance number) of the document in the publication. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -160,43 +170,65 @@
   -->
   <xs:element name="toc">
     <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="tocref" />
-      </xs:choice>
+      <xs:sequence minOccurs="0" maxOccurs="1">
+        <xs:element ref="toc-tree" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 
   <!--
    =================================================================
-       tocref elements (for TOC)
+       toc-tree element (for TOC)
    =================================================================
   -->
-  <xs:element name="tocref">
+  <xs:element name="toc-tree">
     <xs:complexType>
-      <xs:simpleContent>
-        <xs:extension base="xs:string">
-          <xs:attribute name="level" type="xs:integer" use="required">
-            <xs:annotation>
-              <xs:documentation>The value of this level.</xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="idref" type="xs:string" use="required">
-            <xs:annotation>
-              <xs:documentation>The ref ID in the TOC (the headings will have a corresponding tocid attribute added).</xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="canonical" type="xs:string">
-            <xs:annotation>
-              <xs:documentation>The canonical value of the numbered prefix (e.g. 1.0.3 or 1.1.4).</xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="prefix" type="xs:string">
-            <xs:annotation>
-              <xs:documentation>The value of the numbered prefix with the scheme applied (e.g. 1.3 or 1.a.iv).</xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-        </xs:extension>
-      </xs:simpleContent>
+      <xs:sequence>
+        <xs:element name="toc-part"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title of the root document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       toc-part elements (for TOC)
+   =================================================================
+  -->
+  <xs:element name="toc-part">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="toc-part"  minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="level" type="xs:integer" use="required">
+        <xs:annotation>
+          <xs:documentation>The value of this level.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The title of the TOC item.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="idref" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The ref ID in the TOC (the headings will have a corresponding tocid attribute added).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="canonical" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The canonical value of the numbered prefix (e.g. 1.0.3 or 1.1.4).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="prefix" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The value of the numbered prefix with the scheme applied (e.g. 1.3 or 1.a.iv).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -253,7 +285,7 @@
           <xs:documentation>The fragment's labels.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="mediatype" type="xs:string">
+      <xs:attribute name="mediatype" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>A MIME type.</xs:documentation>
         </xs:annotation>
@@ -648,6 +680,11 @@
           <xs:documentation>The version (e.g. 0.01)</xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attribute name="publicationid" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The publication ID</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -717,6 +754,11 @@
           <xs:documentation>The title of the source document</xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attribute name="urilabels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>The labels of the source document</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="level">
         <xs:annotation>
           <xs:documentation>The number the heading levels of the target document should be incremented by when processed (1 to 5)</xs:documentation>
@@ -749,7 +791,8 @@
             - alternate: An alternate representations of the current document;
             - embed: Replace this element's content with the document/fragment pointed to when publishing (only valid for blockxref);
             - transclude: Replace this element's content with the document/fragment pointed to when displaying (only valid for blockxref);
-            - image: Replace this element's src with the image pointed to when displaying (only valid for image).
+            - image: Replace this element's src with the image pointed to when displaying (only valid for image);
+            - math: Replace this element's content with a media-fragment containing the math content pointed to when displaying.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -759,6 +802,7 @@
             <xs:enumeration value="embed" />
             <xs:enumeration value="transclude" />
             <xs:enumeration value="image" />
+            <xs:enumeration value="math" />
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -768,7 +812,8 @@
             - document: [document title];
             - document+manual: [document title]: [manual title];
             - document+fragment: [document title]: [target fragment id];
-            - manual: [manual title].</xs:documentation>
+            - manual: [manual title];
+            - template: defined by {tokens} in title attribute.</xs:documentation>
         </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -776,6 +821,7 @@
             <xs:enumeration value="document+manual" />
             <xs:enumeration value="document+fragment" />
             <xs:enumeration value="manual" />
+            <xs:enumeration value="template" />
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -1077,15 +1123,10 @@
         <xs:group ref="character-style-group" />
         <xs:element ref="image" />
       </xs:choice>
-      <xs:attribute name="indent">
+      <xs:attribute name="indent" type="xs:positiveInteger">
         <xs:annotation>
-          <xs:documentation>Number of levels to indent (1 to 6).</xs:documentation>
+          <xs:documentation>Number of levels to indent.</xs:documentation>
         </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:integer">
-            <xs:pattern value="[1-6]"/>
-          </xs:restriction>
-        </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="prefix" type="xs:string">
         <xs:annotation>
@@ -1270,11 +1311,11 @@
         <xs:element ref="col" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="row" maxOccurs="unbounded" />
       </xs:sequence>
-	    <xs:attribute name="role" type="role">
-	      <xs:annotation>
-	        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
-	      </xs:annotation>
-	    </xs:attribute>
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="width">
         <xs:annotation>
           <xs:documentation>Width of table in pixels or percent (pixels if no px or % suffix)</xs:documentation>
@@ -1328,11 +1369,11 @@
       <xs:documentation>For defining column properties (starting from left - not all columns need be defined)</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-	    <xs:attribute name="role" type="role">
-	      <xs:annotation>
-	        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
-	      </xs:annotation>
-	    </xs:attribute>
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
        <xs:attribute name="span" type="xs:positiveInteger">
         <xs:annotation>
           <xs:documentation>Number of columns this applies to.</xs:documentation>
@@ -1387,11 +1428,11 @@
         <xs:element ref="cell" />
         <xs:element ref="hcell" />
       </xs:choice>
-	    <xs:attribute name="role" type="role">
-	      <xs:annotation>
-	        <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
-	      </xs:annotation>
-	    </xs:attribute>
+      <xs:attribute name="role" type="role">
+        <xs:annotation>
+          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="align">
         <xs:annotation>
           <xs:documentation>Horizontal alignment.</xs:documentation>
@@ -1711,12 +1752,14 @@
             <xs:annotation>
               <xs:documentation>Type for link processing (default is 'none'). The following values are allowed:
                 - none: No link processing;
-                - alternate: An alternate representations of the current document.</xs:documentation>
+                - alternate: An alternate representations of the current document;
+                - math: Replace this element's content with a media-fragment containing the math content pointed to when displaying.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
               <xs:restriction base="xs:string">
                 <xs:enumeration value="none" />
                 <xs:enumeration value="alternate" />
+                <xs:enumeration value="math" />
               </xs:restriction>
             </xs:simpleType>
           </xs:attribute>
@@ -1760,6 +1803,11 @@
         and must be URL encoded (overrides docid and uriid).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="config" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The name of an XRef configuration used when creating/editing this XRef.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="uriid" type="xs:long">
       <xs:annotation>
         <xs:documentation>The URI Id of the target document (ignored if uploading to different PS server).</xs:documentation>
@@ -1786,7 +1834,8 @@
           - document: [document title];
           - document+manual: [document title]: [manual title];
           - document+fragment: [document title]: [target fragment id];
-          - manual: [manual title].</xs:documentation>
+          - manual: [manual title];
+          - template: defined by {tokens} in title attribute.</xs:documentation>
       </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -1794,6 +1843,7 @@
           <xs:enumeration value="document+manual" />
           <xs:enumeration value="document+fragment" />
           <xs:enumeration value="manual" />
+          <xs:enumeration value="template" />
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>
@@ -1805,6 +1855,11 @@
     <xs:attribute name="urititle" type="xs:string">
       <xs:annotation>
         <xs:documentation>The target document's title. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="urilabels" type="label-list">
+      <xs:annotation>
+        <xs:documentation>The target document's labels.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="mediatype" type="xs:string">

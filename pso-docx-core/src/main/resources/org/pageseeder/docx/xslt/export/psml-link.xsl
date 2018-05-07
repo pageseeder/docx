@@ -33,7 +33,10 @@
         <w:fldChar w:fldCharType="separate" />
       </w:r>
       <w:r>
-        <xsl:call-template name="apply-run-style" />
+        <w:rPr>
+          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          <xsl:call-template name="apply-run-style" />
+        </w:rPr>
         <w:t><xsl:value-of select="." /></w:t>
       </w:r>
       <w:r>
@@ -56,7 +59,10 @@
         </xsl:when>
         <xsl:otherwise>
           <w:r>
-            <xsl:call-template name="apply-run-style" />
+            <w:rPr>
+              <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+              <xsl:call-template name="apply-run-style" />
+            </w:rPr>
             <w:t><xsl:value-of select="." /></w:t>
           </w:r>
         </xsl:otherwise>
@@ -67,7 +73,10 @@
     <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
       <w:hyperlink w:anchor="{@href}" w:history="1">
         <w:r>
-          <xsl:call-template name="apply-run-style" />
+          <w:rPr>
+            <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+            <xsl:call-template name="apply-run-style" />
+          </w:rPr>
           <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
         </w:r>
       </w:hyperlink>
@@ -76,7 +85,10 @@
     <!-- Cross-reference to a PSML document -->
     <xsl:when test="@href[not(starts-with(., '#'))]">
       <w:r>
-        <xsl:call-template name="apply-run-style" />
+        <w:rPr>
+          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          <xsl:call-template name="apply-run-style" />
+        </w:rPr>
         <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
       </w:r>
     </xsl:when>
@@ -84,7 +96,9 @@
     <!-- Internal cross-reference (i.e. to another fragment) -->
     <xsl:otherwise>
       <xsl:choose>
-        <xsl:when test="config:generate-cross-references()">
+        <!-- if dynamic link text generate updatable reference -->
+        <xsl:when test="@display='template' and (contains(@title,'{heading}') or
+            contains(@title,'{prefix}') or contains(@title,'{parentnumber}'))">
           <w:r>
             <w:fldChar w:fldCharType="begin"/>
           </w:r>
@@ -95,17 +109,24 @@
             <w:fldChar w:fldCharType="separate"/>
           </w:r>
           <w:r>
+          <w:rPr>
+            <w:rStyle w:val="{config:reference-styleid()}"/>
             <xsl:call-template name="apply-run-style" />
+          </w:rPr>
             <w:t><xsl:value-of select="."/></w:t>
           </w:r>
           <w:r>
             <w:fldChar w:fldCharType="end"/>
           </w:r>
         </xsl:when>
+        <!-- otherwise use hyperlink for fixed text-->
         <xsl:otherwise>
           <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
             <w:r>
-              <xsl:call-template name="apply-run-style" />
+              <w:rPr>
+                <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+                <xsl:call-template name="apply-run-style" />
+              </w:rPr>
               <w:t><xsl:value-of select="." /></w:t>
             </w:r>
           </w:hyperlink>
@@ -162,10 +183,8 @@
       <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
         <w:r>
           <w:rPr>
-          <w:rStyle w:val="Hyperlink"/>
-          <w:color w:val="0000FF"/>
-          <w:u w:val="single"/>
-        </w:rPr>
+            <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          </w:rPr>
           <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
         </w:r>
       </w:hyperlink>
@@ -184,7 +203,7 @@
       </w:r>
       <w:r>
         <w:rPr>
-          <xsl:call-template name="apply-style"/>
+          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
         </w:rPr>
         <w:t>
           <xsl:value-of select="."/>
@@ -194,18 +213,17 @@
         <w:fldChar w:fldCharType="end" />
       </w:r>
     </xsl:when>
-    <xsl:when test="not(@href) and not(@name)">
-      <xsl:apply-templates mode="psml"/>
-    </xsl:when>
-    <xsl:when test="@name">
-      <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-      <w:bookmarkStart w:id="{$bookmark-id}" w:name="a-{@name}"/>
-      <w:bookmarkEnd w:id="{$bookmark-id}"/>
-    </xsl:when>
     <xsl:otherwise>
       <xsl:apply-templates mode="psml"/>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<!-- Anchor elements -->
+<xsl:template match="anchor" mode="psml">
+  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+  <w:bookmarkStart w:id="{$bookmark-id}" w:name="a-{@name}"/>
+  <w:bookmarkEnd w:id="{$bookmark-id}"/>
 </xsl:template>
 
 </xsl:stylesheet>
