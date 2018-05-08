@@ -19,7 +19,7 @@
 
   Create initial toc paragraphs only if the `$create-toc` global variable is `true`.
 -->
-<xsl:template match="toc" mode="psml">
+<xsl:template match="toc[not(preceding::toc)]" mode="psml">
   <xsl:if test="config:generate-toc()">
     <xsl:variable name="toc-text">
       <xsl:text>TOC </xsl:text>

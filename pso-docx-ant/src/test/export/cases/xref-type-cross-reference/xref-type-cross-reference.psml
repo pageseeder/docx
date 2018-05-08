@@ -9,26 +9,26 @@
   <section id="content">
     <fragment id="28508-101">
       <heading level="4">XRefs to numbered para</heading>
-      <para><xref id="64977" title="{prefix}" frag="103" reversefrag="2"
-            reversetitle="" reverselink="true" reversetype="none"
-            display="template" type="none" uriid="28508"
-            href="#28508-103" urititle="fn"
-            mediatype="application/vnd.pageseeder.psml+xml">2</xref> Referencing 2.</para>
-      <para><xref id="64977" title="{parentnumber}{prefix}" frag="105" reversefrag="2"
-            reversetitle="" reverselink="true" reversetype="none"
-            display="template" type="none" uriid="28508"
-            href="#28508-105" urititle="fn"
-            mediatype="application/vnd.pageseeder.psml+xml">2(a)(i)</xref> Referencing 2(a)(i).</para>
-      <para><xref id="64977" title="{parentnumber}{prefix}" frag="106" reversefrag="2"
-            reversetitle="" reverselink="true" reversetype="none"
-            display="template" type="none" uriid="28508"
-            href="#28508-106" urititle="fn"
-            mediatype="application/vnd.pageseeder.psml+xml">2(b)</xref> Referencing 2(b).</para>
       <para><xref id="64977" title="{prefix} {heading}" frag="107" reversefrag="2"
             reversetitle="" reverselink="true" reversetype="none"
             display="template" type="none" uriid="28508"
             href="#28508-107" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">1.1 Numbered Target</xref> Referencing 1.1 Numbered Target</para>
+      <para><xref id="64977" title="{prefix}" frag="103" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-103" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1.1.2</xref> Referencing 1.1.2.</para>
+      <para><xref id="64977" title="{parentnumber}{prefix}" frag="105" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-105" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1.1.2(a)(i)</xref> Referencing 1.1.2(a)(i).</para>
+      <para><xref id="64977" title="{parentnumber}{prefix}" frag="106" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-106" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1.1.2(b)</xref> Referencing 1.1.2(b).</para>
     </fragment>
     <xref-fragment id="content">
       <blockxref uriid="28509" title="Test" frag="default" display="document"
@@ -262,24 +262,24 @@
     <fragment id="28508-1">
       <para>Target</para>
     </fragment>
-    <fragment id="28508-102">
-      <para indent="1" numbered="true">Outline Level 1 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
-    </fragment>
-    <fragment id="28508-103">
-      <para indent="1" numbered="true">Outline Level 1 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
-    </fragment>
-    <fragment id="28508-104">
-      <para indent="2" numbered="true">Outline Level 2 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
-    </fragment>
-    <fragment id="28508-105">
-      <para indent="3" numbered="true">Outline Level 3 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
-    </fragment>
-    <fragment id="28508-106">
-      <para indent="2" numbered="true">Outline Level 2 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
-    </fragment>
     <fragment id="28508-107">
       <heading level="2" numbered="true">Numbered Target</heading>
       <para>Some text.</para>
+    </fragment>
+    <fragment id="28508-102">
+      <para indent="1" numbered="true" prefix="1.1.1">Outline Level 1 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-103">
+      <para indent="1" numbered="true" prefix="1.1.2">Outline Level 1 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-104">
+      <para indent="2" numbered="true" prefix="(a)">Outline Level 2 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-105">
+      <para indent="3" numbered="true" prefix="(i)">Outline Level 3 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-106">
+      <para indent="2" numbered="true" prefix="(b)">Outline Level 2 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
     </fragment>
   </section>
 </document>
