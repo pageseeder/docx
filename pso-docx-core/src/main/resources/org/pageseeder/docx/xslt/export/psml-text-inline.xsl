@@ -16,9 +16,6 @@
                 xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
 
-<!-- Anchor elements are ignored -->
-<xsl:template match="anchor" mode="psml"/>
-
 <!-- Match text which is only a space -->
 <xsl:template match="text()[. = '&#10;']" mode="psml"/>
 <!-- TODO: Not a space a new line seems quite specific, what's the reason? -->
@@ -104,7 +101,9 @@
 
     <xsl:otherwise>
       <w:r>
+        <w:rPr>
         <xsl:call-template name="apply-run-style" />
+        </w:rPr>
         <xsl:choose>
           <xsl:when test="ancestor::dfx:del">
           <w:delText xml:space="preserve"><xsl:value-of select="$text" /></w:delText>

@@ -3,11 +3,33 @@
   version="current" level="portable">
   <section id="title">
     <fragment id="28508-0">
-      <heading level="1">Xref style</heading>
+      <heading level="1">Xref type="cross-refernce"</heading>
     </fragment>
   </section>
   <section id="content">
-    <!-- Embed to test for duplicate bookmark ID -->
+    <fragment id="28508-101">
+      <heading level="4">XRefs to numbered para</heading>
+      <para><xref id="64977" title="{prefix}" frag="103" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-103" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2</xref> Referencing 2.</para>
+      <para><xref id="64977" title="{parentnumber}{prefix}" frag="105" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-105" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2(a)(i)</xref> Referencing 2(a)(i).</para>
+      <para><xref id="64977" title="{parentnumber}{prefix}" frag="106" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-106" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2(b)</xref> Referencing 2(b).</para>
+      <para><xref id="64977" title="{prefix} {heading}" frag="107" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-107" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1.1 Numbered Target</xref> Referencing 1.1 Numbered Target</para>
+    </fragment>
     <xref-fragment id="content">
       <blockxref uriid="28509" title="Test" frag="default" display="document"
         type="embed" reverselink="true" reversetitle="" reversetype="none"
@@ -18,6 +40,26 @@
           </section>
         </document>
       </blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true"
+            mediatype="application/vnd.pageseeder.psml+xml">External block xref</blockxref>
+      <blockxref id="649772" title="Binary block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="myimage.gif" urititle="My image"
+            mediatype="application/vnd.pageseeder.psml+xml">Binary block xref</blockxref>
+      <blockxref id="649773" title="PSML block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="mydoc.psml" urititle="My doc"
+            mediatype="application/vnd.pageseeder.psml+xml">PSML block xref</blockxref>
     </xref-fragment>
     <fragment id="28508-2">
       <heading level="4">Xref with Sup</heading>
@@ -211,24 +253,33 @@
       <heading level="4">Xref with Sup inside of Inline Label
       </heading>
       <para><inline label="example10"><sup>Example
-        <xref id="65030" title="10" frag="1" reversefrag="11"
+        <xref id="65030" title="10" frag="default" reversefrag="11"
             reversetitle="" reverselink="true" reversetype="none"
             display="manual" type="none" uriid="28508"
             href="#28508" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">10</xref></sup></inline></para>
     </fragment>
-    <fragment id="28508-13">
-      <heading level="4">Xref to _external
-      </heading>
-      <para>Example
-        <xref id="65030" title="10" frag="1" reversefrag="11"
-            reversetitle="" reverselink="true" reversetype="none"
-            display="manual" type="none" uriid="28509"
-            href="_external/test.psml" urititle="fn"
-            mediatype="application/vnd.pageseeder.psml+xml">_external test</xref></para>
-    </fragment>
     <fragment id="28508-1">
       <para>Target</para>
+    </fragment>
+    <fragment id="28508-102">
+      <para indent="1" numbered="true">Outline Level 1 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-103">
+      <para indent="1" numbered="true">Outline Level 1 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-104">
+      <para indent="2" numbered="true">Outline Level 2 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-105">
+      <para indent="3" numbered="true">Outline Level 3 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-106">
+      <para indent="2" numbered="true">Outline Level 2 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-107">
+      <heading level="2" numbered="true">Numbered Target</heading>
+      <para>Some text.</para>
     </fragment>
   </section>
 </document>

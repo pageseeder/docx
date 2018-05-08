@@ -18,7 +18,7 @@
 <!--
   Inline cross-references
 -->
-<xsl:template match="xref" mode="psml">
+<xsl:template name="xref-content">
   <xsl:choose>
 
     <!-- Cross-reference to a URL -->
@@ -33,7 +33,10 @@
         <w:fldChar w:fldCharType="separate" />
       </w:r>
       <w:r>
-        <xsl:call-template name="apply-run-style" />
+        <w:rPr>
+          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          <xsl:call-template name="apply-run-style" />
+        </w:rPr>
         <w:t><xsl:value-of select="." /></w:t>
       </w:r>
       <w:r>
@@ -56,7 +59,10 @@
         </xsl:when>
         <xsl:otherwise>
           <w:r>
-            <xsl:call-template name="apply-run-style" />
+            <w:rPr>
+              <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+              <xsl:call-template name="apply-run-style" />
+            </w:rPr>
             <w:t><xsl:value-of select="." /></w:t>
           </w:r>
         </xsl:otherwise>
@@ -64,10 +70,14 @@
     </xsl:when>
 
     <!-- Cross-reference to a non PSML document -->
+    <!-- TODO: Why is this pointing to an anchor? -->
     <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
       <w:hyperlink w:anchor="{@href}" w:history="1">
         <w:r>
-          <xsl:call-template name="apply-run-style" />
+          <w:rPr>
+            <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+            <xsl:call-template name="apply-run-style" />
+          </w:rPr>
           <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
         </w:r>
       </w:hyperlink>
@@ -76,7 +86,10 @@
     <!-- Cross-reference to a PSML document -->
     <xsl:when test="@href[not(starts-with(., '#'))]">
       <w:r>
-        <xsl:call-template name="apply-run-style" />
+        <w:rPr>
+          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          <xsl:call-template name="apply-run-style" />
+        </w:rPr>
         <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
       </w:r>
     </xsl:when>
@@ -84,28 +97,53 @@
     <!-- Internal cross-reference (i.e. to another fragment) -->
     <xsl:otherwise>
       <xsl:choose>
-        <xsl:when test="config:generate-cross-references()">
+        <!-- if dynamic link text generate updatable reference -->
+        <xsl:when test="(@display='template' and (contains(@title,'{prefix}') or contains(@title,'{parentnumber}'))) or
+            config:generate-cross-references()">
           <w:r>
             <w:fldChar w:fldCharType="begin"/>
           </w:r>
           <w:r>
             <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','f-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
+            <!-- Preserve style after update -->
+            <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
           </w:r>
           <w:r>
             <w:fldChar w:fldCharType="separate"/>
           </w:r>
           <w:r>
-            <xsl:call-template name="apply-run-style" />
-            <w:t><xsl:value-of select="."/></w:t>
+            <w:rPr>
+              <w:rStyle w:val="{config:reference-styleid()}"/>
+              <xsl:call-template name="apply-run-style" />
+            </w:rPr>
+            <w:t><xsl:value-of select="if (@display='template' and contains(@title,'{heading}')) then
+              substring-before(.,' ') else ."/></w:t>
           </w:r>
           <w:r>
             <w:fldChar w:fldCharType="end"/>
           </w:r>
+          <!-- if link text also contains {heading} add another link for heading -->
+          <xsl:if test="@display='template' and contains(@title,'{heading}')">
+            <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
+              <w:r>
+                <w:rPr>
+                  <w:rStyle w:val="{config:reference-styleid()}"/>
+                  <xsl:call-template name="apply-run-style" />
+                </w:rPr>
+                <w:t xml:space="preserve"> </w:t>
+                <w:t><xsl:value-of select="substring-after(.,' ')" /></w:t>
+              </w:r>
+            </w:hyperlink>          
+          </xsl:if>
         </xsl:when>
+        <!-- otherwise use hyperlink for fixed text-->
         <xsl:otherwise>
           <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
             <w:r>
-              <xsl:call-template name="apply-run-style" />
+              <w:rPr>
+                <w:rStyle w:val="{config:reference-styleid()}"/>
+                <xsl:call-template name="apply-run-style" />
+              </w:rPr>
               <w:t><xsl:value-of select="." /></w:t>
             </w:r>
           </w:hyperlink>
@@ -117,8 +155,14 @@
 </xsl:template>
 
 <!--
-  handles blockxref transformations;
-  checks also for document labels so that styles are applied accordingly through the configuration
+  Inline cross-references
+-->
+<xsl:template match="xref" mode="psml">
+  <xsl:call-template name="xref-content" />
+</xsl:template>
+
+<!--
+  Handles blockxref transformations
 -->
 <xsl:template match="blockxref" mode="psml">
   <xsl:choose>
@@ -134,17 +178,8 @@
       <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:otherwise>
-      <!-- TODO generate internal link if target is internal -->
-      <xsl:variable name="content" select="if (@title != '') then @title else @urititle" />
       <w:p>
-        <w:r>
-          <w:rPr>
-            <w:rStyle w:val="reference" />
-          </w:rPr>
-          <w:t>
-            <xsl:value-of select="$content" />
-          </w:t>
-        </w:r>
+        <xsl:call-template name="xref-content" />
       </w:p>
     </xsl:otherwise>
   </xsl:choose>
@@ -162,10 +197,8 @@
       <w:hyperlink w:anchor="{$internal-reference}" w:history="1">
         <w:r>
           <w:rPr>
-          <w:rStyle w:val="Hyperlink"/>
-          <w:color w:val="0000FF"/>
-          <w:u w:val="single"/>
-        </w:rPr>
+            <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          </w:rPr>
           <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
         </w:r>
       </w:hyperlink>
@@ -184,7 +217,7 @@
       </w:r>
       <w:r>
         <w:rPr>
-          <xsl:call-template name="apply-style"/>
+          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
         </w:rPr>
         <w:t>
           <xsl:value-of select="."/>
@@ -194,18 +227,17 @@
         <w:fldChar w:fldCharType="end" />
       </w:r>
     </xsl:when>
-    <xsl:when test="not(@href) and not(@name)">
-      <xsl:apply-templates mode="psml"/>
-    </xsl:when>
-    <xsl:when test="@name">
-      <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-      <w:bookmarkStart w:id="{$bookmark-id}" w:name="a-{@name}"/>
-      <w:bookmarkEnd w:id="{$bookmark-id}"/>
-    </xsl:when>
     <xsl:otherwise>
       <xsl:apply-templates mode="psml"/>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<!-- Anchor elements -->
+<xsl:template match="anchor" mode="psml">
+  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+  <w:bookmarkStart w:id="{$bookmark-id}" w:name="a-{@name}"/>
+  <w:bookmarkEnd w:id="{$bookmark-id}"/>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -11,6 +11,7 @@
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:v="urn:schemas-microsoft-com:vml"
                 xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
@@ -38,7 +39,9 @@
   <block label="{config:get-block-label-from-psml-element(w:pPr/w:pStyle/@w:val)}">
     <xsl:apply-templates select="./*" mode="content">
       <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
-    </xsl:apply-templates>
+     </xsl:apply-templates>
+   
+     <xsl:apply-templates select="descendant::v:textbox" mode="textbox" />
   </block>
 </xsl:template>
 
@@ -362,12 +365,21 @@
 
   Adds the block label and analysis if this section it is portrait or landscape
 -->
-
 <xsl:template match="w:sectPr/w:pgSz[not(ancestor::w:p)]" mode="content">
   <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
   <xsl:if test="$type-page = 'ps_landscape_end'">
     <block label="{$type-page}" />
   </xsl:if>
 </xsl:template>
+ 
+<!--
+  Template to match the midle of section word page
+
+  Adds the block label and analysis if this section it is portrait or landscape
+-->
+<xsl:template match="w:sectPr/w:pgSz[ancestor::w:pPr[w:pStyle/@w:val = $config-doc/config/styles/wordstyle/@name]]" mode="content">
+  <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
+  <block label="{$type-page}" />
+</xsl:template>    
 
 </xsl:stylesheet>
