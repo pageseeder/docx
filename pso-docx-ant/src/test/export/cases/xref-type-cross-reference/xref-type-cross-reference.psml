@@ -24,6 +24,11 @@
             display="template" type="none" uriid="28508"
             href="#28508-106" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">2(b)</xref> Referencing 2(b).</para>
+      <para><xref id="64977" title="{prefix} {heading}" frag="107" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-107" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1.1 Numbered Target</xref> Referencing 1.1 Numbered Target</para>
     </fragment>
     <xref-fragment id="content">
       <blockxref uriid="28509" title="Test" frag="default" display="document"
@@ -35,6 +40,26 @@
           </section>
         </document>
       </blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true"
+            mediatype="application/vnd.pageseeder.psml+xml">External block xref</blockxref>
+      <blockxref id="649772" title="Binary block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="myimage.gif" urititle="My image"
+            mediatype="application/vnd.pageseeder.psml+xml">Binary block xref</blockxref>
+      <blockxref id="649773" title="PSML block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="mydoc.psml" urititle="My doc"
+            mediatype="application/vnd.pageseeder.psml+xml">PSML block xref</blockxref>
     </xref-fragment>
     <fragment id="28508-2">
       <heading level="4">Xref with Sup</heading>
@@ -251,6 +276,10 @@
     </fragment>
     <fragment id="28508-106">
       <para indent="2" numbered="true">Outline Level 2 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-107">
+      <heading level="2" numbered="true">Numbered Target</heading>
+      <para>Some text.</para>
     </fragment>
   </section>
 </document>

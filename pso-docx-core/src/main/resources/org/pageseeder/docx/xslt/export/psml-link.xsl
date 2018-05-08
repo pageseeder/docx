@@ -18,7 +18,7 @@
 <!--
   Inline cross-references
 -->
-<xsl:template match="xref" mode="psml">
+<xsl:template name="xref-content">
   <xsl:choose>
 
     <!-- Cross-reference to a URL -->
@@ -70,6 +70,7 @@
     </xsl:when>
 
     <!-- Cross-reference to a non PSML document -->
+    <!-- TODO: Why is this pointing to an anchor? -->
     <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
       <w:hyperlink w:anchor="{@href}" w:history="1">
         <w:r>
@@ -97,34 +98,50 @@
     <xsl:otherwise>
       <xsl:choose>
         <!-- if dynamic link text generate updatable reference -->
-        <xsl:when test="@display='template' and (contains(@title,'{heading}') or
-            contains(@title,'{prefix}') or contains(@title,'{parentnumber}'))">
+        <xsl:when test="(@display='template' and (contains(@title,'{prefix}') or contains(@title,'{parentnumber}'))) or
+            config:generate-cross-references()">
           <w:r>
             <w:fldChar w:fldCharType="begin"/>
           </w:r>
           <w:r>
             <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','f-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
+            <!-- Preserve style after update -->
+            <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
           </w:r>
           <w:r>
             <w:fldChar w:fldCharType="separate"/>
           </w:r>
           <w:r>
-          <w:rPr>
-            <w:rStyle w:val="{config:reference-styleid()}"/>
-            <xsl:call-template name="apply-run-style" />
-          </w:rPr>
-            <w:t><xsl:value-of select="."/></w:t>
+            <w:rPr>
+              <w:rStyle w:val="{config:reference-styleid()}"/>
+              <xsl:call-template name="apply-run-style" />
+            </w:rPr>
+            <w:t><xsl:value-of select="if (@display='template' and contains(@title,'{heading}')) then
+              substring-before(.,' ') else ."/></w:t>
           </w:r>
           <w:r>
             <w:fldChar w:fldCharType="end"/>
           </w:r>
+          <!-- if link text also contains {heading} add another link for heading -->
+          <xsl:if test="@display='template' and contains(@title,'{heading}')">
+            <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
+              <w:r>
+                <w:rPr>
+                  <w:rStyle w:val="{config:reference-styleid()}"/>
+                  <xsl:call-template name="apply-run-style" />
+                </w:rPr>
+                <w:t xml:space="preserve"> </w:t>
+                <w:t><xsl:value-of select="substring-after(.,' ')" /></w:t>
+              </w:r>
+            </w:hyperlink>          
+          </xsl:if>
         </xsl:when>
         <!-- otherwise use hyperlink for fixed text-->
         <xsl:otherwise>
           <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
             <w:r>
               <w:rPr>
-                <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+                <w:rStyle w:val="{config:reference-styleid()}"/>
                 <xsl:call-template name="apply-run-style" />
               </w:rPr>
               <w:t><xsl:value-of select="." /></w:t>
@@ -138,8 +155,14 @@
 </xsl:template>
 
 <!--
-  handles blockxref transformations;
-  checks also for document labels so that styles are applied accordingly through the configuration
+  Inline cross-references
+-->
+<xsl:template match="xref" mode="psml">
+  <xsl:call-template name="xref-content" />
+</xsl:template>
+
+<!--
+  Handles blockxref transformations
 -->
 <xsl:template match="blockxref" mode="psml">
   <xsl:choose>
@@ -155,17 +178,8 @@
       <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:otherwise>
-      <!-- TODO generate internal link if target is internal -->
-      <xsl:variable name="content" select="if (@title != '') then @title else @urititle" />
       <w:p>
-        <w:r>
-          <w:rPr>
-            <w:rStyle w:val="reference" />
-          </w:rPr>
-          <w:t>
-            <xsl:value-of select="$content" />
-          </w:t>
-        </w:r>
+        <xsl:call-template name="xref-content" />
       </w:p>
     </xsl:otherwise>
   </xsl:choose>

@@ -201,6 +201,8 @@
   <xs:element name="xref">
     <xs:complexType>      
       <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
+      <xs:attribute name="hyperlinkstyle" type="xs:string" />
+      <xs:attribute name="referencestyle" type="xs:string" />
     </xs:complexType>
   </xs:element>
 

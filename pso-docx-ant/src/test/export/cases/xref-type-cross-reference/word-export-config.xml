@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
   <default>
-    <xref type="cross-reference"/>
+    <xref type="cross-reference" hyperlinkstyle="My Hyperlink" referencestyle="My Reference"/>
   </default>
   <elements>
     <block default="none">
@@ -10,6 +10,10 @@
     <inline default="none">
       <label wordstyle="Heading1Char" value="example10"/>
     </inline>
+    <heading>
+      <level value="1" numbered="true" wordstyle="heading 1"/>
+      <level value="2" numbered="true" wordstyle="heading 2"/>
+    </heading>
     <para>
       <indent level="1" numbered="true" wordstyle="List Number"/>
       <indent level="2" numbered="true" wordstyle="List Number 2"/>
