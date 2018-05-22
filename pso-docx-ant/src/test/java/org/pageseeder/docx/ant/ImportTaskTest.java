@@ -163,8 +163,13 @@ public class ImportTaskTest {
   }
 
   @Test
-  public void testEmptyConfigurationImagesBrackets() throws IOException, SAXException {
-    testIndividual("empty-configuration-(images)");
+  public void testEmptyConfigurationImagesDrawingAnchorElement() throws IOException, SAXException {
+    testIndividual("empty-configuration-images-drawing-anchor-element");
+  }
+  
+  @Test
+  public void testEmptyConfigurationImagesPictElement() throws IOException, SAXException {
+    testIndividual("empty-configuration-images-pict-element");
   }
 
   @Test
