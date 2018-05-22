@@ -40,8 +40,8 @@
   Main template processing the `w:drawing` and `w:pict` elements in the document and
 -->
 <xsl:template match="/">
-  <xsl:for-each select=".//w:drawing|.//w:pict">
-    <xsl:sort select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed|.//v:shape/v:imagedata/@r:id"/>
+  <xsl:for-each select=".//w:drawing|.//w:pict//v:shape">
+    <xsl:sort select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed|.//v:imagedata/@r:id"/>
     <xsl:choose>
       <xsl:when test="matches(wp:inline/wp:docPr/@name,'^\d+$')">
         <xsl:variable name="rid"    select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed" />
@@ -50,7 +50,7 @@
         <xsl:value-of select="concat($target, '###', $rid, '###', 'media/', wp:inline/wp:docPr/@name,'.',$type, '&#xA;')"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="rid"    select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed|.//v:shape/v:imagedata/@r:id"/>
+        <xsl:variable name="rid"    select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed|.//v:imagedata/@r:id"/>
         <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target"/>
         <xsl:value-of select="concat($target, '###', $rid, '&#xA;')"/>
       </xsl:otherwise>
