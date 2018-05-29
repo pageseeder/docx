@@ -166,11 +166,11 @@
       <!-- Heading -->
       <xsl:when test="self::heading">
         <xsl:choose>
-          <xsl:when test="config:heading-wordstyle-for-document-label($labels,@level,@numbered) != ''">
-            <xsl:value-of select="config:heading-wordstyle-for-document-label($labels,@level,@numbered)"/>
+          <xsl:when test="config:heading-wordstyle-for-document-label($labels,@level,@numbered,@prefix) != ''">
+            <xsl:value-of select="config:heading-wordstyle-for-document-label($labels,@level,@numbered,@prefix)"/>
           </xsl:when>
-          <xsl:when test="config:heading-wordstyle-for-default-document(@level,@numbered) != ''">
-            <xsl:value-of select="config:heading-wordstyle-for-default-document(@level,@numbered)"/>
+          <xsl:when test="config:heading-wordstyle-for-default-document(@level,@numbered,@prefix) != ''">
+            <xsl:value-of select="config:heading-wordstyle-for-default-document(@level,@numbered,@prefix)"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="$default-paragraph-style"/>
