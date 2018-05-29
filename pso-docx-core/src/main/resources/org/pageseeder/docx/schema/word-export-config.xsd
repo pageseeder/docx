@@ -335,6 +335,7 @@
 			</xs:attribute>
 			<xs:attribute name="wordstyle" type="xs:string"/>
       <xs:attribute name="numbered" type="xs:boolean"/>
+      <xs:attribute name="prefixed" type="xs:boolean"/>
 		</xs:complexType>
 	</xs:element>
 

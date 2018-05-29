@@ -817,7 +817,10 @@ Returns the default table width value based on a table role.
   <xsl:param name="document-label"/>
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle)" />
+  <xsl:param name="prefix"/>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered)
+    then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+    then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -830,7 +833,10 @@ Returns the default table width value based on a table role.
 <xsl:function name="config:heading-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
-  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/heading/level[if($numbered) then (@numbered =  $numbered) else not(@numbered)][@value=$heading-level]/@wordstyle)" />
+  <xsl:param name="prefix"/>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/heading/level[if($numbered)
+    then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+    then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
 
 <!--
@@ -1268,7 +1274,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
   <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered)
-    then @numbered='true' else not(@numbered='true')][if($prefix)
+    then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
@@ -1296,7 +1302,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
   <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered)
-    then @numbered='true' else not(@numbered='true')][if($prefix)
+    then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
     <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
