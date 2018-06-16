@@ -304,6 +304,16 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testLargePSML() throws IOException, SAXException {
+    long start = System.currentTimeMillis();
+    testIndividual("large-psml", "document");
+    long end = System.currentTimeMillis();
+    long time = end - start;
+    System.out.println("Large PSML time (ms): " + time);
+    Assert.assertTrue(40000 > time); // 40 seconds
+  }
+
+  @Test
   public void testListDefaultWithRoleSet() throws IOException, SAXException {
     testIndividual("list-default-with-role-set", "document,numbering");
   }

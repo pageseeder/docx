@@ -157,8 +157,9 @@
                   <xsl:value-of select="$call-style//@w:val"/>
                 </xsl:variable>
                 <!-- count ancestor lists of current + preceding lists of the parent list -->
-                <w:numId w:val="{$max-num-id + count(./ancestor::*[name() = 'list' or name() = 'nlist']) +
-                    count(./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::*[name() = 'list' or name() = 'nlist'])}" />
+                <w:numId w:val="{$max-num-id + count(./ancestor::list|./ancestor::nlist) +
+                    count(./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::list|
+                      ./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::nlist)}" />
               </w:numPr>
   
             </xsl:when>

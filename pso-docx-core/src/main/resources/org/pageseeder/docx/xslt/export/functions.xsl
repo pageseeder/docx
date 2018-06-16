@@ -51,7 +51,10 @@
 -->
 <xsl:function name="fn:bookmark-id" as="xs:integer">
   <xsl:param name="current" />
-  <xsl:value-of select="count($current/preceding::*) + count($current/ancestor::*)" />
+  <xsl:value-of select="count($current/preceding::document|$current/preceding::fragment|$current/preceding::xref-fragment|
+      $current/preceding::properties-fragment|$current/preceding::media-fragment|$current/preceding::anchor) +
+    count($current/ancestor::document|$current/ancestor::fragment|$current/ancestor::xref-fragment|
+      $current/ancestor::properties-fragment|$current/ancestor::media-fragment|$current/ancestor::anchor)" />
 </xsl:function>
 
 <!--

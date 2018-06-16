@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+
+<!-- This configuration transforms PSML into DocX -->
+
+<config version="0.7.0">
+
+  <core>
+    <creator select="[ps-current-user]" />
+    <description select="[ps-document-description]" />
+    <title select="[ps-document-title]" />
+    <!-- <modified select="[ps-document-modified]" /> -->
+    <created select="[ps-current-date]" />
+    <keywords select="[ps-document-labels]" />
+    <subject select="" />
+    <category select="" />
+    <version select="1.0" />
+    <revision select="1" />
+  </core>
+
+  <toc generate="true" style="TOC2">
+    <headings generate="true" select="1-9" /> <!-- 1|1-2|5-9|etc from 1 up to 9-->
+    <outline generate="true" select="1-9" /> <!-- 1|1-2|5-9|etc from 1 up to 9-->
+    <paragraph generate="false">
+      <!-- any paragraph style defined in the document with the corresponding TOC indent level  -->
+      <!-- 
+      <style value="[word style]" indent="[indent level]" />
+       -->
+    </paragraph>
+  </toc>
+
+  <default>
+    <defaultparagraphstyle wordstyle="Body Text" />
+    <defaultcharacterstyle wordstyle="Default Paragraph Font" />
+    <comments generate="false" />
+    <xref hyperlinkstyle="PS Hyperlink" referencestyle="PS Reference"/>
+  </default>
+
+
+  <elements>
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <block default="generate-ps-style">
+
+    </block>
+    
+    <!-- default options:"generate-ps-style|none" -->
+    <!-- label options:"generate-ps-style|[name of style]" -->
+    <inline default="generate-ps-style">
+  
+    </inline>
+    
+    <tables>
+      <table default="PS Table" headstyle="PS Table Header" bodystyle="PS Table Body">
+        <width type="pct" value="5000"/>
+      </table>
+    </tables>
+    
+    <!-- NOTE: wordstyle "heading [x]" only must be in lower case -->
+    <heading>
+      <!-- Unnumbered headings -->
+      <level value="1" wordstyle="Heading Unnumbered 1"/>
+      <level value="2" wordstyle="Heading Unnumbered 2"/>
+      <level value="3" wordstyle="Heading Unnumbered 3"/>
+      <level value="4" wordstyle="Heading Unnumbered 4"/>
+      <level value="5" wordstyle="Heading Unnumbered 5"/>
+      <level value="6" wordstyle="Heading Unnumbered 6"/>
+      <level value="7" wordstyle="Heading Unnumbered 7"/>
+      <level value="8" wordstyle="Heading Unnumbered 8"/>
+      <level value="9" wordstyle="Heading Unnumbered 9"/>
+      <!-- Unnumbered prefixed headings -->
+      <level value="1" prefixed="true" wordstyle="Heading Unnumbered 1"/>
+      <level value="2" prefixed="true" wordstyle="Heading Unnumbered 2"/>
+      <level value="3" prefixed="true" wordstyle="Heading Unnumbered 3"/>
+      <level value="4" prefixed="true" wordstyle="Heading Unnumbered 4"/>
+      <level value="5" prefixed="true" wordstyle="Heading Unnumbered 5"/>
+      <level value="6" prefixed="true" wordstyle="Heading Unnumbered 6"/>
+      <level value="7" prefixed="true" wordstyle="Heading Unnumbered 7"/>
+      <level value="8" prefixed="true" wordstyle="Heading Unnumbered 8"/>
+      <level value="9" prefixed="true" wordstyle="Heading Unnumbered 9"/>
+      <!-- Numbered headings -->
+      <level value="1" numbered="true" wordstyle="heading 1"/>
+      <level value="2" numbered="true" wordstyle="heading 2"/>
+      <level value="3" numbered="true" wordstyle="heading 3"/>
+      <level value="4" numbered="true" wordstyle="heading 4"/>
+      <level value="5" numbered="true" wordstyle="heading 5"/>
+      <level value="6" numbered="true" wordstyle="heading 6"/>
+      <level value="7" numbered="true" wordstyle="heading 7"/>
+      <level value="8" numbered="true" wordstyle="heading 8"/>
+      <level value="9" numbered="true" wordstyle="heading 9"/>
+      <!-- Numbered prefixed headings -->
+      <level value="1" numbered="true" prefixed="true" wordstyle="heading 1">
+        <prefix select="false" />
+      </level>
+      <level value="2" numbered="true" prefixed="true" wordstyle="heading 2">
+        <prefix select="false" />
+      </level>
+      <level value="3" numbered="true" prefixed="true" wordstyle="heading 3">
+        <prefix select="false" />
+      </level>
+      <level value="4" numbered="true" prefixed="true" wordstyle="heading 4">
+        <prefix select="false" />
+      </level>
+      <level value="5" numbered="true" prefixed="true" wordstyle="heading 5">
+        <prefix select="false" />
+      </level>
+      <level value="6" numbered="true" prefixed="true" wordstyle="heading 6">
+        <prefix select="false" />
+      </level>
+      <level value="7" numbered="true" prefixed="true" wordstyle="heading 7">
+        <prefix select="false" />
+      </level>
+      <level value="8" numbered="true" prefixed="true" wordstyle="heading 8">
+        <prefix select="false" />
+      </level>
+      <level value="9" numbered="true" prefixed="true" wordstyle="heading 9">
+        <prefix select="false" />
+      </level>
+    </heading>
+
+    <para>
+      <indent level="0" wordstyle="Body Text"/>
+      <!-- Indented unnumbered paragraphs -->
+      <indent level="1" wordstyle="List Continue"/>
+      <indent level="2" wordstyle="List Continue 2"/>
+      <indent level="3" wordstyle="List Continue 3"/>
+      <indent level="4" wordstyle="List Continue 4"/>
+      <indent level="5" wordstyle="List Continue 5"/>
+      <indent level="6" wordstyle="List Continue 6"/>
+      <indent level="7" wordstyle="List Continue 7"/>
+      <indent level="8" wordstyle="List Continue 8"/>
+      <indent level="9" wordstyle="List Continue 9"/>
+      <!-- Prefixed paragraphs -->
+      <indent level="1" prefixed="true" wordstyle="List Manual"/>
+      <indent level="2" prefixed="true" wordstyle="List Manual 2"/>
+      <indent level="3" prefixed="true" wordstyle="List Manual 3"/>
+      <indent level="4" prefixed="true" wordstyle="List Manual 4"/>
+      <indent level="5" prefixed="true" wordstyle="List Manual 5"/>
+      <indent level="6" prefixed="true" wordstyle="List Manual 6"/>
+      <indent level="7" prefixed="true" wordstyle="List Manual 7"/>
+      <indent level="8" prefixed="true" wordstyle="List Manual 8"/>
+      <indent level="9" prefixed="true" wordstyle="List Manual 9"/>
+      <!-- Numbered paragraphs -->
+      <indent level="1" numbered="true" wordstyle="Para indent"/>
+      <indent level="2" numbered="true" wordstyle="Para indent 2"/>
+      <indent level="3" numbered="true" wordstyle="Para indent 3"/>
+      <indent level="4" numbered="true" wordstyle="Para indent 4"/>
+      <indent level="5" numbered="true" wordstyle="Para indent 5"/>
+      <indent level="6" numbered="true" wordstyle="Para indent 6"/>
+      <indent level="7" numbered="true" wordstyle="Para indent 7"/>
+      <indent level="8" numbered="true" wordstyle="Para indent 8"/>
+      <indent level="9" numbered="true" wordstyle="Para indent 9"/>
+      <!-- Numbered prefixed paragraphs -->
+      <indent level="1" numbered="true" prefixed="true" wordstyle="Para indent">
+        <prefix select="false" />
+      </indent>
+      <indent level="2" numbered="true" prefixed="true" wordstyle="Para indent 2">
+        <prefix select="false" />
+      </indent>
+      <indent level="3" numbered="true" prefixed="true" wordstyle="Para indent 3">
+        <prefix select="false" />
+      </indent>
+      <indent level="4" numbered="true" prefixed="true" wordstyle="Para indent 4">
+        <prefix select="false" />
+      </indent>
+      <indent level="5" numbered="true" prefixed="true" wordstyle="Para indent 5">
+        <prefix select="false" />
+      </indent>
+      <indent level="6" numbered="true" prefixed="true" wordstyle="Para indent 6">
+        <prefix select="false" />
+      </indent>
+      <indent level="7" numbered="true" prefixed="true" wordstyle="Para indent 7">
+        <prefix select="false" />
+      </indent>
+      <indent level="8" numbered="true" prefixed="true" wordstyle="Para indent 8">
+        <prefix select="false" />
+      </indent>
+      <indent level="9" numbered="true" prefixed="true" wordstyle="Para indent 9">
+        <prefix select="false" />
+      </indent>
+    </para>
+
+    <preformat wordstyle="HTML Preformatted"/>
+    
+    <nlist liststyle="Numbered List">
+      <!-- 
+      <role value="[value of role]" liststyle="[word list style]" />
+       -->
+    </nlist>
+    
+    <list liststyle="Bulleted List">
+      <!-- 
+      <role value="[value of role]" liststyle="[word list style]" />
+       -->
+    </list>
+  </elements>
+</config>
