@@ -1,3 +1,58 @@
-<document id="186974" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable"><documentinfo><uri id="186974" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/Links.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Links.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:31:52+11:00" title="Links"><displaytitle>Links</displaytitle></uri><reversexrefs><reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455329" title="Test Files" type="none" forwardtype="embed"/></reversexrefs></documentinfo><fragmentinfo><locator id="103131" fragment="1" editid="455691" modified="2013-02-04T17:02:26+11:00"/><locator id="103200" fragment="title"/></fragmentinfo><section id="title"><fragment id="title">
-			<heading level="1">Links</heading>
-		</fragment></section><section id="1"><fragment id="1"><para> <anchor name="TOP"/>An external link:</para><para><link href="http://www.google.com">www.google.com</link></para><para>A link to this document on pageseeder:</para><para><link href="https://ps.pageseeder.com/ps/page/ps-docx/path/Documents/Test_Files/Links.xml#TOP">Link to links</link></para><para>A link to the first line of this document:</para><para><link href="#TOP">To TOP</link></para><para>A link to an email:</para><para><link href="mailto:hinacio@allette.com.au?subject=Test%20from%20links(docx)&amp;body=This%20is%20a%20test%20document.%20Please%20do%20not%20respond">Email Me</link></para><para><xref id="455690" title="" frag="default" reverselink="true" reversetitle="" reversetype="none" display="document" type="none" mediatype="application/vnd.pageseeder.psml+xml" uriid="186974" urititle="Links" href="/ps/dev/docx/Documents/Test_Files/Links.psml">Links</xref></para></fragment></section></document>
+<document id="186974" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <documentinfo>
+    <uri id="186974" scheme="https" host="ps.pageseeder.com" port="443"
+      path="/ps/dev/docx/Documents/Test_Files/Links.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Links.psml"
+      mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:31:52+11:00"
+      title="Links">
+      <displaytitle>Links</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960"
+        href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1"
+        urititle="Test Files – Master" id="455329" title="Test Files"
+        type="none" forwardtype="embed" />
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103131" fragment="1" editid="455691"
+      modified="2013-02-04T17:02:26+11:00" />
+    <locator id="103200" fragment="title" />
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Links</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <para><anchor name="TOP" />An external link:</para>
+      <para>
+        <link href="http://www.google.com">www.google.com</link>
+      </para>
+      <para>A link to this document on pageseeder:</para>
+      <para>
+        <link
+          href="https://ps.pageseeder.com/ps/page/ps-docx/path/Documents/Test_Files/Links.xml#TOP">Link to links</link>
+      </para>
+      <para>A link to the first line of this document:</para>
+      <para>
+        <link href="#TOP">To TOP</link>
+      </para>
+      <para>A link to an email:</para>
+      <para>
+        <link
+          href="mailto:hinacio@allette.com.au?subject=Test%20from%20links(docx)&amp;body=This%20is%20a%20test%20document.%20Please%20do%20not%20respond">Email Me</link>
+      </para>
+      <para>
+        <xref id="455690" title="" frag="default" reverselink="true"
+          reversetitle="" reversetype="none" display="document" type="none"
+          mediatype="application/vnd.pageseeder.psml+xml" uriid="186974"
+          urititle="Links" href="/ps/dev/docx/Documents/Test_Files/Links.psml">Links</xref>
+      </para>
+    </fragment>
+    <fragment id="2">
+      <para>Another fragment</para>
+    </fragment>
+  </section>
+</document>
