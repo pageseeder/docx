@@ -168,6 +168,11 @@ public class ImportTaskTest {
   }
   
   @Test
+  public void testEmptyConfigurationImagesEmbededPictElement() throws IOException, SAXException {
+    testIndividual("empty-configuration-images-embeded-pict-element");
+  }
+
+  @Test
   public void testEmptyConfigurationImagesPictElement() throws IOException, SAXException {
     testIndividual("empty-configuration-images-pict-element");
   }
