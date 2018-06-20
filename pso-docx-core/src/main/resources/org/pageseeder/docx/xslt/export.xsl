@@ -102,6 +102,8 @@
 
 <!-- Generate content for DOCX package (other than `document.xml`) -->
 <xsl:include href="export/word-numbering.xsl" />
+<xsl:include href="export/word-footnotes.xsl" />
+<xsl:include href="export/word-endnotes.xsl" />
 <xsl:include href="export/word-content_types.xsl" />
 <xsl:include href="export/word-styles.xsl" />
 

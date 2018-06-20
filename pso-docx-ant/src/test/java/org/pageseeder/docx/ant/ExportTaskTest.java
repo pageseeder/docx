@@ -465,6 +465,26 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testXrefEndnotes() throws IOException, SAXException {
+    testIndividual("xref-endnotes", "document,endnotes");
+  }
+
+  @Test
+  public void testXrefEndnotesStyleSet() throws IOException, SAXException {
+    testIndividual("xref-endnotes-style-set", "document,endnotes");
+  }
+
+  @Test
+  public void testXrefFootnotes() throws IOException, SAXException {
+    testIndividual("xref-footnotes", "document,footnotes");
+  }
+
+  @Test
+  public void testXrefFootnotesStyleSet() throws IOException, SAXException {
+    testIndividual("xref-footnotes-style-set", "document,footnotes");
+  }
+
+  @Test
   public void testXrefStyle() throws IOException, SAXException {
     testIndividual("xref-style");
   }

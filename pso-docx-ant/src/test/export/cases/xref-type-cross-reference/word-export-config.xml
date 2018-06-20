@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
   <default>
-    <xref type="cross-reference" hyperlinkstyle="My Hyperlink" referencestyle="My Reference"/>
+    <xrefs type="cross-reference" hyperlinkstyle="My Hyperlink" referencestyle="My Reference"/>
   </default>
   <elements>
     <block default="none">

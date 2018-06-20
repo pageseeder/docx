@@ -35,6 +35,9 @@
 <!-- The name of the docx file -->
 <xsl:variable name="filename" select="substring-before($_docxfilename,'.docx')" as="xs:string"/>
 
+<!-- The root PSML document -->
+<xsl:variable name="root-document" select="/document" />
+
 <!-- The uri element of the root PSML document -->
 <xsl:variable name="root-uri" select="/document/documentinfo/uri" />
 
@@ -43,6 +46,18 @@
 
 <!-- The location of the styles template -->
 <xsl:variable name="styles-template" select="'/word/styles.xml'" as="xs:string"/>
+
+<xsl:variable name="footnote-ids">
+  <xsl:for-each select="$root-document//document[@type=config:footnotes-documenttype()]/section[ends-with(@id,'-content')]/fragment">
+    <footnote fragment="#{@id}" id="{position()}" />
+  </xsl:for-each>
+</xsl:variable>
+
+<xsl:variable name="endnote-ids">
+  <xsl:for-each select="$root-document//document[@type=config:endnotes-documenttype()]/section[ends-with(@id,'-content')]/fragment">
+    <endnote fragment="#{@id}" id="{position()}" />
+  </xsl:for-each>
+</xsl:variable>
 
 <!-- Node containing all inline label configured values -->
 <xsl:variable name="inline-labels" as="element(inlinelabels)">

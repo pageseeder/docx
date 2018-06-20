@@ -19,7 +19,29 @@
   Inline cross-references
 -->
 <xsl:template name="xref-content">
+  <xsl:param name="labels" tunnel="yes" />
+  
   <xsl:choose>
+
+    <!-- Cross-reference to a footnote -->
+    <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@fragment=current()/@href]">
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:footnote-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:footnoteReference w:id="{$footnote-ids/footnote[@fragment=current()/@href]/@id}"/>
+      </w:r>
+    </xsl:when>
+
+    <!-- Cross-reference to a endnote -->
+    <xsl:when test="@documenttype = config:endnotes-documenttype() and $endnote-ids/endnote[@fragment=current()/@href]">
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:endnote-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:endnoteReference w:id="{$endnote-ids/endnote[@fragment=current()/@href]/@id}"/>
+      </w:r>
+    </xsl:when>
 
     <!-- Cross-reference to a URL -->
     <xsl:when test="@external = 'true'">

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <footnotes documenttype="footnotes" />
+  </default>
+  <elements>
+    <xref>
+      <footnote textstyle="Footnote Text 1" referencestyle="Footnote Reference 1" />
+    </xref>
+  </elements>
+  <elements label="appendix">
+    <xref>
+      <footnote textstyle="Footnote Text 2" referencestyle="Footnote Reference 2" />
+    </xref>
+  </elements>
+</config>

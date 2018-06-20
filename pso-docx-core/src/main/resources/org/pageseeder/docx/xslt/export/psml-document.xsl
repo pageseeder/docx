@@ -25,6 +25,8 @@
   <!-- TODO all functions treat labels as a single label so this will not work if there is more than one -->
   <xsl:variable name="labels" select="string(documentinfo/uri/labels)" as="xs:string"/>
   <xsl:choose>
+    <!-- don't include footnotes and endnotes documents -->
+    <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
     <xsl:when test="not(ancestor::document)">
       <w:document>
         <w:body>

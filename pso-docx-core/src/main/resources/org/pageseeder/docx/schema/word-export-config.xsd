@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.6.2">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.4">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -151,7 +151,7 @@
           <xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
           <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
           <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="xref" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="xrefs" minOccurs="0" maxOccurs="1" />
   			</xs:sequence>
         <xs:sequence>
           <xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
@@ -186,19 +186,17 @@
   
   <xs:element name="footnotes">
     <xs:complexType>
-      <xs:attribute name="generate" type="xs:boolean"/>
-      <xs:attribute name="xref-labels" type="xs:string"/>
+      <xs:attribute name="documenttype" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   
   <xs:element name="endnotes">
     <xs:complexType>
-      <xs:attribute name="generate" type="xs:boolean"/>
-      <xs:attribute name="xref-labels" type="xs:string"/>
+      <xs:attribute name="documenttype" type="xs:string"/>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="xref">
+  <xs:element name="xrefs">
     <xs:complexType>      
       <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
       <xs:attribute name="hyperlinkstyle" type="xs:string" />
@@ -218,6 +216,7 @@
         <xs:element ref="title" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="nlist" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="list" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="xref" minOccurs="0" maxOccurs="1" />
 			</xs:all>
 			<xs:attribute name="label" type="xs:string"/>
 		</xs:complexType>
@@ -425,5 +424,28 @@
       <xs:attribute name="liststyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>	
+
+  <xs:element name="xref">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="footnote" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="endnote" minOccurs="0" maxOccurs="1" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="footnote">
+    <xs:complexType>
+      <xs:attribute name="textstyle" type="xs:string"/>
+      <xs:attribute name="referencestyle" type="xs:string"/>
+    </xs:complexType>
+  </xs:element> 
+
+  <xs:element name="endnote">
+    <xs:complexType>
+      <xs:attribute name="textstyle" type="xs:string"/>
+      <xs:attribute name="referencestyle" type="xs:string"/>
+    </xs:complexType>
+  </xs:element> 
 
 </xs:schema>
