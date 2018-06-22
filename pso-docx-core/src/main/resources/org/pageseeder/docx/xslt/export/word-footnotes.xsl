@@ -22,7 +22,7 @@
   <xsl:copy>
     <xsl:copy-of select="@*" />
     <xsl:apply-templates select="w:footnote[@w:id = '-1' or @w:id = '0']" mode="numbering" />
-    <xsl:for-each select="$root-document//document[@type=config:footnotes-documenttype()]/section[ends-with(@id,'-content')]/fragment">
+    <xsl:for-each select="$root-document//document[@type=config:footnotes-documenttype()]/section[ends-with(@id,'content')]/fragment">
       <xsl:variable name="first-xref" select="($root-document//xref[@href=concat('#',current()/@id)])[1]" />
       <w:footnote w:id="{position()}">
         <w:p>

@@ -486,7 +486,7 @@ public final class ExportTaskTest {
 
   @Test
   public void testXrefStyle() throws IOException, SAXException {
-    testIndividual("xref-style");
+    testIndividual("xref-style", "document,endnotes,footnotes");
   }
 
   @Test
