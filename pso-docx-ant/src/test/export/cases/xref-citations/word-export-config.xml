@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <citations documenttype="bibliography">
+      <author fragmenttype="author" type-property="author-type"
+        first-property="first-name" middle-property="middle-name" last-property="last-name">
+        <author-type name="Author" property-value="Author" />
+        <author-type name="Editor" property-value="Editor" />
+      </author>
+      <corporate-author fragmenttype="corporate-author" name-property="corporate-name" />
+      <field name="Title" property="title" />
+      <field name="City" property="city" />
+      <field name="Publisher" property="publisher" />
+      <field name="InternetSiteTitle" property="site-name" />
+      <field name="ProductionCompany" property="production-company" />
+      <field name="Year" property="year" />
+      <field name="Month" property="month" />
+      <field name="Day" property="day" />
+      <field name="YearAccessed" property="year-accessed" />
+      <field name="MonthAccessed" property="month-accessed" />
+      <field name="DayAccessed" property="day-accessed" />
+      <field name="URL" property="url" />
+      <field name="PeriodicalTitle" property="periodical-title" />
+      <field name="Edition" property="edition" />
+      <field name="PublicationTitle" property="publication-title" />
+      <field name="Volume" property="volume" />
+      <field name="Issue" property="issue" />
+      <field name="StandardNumber" property="standard-number" />
+    </citations>
+  </default>
+  <elements>
+    <xref>
+      <!-- <citation textstyle="Footnote Text" referencestyle="Footnote Reference" /> -->
+    </xref>
+  </elements>
+</config>
