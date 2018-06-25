@@ -221,6 +221,12 @@
     </xsl:result-document>
   </xsl:if>
 
+  <xsl:if test="doc-available(concat($_dotxfolder,'/customXml/item1.xml'))">
+    <xsl:result-document href="{concat($_outputfolder,'customXml/item1.xml')}">
+      <xsl:apply-templates select="document(concat($_dotxfolder,'/customXml/item1.xml'))" mode="citations" />
+    </xsl:result-document>
+  </xsl:if>
+
   <xsl:result-document href="{concat($_outputfolder,'word/styles.xml')}">
     <xsl:apply-templates select="document(concat($_dotxfolder,$styles-template))" mode="styles">
       <xsl:with-param name="inline-labels" select="$inline-labels" as="element()" />

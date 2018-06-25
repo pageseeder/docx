@@ -465,6 +465,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testXrefCitations() throws IOException, SAXException {
+    testIndividual("xref-citations", "document,item1");
+  }
+
+  @Test
   public void testXrefEndnotes() throws IOException, SAXException {
     testIndividual("xref-endnotes", "document,endnotes");
   }
@@ -526,6 +531,7 @@ public final class ExportTaskTest {
           File actual = new File(result,
               ("document".equals(name) ? "" :
                 "core".equals(name) ? "working/prepacked/docProps/" :
+                "item1".equals(name) ? "working/prepacked/customXml/" :
                 "working/prepacked/word/") + name + ".xml");
           File expected = new File(dir, name + ".xml");
 

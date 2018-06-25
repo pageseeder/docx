@@ -104,6 +104,7 @@
 <xsl:include href="export/word-numbering.xsl" />
 <xsl:include href="export/word-footnotes.xsl" />
 <xsl:include href="export/word-endnotes.xsl" />
+<xsl:include href="export/word-citations.xsl" />
 <xsl:include href="export/word-content_types.xsl" />
 <xsl:include href="export/word-styles.xsl" />
 

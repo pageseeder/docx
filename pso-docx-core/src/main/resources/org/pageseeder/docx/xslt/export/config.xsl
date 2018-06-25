@@ -402,6 +402,33 @@
 </xsl:function>
 
 <!--
+  Returns the PSML document type for the citations.
+
+  @return the document type
+-->
+<xsl:function name="config:citations-documenttype" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/citations/@documenttype" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured citation reference style.
+
+  @param document-label the document label
+
+  @return the style ID
+-->
+<xsl:function name="config:citation-reference-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/citation/@referencestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/citation/@referencestyle"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style else $default-style"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+</xsl:function>
+
+<!--
   Indicate whether cross-references should be generated.
 
   @return true or false

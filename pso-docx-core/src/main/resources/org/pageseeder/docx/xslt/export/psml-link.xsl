@@ -43,6 +43,32 @@
       </w:r>
     </xsl:when>
 
+
+    <!-- Cross-reference to a citation -->
+    <xsl:when test="@documenttype = config:citations-documenttype() and
+        $root-document//properties-fragment[@id=substring-after(current()/@href,'#')]">
+      <w:r>
+        <w:fldChar w:fldCharType="begin" />
+      </w:r>
+      <w:r>
+        <w:instrText xml:space="preserve">CITATION <xsl:value-of select="substring-after(current()/@href,'#')"/></w:instrText>
+        <!-- Preserve style after update -->
+        <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
+      </w:r>
+      <w:r>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:citation-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:t><xsl:value-of select="."/></w:t>
+      </w:r>
+      <w:r>
+        <w:fldChar w:fldCharType="end" />
+      </w:r>
+    </xsl:when>
+
     <!-- Cross-reference to a URL -->
     <xsl:when test="@external = 'true'">
       <w:r>

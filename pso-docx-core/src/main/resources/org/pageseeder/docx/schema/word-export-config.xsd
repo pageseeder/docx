@@ -149,6 +149,7 @@
   				<xs:element ref="defaultcharacterstyle" minOccurs="0" maxOccurs="1" />
   				<xs:element ref="comments" minOccurs="0" maxOccurs="1" />
           <xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="citations" minOccurs="0" maxOccurs="1" />
           <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
           <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
           <xs:element ref="xrefs" minOccurs="0" maxOccurs="1" />
@@ -198,46 +199,7 @@
 
   <xs:element name="citations">
     <xs:complexType>
-      <xs:sequence>
-        <xsl:element ref="author" maxoccurs="unbounded" />
-        <xsl:element ref="corporate-author" maxoccurs="unbounded" />
-        <xsl:element ref="field" maxoccurs="unbounded" />
-      </xs:sequence>
       <xs:attribute name="documenttype" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="author">
-    <xs:sequence>
-      <xsl:element ref="author-type" maxoccurs="unbounded" />
-    </xs:sequence>
-    <xs:complexType>
-      <xs:attribute name="fragmenttype" type="xs:string"/>
-      <xs:attribute name="type-property" type="xs:string"/>
-      <xs:attribute name="first-property" type="xs:string"/>
-      <xs:attribute name="middle-property" type="xs:string"/>
-      <xs:attribute name="last-property" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="corporate-author">
-    <xs:complexType>
-      <xs:attribute name="fragmenttype" type="xs:string"/>
-      <xs:attribute name="name-property" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="field">
-    <xs:complexType>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="property" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="author-type">
-    <xs:complexType>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="property-value" type="xs:string"/>
     </xs:complexType>
   </xs:element>
 
@@ -475,6 +437,7 @@
       <xs:all>
         <xs:element ref="footnote" minOccurs="0" maxOccurs="1" />
         <xs:element ref="endnote" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="citation" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>
@@ -489,6 +452,12 @@
   <xs:element name="endnote">
     <xs:complexType>
       <xs:attribute name="textstyle" type="xs:string"/>
+      <xs:attribute name="referencestyle" type="xs:string"/>
+    </xs:complexType>
+  </xs:element> 
+
+  <xs:element name="citation">
+    <xs:complexType>
       <xs:attribute name="referencestyle" type="xs:string"/>
     </xs:complexType>
   </xs:element> 

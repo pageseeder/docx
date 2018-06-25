@@ -27,6 +27,27 @@
   <xsl:choose>
     <!-- don't include footnotes and endnotes documents -->
     <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
+    <!-- for bibliography only output title section and field code -->    
+    <xsl:when test="@type=config:citations-documenttype()">
+      <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+      <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
+      <xsl:apply-templates select="section[ends-with(@id,'title')]" mode="psml" >
+        <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+      </xsl:apply-templates>
+      <w:p>
+        <w:r>
+          <w:fldChar w:fldCharType="begin" w:dirty="true" />
+        </w:r>
+        <w:r>
+          <w:instrText xml:space="preserve">BIBLIOGRAPHY</w:instrText>
+        </w:r>
+        <w:r>
+          <w:fldChar w:fldCharType="end" w:dirty="true" />
+        </w:r>
+      </w:p>
+      <w:bookmarkEnd w:id="{$bookmark-id}"/>
+    </xsl:when>
+    <!-- root document -->
     <xsl:when test="not(ancestor::document)">
       <w:document>
         <w:body>
@@ -48,6 +69,7 @@
         </w:body>
       </w:document>
     </xsl:when>
+    <!-- other documents -->
     <xsl:otherwise>
       <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
       <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
