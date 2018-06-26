@@ -8,7 +8,7 @@
   exclude-result-prefixes="#all">
 
 <xsl:param name="remove-custom-xml"               select="'true'"/>
-<xsl:param name="remove-smart-tags"               select="'true'"/>
+<xsl:param name="remove-smart-tags"               select="'false'"/>
 <xsl:param name="remove-content-controls"         select="'false'"/>
 <xsl:param name="remove-rsid-info"                select="'true'"/>
 <xsl:param name="remove-permissions"              select="'true'"/>
