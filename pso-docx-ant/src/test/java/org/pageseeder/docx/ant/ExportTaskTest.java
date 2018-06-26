@@ -465,8 +465,40 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testXrefCitations() throws IOException, SAXException {
+    // NOTE: To open docx result file first replace customXml/item1.xml with transformed-item1.xml.
+    testIndividual("xref-citations", "document,item1");
+  }
+
+  @Test
+  public void testXrefCitationsStyleSet() throws IOException, SAXException {
+    // NOTE: To open docx result file first replace customXml/item1.xml with transformed-item1.xml.
+    testIndividual("xref-citations-style-set", "document,item1");
+  }
+
+  @Test
+  public void testXrefEndnotes() throws IOException, SAXException {
+    testIndividual("xref-endnotes", "document,endnotes");
+  }
+
+  @Test
+  public void testXrefEndnotesStyleSet() throws IOException, SAXException {
+    testIndividual("xref-endnotes-style-set", "document,endnotes");
+  }
+
+  @Test
+  public void testXrefFootnotes() throws IOException, SAXException {
+    testIndividual("xref-footnotes", "document,footnotes");
+  }
+
+  @Test
+  public void testXrefFootnotesStyleSet() throws IOException, SAXException {
+    testIndividual("xref-footnotes-style-set", "document,footnotes");
+  }
+
+  @Test
   public void testXrefStyle() throws IOException, SAXException {
-    testIndividual("xref-style");
+    testIndividual("xref-style", "document,endnotes,footnotes");
   }
 
   @Test
@@ -506,6 +538,7 @@ public final class ExportTaskTest {
           File actual = new File(result,
               ("document".equals(name) ? "" :
                 "core".equals(name) ? "working/prepacked/docProps/" :
+                "item1".equals(name) ? "working/prepacked/customXml/" :
                 "working/prepacked/word/") + name + ".xml");
           File expected = new File(dir, name + ".xml");
 

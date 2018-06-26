@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="61102" schemaversion="0.12" type="references"
+  date="2018-06-25T16:15:59+10:00" version="current" level="processed">
+  <documentinfo>
+    <uri id="61102" scheme="http" host="localhost" port="80"
+      path="/ps/report/local1/test/xref-citations.psml" decodedpath="/ps/report/local1/test/xref-citations.psml"
+      external="false" mediatype="application/vnd.pageseeder.psml+xml"
+      documenttype="references" created="2018-06-25T12:55:49+10:00"
+      modified="2018-06-25T16:15:59+10:00" title="XRef-citations">
+      <displaytitle>XRef-citations</displaytitle>
+    </uri>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="45294" fragment="61102-2" editid="108381"
+      modified="2018-06-25T12:57:39+10:00" />
+  </fragmentinfo>
+  <metadata />
+  <section id="61102-title">
+    <fragment id="61102-1">
+      <heading level="1">XRef-citations</heading>
+    </fragment>
+  </section>
+  <toc />
+  <section id="61102-xrefs">
+    <xref-fragment id="61102-2">
+      <blockxref id="108378" frag="default" reversefrag="2"
+        reversetitle="" reverselink="true" reversetype="none" display="document"
+        type="embed" uriid="61103" href="citations-content.psml"
+        urititle="Citations-content" mediatype="application/vnd.pageseeder.psml+xml">
+        <document id="61103" schemaversion="0.12"
+          date="2018-06-26T11:27:09+10:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="61103" scheme="http" host="localhost" port="80"
+              path="/ps/report/local1/test/citations-content.psml"
+              decodedpath="/ps/report/local1/test/citations-content.psml"
+              external="false" mediatype="application/vnd.pageseeder.psml+xml"
+              created="2018-06-25T12:56:31+10:00" modified="2018-06-26T11:27:09+10:00"
+              title="Citations-content">
+              <displaytitle>Citations-content</displaytitle>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61102" href="xref-citations.psml"
+                frag="2" urititle="XRef-citations" mediatype="application/vnd.pageseeder.psml+xml"
+                documenttype="references" id="108378" title="" type="none"
+                forwardtype="embed" forwarddisplay="document"
+                forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45295" fragment="61103-2" editid="108450"
+              modified="2018-06-26T11:27:09+10:00" />
+          </fragmentinfo>
+          <metadata />
+          <section id="61103-title">
+            <fragment id="61103-1">
+              <heading level="1">Citations-content</heading>
+            </fragment>
+          </section>
+          <section id="61103-content">
+            <fragment id="61103-2">
+              <para>
+                Some content some content 
+                <xref id="108390" title="({heading})" frag="1"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="citation"
+                  type="none" uriid="61105" href="#61105-1" urititle="Bibliography"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="bibliography">(Jacobson, 1992)</xref>
+                <inline label="pages">10</inline>
+                some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content.
+                <xref id="108449" title="({heading})" frag="3"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="citation"
+                  type="none" uriid="61105" href="#61105-3" urititle="Bibliography"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="bibliography">(W3C)</xref>
+              </para>
+              <para>
+                Some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content some
+                content some content.
+                <xref id="108436" title="({heading})" frag="2"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="citation"
+                  type="none" uriid="61105" href="#61105-2" urititle="Bibliography"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="bibliography">(Wikipedia)</xref>
+              </para>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
+      <blockxref id="108379" frag="default" reversefrag="2"
+        reversetitle="" reverselink="true" reversetype="none" display="document"
+        type="embed" uriid="61104" href="citations-content2.psml"
+        urititle="Citations-content2" urilabels="appendix"
+        mediatype="application/vnd.pageseeder.psml+xml">
+        <document id="61104" schemaversion="0.12"
+          date="2018-06-26T11:50:27+10:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="61104" scheme="http" host="localhost" port="80"
+              path="/ps/report/local1/test/citations-content2.psml"
+              decodedpath="/ps/report/local1/test/citations-content2.psml"
+              external="false" mediatype="application/vnd.pageseeder.psml+xml"
+              created="2018-06-25T12:56:53+10:00" modified="2018-06-26T11:50:27+10:00"
+              title="Citations-content2">
+              <displaytitle>Citations-content2</displaytitle>
+              <labels>appendix</labels>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61102" href="xref-citations.psml"
+                frag="2" urititle="XRef-citations" mediatype="application/vnd.pageseeder.psml+xml"
+                documenttype="references" id="108379" title="" type="none"
+                forwardtype="embed" forwarddisplay="document"
+                forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45296" fragment="61104-2" editid="108456"
+              modified="2018-06-26T11:50:27+10:00" />
+          </fragmentinfo>
+          <metadata />
+          <section id="61104-title">
+            <fragment id="61104-1">
+              <heading level="1">Citations-content2</heading>
+            </fragment>
+          </section>
+          <section id="61104-content">
+            <fragment id="61104-2">
+              <para>
+                Some content some content 
+                <xref id="108408" title="({heading})" frag="1"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="citation"
+                  type="none" uriid="61105" href="#61105-1" urititle="Bibliography"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="bibliography">(Jacobson, 1992)</xref>
+                some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content.
+                <xref id="108455" title="({heading})" frag="3"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="citation"
+                  type="none" uriid="61105" href="#61105-3" urititle="Bibliography"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="bibliography">(W3C)</xref>
+                <inline label="pages">10 - 20</inline>
+              </para>
+              <para>
+                Some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content some
+                content some content.
+                <xref id="108409" title="({heading})" frag="2"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="citation"
+                  type="none" uriid="61105" href="#61105-2" urititle="Bibliography"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="bibliography">(Wikipedia)</xref>
+              </para>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
+      <blockxref id="108380" frag="default" reversefrag="2"
+        reversetitle="" reverselink="true" reversetype="none" display="document"
+        type="embed" uriid="61105" href="bibliography.psml" urititle="Bibliography"
+        mediatype="application/vnd.pageseeder.psml+xml" documenttype="bibliography">
+        <document id="61105" schemaversion="0.12" type="bibliography"
+          date="2018-06-26T11:50:27+10:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="61105" scheme="http" host="localhost" port="80"
+              path="/ps/report/local1/test/bibliography.psml"
+              decodedpath="/ps/report/local1/test/bibliography.psml"
+              external="false" mediatype="application/vnd.pageseeder.psml+xml"
+              documenttype="bibliography" created="2018-06-25T12:57:36+10:00"
+              modified="2018-06-26T11:50:27+10:00" title="Bibliography">
+              <displaytitle>Bibliography</displaytitle>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61102" href="xref-citations.psml"
+                frag="2" urititle="XRef-citations" mediatype="application/vnd.pageseeder.psml+xml"
+                documenttype="references" id="108380" title="" type="none"
+                forwardtype="embed" forwarddisplay="document"
+                forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45297" fragment="61105-1" editid="108404"
+              modified="2018-06-25T13:49:48+10:00">
+              <reversexrefs>
+                <reversexref uriid="61103" href="citations-content.psml"
+                  frag="2" urititle="Citations-content"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108390"
+                  title="" type="none" forwardtype="none" forwardtitle="({heading})"
+                  forwarddisplay="template" forwardfrag="1" />
+                <reversexref uriid="61104" href="citations-content2.psml"
+                  frag="2" urititle="Citations-content2" urilabels="appendix"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108408"
+                  title="" type="none" forwardtype="none" forwardtitle="({heading})"
+                  forwarddisplay="template" forwardfrag="1" />
+              </reversexrefs>
+            </locator>
+            <locator id="45301" fragment="61105-2" editid="108432"
+              modified="2018-06-25T15:42:17+10:00">
+              <reversexrefs>
+                <reversexref uriid="61104" href="citations-content2.psml"
+                  frag="2" urititle="Citations-content2" urilabels="appendix"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108409"
+                  title="" type="none" forwardtype="none" forwardtitle="({heading})"
+                  forwarddisplay="template" forwardfrag="2" />
+                <reversexref uriid="61103" href="citations-content.psml"
+                  frag="2" urititle="Citations-content"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108436"
+                  title="" type="none" forwardtype="none" forwardtitle="({heading})"
+                  forwarddisplay="template" forwardfrag="2" />
+              </reversexrefs>
+            </locator>
+            <locator id="45308" fragment="61105-3" editid="108453"
+              modified="2018-06-26T11:44:53+10:00">
+              <reversexrefs>
+                <reversexref uriid="61103" href="citations-content.psml"
+                  frag="2" urititle="Citations-content"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108449"
+                  title="" type="none" forwardtype="none" forwardtitle="({heading})"
+                  forwarddisplay="template" forwardfrag="3" />
+                <reversexref uriid="61104" href="citations-content2.psml"
+                  frag="2" urititle="Citations-content2" urilabels="appendix"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108455"
+                  title="" type="none" forwardtype="none" forwardtitle="({heading})"
+                  forwarddisplay="template" forwardfrag="3" />
+              </reversexrefs>
+            </locator>
+          </fragmentinfo>
+          <metadata />
+          <section id="61105-title">
+            <fragment id="61105-0">
+              <heading level="1">Bibliography</heading>
+            </fragment>
+          </section>
+          <section id="61105-content" fragmenttype="citation">
+            <properties-fragment id="61105-1" type="citation">
+              <property name="link-text" title="Link text"
+                value="Jacobson, 1992" />
+              <property name="description" title="Description"
+                datatype="markdown">
+                <markdown>Object Oriented Software Engineering: A Use
+                  Case Driven Approach 1st Edition by Ivar Jacobson
+                </markdown>
+              </property>
+              <property name="source" title="Source" datatype="xref">
+                <xref id="108403" frag="default" reversefrag="1"
+                  reversetitle="" reverselink="true" reversetype="none"
+                  display="document" type="alternate" uriid="61107"
+                  href="_local/documents/sources/source-001.psml"
+                  urititle="Object Oriented Software Engineering"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="source">
+                  <document id="61107" schemaversion="0.12"
+                    type="source" date="2018-06-26T11:16:04+10:00"
+                    version="current" level="processed">
+                    <documentinfo>
+                      <uri id="61107" scheme="http" host="localhost"
+                        port="80"
+                        path="/ps/report/local1/documents/sources/source-001.psml"
+                        decodedpath="/ps/report/local1/documents/sources/source-001.psml"
+                        external="false" mediatype="application/vnd.pageseeder.psml+xml"
+                        documenttype="source" created="2018-06-25T13:47:49+10:00"
+                        modified="2018-06-26T11:16:04+10:00" title="Object Oriented Software Engineering">
+                        <displaytitle>Object Oriented Software
+                          Engineering</displaytitle>
+                      </uri>
+                      <reversexrefs>
+                        <reversexref uriid="61105"
+                          href="bibliography.psml" frag="1" urititle="Bibliography"
+                          mediatype="application/vnd.pageseeder.psml+xml"
+                          documenttype="bibliography" id="108403" title=""
+                          type="none" forwardtype="alternate"
+                          forwarddisplay="document" forwardfrag="default" />
+                      </reversexrefs>
+                    </documentinfo>
+                    <fragmentinfo>
+                      <locator id="45299" fragment="61107-1"
+                        editid="108402" modified="2018-06-25T13:49:32+10:00" />
+                      <locator id="45300" fragment="61107-2"
+                        editid="108443" modified="2018-06-26T11:16:04+10:00" />
+                    </fragmentinfo>
+                    <metadata />
+                    <section id="61107-authors" title="Authors"
+                      fragmenttype="author">
+                      <properties-fragment id="61107-2"
+                        type="author">
+                        <property name="first-name" title="First name"
+                          value="Ivar" />
+                        <property name="middl-namee" title="Middle name"
+                          value="" />
+                        <property name="last-name" title="Last name"
+                          value="Jacobson" />
+                        <property name="author-type" title="Type" />
+                      </properties-fragment>
+                    </section>
+                    <section id="61107-corporate-authors" title="Corporate authors"
+                      fragmenttype="corporate-author" />
+                    <section id="61107-details" title="Details">
+                      <properties-fragment id="61107-1"
+                        type="book">
+                        <property name="title" title="Title"
+                          value="Object Oriented Software Engineering: A Use Case Driven Approach" />
+                        <property name="year" title="Year"
+                          value="1992" />
+                        <property name="city" title="City"
+                          value="" />
+                        <property name="publisher" title="Publisher"
+                          value="Addison-Wesley Professional" />
+                        <property name="standard-number" title="Standard number"
+                          value="" />
+                      </properties-fragment>
+                    </section>
+                  </document>
+                </xref>
+              </property>
+            </properties-fragment>
+            <properties-fragment id="61105-2" type="citation">
+              <property name="link-text" title="Link text"
+                value="Wikipedia" />
+              <property name="description" title="Description"
+                datatype="markdown">
+                <markdown>Object-oriented design</markdown>
+              </property>
+              <property name="source" title="Source" datatype="xref">
+                <xref id="108431" frag="default" reversefrag="2"
+                  reversetitle="" reverselink="true" reversetype="none"
+                  display="document" type="alternate" uriid="61108"
+                  href="_local/documents/sources/source-002.psml"
+                  urititle="Object-oriented design" mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="source">
+                  <document id="61108" schemaversion="0.12"
+                    type="source" date="2018-06-26T11:13:09+10:00"
+                    version="current" level="processed">
+                    <documentinfo>
+                      <uri id="61108" scheme="http" host="localhost"
+                        port="80"
+                        path="/ps/report/local1/documents/sources/source-002.psml"
+                        decodedpath="/ps/report/local1/documents/sources/source-002.psml"
+                        external="false" mediatype="application/vnd.pageseeder.psml+xml"
+                        documenttype="source" created="2018-06-25T15:41:49+10:00"
+                        modified="2018-06-26T11:13:09+10:00" title="Object-oriented design">
+                        <displaytitle>Object-oriented design
+                        </displaytitle>
+                      </uri>
+                      <reversexrefs>
+                        <reversexref uriid="61105"
+                          href="bibliography.psml" frag="2" urititle="Bibliography"
+                          mediatype="application/vnd.pageseeder.psml+xml"
+                          documenttype="bibliography" id="108431" title=""
+                          type="none" forwardtype="alternate"
+                          forwarddisplay="document" forwardfrag="default" />
+                      </reversexrefs>
+                    </documentinfo>
+                    <fragmentinfo>
+                      <locator id="45306" fragment="61108-1"
+                        editid="108442" modified="2018-06-26T11:13:09+10:00" />
+                      <locator id="45307" fragment="61108-2"
+                        editid="108441" modified="2018-06-25T17:05:56+10:00" />
+                    </fragmentinfo>
+                    <metadata />
+                    <section id="61108-authors" title="Authors"
+                      fragmenttype="author" />
+                    <section id="61108-corporate-authors" title="Corporate authors"
+                      fragmenttype="corporate-author">
+                      <properties-fragment id="61108-2"
+                        type="corporate-author">
+                        <property name="corporate-name" title="Corporation name"
+                          value="Wikipedia Inc." />
+                      </properties-fragment>
+                    </section>
+                    <section id="61108-details" title="Details">
+                      <properties-fragment id="61108-1"
+                        type="website">
+                        <property name="title" title="Name of web page"
+                          value="Object-oriented design" />
+                        <property name="site-name" title="Name of web site"
+                          value="Wikipedia" />
+                        <property name="company" title="Production company"
+                          value="" />
+                        <property name="year" title="Year"
+                          value="2017" />
+                        <property name="month" title="Month"
+                          value="November" />
+                        <property name="day" title="Day" value="" />
+                        <property name="year-accessed" title="Year accessed"
+                          value="2018" />
+                        <property name="month-accessed" title="Month accessed"
+                          value="July" />
+                        <property name="day-accessed" title="Day accessed"
+                          value="" />
+                        <property name="url" title="URL"
+                          value="https://en.wikipedia.org/wiki/Object-oriented_design" />
+                        <property name="standard-number" title="Standard number"
+                          value="" />
+                      </properties-fragment>
+                    </section>
+                  </document>
+                </xref>
+              </property>
+            </properties-fragment>
+            <properties-fragment id="61105-3" type="citation">
+              <property name="link-text" title="Link text"
+                value="W3C" />
+              <property name="description" title="Description"
+                datatype="markdown">
+                <markdown>MathML</markdown>
+              </property>
+              <property name="source" title="Source" datatype="xref"
+                value="" />
+            </properties-fragment>
+          </section>
+        </document>
+      </blockxref>
+    </xref-fragment>
+  </section>
+</document>

@@ -3,23 +3,28 @@
  */
 package org.pageseeder.docx;
 
-import org.pageseeder.docx.util.Files;
-import org.pageseeder.docx.util.XSLT;
-import org.pageseeder.docx.util.ZipUtils;
-
-import javax.xml.transform.Templates;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.transform.Templates;
+
+import org.pageseeder.docx.util.Files;
+import org.pageseeder.docx.util.XSLT;
+import org.pageseeder.docx.util.ZipUtils;
+
 /**
- * <p>The docx processor is extract from {@link ExportTask} in the future implementation should merge the
- * {@link DOCXProcessor} with the ExportTask. </p>
+ * Converts PSML to DocX.
  *
  * @author Ciber Cai
  * @author Christophe Lauret
- * @version 0.6
+ * @author Philip Rutherford
  */
 public final class DOCXProcessor {
 
@@ -142,9 +147,12 @@ public final class DOCXProcessor {
     // Transform
     XSLT.transform(newSourceDocument, document, templates, parameters);
 
-    // 6. Zip the generator content
-    // TODO is this a good name and behavior for the parameter?
-    if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
+    // 6. Move or Zip the generated content
+    if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
+      log("Moving");
+      prepacked.renameTo(this._builder.destination());
+    // for backward compatibility
+    } else if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
       log("Debug Mode");
       File newDestinationDocument = new File(this._builder.destination().getParentFile() + "/document.xml");
       try {

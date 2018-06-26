@@ -308,12 +308,142 @@
 </xsl:function>
 
 <!--
+  Returns the PSML document type for the footnotes.
+
+  @return the document type
+-->
+<xsl:function name="config:footnotes-documenttype" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/footnotes/@documenttype" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured footnote text style.
+
+  @param document-label the document label
+
+  @return the style ID
+-->
+<xsl:function name="config:footnote-text-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/footnote/@textstyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/footnote/@textstyle"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($default-style != '') then $default-style else 'footnote text'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-paragraph-style" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured footnote reference style.
+
+  @param document-label the document label
+
+  @return the style ID
+-->
+<xsl:function name="config:footnote-reference-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/footnote/@referencestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/footnote/@referencestyle"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($default-style != '') then $default-style else 'footnote reference'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+</xsl:function>
+
+<!--
+  Returns the PSML document type for the endnotes.
+
+  @return the document type
+-->
+<xsl:function name="config:endnotes-documenttype" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/endnotes/@documenttype" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured endnote text style.
+
+  @param document-label the document label
+
+  @return the style ID
+-->
+<xsl:function name="config:endnote-text-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/endnote/@textstyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/endnote/@textstyle"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($default-style != '') then $default-style else 'endnote text'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-paragraph-style" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured endnote reference style.
+
+  @param document-label the document label
+
+  @return the style ID
+-->
+<xsl:function name="config:endnote-reference-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/endnote/@referencestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/endnote/@referencestyle"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($default-style != '') then $default-style else 'endnote reference'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+</xsl:function>
+
+<!--
+  Returns the PSML document type for the citations.
+
+  @return the document type
+-->
+<xsl:function name="config:citations-documenttype" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/citations/@documenttype" />
+</xsl:function>
+
+<!--
+  Returns the PSML inline label name for the citation pages.
+
+  @return the document type
+-->
+<xsl:function name="config:citations-pageslabel" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/citations/@pageslabel" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured citation reference style.
+
+  @param document-label the document label
+
+  @return the style ID
+-->
+<xsl:function name="config:citation-reference-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/citation/@referencestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/citation/@referencestyle"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style else $default-style"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+</xsl:function>
+
+<!--
   Indicate whether cross-references should be generated.
 
   @return true or false
 -->
 <xsl:function name="config:generate-cross-references" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/default/xref/@type = 'cross-reference'"/>
+  <xsl:sequence select="$config-doc/config/default/xrefs/@type = 'cross-reference'"/>
 </xsl:function>
 
 <!--
@@ -322,8 +452,8 @@
   @return the style ID
 -->
 <xsl:function name="config:hyperlink-styleid" as="xs:string">
-  <xsl:variable name="style" select="if ($config-doc/config/default/xref/@hyperlinkstyle) then
-    $config-doc/config/default/xref/@hyperlinkstyle else 'PS Hyperlink'"/>
+  <xsl:variable name="style" select="if ($config-doc/config/default/xrefs/@hyperlinkstyle) then
+    $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Hyperlink'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
   <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
@@ -335,8 +465,8 @@
   @return the style ID
 -->
 <xsl:function name="config:reference-styleid" as="xs:string">
-  <xsl:variable name="style" select="if ($config-doc/config/default/xref/@referencestyle) then
-    $config-doc/config/default/xref/@hyperlinkstyle else 'PS Reference'"/>
+  <xsl:variable name="style" select="if ($config-doc/config/default/xrefs/@referencestyle) then
+    $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Reference'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
   <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />

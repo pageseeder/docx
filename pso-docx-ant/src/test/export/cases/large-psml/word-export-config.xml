@@ -32,7 +32,7 @@
     <defaultparagraphstyle wordstyle="Body Text" />
     <defaultcharacterstyle wordstyle="Default Paragraph Font" />
     <comments generate="false" />
-    <xref hyperlinkstyle="PS Hyperlink" referencestyle="PS Reference"/>
+    <xrefs hyperlinkstyle="PS Hyperlink" referencestyle="PS Reference"/>
   </default>
 
 

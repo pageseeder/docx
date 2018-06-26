@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="61098" schemaversion="0.12" type="references"
+  date="2018-06-20T13:53:59+10:00" version="current" level="processed">
+  <documentinfo>
+    <uri id="61098" scheme="http" host="localhost" port="80"
+      path="/ps/report/local1/test/xref-endnotes.psml" decodedpath="/ps/report/local1/test/xref-endnotes.psml"
+      external="false" mediatype="application/vnd.pageseeder.psml+xml"
+      documenttype="references" created="2018-06-20T13:49:27+10:00"
+      modified="2018-06-20T13:53:59+10:00" title="XRef-endnotes">
+      <displaytitle>XRef-endnotes</displaytitle>
+    </uri>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="45281" fragment="61098-2" editid="108330"
+      modified="2018-06-20T13:50:39+10:00" />
+  </fragmentinfo>
+  <metadata />
+  <section id="61098-title">
+    <fragment id="61098-1">
+      <heading level="1">XRef-endnotes</heading>
+    </fragment>
+  </section>
+  <toc />
+  <section id="61098-xrefs">
+    <xref-fragment id="61098-2">
+      <blockxref id="108327" frag="default" reversefrag="2"
+        reversetitle="" reverselink="true" reversetype="none" display="document"
+        type="embed" uriid="61099" href="endnotes-content.psml"
+        urititle="Endnotes-content" mediatype="application/vnd.pageseeder.psml+xml">
+        <document id="61099" schemaversion="0.12"
+          date="2018-06-20T13:53:46+10:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="61099" scheme="http" host="localhost" port="80"
+              path="/ps/report/local1/test/endnotes-content.psml"
+              decodedpath="/ps/report/local1/test/endnotes-content.psml"
+              external="false" mediatype="application/vnd.pageseeder.psml+xml"
+              created="2018-06-20T13:50:08+10:00" modified="2018-06-20T13:53:46+10:00"
+              title="Endnotes-content">
+              <displaytitle>Endnotes-content</displaytitle>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61098" href="xref-endnotes.psml"
+                frag="2" urititle="XRef-endnotes" mediatype="application/vnd.pageseeder.psml+xml"
+                documenttype="references" id="108327" title="" type="none"
+                forwardtype="embed" forwarddisplay="document"
+                forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45282" fragment="61099-2" editid="108343"
+              modified="2018-06-20T13:53:46+10:00" />
+          </fragmentinfo>
+          <metadata />
+          <section id="61099-title">
+            <fragment id="61099-1">
+              <heading level="1">Endnotes-content</heading>
+            </fragment>
+          </section>
+          <section id="61099-content">
+            <fragment id="61099-2">
+              <para>
+                Some content some content
+                <xref id="108341" title="e{fragment}" frag="1"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="endnote"
+                  type="none" uriid="61101" href="#61101-1" urititle="Endnotes"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="endnotes">e1</xref>
+                some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content some
+                content.
+              </para>
+              <para>
+                Some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content some
+                content some content some content.
+                <xref id="108342" title="e{fragment}" frag="2"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="endnote"
+                  type="none" uriid="61101" href="#61101-2" urititle="Endnotes"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="endnotes">e2</xref>
+              </para>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
+      <blockxref id="108328" frag="default" reversefrag="2"
+        reversetitle="" reverselink="true" reversetype="none" display="document"
+        type="embed" uriid="61100" href="endnotes-content2.psml"
+        urititle="Endnotes-content2" urilabels="appendix"
+        mediatype="application/vnd.pageseeder.psml+xml">
+        <document id="61100" schemaversion="0.12"
+          date="2018-06-20T13:55:56+10:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="61100" scheme="http" host="localhost" port="80"
+              path="/ps/report/local1/test/endnotes-content2.psml"
+              decodedpath="/ps/report/local1/test/endnotes-content2.psml"
+              external="false" mediatype="application/vnd.pageseeder.psml+xml"
+              created="2018-06-20T13:50:23+10:00" modified="2018-06-20T13:55:56+10:00"
+              title="Endnotes-content2">
+              <displaytitle>Endnotes-content2</displaytitle>
+              <labels>appendix</labels>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61098" href="xref-endnotes.psml"
+                frag="2" urititle="XRef-endnotes" mediatype="application/vnd.pageseeder.psml+xml"
+                documenttype="references" id="108328" title="" type="none"
+                forwardtype="embed" forwarddisplay="document"
+                forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45283" fragment="61100-2" editid="108352"
+              modified="2018-06-20T13:55:56+10:00" />
+          </fragmentinfo>
+          <metadata />
+          <section id="61100-title">
+            <fragment id="61100-1">
+              <heading level="1">Endnotes-content2</heading>
+            </fragment>
+          </section>
+          <section id="61100-content">
+            <fragment id="61100-2">
+              <para>
+                Some content some content
+                <xref id="108350" title="e{fragment}" frag="3"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="endnote"
+                  type="none" uriid="61101" href="#61101-3" urititle="Endnotes"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="endnotes">e3</xref>
+                some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content some
+                content.
+              </para>
+              <para>
+                Some content some content some content some content some
+                content some content some content some content some
+                content some content some content some content some
+                content some content some content.
+                <xref id="108351" title="e{fragment}" frag="4"
+                  reversefrag="2" reversetitle="" reverselink="true"
+                  reversetype="none" display="template" config="endnote"
+                  type="none" uriid="61101" href="#61101-4" urititle="Endnotes"
+                  mediatype="application/vnd.pageseeder.psml+xml"
+                  documenttype="endnotes">e4</xref>
+              </para>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
+      <blockxref id="108329" frag="default" reversefrag="2"
+        reversetitle="" reverselink="true" reversetype="none" display="document"
+        type="embed" uriid="61101" href="endnotes.psml" urititle="Endnotes"
+        mediatype="application/vnd.pageseeder.psml+xml" documenttype="endnotes">
+        <document id="61101" schemaversion="0.12" type="endnotes"
+          date="2018-06-20T13:55:56+10:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="61101" scheme="http" host="localhost" port="80"
+              path="/ps/report/local1/test/endnotes.psml" decodedpath="/ps/report/local1/test/endnotes.psml"
+              external="false" mediatype="application/vnd.pageseeder.psml+xml"
+              documenttype="endnotes" created="2018-06-20T13:50:37+10:00"
+              modified="2018-06-20T13:55:56+10:00" title="Endnotes">
+              <displaytitle>Endnotes</displaytitle>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61098" href="xref-endnotes.psml"
+                frag="2" urititle="XRef-endnotes" mediatype="application/vnd.pageseeder.psml+xml"
+                documenttype="references" id="108329" title="" type="none"
+                forwardtype="embed" forwarddisplay="document"
+                forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45286" fragment="61101-3" editid="108346"
+              modified="2018-06-20T13:54:28+10:00">
+              <reversexrefs>
+                <reversexref uriid="61100" href="endnotes-content2.psml"
+                  frag="2" urititle="Endnotes-content2" urilabels="appendix"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108350"
+                  title="" type="none" forwardtype="none" forwardtitle="e{fragment}"
+                  forwarddisplay="template" forwardfrag="3" />
+              </reversexrefs>
+            </locator>
+            <locator id="45287" fragment="61101-4" editid="108349"
+              modified="2018-06-20T13:55:43+10:00">
+              <reversexrefs>
+                <reversexref uriid="61100" href="endnotes-content2.psml"
+                  frag="2" urititle="Endnotes-content2" urilabels="appendix"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108351"
+                  title="" type="none" forwardtype="none" forwardtitle="e{fragment}"
+                  forwarddisplay="template" forwardfrag="4" />
+              </reversexrefs>
+            </locator>
+            <locator id="45285" fragment="61101-2" editid="108340"
+              modified="2018-06-20T13:53:37+10:00">
+              <reversexrefs>
+                <reversexref uriid="61099" href="endnotes-content.psml"
+                  frag="2" urititle="Endnotes-content"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108342"
+                  title="" type="none" forwardtype="none" forwardtitle="e{fragment}"
+                  forwarddisplay="template" forwardfrag="2" />
+              </reversexrefs>
+            </locator>
+            <locator id="45284" fragment="61101-1" editid="108337"
+              modified="2018-06-20T13:52:37+10:00">
+              <reversexrefs>
+                <reversexref uriid="61099" href="endnotes-content.psml"
+                  frag="2" urititle="Endnotes-content"
+                  mediatype="application/vnd.pageseeder.psml+xml" id="108341"
+                  title="" type="none" forwardtype="none" forwardtitle="e{fragment}"
+                  forwarddisplay="template" forwardfrag="1" />
+              </reversexrefs>
+            </locator>
+          </fragmentinfo>
+          <metadata />
+          <section id="61101-title">
+            <fragment id="61101-0">
+              <heading level="1">Endnotes</heading>
+            </fragment>
+          </section>
+          <section id="61101-content">
+            <fragment id="61101-1">
+              <para>Endnote 1</para>
+            </fragment>
+            <fragment id="61101-2">
+              <para>
+                Endnote 2 with
+                <bold>bold</bold>
+                and
+                <italic>italic</italic>
+                <br />
+                another line
+              </para>
+              <list>
+                <item>item 1</item>
+                <item>item 2</item>
+              </list>
+            </fragment>
+            <fragment id="61101-4">
+              <para>Endnote 4</para>
+              <para>Second para</para>
+            </fragment>
+            <fragment id="61101-3">
+              <para>Endnote 3</para>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
+    </xref-fragment>
+  </section>
+</document>

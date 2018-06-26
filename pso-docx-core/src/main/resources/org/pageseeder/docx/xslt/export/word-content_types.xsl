@@ -209,6 +209,24 @@
     </xsl:result-document>
   </xsl:if>
 
+  <xsl:if test="doc-available(concat($_dotxfolder,'/word/footnotes.xml'))">
+    <xsl:result-document href="{concat($_outputfolder,'word/footnotes.xml')}">
+      <xsl:apply-templates select="document(concat($_dotxfolder,'/word/footnotes.xml'))" mode="footnotes" />
+    </xsl:result-document>
+  </xsl:if>
+
+  <xsl:if test="doc-available(concat($_dotxfolder,'/word/endnotes.xml'))">
+    <xsl:result-document href="{concat($_outputfolder,'word/endnotes.xml')}">
+      <xsl:apply-templates select="document(concat($_dotxfolder,'/word/endnotes.xml'))" mode="endnotes" />
+    </xsl:result-document>
+  </xsl:if>
+
+  <xsl:if test="doc-available(concat($_dotxfolder,'/customXml/item1.xml'))">
+    <xsl:result-document href="{concat($_outputfolder,'customXml/item1.xml')}">
+      <xsl:apply-templates select="document(concat($_dotxfolder,'/customXml/item1.xml'))" mode="citations" />
+    </xsl:result-document>
+  </xsl:if>
+
   <xsl:result-document href="{concat($_outputfolder,'word/styles.xml')}">
     <xsl:apply-templates select="document(concat($_dotxfolder,$styles-template))" mode="styles">
       <xsl:with-param name="inline-labels" select="$inline-labels" as="element()" />

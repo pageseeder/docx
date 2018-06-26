@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <citations documenttype="bibliography" pageslabel="pages"/>
+  </default>
+  <elements>
+    <heading>
+      <level value="1" wordstyle="Heading Unnumbered 1"/>
+      <level value="2" wordstyle="Heading Unnumbered 2"/>
+    </heading>
+    <xref>
+      <citation referencestyle="Footnote Reference 1" />
+    </xref>
+  </elements>
+  <elements label="appendix">
+    <xref>
+      <citation referencestyle="Footnote Reference 2" />
+    </xref>
+  </elements>
+</config>

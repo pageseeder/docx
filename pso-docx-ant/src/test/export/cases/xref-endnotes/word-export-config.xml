@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <endnotes documenttype="endnotes" />
+  </default>
+  <elements>
+    <xref>
+      <!-- <endnote textstyle="Footnote Text" referencestyle="Footnote Reference" /> -->
+    </xref>
+  </elements>
+</config>

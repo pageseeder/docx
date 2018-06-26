@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <footnotes documenttype="footnotes" />
+  </default>
+  <elements>
+    <xref>
+      <!-- <footnote textstyle="Footnote Text" referencestyle="Footnote Reference" /> -->
+    </xref>
+  </elements>
+</config>

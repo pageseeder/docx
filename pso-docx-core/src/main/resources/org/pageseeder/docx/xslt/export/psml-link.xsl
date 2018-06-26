@@ -19,7 +19,75 @@
   Inline cross-references
 -->
 <xsl:template name="xref-content">
+  <xsl:param name="labels" tunnel="yes" />
+  
   <xsl:choose>
+
+    <!-- Cross-reference to a footnote -->
+    <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@fragment=current()/@href]">
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:footnote-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:footnoteReference w:id="{$footnote-ids/footnote[@fragment=current()/@href]/@id}"/>
+      </w:r>
+    </xsl:when>
+
+    <!-- Cross-reference to a endnote -->
+    <xsl:when test="@documenttype = config:endnotes-documenttype() and $endnote-ids/endnote[@fragment=current()/@href]">
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:endnote-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:endnoteReference w:id="{$endnote-ids/endnote[@fragment=current()/@href]/@id}"/>
+      </w:r>
+    </xsl:when>
+
+
+    <!-- Cross-reference to a citation -->
+    <xsl:when test="@documenttype = config:citations-documenttype() and
+        $root-document//properties-fragment[@id=substring-after(current()/@href,'#')]">
+      <xsl:variable name="pages" select="following-sibling::*[1][local-name()='inline' and @label=config:citations-pageslabel()]" />
+      <w:r>
+        <w:fldChar w:fldCharType="begin" />
+      </w:r>
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:citation-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:instrText>
+          <xsl:attribute name="xml:space">preserve</xsl:attribute>
+          <xsl:text>CITATION </xsl:text>
+          <xsl:value-of select="substring-after(current()/@href,'#')"/>
+          <xsl:if test="$pages">
+            <xsl:text> \p "</xsl:text>
+            <xsl:value-of select="$pages"/>
+            <xsl:text>"</xsl:text>
+          </xsl:if>
+        </w:instrText>
+        <!-- Preserve style after update -->
+        <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
+      </w:r>
+      <w:r>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+            <w:rStyle w:val="{config:citation-reference-styleid($labels)}"/>
+        </w:rPr>
+        <w:t>
+          <xsl:value-of select="."/>
+          <xsl:if test="$pages">
+            <xsl:text> (pp. </xsl:text>
+            <xsl:value-of select="$pages"/>
+            <xsl:text>)</xsl:text>
+          </xsl:if>
+        </w:t>
+      </w:r>
+      <w:r>
+        <w:fldChar w:fldCharType="end" />
+      </w:r>
+    </xsl:when>
 
     <!-- Cross-reference to a URL -->
     <xsl:when test="@external = 'true'">

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <endnotes documenttype="endnotes" />
+  </default>
+  <elements>
+    <xref>
+      <endnote textstyle="Footnote Text 1" referencestyle="Footnote Reference 1" />
+    </xref>
+  </elements>
+  <elements label="appendix">
+    <xref>
+      <endnote textstyle="Footnote Text 2" referencestyle="Footnote Reference 2" />
+    </xref>
+  </elements>
+</config>

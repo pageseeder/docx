@@ -35,7 +35,7 @@
         type="embed" reverselink="true" reversetitle="" reversetype="none"
         href="test.psml">
         <document id="28509" level="processed">
-          <section id="title">
+          <section id="28509-content">
             <fragment id="28509-title"><para>Embedded content</para></fragment>
           </section>
         </document>

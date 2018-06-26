@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:Sources
+    xmlns:b="http://schemas.openxmlformats.org/officeDocument/2006/bibliography"
+    xmlns="http://schemas.openxmlformats.org/officeDocument/2006/bibliography" SelectedStyle="\APA.XSL" StyleName="APA">
+    <b:Source>
+        <b:Tag>61105-1</b:Tag>
+        <b:SourceType>Book</b:SourceType>
+        <b:Author>
+            <b:Author>
+                <b:NameList>
+                    <b:Person>
+                        <b:First>Ivar</b:First>
+                        <b:Last>Jacobson</b:Last>
+                    </b:Person>
+                </b:NameList>
+            </b:Author>
+        </b:Author>
+        <b:Title>Object Oriented Software Engineering: A Use Case Driven Approach</b:Title>
+        <b:Year>1992</b:Year>
+        <b:City/>
+        <b:Publisher>Addison-Wesley Professional</b:Publisher>
+        <b:StandardNumber/>
+    </b:Source>
+    <b:Source>
+        <b:Tag>61105-2</b:Tag>
+        <b:SourceType>InternetSite</b:SourceType>
+        <b:Author>
+            <b:Author>
+                <b:Corporate>Wikipedia Inc.</b:Corporate>
+            </b:Author>
+        </b:Author>
+        <b:Title>Object-oriented design</b:Title>
+        <b:InternetSiteTitle>Wikipedia</b:InternetSiteTitle>
+        <b:Year>2017</b:Year>
+        <b:Month>November</b:Month>
+        <b:Day/>
+        <b:YearAccessed>2018</b:YearAccessed>
+        <b:MonthAccessed>July</b:MonthAccessed>
+        <b:DayAccessed/>
+        <b:URL>https://en.wikipedia.org/wiki/Object-oriented_design</b:URL>
+        <b:StandardNumber/>
+    </b:Source>
+    <b:Source>
+        <b:Tag>61105-3</b:Tag>
+        <b:SourceType>Misc</b:SourceType>
+        <b:Author>
+            <b:Author>
+                <b:NameList>
+                    <b:Person>
+                        <b:Last>W3C</b:Last>
+                    </b:Person>
+                </b:NameList>
+            </b:Author>
+        </b:Author>
+        <b:Title>MathML</b:Title>
+    </b:Source>
+</b:Sources>
