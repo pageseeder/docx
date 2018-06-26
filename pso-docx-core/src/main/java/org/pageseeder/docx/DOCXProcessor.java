@@ -20,12 +20,11 @@ import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
 
 /**
- * <p>The docx processor is extract from {@link ExportTask} in the future implementation should merge the
- * {@link DOCXProcessor} with the ExportTask. </p>
+ * Converts PSML to DocX.
  *
  * @author Ciber Cai
  * @author Christophe Lauret
- * @version 0.6
+ * @author Philip Rutherford
  */
 public final class DOCXProcessor {
 
@@ -148,7 +147,7 @@ public final class DOCXProcessor {
     // Transform
     XSLT.transform(newSourceDocument, document, templates, parameters);
 
-    // 6. Move or Zip the generator content
+    // 6. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
       log("Moving");
       prepacked.renameTo(this._builder.destination());

@@ -64,7 +64,7 @@ public final class ExportTask extends Task {
   /**
    * List of custom parameters specified that can be specified from the command-line
    */
-  private List<Parameter> params = new ArrayList<Parameter>();
+  private List<Parameter> params = new ArrayList<>();
 
   // Set properties
   // ----------------------------------------------------------------------------------------------
@@ -223,7 +223,7 @@ public final class ExportTask extends Task {
         e.printStackTrace();
       }
     }
-    
+
     File unnestedFolder = new File(this.working, "unnested");
     if (!unnestedFolder.exists()) {
     	unnestedFolder.mkdirs();
@@ -234,7 +234,7 @@ public final class ExportTask extends Task {
       // FIXME store to somewhere for debug.
       e.printStackTrace();
     }
-    
+
     // 4. Unnest the files
     log("Unnest");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export-unnest.xsl");
@@ -243,8 +243,8 @@ public final class ExportTask extends Task {
     newSourceDocument.getParentFile().mkdir();
     Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters);
-  	
-    
+
+
     // 5. Process the files
     log("Process with XSLT");
 
@@ -252,7 +252,7 @@ public final class ExportTask extends Task {
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export.xsl");
 
     // Initiate parameters
-    Map<String, String> parameters = new HashMap<String, String>();
+    Map<String, String> parameters = new HashMap<>();
     parameters.put("_outputfolder", prepacked.toURI().toString());
     parameters.put("_dotxfolder", dotx.toURI().toString());
     parameters.put("_docxfilename", this.destination.getName());
@@ -268,9 +268,12 @@ public final class ExportTask extends Task {
     // Transform
     XSLT.transform(newSourceDocument, document, templates, parameters);
 
-    // 6. Zip the generator content
-    if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true"))
-    {
+    // 6. Move or Zip the generated content
+    if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
+      log("Moving");
+      prepacked.renameTo(this.destination);
+    // for backward compatibility
+    } else if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
       log("Debug Mode");
       File newDestinationDocument = new File(this.destination.getParentFile() + "/document.xml");
       try {
@@ -281,9 +284,7 @@ public final class ExportTask extends Task {
       }
       this.destination.getParentFile().mkdirs();
       ZipUtils.zip(prepacked, this.destination);
-    }
-    else
-    {
+    } else {
       log("Zipping");
       this.destination.getParentFile().mkdirs();
       ZipUtils.zip(prepacked, this.destination);

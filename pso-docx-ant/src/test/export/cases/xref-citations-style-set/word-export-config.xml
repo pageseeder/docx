@@ -9,7 +9,12 @@
       <level value="2" wordstyle="Heading Unnumbered 2"/>
     </heading>
     <xref>
-      <!-- <citation referencestyle="Footnote Reference" /> -->
+      <citation referencestyle="Footnote Reference 1" />
+    </xref>
+  </elements>
+  <elements label="appendix">
+    <xref>
+      <citation referencestyle="Footnote Reference 2" />
     </xref>
   </elements>
 </config>

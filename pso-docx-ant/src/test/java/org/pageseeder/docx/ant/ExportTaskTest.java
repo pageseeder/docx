@@ -466,7 +466,14 @@ public final class ExportTaskTest {
 
   @Test
   public void testXrefCitations() throws IOException, SAXException {
+    // NOTE: To open docx result file first replace customXml/item1.xml with transformed-item1.xml.
     testIndividual("xref-citations", "document,item1");
+  }
+
+  @Test
+  public void testXrefCitationsStyleSet() throws IOException, SAXException {
+    // NOTE: To open docx result file first replace customXml/item1.xml with transformed-item1.xml.
+    testIndividual("xref-citations-style-set", "document,item1");
   }
 
   @Test

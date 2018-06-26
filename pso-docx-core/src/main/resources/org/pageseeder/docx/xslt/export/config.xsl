@@ -411,6 +411,15 @@
 </xsl:function>
 
 <!--
+  Returns the PSML inline label name for the citation pages.
+
+  @return the document type
+-->
+<xsl:function name="config:citations-pageslabel" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/citations/@pageslabel" />
+</xsl:function>
+
+<!--
   Returns the style ID for the configured citation reference style.
 
   @param document-label the document label

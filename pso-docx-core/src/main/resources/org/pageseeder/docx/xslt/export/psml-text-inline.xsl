@@ -146,6 +146,7 @@
   <xsl:choose>
     <xsl:when test="matches(@label, config:inline-ignore-labels-with-document-label($labels))"/>
     <xsl:when test="matches(@label, config:default-inline-ignore-labels())"/>
+    <xsl:when test="@label=config:citations-pageslabel()"/>
     <xsl:otherwise>
       <xsl:apply-templates mode="psml" />
     </xsl:otherwise>

@@ -3,11 +3,6 @@
  */
 package org.pageseeder.docx;
 
-import org.pageseeder.docx.util.Files;
-import org.pageseeder.docx.util.XSLT;
-import org.pageseeder.docx.util.ZipUtils;
-
-import javax.xml.transform.Templates;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -16,13 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.xml.transform.Templates;
+
+import org.pageseeder.docx.util.Files;
+import org.pageseeder.docx.util.XSLT;
+import org.pageseeder.docx.util.ZipUtils;
+
 /**
- * <p> The psml processor is extract from {@link ImportTask} in the future implementation should merge the
- * {@link PSMLProcessor} with the ExportTask. </p>
+ * Converts DocX to PSML.
  *
  * @author Ciber Cai
  * @author Hugo Inacio
- * @version 06 November 2014
+ * @author Philip Rutherford
  */
 public final class PSMLProcessor {
 
@@ -292,7 +292,7 @@ public final class PSMLProcessor {
      * @return the media folder
      */
     private String media() {
-      if (this.media != null) {        
+      if (this.media != null) {
         return this.media;
       } else {
         return null;

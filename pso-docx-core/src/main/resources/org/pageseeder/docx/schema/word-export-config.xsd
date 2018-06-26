@@ -185,9 +185,10 @@
     </xs:complexType>
   </xs:element>
   
-  <xs:element name="footnotes">
+  <xs:element name="citations">
     <xs:complexType>
       <xs:attribute name="documenttype" type="xs:string"/>
+      <xs:attribute name="pageslabel" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   
@@ -197,7 +198,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="citations">
+  <xs:element name="footnotes">
     <xs:complexType>
       <xs:attribute name="documenttype" type="xs:string"/>
     </xs:complexType>
