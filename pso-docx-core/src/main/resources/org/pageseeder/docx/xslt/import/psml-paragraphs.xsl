@@ -25,7 +25,7 @@
 <xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())]" mode="content"  priority="100"/>
 
 <!-- Ignore any paragraphs that have their style marked up as specific for heading in the config but have no content -->
-<xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val),'heading') and string-join((w:r|w:hyperlink)//text(), '') = '']" mode="content"  priority="100"/>
+<xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val),'heading') and string-join((.//w:r|.//w:hyperlink)//text(), '') = '']" mode="content"  priority="100"/>
 
 <!-- Ignore any paragraphs that have their style marked up caption( handled inside the table itself -->
 <xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val),'caption') and ( (following-sibling::*[1][name() = 'w:tbl'][not(w:tblPr/w:tblStyle/@w:val)] and config:get-caption-table-value(w:pPr/w:pStyle/@w:val) = 'default')
