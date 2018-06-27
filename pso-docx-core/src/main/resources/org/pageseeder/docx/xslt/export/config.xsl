@@ -332,7 +332,7 @@
     else if ($default-style != '') then $default-style else 'footnote text'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-paragraph-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'Normal'" />
 </xsl:function>
 
 <!--
@@ -351,7 +351,7 @@
     else if ($default-style != '') then $default-style else 'footnote reference'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
 </xsl:function>
 
 <!--
@@ -379,7 +379,7 @@
     else if ($default-style != '') then $default-style else 'endnote text'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-paragraph-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'Normal'" />
 </xsl:function>
 
 <!--
@@ -398,7 +398,7 @@
     else if ($default-style != '') then $default-style else 'endnote reference'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
 </xsl:function>
 
 <!--
@@ -431,10 +431,11 @@
 
   <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/citation/@referencestyle"/>
   <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/xref/citation/@referencestyle"/>
-  <xsl:variable name="style" select="if ($label-style != '') then $label-style else $default-style"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($default-style != '') then $default-style else $default-character-style"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
 </xsl:function>
 
 <!--
@@ -456,7 +457,7 @@
     $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Hyperlink'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
 </xsl:function>
 
 <!--
@@ -469,7 +470,7 @@
     $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Reference'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
-  <xsl:value-of select="if (string($styleid)!='') then $styleid else $default-character-style" />
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
 </xsl:function>
 
 <!--
