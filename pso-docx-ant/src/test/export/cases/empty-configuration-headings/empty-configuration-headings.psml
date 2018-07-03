@@ -1,4 +1,49 @@
-<document id="186965" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable"><documentinfo><uri id="186965" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/Headings.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Headings.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T09:33:10+11:00" title="Headings"><displaytitle>Headings</displaytitle></uri><reversexrefs><reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455285" title="Test Files" type="none" forwardtype="embed"/></reversexrefs></documentinfo><fragmentinfo><locator id="103098" fragment="1" editid="455288" modified="2013-01-29T09:36:39+11:00"/></fragmentinfo><section id="title"><fragment id="title">
-         <heading level="1">Headings</heading>
-      </fragment></section><section id="1"><fragment id="1"><heading level="1">Heading 1</heading><para>Sample text</para><heading level="2">Heading 2</heading><para>Sample text</para><heading level="3">Heading 3</heading><para>Sample text</para><heading level="4">Heading 4</heading><para>Sample text</para><heading level="5">Heading 5</heading><para>Sample text</para><heading level="6">Heading 6</heading><para>Sample text</para><para><monospace>Code</monospace></para><para>Sample text</para><preformat>Code Block
-</preformat><para>Sample text</para><para> </para></fragment></section></document>
+<document id="186965" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <documentinfo>
+    <uri id="186965" scheme="https" host="ps.pageseeder.com" port="443"
+      path="/ps/dev/docx/Documents/Test_Files/Headings.psml"
+      decodedpath="/ps/dev/docx/Documents/Test_Files/Headings.psml"
+      mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T09:33:10+11:00"
+      title="Headings">
+      <displaytitle>Headings</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960"
+        href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1"
+        urititle="Test Files – Master" id="455285" title="Test Files"
+        type="none" forwardtype="embed" />
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103098" fragment="1" editid="455288"
+      modified="2013-01-29T09:36:39+11:00" />
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Headings</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <heading level="1">Heading 1</heading>
+      <para>Sample text</para>
+      <heading level="2">Heading 2</heading>
+      <para>Sample text</para>
+      <heading level="3">Heading 3</heading>
+      <para>Sample text</para>
+      <heading level="4">Heading 4</heading>
+      <para>Sample text</para>
+      <heading level="5">Heading 5</heading>
+      <para>Sample text</para>
+      <heading level="6">Heading 6</heading>
+      <para>Sample text</para>
+      <para>Text with <monospace>Code</monospace> inside.</para>
+      <para>Sample text</para>
+      <preformat>Code Block
+      </preformat>
+      <para>Sample text</para>
+      <para> </para>
+    </fragment>
+  </section>
+</document>
