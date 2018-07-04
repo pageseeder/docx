@@ -314,6 +314,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testListDefaultWithMultipleParas() throws IOException, SAXException {
+    testIndividual("list-default-with-multiple-paras", "document,numbering");
+  }
+
+  @Test
   public void testListDefaultWithRoleSet() throws IOException, SAXException {
     testIndividual("list-default-with-role-set", "document,numbering");
   }

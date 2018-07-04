@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.4">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.5">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -224,6 +224,7 @@
         <xs:element ref="title" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="nlist" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="list" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="listpara" minOccurs="0" maxOccurs="1" />
         <xs:element ref="xref" minOccurs="0" maxOccurs="1" />
 			</xs:all>
 			<xs:attribute name="label" type="xs:string"/>
@@ -425,6 +426,14 @@
       <xs:attribute name="liststyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
+
+  <xs:element name="listpara">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 
 	<xs:element name="role">
 		<xs:complexType>

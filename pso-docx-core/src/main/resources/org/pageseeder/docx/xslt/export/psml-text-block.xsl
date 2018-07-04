@@ -164,7 +164,7 @@
   
             </xsl:when>
             <xsl:otherwise>
-              <xsl:variable name="list-level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
+              <xsl:variable name="list-level" select="count(ancestor::list)+count(ancestor::nlist)"/>
               <xsl:choose>
                 <xsl:when test="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered) != ''">
                   <xsl:variable name="style-name" select="config:para-list-level-paragraph-for-document-label($labels,$list-level, @numbered)"/>
