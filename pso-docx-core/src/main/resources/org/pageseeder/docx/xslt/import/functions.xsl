@@ -705,4 +705,64 @@
   </xsl:choose>
 </xsl:function>
 
+<!-- Function that uses to define the list continue for each ListBullet level -->
+<xsl:function name="fn:get-list-continue-style" as="xs:string">
+  <xsl:param name="current-style"/>
+  <xsl:choose>
+    <xsl:when test="$current-style = $list-level1">
+      <xsl:value-of select="$list-continue-level1" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level2">
+      <xsl:value-of select="$list-continue-level2" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level3">
+      <xsl:value-of select="$list-continue-level3" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level4">
+      <xsl:value-of select="$list-continue-level4" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level5">
+      <xsl:value-of select="$list-continue-level5" />
+    </xsl:when>
+  </xsl:choose> 
+</xsl:function>
+
+<!-- Function that uses to define the next upper list styles for each ListBullet level -->
+<xsl:function name="fn:get-list-next-upper-style" as="xs:string?">
+  <xsl:param name="current-style"/>
+  <xsl:choose>
+    <xsl:when test="$current-style = $list-level2">
+      <xsl:value-of select="$list-level1" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level3">
+      <xsl:value-of select="$list-level2" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level4">
+      <xsl:value-of select="$list-level3" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level5">
+      <xsl:value-of select="$list-level4" />
+    </xsl:when>
+  </xsl:choose> 
+</xsl:function>
+
+<!-- Function that uses to define the next lower list styles for each ListBullet level -->
+<xsl:function name="fn:get-list-next-lower-style" as="xs:string?">
+  <xsl:param name="current-style"/>
+  <xsl:choose>
+    <xsl:when test="$current-style = $list-level1">
+      <xsl:value-of select="$list-level2" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level2">
+      <xsl:value-of select="$list-level3" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level3">
+      <xsl:value-of select="$list-level4" />
+    </xsl:when>
+    <xsl:when test="$current-style = $list-level4">
+      <xsl:value-of select="$list-level5" />
+    </xsl:when>
+  </xsl:choose> 
+</xsl:function>
+
 </xsl:stylesheet>
