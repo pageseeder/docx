@@ -86,6 +86,7 @@
   Split para containing double <br/> into 2 <para> elements.
 -->
 <xsl:template match="para[br]" mode="unnest">
+  <xsl:variable name="para" select="." />
   <xsl:for-each-group select="node()"
                       group-adjacent="if ((self::br and following-sibling::*[1][self::br] and
                                             normalize-space(following-sibling::node()[1]) = '')
@@ -97,6 +98,11 @@
     <xsl:if test="current-grouping-key()=1
                and (current-group()/self::* or normalize-space(string-join(current-group(), ' ')) != '')">
       <para>
+        <!-- copy all attributes from original para, except copy 'prefix' only for the first one -->
+        <xsl:if test="position()=1">
+          <xsl:copy-of select="$para/@*[name()='prefix']"/>
+        </xsl:if>
+        <xsl:copy-of select="$para/@*[name()!='prefix']"/>
         <xsl:apply-templates select="current-group()" mode="unnest"/>
       </para>
     </xsl:if>

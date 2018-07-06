@@ -2,6 +2,10 @@
 
 <config>
   <elements>
+    <para>
+      <indent level="2" wordstyle="List Continue 2"/>
+      <indent level="2" prefixed="true" wordstyle="List Manual 2"/>
+    </para>
     <nlist liststyle="Numbered List"/>
     <list liststyle="Bulleted List" />
     <listpara>

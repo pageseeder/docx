@@ -86,6 +86,14 @@
           </list>
         </item>
       </list>
+      <para prefix="1" indent="2">Pineapples</para>
+      <para prefix="1" indent="2">Pineapples<br/>test</para>
+      <para prefix="1" indent="2">Pineapples<br/>
+      <br/>
+      Pineapples2<br/>
+      <br/>
+      Pineapples3</para>
     </fragment>
   </section>
+
 </document>
