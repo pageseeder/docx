@@ -17,40 +17,32 @@
   Match styles that are configured to transform into a PSML list items.
 -->
 
-<!-- <xsl:variable name="list-elements">
-  <xsl:variable name="style-name" select="w:p/w:pPr/w:pStyle/@w:val" />
-  
-  <xsl:for-each select="w:p[matches(config:get-psml-element($style-name), 'list')]">
-    <xsl:element name="wordstyle">
-      <xsl:element name="style"><xsl:value-of select="$style-name" /></xsl:element>
-    </xsl:element> 
-  </xsl:for-each>  
-</xsl:variable> -->
-
+  <!-- Variable name defined to levels 1 to 5 ListBullet name wordstyles -->
   <xsl:variable name="list-level1" select="('ListBullet')" /> 
   <xsl:variable name="list-level2" select="('ListBullet2')" /> 
   <xsl:variable name="list-level3" select="('ListBullet3')" /> 
   <xsl:variable name="list-level4" select="('ListBullet4')" /> 
   <xsl:variable name="list-level5" select="('ListBullet5')" /> 
+  <!-- Variable name defined to levels 1 to 5 ListContinue name wordstyles -->
   <xsl:variable name="list-continue-level1" select="('ListContinue')" /> 
   <xsl:variable name="list-continue-level2" select="('ListContinue2')" /> 
   <xsl:variable name="list-continue-level3" select="('ListContinue3')" /> 
   <xsl:variable name="list-continue-level4" select="('ListContinue4')" /> 
   <xsl:variable name="list-continue-level5" select="('ListContinue5')" /> 
+
   <xsl:variable name="all-lists" select="($list-level1,$list-level2,$list-level3,$list-level4,$list-level5)" /> 
-  <xsl:variable name="all-lists-continue" select="('ListContinue','ListContinue2','ListContinue3','ListContinue4','ListContinue5')" />
+  <xsl:variable name="all-lists-continue" select="($list-continue-level1,$list-continue-level2,$list-continue-level3,$list-continue-level4,$list-continue-level5)" />
   <xsl:variable name="all-lists-complete" select="($all-lists, $all-lists-continue)" />
   
+  <!-- Starts analysis to catch all first level to starts the list -->
   <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $all-lists and (preceding-sibling::*[1][not(name()='w:p') or not(w:pPr/w:pStyle/@w:val = $all-lists-complete)] or count(preceding-sibling::*) = 0)]" mode="content">
-    <xsl:message>style:<xsl:value-of select="w:pPr/w:pStyle/@w:val" /></xsl:message>
-    <xsl:message>content:<xsl:value-of select="." /></xsl:message>
     <xsl:apply-templates select="." mode="create-list"/> 
   </xsl:template>
   
-  <!-- TODO block others(Segundo, terceiro, ....) -->
+  <!-- Block all contents for each levels -->
   <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $all-lists-complete and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content"/>
   
-  
+  <!-- Starts creating a list -->  
   <xsl:template match="w:p" mode="create-list">
     <list>
        <xsl:apply-templates select="." mode="create-item-list"/>  
@@ -66,6 +58,7 @@
      </list>
   </xsl:template>
   
+  <!-- Starts creating a item lists and verify the next levels. -->
   <xsl:template match="w:p" mode="create-item-list">
     <item>
       <xsl:variable name="current-item" select="." />
@@ -78,8 +71,6 @@
       <xsl:variable name="continue-list" select="following-sibling::*[w:pPr/w:pStyle/@w:val = $continue-style and generate-id(preceding-sibling::w:p[w:pPr/w:pStyle/@w:val = $current-item-style][1]) = $current-id]"/>
 
       <xsl:apply-templates select="$current-item/node()"/>
-      <xsl:message>$continue-list: <xsl:value-of select="count($continue-list)"/></xsl:message>
-      <xsl:message>$continue-list/w:p: <xsl:value-of select="count($continue-list/w:p)"/></xsl:message>
       <xsl:choose>
         <xsl:when test="$continue-list">
           <xsl:for-each select="$continue-list">
@@ -92,71 +83,6 @@
           <xsl:apply-templates select="$current-item/following-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $sublevel-style]" mode="create-list"/>
         </xsl:otherwise>
       </xsl:choose>   
-   
-      
-        
-        
     </item>
   </xsl:template>
-  
-  
-  <xsl:function name="fn:get-list-continue-style" as="xs:string">
-    <xsl:param name="current-style"/>
-    <xsl:choose>
-      <xsl:when test="$current-style = $list-level1">
-        <xsl:value-of select="$list-continue-level1" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level2">
-        <xsl:value-of select="$list-continue-level2" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level3">
-        <xsl:value-of select="$list-continue-level3" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level4">
-        <xsl:value-of select="$list-continue-level4" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level5">
-        <xsl:value-of select="$list-continue-level5" />
-      </xsl:when>
-    </xsl:choose> 
-  </xsl:function>
-
-  <xsl:function name="fn:get-list-next-upper-style" as="xs:string?">
-    <xsl:param name="current-style"/>
-    <xsl:choose>
-      <xsl:when test="$current-style = $list-level2">
-        <xsl:value-of select="$list-level1" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level3">
-        <xsl:value-of select="$list-level2" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level4">
-        <xsl:value-of select="$list-level3" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level5">
-        <xsl:value-of select="$list-level4" />
-      </xsl:when>
-    </xsl:choose> 
-  </xsl:function>
-
-    
-  <xsl:function name="fn:get-list-next-lower-style" as="xs:string?">
-	  <xsl:param name="current-style"/>
-    <xsl:choose>
-      <xsl:when test="$current-style = $list-level1">
-        <xsl:value-of select="$list-level2" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level2">
-        <xsl:value-of select="$list-level3" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level3">
-        <xsl:value-of select="$list-level4" />
-      </xsl:when>
-      <xsl:when test="$current-style = $list-level4">
-        <xsl:value-of select="$list-level5" />
-      </xsl:when>
-    </xsl:choose> 
-  </xsl:function>
-
-  
 </xsl:stylesheet>
