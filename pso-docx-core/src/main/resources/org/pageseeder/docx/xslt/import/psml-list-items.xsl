@@ -38,10 +38,7 @@
   <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $all-lists and (preceding-sibling::*[1][not(name()='w:p') or not(w:pPr/w:pStyle/@w:val = $all-lists-complete)] or count(preceding-sibling::*) = 0)]" mode="content">
     <xsl:apply-templates select="." mode="create-list"/> 
   </xsl:template>
-  
-  <!-- Block all contents for each levels -->
-  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $all-lists and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content"/>
-  
+
   <!-- Starts creating a list -->  
   <xsl:template match="w:p" mode="create-list">
     <list>
@@ -66,9 +63,15 @@
       <xsl:variable name="current-item-style"  select="$current-item/w:pPr/w:pStyle/@w:val"/>
       <xsl:variable name="continue-style"  select="fn:get-list-continue-style($current-item-style)"/>
       <xsl:variable name="sublevel-style"  select="fn:get-list-next-lower-style($current-item-style)"/>
+      <xsl:variable name="next-non-list" select="following-sibling::*[not(w:pPr/w:pStyle[@w:val = $all-lists-complete])][1]"/>
+      <xsl:variable name="next-non-list-id" select="if ($next-non-list) then generate-id($next-non-list) else ''"/>
+      <xsl:variable name="next-sibling" select="following-sibling::w:p[w:pPr/w:pStyle/@w:val = $current-item-style and ($next-non-list-id = '' or following-sibling::*[generate-id(.) = $next-non-list-id])][1]"/>
+      <xsl:variable name="edge-id" select="if ($next-sibling) then generate-id($next-sibling) else $next-non-list-id"/>
+       
+
 
       <!-- Get all indents of this level (current item level) which has the current item as the first preceding (logical Parent) -->
-      <xsl:variable name="continue-list" select="following-sibling::*[w:pPr/w:pStyle/@w:val = $continue-style and generate-id(preceding-sibling::w:p[w:pPr/w:pStyle/@w:val = $current-item-style][1]) = $current-id]"/>
+      <xsl:variable name="continue-list" select="following-sibling::*[w:pPr/w:pStyle/@w:val = $continue-style and ($edge-id = '' or following-sibling::*[generate-id(.) = $edge-id])]"/>
 
       <xsl:apply-templates select="$current-item/node()"/>
       <xsl:choose>
@@ -85,4 +88,95 @@
       </xsl:choose>   
     </item>
   </xsl:template>
+  
+   <!-- Block all contents for each levels -->
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-level3 and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content" >
+    <xsl:apply-templates select="." mode="handle-list-gap">
+      <xsl:with-param name="previous-upper-level-style" select="($list-level1,$list-level2)"/>
+      <xsl:with-param name="parent-style-expected" select="($list-level2)"/>
+    </xsl:apply-templates>
+  </xsl:template>
+  
+  <xsl:template match="w:p" mode="handle-list-gap">
+    <xsl:param name="previous-upper-level-style" as="xs:string+"/>
+    <xsl:param name="parent-style-expected" as="xs:string+"/>
+     
+    <!-- Get the first upper level -->
+    <xsl:variable name="item-style" select="w:pPr/w:pStyle/@w:val"/>
+    <xsl:variable name="previous-non-list" select="preceding-sibling::*[not(w:pPr/w:pStyle/@w:val = $all-lists-complete)][1]"/>
+    <xsl:variable name="previous-non-list-id" select="if ($previous-non-list) then generate-id($previous-non-list) else ''"/>
+    <xsl:variable name="previous-upper-level" select="preceding-sibling::w:p[w:pPr/w:pStyle/@w:val = $previous-upper-level-style and ($previous-non-list-id = '' or preceding-sibling::*[generate-id(.) = $previous-non-list-id])][1]"/>
+
+    <xsl:if test="count($previous-upper-level) > 0 and not($previous-upper-level/w:pPr/w:pStyle/@w:val=$parent-style-expected)">
+      <block label="{$item-style}">
+        <xsl:apply-templates/>
+      </block>
+      <xsl:message><xsl:value-of select="'ERROR: It is not converted, it exits a gap level.'" /></xsl:message>
+    </xsl:if>
+
+  </xsl:template>
+  
+  <!-- Handle the List continues that has wrong structure -->
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-continue-level1]" mode="content">
+    <xsl:apply-templates select="." mode="check-continue-list-styles">
+      <xsl:with-param name="preceding-styles-allowed" select="($all-lists-complete)"/>
+      <xsl:with-param name="preceding-parent-style-allowed" select="$list-level1"/>
+      <xsl:with-param name="indent-level" select="'1'"/>
+    </xsl:apply-templates>
+  </xsl:template>
+  
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-continue-level2]" mode="content">
+    <xsl:apply-templates select="." mode="check-continue-list-styles">
+      <xsl:with-param name="preceding-styles-allowed" select="($list-level2,$list-level3,$list-level4,$list-level5,$list-continue-level2,$list-continue-level3,$list-continue-level4,$list-continue-level5)"/>
+      <xsl:with-param name="preceding-parent-style-allowed" select="$list-level2"/>
+      <xsl:with-param name="indent-level" select="'2'"/>
+    </xsl:apply-templates>
+  </xsl:template>
+  
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-continue-level3]" mode="content">
+    <xsl:apply-templates select="." mode="check-continue-list-styles">
+      <xsl:with-param name="preceding-styles-allowed" select="($list-level3,$list-level4,$list-level5,$list-continue-level3,$list-continue-level4,$list-continue-level5)"/>
+      <xsl:with-param name="preceding-parent-style-allowed" select="$list-level3"/>
+      <xsl:with-param name="indent-level" select="'3'"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-continue-level4]" mode="content">
+    <xsl:apply-templates select="." mode="check-continue-list-styles">
+      <xsl:with-param name="preceding-styles-allowed" select="($list-level4,$list-level5,$list-continue-level4,$list-continue-level5)"/>
+      <xsl:with-param name="preceding-parent-style-allowed" select="$list-level4"/>
+      <xsl:with-param name="indent-level" select="'4'"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-continue-level5]" mode="content">
+    <xsl:apply-templates select="." mode="check-continue-list-styles">
+      <xsl:with-param name="preceding-styles-allowed" select="($list-level5,$list-continue-level5)"/>
+      <xsl:with-param name="preceding-parent-style-allowed" select="$list-level5"/>
+      <xsl:with-param name="indent-level" select="'5'"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
+  <xsl:template match="w:p" mode="check-continue-list-styles">
+
+    <!-- All the styles allowed to precede this list continue  -->
+    <xsl:param name="preceding-styles-allowed" as="xs:string+"/>
+    <!-- 
+        according the correct structure, this paragraph should have at least one time theses styles as preceding. It is logical
+        parent style.
+      -->
+    <xsl:param name="preceding-parent-style-allowed" as="xs:string+"/>
+    <xsl:param name="indent-level" as="xs:string"/>
+        
+    <!-- Check if it is a lonely indent -->
+    <xsl:variable name="previous-non-list" select="preceding-sibling::w:p[not(w:pPr/w:pStyle/@w:val = $preceding-styles-allowed)][1]"/>
+    <xsl:variable name="previous-non-list-id" select="if ($previous-non-list) then generate-id($previous-non-list) else ''"/>
+    <xsl:variable name="previous" select="preceding-sibling::w:p[w:pPr/w:pStyle/@w:val = $preceding-parent-style-allowed and ($previous-non-list-id = '' or preceding-sibling::*[generate-id(.) = $previous-non-list-id])][1]"/>
+    <xsl:variable name="orphan" select="if ($previous) then false() else true()"/>
+    
+    <xsl:if test="$orphan">
+      <para indent="{$indent-level}"><xsl:apply-templates/></para>
+    </xsl:if>
+  </xsl:template>
+  
 </xsl:stylesheet>
