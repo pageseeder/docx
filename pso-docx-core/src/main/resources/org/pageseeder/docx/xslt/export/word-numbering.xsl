@@ -24,7 +24,7 @@
 <xsl:template match="w:numbering" mode="numbering">
   <xsl:copy>
     <xsl:copy-of select="@*" />
-    <xsl:comment><xsl:apply-templates select="$all-different-lists" mode="xml"/></xsl:comment>
+    <!-- <xsl:comment><xsl:apply-templates select="$all-different-lists" mode="xml"/></xsl:comment> -->
     <xsl:apply-templates select="*[name() = 'w:abstractNum']" mode="numbering" />
     <xsl:apply-templates select="*[name() = 'w:num']" mode="numbering" />
     <xsl:for-each select="$all-different-lists/nlist">
