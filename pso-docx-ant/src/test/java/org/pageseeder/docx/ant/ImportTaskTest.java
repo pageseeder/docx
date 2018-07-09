@@ -313,6 +313,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testListsBulletGapLevels() throws IOException, SAXException {
+    testIndividual("lists-bullet-style-gap-levels");
+  }
+
+  @Test
   public void testListsDefaultListRoleFalse() throws IOException, SAXException {
     testIndividual("lists-default-list-role-false");
   }
