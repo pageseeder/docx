@@ -40,7 +40,7 @@
   </xsl:template>
   
   <!-- Block all contents for each levels -->
-  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $all-lists-complete and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content"/>
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $all-lists and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content"/>
   
   <!-- Starts creating a list -->  
   <xsl:template match="w:p" mode="create-list">
