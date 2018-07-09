@@ -1003,13 +1003,21 @@
   </xsl:choose>
 </xsl:function>
 
+<xsl:variable name="max-list-num-id">
+  <xsl:choose>
+    <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
+      <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
+    </xsl:when>
+    <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
 
 <!--
   All lists
 -->
 <xsl:variable name="all-different-lists" as="node()">
 <lists>
-  <xsl:for-each select=".//*[name() = 'list' or name() = 'nlist']">
+  <xsl:for-each select=".//*[self::nlist or self::list]">
     <xsl:variable name="role" select="ancestor-or-self::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
     <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
     <xsl:variable name="list-type" select="./name()"/>
@@ -1078,6 +1086,8 @@
         <list>
           <xsl:attribute name="role" select="$role"/>
           <xsl:attribute name="level" select="$level - 1"/>
+          <xsl:attribute name="numid"
+            select="(document(concat($_dotxfolder, $numbering-template))//w:num[w:abstractNumId/@w:val=$abstract-num-id])[1]/@w:numId" />
           <xsl:value-of select="$abstract-num-id" />
         </list>
       </xsl:otherwise>

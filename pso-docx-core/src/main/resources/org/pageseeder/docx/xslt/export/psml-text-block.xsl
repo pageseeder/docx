@@ -140,14 +140,6 @@
           <xsl:choose>
             <xsl:when test="position()=1">
               <xsl:call-template name="apply-style" />
-              <xsl:variable name="max-num-id">
-                <xsl:choose>
-                  <xsl:when test="doc-available(concat($_dotxfolder,$numbering-template))">
-                    <xsl:value-of select="max(document(concat($_dotxfolder,$numbering-template))/w:numbering/w:num/number(@w:numId))"/>
-                  </xsl:when>
-                  <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
               <w:numPr>
                 <w:ilvl w:val="{count(ancestor::list)+count(ancestor::nlist) - 1}" />
                 <xsl:variable name="current-pstyle">
@@ -156,10 +148,21 @@
                   </xsl:variable>
                   <xsl:value-of select="$call-style//@w:val"/>
                 </xsl:variable>
-                <!-- count ancestor lists of current + preceding lists of the parent list -->
-                <w:numId w:val="{$max-num-id + count(./ancestor::list|./ancestor::nlist) +
-                    count(./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::list|
-                      ./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::nlist)}" />
+                <xsl:choose>
+                  <!-- for bullet list reuse numids -->
+                  <xsl:when test="./ancestor::*[name() = 'list' or name() = 'nlist'][1][self::list]">
+                    <!-- count ancestor lists of current + preceding lists of the current list -->
+                    <xsl:variable name="listposition" select="count(./ancestor::list) +
+                        count(./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::list)" />
+                    <w:numId w:val="{$all-different-lists/list[$listposition]/@numid}" />
+                  </xsl:when>
+                  <!-- otherwise for numbered list use unique numids -->
+                  <xsl:otherwise>
+                    <!-- count ancestor lists of current + preceding lists of the current list -->
+                    <w:numId w:val="{$max-list-num-id + count(./ancestor::nlist) +
+                        count(./ancestor::*[name() = 'list' or name() = 'nlist'][1]/preceding::nlist)}" />
+                  </xsl:otherwise>
+                </xsl:choose>
               </w:numPr>
   
             </xsl:when>

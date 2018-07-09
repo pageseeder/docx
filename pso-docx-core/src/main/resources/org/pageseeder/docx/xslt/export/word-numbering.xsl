@@ -27,10 +27,9 @@
     <xsl:comment><xsl:apply-templates select="$all-different-lists" mode="xml"/></xsl:comment>
     <xsl:apply-templates select="*[name() = 'w:abstractNum']" mode="numbering" />
     <xsl:apply-templates select="*[name() = 'w:num']" mode="numbering" />
-    <xsl:variable name="max-num-id" select="max(//w:num/number(@w:numId))" />
-    <xsl:for-each select="$all-different-lists/*">
+    <xsl:for-each select="$all-different-lists/nlist">
       <xsl:variable name="start-number" select="if (@start != '') then @start else '1'"/>
-      <w:num w:numId="{$max-num-id + position()}">
+      <w:num w:numId="{$max-list-num-id + position()}">
         <w:abstractNumId w:val="{if (. != '') then . else 1}" />
         <xsl:variable name="current-level" select="@level"/>
         <xsl:variable name="levels" select="'0,1,2,3,4,5,6,7,8'"/>
