@@ -89,13 +89,19 @@
     </item>
   </xsl:template>
   
-   <!-- Block all contents for each levels -->
+  <!-- Lists all contents for each levels -->
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-level1 and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content" />
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-level2 and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content" />
+ 
   <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-level3 and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content" >
     <xsl:apply-templates select="." mode="handle-list-gap">
       <xsl:with-param name="previous-upper-level-style" select="($list-level1,$list-level2)"/>
       <xsl:with-param name="parent-style-expected" select="($list-level2)"/>
     </xsl:apply-templates>
   </xsl:template>
+  
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-level4 and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content"/>
+  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $list-level5 and preceding-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $all-lists-complete]]" mode="content"/>
   
   <xsl:template match="w:p" mode="handle-list-gap">
     <xsl:param name="previous-upper-level-style" as="xs:string+"/>
@@ -175,7 +181,7 @@
     <xsl:variable name="orphan" select="if ($previous) then false() else true()"/>
     
     <xsl:if test="$orphan">
-      <para indent="{$indent-level}"><xsl:apply-templates/></para>
+      <para indent="{$indent-level}"><xsl:apply-templates/></para> 
     </xsl:if>
   </xsl:template>
   
