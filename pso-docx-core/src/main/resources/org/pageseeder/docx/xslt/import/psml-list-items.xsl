@@ -117,7 +117,8 @@
       <block label="{$item-style}">
         <xsl:apply-templates/>
       </block>
-      <xsl:message><xsl:value-of select="'ERROR: It is not converted, it exits a gap level.'" /></xsl:message>
+      <xsl:message><xsl:value-of select="concat('DOCX IMPORT ERROR: The style ',$item-style,
+          ' was not converted to a list item because it skips a level - SOME CONTENT MAY BE LOST.')" /></xsl:message>
     </xsl:if>
 
   </xsl:template>
