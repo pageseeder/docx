@@ -55,10 +55,14 @@
 <xsl:template match="item|cell|hcell" mode="unnest">
   <xsl:copy>
     <xsl:copy-of select="@*"/>
-    <!-- Adjacent text, inline elements and image must be wrapped -->
+    <!-- Adjacent text, text with double <br/>, inline elements and image must be wrapped -->
     <xsl:for-each-group select="node()"
                         group-adjacent="if  (self::list or self::nlist or self::para or self::block
-                                          or self::table or self::blockxref or self::preformat)
+                                          or self::table or self::blockxref or self::preformat
+                                          or (self::br and following-sibling::*[1][self::br] and
+                                              normalize-space(following-sibling::node()[1]) = '')
+                                          or (self::br and preceding-sibling::*[1][self::br] and
+                                              normalize-space(preceding-sibling::node()[1]) = ''))
                                         then 2
                                         else 1">
       <xsl:choose>
@@ -70,11 +74,39 @@
           </para>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="current-group()" mode="unnest"/>
+          <!-- ignore double <br/> -->
+          <xsl:apply-templates select="current-group()[not(self::br)]" mode="unnest"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each-group>
   </xsl:copy>
+</xsl:template>
+
+<!--
+  Split para containing double <br/> into 2 <para> elements.
+-->
+<xsl:template match="para[br]" mode="unnest">
+  <xsl:variable name="para" select="." />
+  <xsl:for-each-group select="node()"
+                      group-adjacent="if ((self::br and following-sibling::*[1][self::br] and
+                                            normalize-space(following-sibling::node()[1]) = '')
+                                        or (self::br and preceding-sibling::*[1][self::br] and
+                                            normalize-space(preceding-sibling::node()[1]) = ''))
+                                      then 2
+                                      else 1">
+    <!-- Wrap adjacent nodes if they have elements or non-whitespace (to avoid wrapping indentation in a para) -->
+    <xsl:if test="current-grouping-key()=1
+               and (current-group()/self::* or normalize-space(string-join(current-group(), ' ')) != '')">
+      <para>
+        <!-- copy all attributes from original para, except copy 'prefix' only for the first one -->
+        <xsl:if test="position()=1">
+          <xsl:copy-of select="$para/@*[name()='prefix']"/>
+        </xsl:if>
+        <xsl:copy-of select="$para/@*[name()!='prefix']"/>
+        <xsl:apply-templates select="current-group()" mode="unnest"/>
+      </para>
+    </xsl:if>
+  </xsl:for-each-group>
 </xsl:template>
 
 <!--

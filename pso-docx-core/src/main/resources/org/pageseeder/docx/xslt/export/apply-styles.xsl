@@ -211,11 +211,6 @@
         </xsl:choose>
       </xsl:when>
 
-      <!-- Monospace -->
-      <xsl:when test="self::text() and ancestor::monospace">
-        <xsl:value-of select="'monospace'"/>
-      </xsl:when>
-
       <xsl:when test="self::para">
         <xsl:choose>
           <xsl:when test="config:para-wordstyle-for-document-label($labels,./@indent, ./@numbered, ./@prefix) != ''">
@@ -278,13 +273,13 @@
 
 <!--
   Template to handle text run style creation from:
-  1. inline labels
-  2. monospace
-  3. sup
-  4. sub
-  5. bold
-  6. italic
-  7. underline
+  - inline labels
+  - monospace
+  - sup
+  - sub
+  - bold
+  - italic
+  - underline
   Must be inside a <w:rPr> element.
 -->
 <xsl:template name="apply-run-style">
@@ -305,7 +300,7 @@
   </xsl:if>
   <!-- `monospace` -->
   <xsl:if test="ancestor::monospace">
-    <w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/>
+    <w:rStyle w:val="HTMLCode"/>   
   </xsl:if>
   <!-- `superscript` -->
   <xsl:if test="ancestor::sup">

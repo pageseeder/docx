@@ -1,0 +1,99 @@
+<document id="186967" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <documentinfo>
+    <uri id="186967" scheme="https" host="ps.pageseeder.com" port="443"
+      path="/ps/dev/docx/Documents/Test_Files/Numbering.psml"
+      decodedpath="/ps/dev/docx/Documents/Test_Files/Numbering.psml"
+      mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T09:44:38+11:00"
+      title="Numbering">
+      <displaytitle>Numbering</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960"
+        href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1"
+        urititle="Test Files – Master" id="455297" title="Test Files"
+        type="none" forwardtype="embed" />
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103102" fragment="1" editid="455316"
+      modified="2013-01-29T11:09:00+11:00" />
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Lists</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <heading level="3"> Maximum multi-level un-numbered list with multiple paras</heading>
+      <list>
+        <item>
+          <para>Bananas</para>
+          <para>Bananas2</para>
+          <list>
+            <item>
+              Strawberries
+              <para>Strawberries2</para>
+              <list>
+                <item>
+                  Apples<br/><br/>
+                  Apples2
+                  <list>
+                    <item>
+                      Oranges<br/>
+                      <br/>
+                      Oranges2
+                      <list>
+                        <item>
+                          <para>Pineapples<br/>
+                          <br/>
+                          Pineapples2</para>
+                          <list>
+                            <item>
+                              Mangoes 6<br/>
+                              <br/>
+                              mangoes2<br/>
+                              same para<br/>
+                              <br/>
+                              mangoes3
+                              <list>
+                                <item>
+                                  <para>Oranges 7</para>
+                                  <para>Oranges2</para>
+                                  <para>Oranges3</para>
+                                  <list>
+                                    <item>
+                                      Pineapples 8
+                                      <list>
+                                        <item>
+                                          Mangoes 9
+                                        </item>
+                                      </list>
+                                    </item>
+                                  </list>
+                                </item>
+                              </list>
+                            </item>
+                          </list>
+                        </item>
+                      </list>
+                    </item>
+                  </list>
+                </item>
+              </list>
+            </item>
+          </list>
+        </item>
+      </list>
+      <para prefix="1" indent="2">Pineapples</para>
+      <para prefix="1" indent="2">Pineapples<br/>test</para>
+      <para prefix="1" indent="2">Pineapples<br/>
+      <br/>
+      Pineapples2<br/>
+      <br/>
+      Pineapples3</para>
+    </fragment>
+  </section>
+
+</document>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<config>
+  <elements>
+    <para>
+      <indent level="2" wordstyle="List Continue 2"/>
+      <indent level="2" prefixed="true" wordstyle="List Manual 2"/>
+    </para>
+    <nlist liststyle="Numbered List"/>
+    <list liststyle="Bulleted List" />
+    <listpara>
+      <level value="1" wordstyle="List Continue" />
+      <level value="2" wordstyle="List Continue 2" />
+      <level value="3" wordstyle="List Continue 3" />
+      <level value="4" wordstyle="List Continue 4" />
+      <level value="5" wordstyle="List Continue 5" />
+      <level value="6" wordstyle="List Continue 6" />
+      <level value="7" wordstyle="List Continue 7" />
+      <level value="8" wordstyle="List Continue 8" />
+      <level value="9" wordstyle="List Continue 9" />
+    </listpara>
+  </elements>
+</config>

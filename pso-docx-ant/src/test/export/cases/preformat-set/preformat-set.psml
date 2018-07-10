@@ -8,7 +8,9 @@
 	<section id="title">
 		<fragment id="title">
 			<para>Test Case 1</para>
-			<preformat>Basic Document without any configuration.</preformat>
+			<preformat>Basic
+  Document without
+    any configuration.</preformat>
 		</fragment>
 	</section>	
 </document>

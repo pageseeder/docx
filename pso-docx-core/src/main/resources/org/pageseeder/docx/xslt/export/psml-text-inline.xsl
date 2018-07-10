@@ -118,26 +118,6 @@
 </xsl:template>
 
 <!--
-  Match code element
--->
-<xsl:template match="code" mode="psml">
-  <w:p>
-    <w:pPr>
-      <xsl:call-template name="apply-style" />
-    </w:pPr>
-    <w:r>
-      <xsl:variable name="return-char" select="codepoints-to-string(10)" />
-      <xsl:for-each select="tokenize(., $return-char)">
-        <xsl:if test="current() != ''">
-          <w:t xml:space="preserve"><xsl:value-of select="current()" /></w:t>
-          <w:cr />
-        </xsl:if>
-      </xsl:for-each>
-    </w:r>
-  </w:p>
-</xsl:template>
-
-<!--
   Matches inline labels, and creates a paragraph if they are not inside of a block element;
   processing is done inside of text
 -->

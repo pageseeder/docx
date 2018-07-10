@@ -97,6 +97,7 @@
 <xsl:import href="import/psml-paragraphs.xsl" />
 <!-- TODO Changing the order of the import affects results: check for conflicts! -->
 <xsl:import href="import/psml-lists.xsl" />
+<xsl:import href="import/psml-list-items.xsl" />
 
 <!-- MathML support -->
 <xsl:import href="import/mathml.xsl" />

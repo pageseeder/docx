@@ -303,6 +303,21 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testListsBulletContinueStyles() throws IOException, SAXException {
+    testIndividual("lists-bullet-continue-style");
+  }
+
+  @Test
+  public void testListsBulletSyles() throws IOException, SAXException {
+    testIndividual("lists-bullet-style");
+  }
+
+  @Test
+  public void testListsBulletGapLevels() throws IOException, SAXException {
+    testIndividual("lists-bullet-style-gap-levels");
+  }
+
+  @Test
   public void testListsDefaultListRoleFalse() throws IOException, SAXException {
     testIndividual("lists-default-list-role-false");
   }

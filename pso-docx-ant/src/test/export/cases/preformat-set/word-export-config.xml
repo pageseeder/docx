@@ -2,6 +2,6 @@
 
 <config>
 	<elements>
-		<preformat wordstyle="heading 4"/>
+		<preformat wordstyle="HTML Preformatted"/>
 	</elements>
 </config>
