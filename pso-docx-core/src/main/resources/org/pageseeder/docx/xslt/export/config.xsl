@@ -467,7 +467,7 @@
 -->
 <xsl:function name="config:reference-styleid" as="xs:string">
   <xsl:variable name="style" select="if ($config-doc/config/default/xrefs/@referencestyle) then
-    $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Reference'"/>
+    $config-doc/config/default/xrefs/@referencestyle else 'PS Reference'"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
   <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
