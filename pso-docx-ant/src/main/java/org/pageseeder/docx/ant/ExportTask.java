@@ -194,9 +194,7 @@ public final class ExportTask extends Task {
     File dotx = new File(this.working, "dotx");
     dotx.mkdirs();
     ZipUtils.unzip(this.dotx, dotx);
-    File prepacked = new File(this.working, "prepacked");
-    prepacked.mkdirs();
-    ZipUtils.unzip(this.dotx, prepacked);
+
     // 2. Sanity check
     log("Checking DOTX");
     File contentTypes = new File(dotx, "[Content_Types].xml");
@@ -205,7 +203,9 @@ public final class ExportTask extends Task {
     if (!relationships.exists()) { throw new BuildException("Not a valid DOTX: unable to find _rels/.rels"); }
 
     // 3. Preparing the output
-    //File prepacked = new File(this.working, "prepacked");
+    File prepacked = new File(this.working, "prepacked");
+    prepacked.mkdirs();
+    ZipUtils.unzip(this.dotx, prepacked);
     File document = new File(prepacked, "word/document.xml");
     Files.ensureDirectoryExists(document.getParentFile());
 
@@ -222,17 +222,6 @@ public final class ExportTask extends Task {
         // FIXME store to somewhere for debug.
         e.printStackTrace();
       }
-    }
-
-    File unnestedFolder = new File(this.working, "unnested");
-    if (!unnestedFolder.exists()) {
-    	unnestedFolder.mkdirs();
-    }
-    try {
-      Files.copyDirectory(this.source.getParentFile(), unnestedFolder);
-    } catch (IOException e) {
-      // FIXME store to somewhere for debug.
-      e.printStackTrace();
     }
 
     // 4. Unnest the files

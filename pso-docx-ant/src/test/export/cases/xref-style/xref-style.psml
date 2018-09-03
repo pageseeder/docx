@@ -50,6 +50,26 @@
             display="manual" type="none" uriid="28508"
             href="http://example.org" urititle="fn" external="true"
             mediatype="application/vnd.pageseeder.psml+xml">External block xref</blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn" config="field"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal field block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true" config="field"
+            mediatype="application/vnd.pageseeder.psml+xml">External field block xref</blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn" config="term"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal term block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true" config="term"
+            mediatype="application/vnd.pageseeder.psml+xml">External term block xref</blockxref>
       <blockxref id="649772" title="Binary block xref" frag="1" reversefrag="2"
             reversetitle="" reverselink="true" reversetype="none"
             display="manual" type="none" uriid="28508"

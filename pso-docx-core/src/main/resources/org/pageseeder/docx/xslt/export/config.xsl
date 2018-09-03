@@ -467,7 +467,53 @@
 -->
 <xsl:function name="config:reference-styleid" as="xs:string">
   <xsl:variable name="style" select="if ($config-doc/config/default/xrefs/@referencestyle) then
-    $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Reference'"/>
+    $config-doc/config/default/xrefs/@referencestyle else 'PS Reference'"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured xrefconfig reference style.
+
+  @param document-label the document label
+  @param config-name    the config attribute on the XRef
+
+  @return the style ID
+-->
+<xsl:function name="config:xrefconfig-reference-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="config-name"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/xrefconfig[@name=$config-name]/@referencestyle"/>
+  <xsl:variable name="nolabel-style" select="$config-doc/config/elements[not(@label)]/xref/xrefconfig[@name=$config-name]/@referencestyle"/>
+  <xsl:variable name="default-style" select="if ($config-doc/config/default/xrefs/@referencestyle) then
+    $config-doc/config/default/xrefs/@referencestyle else 'PS Reference'"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($nolabel-style != '') then $nolabel-style else $default-style"/>
+  <xsl:variable name="styleid"
+    select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+  <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
+</xsl:function>
+
+<!--
+  Returns the style ID for the configured xrefconfig hyperlink style.
+
+  @param document-label the document label
+  @param config-name    the config attribute on the XRef
+
+  @return the style ID
+-->
+<xsl:function name="config:xrefconfig-hyperlink-styleid" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="config-name"/>
+
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/xref/xrefconfig[@name=$config-name]/@hyperlinkstyle"/>
+  <xsl:variable name="nolabel-style" select="$config-doc/config/elements[not(@label)]/xref/xrefconfig[@name=$config-name]/@hyperlinkstyle"/>
+  <xsl:variable name="default-style" select="if ($config-doc/config/default/xrefs/@hyperlinkstyle) then
+    $config-doc/config/default/xrefs/@hyperlinkstyle else 'PS Hyperlink'"/>
+  <xsl:variable name="style" select="if ($label-style != '') then $label-style
+    else if ($nolabel-style != '') then $nolabel-style else $default-style"/>
   <xsl:variable name="styleid"
     select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
   <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
