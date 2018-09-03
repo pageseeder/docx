@@ -22,5 +22,11 @@
       <indent level="8" numbered="true" wordstyle="List Number 8"/>
       <indent level="9" numbered="true" wordstyle="List Number 9"/>
     </para>
+    <xref>
+      <xrefconfig name="field"
+          hyperlinkstyle="My Field Link" referencestyle="My Field Reference" />
+      <xrefconfig name="term"
+          hyperlinkstyle="My Term Link" />
+    </xref>
   </elements> 
 </config>

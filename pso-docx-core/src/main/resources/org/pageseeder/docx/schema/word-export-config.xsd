@@ -444,11 +444,12 @@
 
   <xs:element name="xref">
     <xs:complexType>
-      <xs:all>
+      <xs:sequence>
         <xs:element ref="footnote" minOccurs="0" maxOccurs="1" />
         <xs:element ref="endnote" minOccurs="0" maxOccurs="1" />
         <xs:element ref="citation" minOccurs="0" maxOccurs="1" />
-      </xs:all>
+        <xs:element ref="xrefconfig" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 
@@ -468,6 +469,14 @@
 
   <xs:element name="citation">
     <xs:complexType>
+      <xs:attribute name="referencestyle" type="xs:string"/>
+    </xs:complexType>
+  </xs:element> 
+
+  <xs:element name="xrefconfig">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="hyperlinkstyle" type="xs:string"/>
       <xs:attribute name="referencestyle" type="xs:string"/>
     </xs:complexType>
   </xs:element> 

@@ -102,7 +102,7 @@
       </w:r>
       <w:r>
         <w:rPr>
-          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
           <xsl:call-template name="apply-run-style" />
         </w:rPr>
         <w:t><xsl:value-of select="." /></w:t>
@@ -128,7 +128,7 @@
         <xsl:otherwise>
           <w:r>
             <w:rPr>
-              <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+              <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
               <xsl:call-template name="apply-run-style" />
             </w:rPr>
             <w:t><xsl:value-of select="." /></w:t>
@@ -143,7 +143,7 @@
       <w:hyperlink w:anchor="{@href}" w:history="1">
         <w:r>
           <w:rPr>
-            <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+            <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
             <xsl:call-template name="apply-run-style" />
           </w:rPr>
           <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
@@ -155,7 +155,7 @@
     <xsl:when test="@href[not(starts-with(., '#'))]">
       <w:r>
         <w:rPr>
-          <w:rStyle w:val="{config:hyperlink-styleid()}"/>
+          <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
           <xsl:call-template name="apply-run-style" />
         </w:rPr>
         <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
@@ -181,7 +181,7 @@
           </w:r>
           <w:r>
             <w:rPr>
-              <w:rStyle w:val="{config:reference-styleid()}"/>
+              <w:rStyle w:val="{config:xrefconfig-reference-styleid($labels, @config)}"/>
               <xsl:call-template name="apply-run-style" />
             </w:rPr>
             <w:t><xsl:value-of select="if (@display='template' and contains(@title,'{heading}')) then
@@ -195,7 +195,7 @@
             <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
               <w:r>
                 <w:rPr>
-                  <w:rStyle w:val="{config:reference-styleid()}"/>
+                  <w:rStyle w:val="{config:xrefconfig-reference-styleid($labels, @config)}"/>
                   <xsl:call-template name="apply-run-style" />
                 </w:rPr>
                 <w:t xml:space="preserve"> </w:t>
@@ -209,7 +209,7 @@
           <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
             <w:r>
               <w:rPr>
-                <w:rStyle w:val="{config:reference-styleid()}"/>
+                <w:rStyle w:val="{config:xrefconfig-reference-styleid($labels, @config)}"/>
                 <xsl:call-template name="apply-run-style" />
               </w:rPr>
               <w:t><xsl:value-of select="." /></w:t>
