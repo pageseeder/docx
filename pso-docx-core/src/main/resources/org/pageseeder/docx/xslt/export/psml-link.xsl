@@ -89,8 +89,8 @@
       </w:r>
     </xsl:when>
 
-    <!-- Cross-reference to a URL -->
-    <xsl:when test="@external = 'true'">
+    <!-- Cross-reference to a URL or non-PSML document -->
+    <xsl:when test="@external = 'true' or (not(starts-with(@href, '#')) and not(ends-with(@href, '.psml')))">
       <w:r>
         <w:fldChar w:fldCharType="begin" />
       </w:r>
@@ -112,22 +112,8 @@
       </w:r>
     </xsl:when>
 
-    <!-- Cross-reference to a non PSML document -->
-    <!-- TODO: Why is this pointing to an anchor? -->
-    <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
-      <w:hyperlink w:anchor="{@href}" w:history="1">
-        <w:r>
-          <w:rPr>
-            <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
-            <xsl:call-template name="apply-run-style" />
-          </w:rPr>
-          <w:t xml:space="preserve"><xsl:value-of select="." /></w:t>
-        </w:r>
-      </w:hyperlink>
-    </xsl:when>
-
     <!-- Cross-reference to a PSML document -->
-    <xsl:when test="@href[not(starts-with(., '#'))]">
+    <xsl:when test="not(starts-with(@href, '#'))">
       <w:r>
         <w:rPr>
           <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
