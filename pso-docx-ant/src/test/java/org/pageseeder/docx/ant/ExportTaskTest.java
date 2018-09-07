@@ -334,6 +334,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testMathML() throws IOException, SAXException {
+    testIndividual("mathml");
+  }
+
+  @Test
   public void testPreformatSet() throws IOException, SAXException {
     testIndividual("preformat-set");
   }

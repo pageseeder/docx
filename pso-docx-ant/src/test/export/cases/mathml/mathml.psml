@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document id="28508" schemaversion="0.10" date="2017-08-18T12:22:36+10:00"
+  version="current" level="portable">
+  <section id="title">
+    <fragment id="28508-0">
+      <heading level="1">MathML</heading>
+    </fragment>
+  </section>
+  <section id="content">
+    <fragment id="55578-10">
+      <para>Equations from a MathML library, for example <xref id="97122" frag="1" reversefrag="10"
+          reversetitle="" reverselink="true"
+          reversetype="none" display="document" config="mathml"
+          type="math" uriid="55599"
+          href="_local/documents/mathml/mathml-002.psml"
+          urititle="Exponential 2" mediatype="application/vnd.pageseeder.psml+xml"
+          documenttype="mathml">
+          <locator id="39897" fragment="55599-1"
+            editid="159460" modified="2018-09-07T11:37:15+10:00">
+            <reversexrefs>
+              <reversexref uriid="55578"
+                href="_local/documents/system_report/system_report-10.psml"
+                frag="10" urititle="Functionality"
+                mediatype="application/vnd.pageseeder.psml+xml"
+                id="97122" title="" type="none"
+                forwardtype="math" forwarddisplay="document"
+                forwardfrag="1" />
+            </reversexrefs>
+          </locator>
+          <media-fragment id="55599-1"
+            mediatype="application/mathml+xml">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mi>y</mi>
+              <mo>=</mo>
+              <msup>
+                <mi>x</mi>
+                <mn>2</mn>
+              </msup>
+              <mo>+</mo>
+              <mn>1</mn>
+            </math>
+          </media-fragment>
+        </xref>.</para>
+    </fragment>
+    <fragment id="55578-9">
+      <para>Search equations from a library <xref id="97069" frag="1" reversefrag="9"
+          reversetitle="" reverselink="true"
+          reversetype="none" display="document" config="mathml"
+          type="math" uriid="55598"
+          href="_local/documents/mathml/mathml-001.psml"
+          urititle="Exponential 1" mediatype="application/vnd.pageseeder.psml+xml"
+          documenttype="mathml">
+          <locator id="39889" fragment="55598-1"
+            editid="159459" modified="2018-09-07T11:35:55+10:00">
+            <reversexrefs>
+              <reversexref uriid="55578"
+                href="_local/documents/system_report/system_report-10.psml"
+                frag="9" urititle="Functionality"
+                mediatype="application/vnd.pageseeder.psml+xml"
+                id="97069" title="" type="none"
+                forwardtype="math" forwarddisplay="document"
+                forwardfrag="1" />
+            </reversexrefs>
+          </locator>
+          <media-fragment id="55598-1"
+            mediatype="application/mathml+xml">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mi>y</mi>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <msup>
+                    <mi>x</mi>
+                    <mn>2</mn>
+                  </msup>
+                  <mo>+</mo>
+                  <mo> </mo>
+                  <mn>3</mn>
+                </mrow>
+                <mn>2</mn>
+              </mfrac>
+            </math>
+          </media-fragment>
+        </xref>.</para>
+    </fragment>
+  </section>
+</document>

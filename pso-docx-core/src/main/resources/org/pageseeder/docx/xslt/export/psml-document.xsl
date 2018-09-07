@@ -12,6 +12,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
                 xmlns:config="http://pageseeder.org/docx/config"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
@@ -131,6 +132,9 @@
 <xsl:template match="media-fragment" mode="psml">
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
   <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
+    <xsl:if test="@mediatype='application/mathml+xml'">
+      <xsl:apply-templates mode="mml" />
+    </xsl:if>
   <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
 
