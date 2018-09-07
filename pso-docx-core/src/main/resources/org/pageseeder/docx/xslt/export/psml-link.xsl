@@ -112,31 +112,6 @@
       </w:r>
     </xsl:when>
 
-    <!-- TODO check requirements for mathml processing -->
-    <xsl:when test="starts-with(@href, '_external/') and config:generate-mathml()">
-      <!-- External xref: choose to copy or not based on type and config -->
-      <xsl:variable name="referenced-document" select="document(@href)" />
-      <xsl:choose>
-        <xsl:when test="$referenced-document//section/media-fragment[@mediatype='application/mathml+xml'] and config:generate-mathml()">
-          <xsl:variable name="mathml">
-            <m:math>
-              <xsl:sequence select="$referenced-document//section/media-fragment[@mediatype='application/mathml+xml']/*"/>
-            </m:math>
-          </xsl:variable>
-          <xsl:apply-templates select="$mathml//m:math"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <w:r>
-            <w:rPr>
-              <w:rStyle w:val="{config:xrefconfig-hyperlink-styleid($labels, @config)}"/>
-              <xsl:call-template name="apply-run-style" />
-            </w:rPr>
-            <w:t><xsl:value-of select="." /></w:t>
-          </w:r>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-
     <!-- Cross-reference to a non PSML document -->
     <!-- TODO: Why is this pointing to an anchor? -->
     <xsl:when test="@href[not(starts-with(., '#'))][not(ends-with(., '.psml'))]">
@@ -226,7 +201,14 @@
   Inline cross-references
 -->
 <xsl:template match="xref" mode="psml">
-  <xsl:call-template name="xref-content" />
+  <xsl:choose>
+    <xsl:when test="document | fragment | media-fragment | xref-fragment | properties-fragment">
+      <xsl:apply-templates mode="psml"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="xref-content" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <!--
@@ -242,7 +224,7 @@
         <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])))}"/>
       </w:p>
     </xsl:when>
-    <xsl:when test="document | fragment">
+    <xsl:when test="document | fragment | media-fragment | xref-fragment | properties-fragment">
       <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:otherwise>
