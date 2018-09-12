@@ -28,6 +28,11 @@
   <xsl:sequence select="$config-doc/config/split/mathml[@select= 'true']/@output= 'generate-files'"/>
 </xsl:function>
 
+<!-- Indicates whether the mathml content should be generated -->
+<xsl:function name="config:generate-mathml" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/split/mathml/@select= 'true'"/>
+</xsl:function>
+
 <!-- Indicates whether the mathml files should be converted -->
 <xsl:function name="config:convert-omml-to-mml" as="xs:boolean">
   <xsl:sequence select="$config-doc/config/split/mathml[@select= 'true']/@convert-to-mml= 'true'"/>

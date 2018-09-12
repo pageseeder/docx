@@ -155,7 +155,7 @@
         <xsl:apply-templates mode="mathml" />
       </m:math>
     </xsl:for-each>
-    <xsl:for-each select="$main-document//m:oMathPara">
+    <xsl:for-each select="$main-document//m:oMathPara[not(ancestor::w:p)]">
       <xsl:variable name="current">
         <xsl:apply-templates select="." mode="xml"/>
       </xsl:variable>

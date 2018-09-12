@@ -166,7 +166,7 @@ public class ImportTaskTest {
   public void testEmptyConfigurationImagesDrawingAnchorElement() throws IOException, SAXException {
     testIndividual("empty-configuration-images-drawing-anchor-element");
   }
-  
+
   @Test
   public void testEmptyConfigurationImagesEmbededPictElement() throws IOException, SAXException {
     testIndividual("empty-configuration-images-embeded-pict-element");
@@ -383,6 +383,16 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testMathmlGenerateFragments() throws IOException, SAXException {
+    testIndividual("mathml-generate-fragments");
+  }
+
+  @Test
+  public void testMathmlMathtypePlugin() throws IOException, SAXException {
+    testIndividual("mathml-mathtype-plugin");
+  }
+
+  @Test
   public void testMonospaceMultiCharacterStyle() throws IOException, SAXException {
     testIndividual("monospace-multi-character-style");
   }
@@ -466,7 +476,7 @@ public class ImportTaskTest {
   public void testOrientationEndOfBlock() throws IOException, SAXException {
     testIndividual("orientation-end-of-block");
   }
-  
+
   @Test
   public void testOrientationEndOfPara() throws IOException, SAXException {
     testIndividual("orientation-end-of-para");
@@ -685,6 +695,8 @@ public class ImportTaskTest {
       System.err.println();
       Files.copy(expected, new File(result, "expected-" + actual.getName()));
       Files.copy(actual, new File(result, "actual-" + actual.getName()));
+      // uncomment the following to bulk update expected files for changes effecting all documents
+      //Files.copy(actual, expected);
       throw error;
     }
   }
