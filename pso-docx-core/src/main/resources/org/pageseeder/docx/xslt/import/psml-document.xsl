@@ -44,7 +44,7 @@
     <xsl:apply-templates select="$list-index" mode="index-files"/>
   </xsl:if>
 
-  <xsl:if test="config:generate-mathml-files()">
+  <xsl:if test="config:generate-mathml()">
     <xsl:apply-templates select="$list-mathml" mode="mathml"/>
   </xsl:if>
 
