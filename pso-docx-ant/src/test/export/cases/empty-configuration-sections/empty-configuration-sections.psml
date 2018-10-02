@@ -1,17 +1,167 @@
-<document id="186969" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable"><documentinfo><uri id="186969" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/Sections.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/Sections.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:30:58+11:00" title="Sections"><displaytitle>Sections</displaytitle></uri><reversexrefs><reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455324" title="Test Files" type="none" forwardtype="embed"/></reversexrefs></documentinfo><fragmentinfo><locator id="103125" fragment="12" editid="455360" modified="2013-01-29T12:13:33+11:00"/><locator id="103120" fragment="6" editid="455369" modified="2013-01-29T12:14:14+11:00"/><locator id="103121" fragment="3" editid="455352" modified="2013-01-29T12:13:33+11:00"/><locator id="103128" fragment="title"/><locator id="103112" fragment="1" editid="455339" modified="2013-01-29T11:49:47+11:00"/><locator id="103118" fragment="8" editid="455346" modified="2013-01-29T12:13:33+11:00"/><locator id="103122" fragment="10" editid="455370" modified="2013-01-29T12:14:30+11:00"/><locator id="108051" fragment="11.1251" editid="469764" modified="2013-06-24T12:39:55+10:00"/><locator id="103117" fragment="11" editid="455344" modified="2013-01-29T12:13:33+11:00"/><locator id="103116" fragment="7" editid="455342" modified="2013-01-29T12:13:33+11:00"/><locator id="108052" fragment="10.1061" editid="467945" modified="2013-05-16T10:33:35+10:00"/><locator id="108050" fragment="7.1251" editid="467942" modified="2013-05-16T10:29:27+10:00"/><locator id="108053" fragment="10.1021" editid="467946" modified="2013-05-16T10:35:55+10:00"/><locator id="103114" fragment="1.1441" editid="455364" modified="2013-01-29T12:13:33+11:00"/><locator id="103119" fragment="5" editid="455348" modified="2013-01-29T12:13:33+11:00"/><locator id="103123" fragment="4" editid="455356" modified="2013-01-29T12:13:33+11:00"/><locator id="103124" fragment="9" editid="455358" modified="2013-01-29T12:13:33+11:00"/><locator id="103126" fragment="2" editid="455362" modified="2013-01-29T12:13:33+11:00"/><locator id="103113" fragment="1.1251" editid="455363" modified="2013-01-29T12:13:33+11:00"/><locator id="108049" fragment="10.1251" editid="467944" modified="2013-05-16T10:30:25+10:00"/><locator id="103115" fragment="1.1581" editid="455365" modified="2013-01-29T12:13:33+11:00"/></fragmentinfo><section id="title"><fragment id="title">
-			<heading level="1">Sections</heading>
-		</fragment></section><section id="1"><fragment id="1"><para>Normal Section</para></fragment></section><section id="2"><fragment id="2">
-			<para>Following section has no content:</para>
-		</fragment></section><section id="3"><fragment id="3"/></section><section id="4"><fragment id="4">
-			<para>Another normal section</para>
-		</fragment></section><section id="5"><fragment id="5">
-			<para>Following section is of format psxreflist with content</para>
-		</fragment></section><section id="6"><xref-fragment id="6"><blockxref id="455368" title="" frag="default" reverselink="true" reversetitle="Sections" reversetype="none" display="document" type="embed" mediatype="application/vnd.pageseeder.psml+xml" uriid="186975" urititle="section-xref" href="/ps/dev/docx/Documents/Test_Files/section-xref.psml">section-xref</blockxref></xref-fragment></section><section id="7"><fragment id="7">
-			<para>Following section is of format psxreflist without content</para>
-		</fragment><fragment id="7.1251"/></section><section id="8"><xref-fragment id="8"/></section><section id="9"><fragment id="9">
-			<para>Following section is of format pslabelvalues with content</para>
-		</fragment></section><section id="10"><properties-fragment id="10"><property name="manufacturer" title="Manufacturer:" value="Manufacturer 1"/><property name="model" title="Model:" value="Model A"/></properties-fragment><properties-fragment id="10.1021"/><properties-fragment id="10.1061"/><properties-fragment id="10.1251"/></section><section id="11"><fragment id="11">
-			<para>Following section is of format pslabelvalues without content</para>
-		</fragment></section><section id="12"><properties-fragment id="12">
-	
-	</properties-fragment></section></document>
+<document id="186969" schemaversion="0.8" date="2014-03-24T15:28:19+11:00"
+  version="current" level="portable">
+  <documentinfo>
+    <uri id="186969" scheme="https" host="ps.pageseeder.com" port="443"
+      path="/ps/dev/docx/Documents/Test_Files/Sections.psml"
+      decodedpath="/ps/dev/docx/Documents/Test_Files/Sections.psml"
+      mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-29T11:30:58+11:00"
+      title="Sections">
+      <displaytitle>Sections</displaytitle>
+    </uri>
+    <reversexrefs>
+      <reversexref uriid="186960"
+        href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1"
+        urititle="Test Files – Master" id="455324" title="Test Files"
+        type="none" forwardtype="embed" />
+    </reversexrefs>
+  </documentinfo>
+  <fragmentinfo>
+    <locator id="103125" fragment="12" editid="455360"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103120" fragment="6" editid="455369"
+      modified="2013-01-29T12:14:14+11:00" />
+    <locator id="103121" fragment="3" editid="455352"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103128" fragment="title" />
+    <locator id="103112" fragment="1" editid="455339"
+      modified="2013-01-29T11:49:47+11:00" />
+    <locator id="103118" fragment="8" editid="455346"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103122" fragment="10" editid="455370"
+      modified="2013-01-29T12:14:30+11:00" />
+    <locator id="108051" fragment="11.1251" editid="469764"
+      modified="2013-06-24T12:39:55+10:00" />
+    <locator id="103117" fragment="11" editid="455344"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103116" fragment="7" editid="455342"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="108052" fragment="10.1061" editid="467945"
+      modified="2013-05-16T10:33:35+10:00" />
+    <locator id="108050" fragment="7.1251" editid="467942"
+      modified="2013-05-16T10:29:27+10:00" />
+    <locator id="108053" fragment="10.1021" editid="467946"
+      modified="2013-05-16T10:35:55+10:00" />
+    <locator id="103114" fragment="1.1441" editid="455364"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103119" fragment="5" editid="455348"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103123" fragment="4" editid="455356"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103124" fragment="9" editid="455358"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103126" fragment="2" editid="455362"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="103113" fragment="1.1251" editid="455363"
+      modified="2013-01-29T12:13:33+11:00" />
+    <locator id="108049" fragment="10.1251" editid="467944"
+      modified="2013-05-16T10:30:25+10:00" />
+    <locator id="103115" fragment="1.1581" editid="455365"
+      modified="2013-01-29T12:13:33+11:00" />
+  </fragmentinfo>
+  <section id="title">
+    <fragment id="title">
+      <heading level="1">Sections</heading>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <para>Normal Section</para>
+    </fragment>
+  </section>
+  <section id="2">
+    <fragment id="2">
+      <para>Following section has no content:</para>
+    </fragment>
+  </section>
+  <section id="3">
+    <fragment id="3" />
+  </section>
+  <section id="4">
+    <fragment id="4">
+      <para>Another normal section</para>
+    </fragment>
+  </section>
+  <section id="5">
+    <fragment id="5">
+      <para>Following section is of format psxreflist with content
+      </para>
+    </fragment>
+  </section>
+  <section id="6">
+    <xref-fragment id="6">
+      <blockxref id="455368" title="" frag="default"
+        reverselink="true" reversetitle="Sections" reversetype="none"
+        display="document" type="embed" mediatype="application/vnd.pageseeder.psml+xml"
+        uriid="186975" urititle="section-xref"
+        href="/ps/dev/docx/Documents/Test_Files/section-xref.psml">section-xref</blockxref>
+    </xref-fragment>
+  </section>
+  <section id="7">
+    <fragment id="7">
+      <para>Following section is of format psxreflist without content
+      </para>
+    </fragment>
+    <fragment id="7.1251" />
+  </section>
+  <section id="8">
+    <xref-fragment id="8" />
+  </section>
+  <section id="9">
+    <fragment id="9">
+      <para>Following section contains property fragments with content
+      </para>
+    </fragment>
+  </section>
+  <section id="10">
+    <properties-fragment id="10">
+      <property name="manufacturer" title="Manufacturer"
+        value="Manufacturer 1" />
+      <property name="model" title="Model" value="Model A" />
+      </properties-fragment>
+    <properties-fragment id="10-1" type="citation">
+      <property name="link-text" title="Link text"
+        value="My" />
+      <property name="description" title="Description" datatype="markdown">
+        <markdown>Source</markdown>
+      </property>
+      <property name="description2" title="Description2" datatype="markdown">
+        <markdown><heading level="2">Heading</heading><para>My <bold>special</bold> source</para><para>New line</para></markdown>
+      </property>
+      <property name="source" title="Source" datatype="xref">
+        <xref id="164180" frag="default" reversefrag="1"
+          reversetitle="" reverselink="true" reversetype="none"
+          display="document" type="alternate" uriid="72869"
+          href="_local/documents/sources/source-004.psml"
+          urititle="New book" mediatype="application/vnd.pageseeder.psml+xml"
+          documenttype="source">
+          <document id="72869" schemaversion="0.12"
+            type="source" date="2018-10-02T10:24:50+10:00"
+            version="current" level="processed">
+            <section id="72869-authors" title="Authors"
+              fragmenttype="author">
+              <properties-fragment id="72869-1"
+                type="author">
+                <property name="first-name" title="First name"
+                  value="John" />
+                <property name="middle-name" title="Middle name"
+                  value="" />
+                <property name="last-name" title="Last name"
+                  value="Smith" />
+              </properties-fragment>
+            </section>
+          </document>
+        </xref>
+      </property>
+    </properties-fragment>
+  </section>
+  <section id="11">
+    <fragment id="11">
+      <para>Following section contains property fragments without content
+      </para>
+    </fragment>
+  </section>
+  <section id="12">
+    <properties-fragment id="12">
+    </properties-fragment>
+  </section>
+</document>
