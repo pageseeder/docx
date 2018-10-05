@@ -138,8 +138,11 @@
   <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
 
-  <!-- Template to match properties fragment and transform it into a table -->
-<xsl:template match="properties-fragment" mode="psml">
+<!-- Fragments nested inside properties fragment are not supported -->
+<xsl:template match="fragment[ancestor::properties-fragment]|properties-fragment[ancestor::properties-fragment]" mode="psml" />
+
+<!-- Template to match properties fragment and transform it into a table -->
+<xsl:template match="properties-fragment[not(ancestor::properties-fragment)]" mode="psml">
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
   <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
   <w:tbl>
@@ -197,6 +200,20 @@
           <w:p>
             <xsl:apply-templates mode="psml"/>
           </w:p>
+        </xsl:when>
+        <xsl:when test="@datatype = 'markdown'">
+          <xsl:choose>
+            <xsl:when test="markdown/*">
+              <xsl:apply-templates select="markdown/*" mode="psml"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <w:p>
+                <w:r>
+                  <w:t><xsl:value-of select="markdown"/></w:t>
+                </w:r>
+              </w:p>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:when test="@datatype = 'string'">
           <w:p>
