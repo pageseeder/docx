@@ -73,6 +73,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testDocumentSplitDocumentTrueNumberingFalseOutlineLevel() throws IOException, SAXException {
+    testIndividual("document-split-document-true-numbering-false-outline-level");
+  }
+
+  @Test
   public void testDocumentSplitDocumentTrueNumberingTrueOutlineLevel() throws IOException, SAXException {
     testIndividual("document-split-document-true-numbering-true-outline-level");
   }
