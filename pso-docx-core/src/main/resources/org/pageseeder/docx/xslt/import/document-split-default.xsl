@@ -24,8 +24,8 @@
     <xsl:when test="config:split-by-documents()">
       <xsl:choose>
         <xsl:when test="not(*[1][config:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or config:matches-document-specific-split-styles(.)])">
-          <section id="front">
-            <fragment id="front">
+          <section id="title">
+            <fragment id="1">
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
                 <xsl:for-each-group select="current-group()" group-starting-with="w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|w:p[config:matches-document-specific-split-styles(.)]">
                   <xsl:if test="position() = 1">
@@ -40,8 +40,8 @@
               </xsl:for-each-group>
             </fragment>
           </section>
-          <section id="content">
-            <xref-fragment id="content">
+          <section id="xrefs">
+            <xref-fragment id="2">
               <!-- Document split for each section break first, then styles then outline level.
                  If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
