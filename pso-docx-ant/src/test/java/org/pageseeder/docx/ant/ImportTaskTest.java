@@ -700,7 +700,7 @@ public class ImportTaskTest {
       System.err.println();
       Files.copy(expected, new File(result, "expected-" + actual.getName()));
       Files.copy(actual, new File(result, "actual-" + actual.getName()));
-      // uncomment the following to bulk update expected files for changes effecting all documents
+      // uncomment the following to bulk update expected files for changes effecting multiple documents
       //Files.copy(actual, expected);
       throw error;
     }

@@ -83,7 +83,6 @@
 <xsl:import href="import/functions.xsl" />
 
 <!-- Splitting -->
-<xsl:import href="import/document-split-processed.xsl" />
 <xsl:import href="import/document-split-default.xsl" />
 <xsl:import href="import/section-split.xsl" />
 

@@ -39,6 +39,7 @@
           </xsl:for-each-group>
         </fragment>
       </section>
+      <toc/>
       <section id="xrefs">
         <xref-fragment id="2">
           <!-- Document split for each section break first, then styles then outline level.
@@ -84,32 +85,6 @@
                   </xsl:choose>
                 </xsl:variable>
                 
-                <xsl:result-document
-                  href="{concat($_outputfolder,$component-folder-name,$document-full-filename,'.psml')}">
-
-                  <document level="portable">
-                    <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                      <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
-                    </xsl:if>
-                    <documentinfo>
-                      <uri title="{$document-title}">
-                        <displaytitle>
-                          <xsl:value-of select="$document-title" />
-                        </displaytitle>
-                        <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
-                          <labels>
-                            <xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
-                          </labels>
-                        </xsl:if>
-                      </uri>
-                    </documentinfo>
-                    <xsl:apply-templates select="$body" mode="section-split">
-                      <xsl:with-param name="document-title" select="$document-title" />
-                      <xsl:with-param name="document-level" select="$level" tunnel="yes" />
-                    </xsl:apply-templates>
-                  </document>
-                </xsl:result-document>
-
                 <blockxref title="{$document-title}" frag="default" display="document"
                            type="embed" reverselink="true" reversetitle="" reversetype="none"
                            href="{concat($component-folder-name,$document-full-filename,'.psml')}">
@@ -117,7 +92,60 @@
                   <xsl:if test="$level != '0'">
                     <xsl:attribute name="level" select="$level" />
                   </xsl:if>
-                  <xsl:value-of select="$document-title" />
+                  
+                  <xsl:choose>
+                    <xsl:when test="$generate-processed-psml">
+                      <document level="processed">
+                        <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                          <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/>
+                        </xsl:if>
+                        <documentinfo>
+                          <uri title="{$document-title}">
+                            <displaytitle>
+                              <xsl:value-of select="$document-title" />
+                            </displaytitle>
+                            <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                              <labels><xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)"/></labels>
+                            </xsl:if>
+                          </uri>
+    
+                        </documentinfo>
+                        <xsl:apply-templates select="$body" mode="section-split">
+                          <xsl:with-param name="document-title" select="$document-title" />
+                          <xsl:with-param name="document-level" select="$level" tunnel="yes"/>
+                        </xsl:apply-templates>
+                      </document>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$document-title" />                      
+                      <xsl:result-document
+                        href="{concat($_outputfolder,$component-folder-name,$document-full-filename,'.psml')}">
+      
+                        <document level="portable">
+                          <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                            <xsl:attribute name="type" select="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                          </xsl:if>
+                          <documentinfo>
+                            <uri title="{$document-title}">
+                              <displaytitle>
+                                <xsl:value-of select="$document-title" />
+                              </displaytitle>
+                              <xsl:if test="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
+                                <labels>
+                                  <xsl:value-of select="config:document-label-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val)" />
+                                </labels>
+                              </xsl:if>
+                            </uri>
+                          </documentinfo>
+                          <xsl:apply-templates select="$body" mode="section-split">
+                            <xsl:with-param name="document-title" select="$document-title" />
+                            <xsl:with-param name="document-level" select="$level" tunnel="yes" />
+                          </xsl:apply-templates>
+                        </document>
+                      </xsl:result-document>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  
                 </blockxref>
               </xsl:if>
             </xsl:for-each-group>
