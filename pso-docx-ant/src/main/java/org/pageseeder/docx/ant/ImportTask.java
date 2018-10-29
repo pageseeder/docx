@@ -58,6 +58,11 @@ public final class ImportTask extends Task {
    */
   private String mediaFolder;
 
+  /**
+   * The name of the component folder
+   */
+  private String componentFolder;
+
   // Set properties
   // ----------------------------------------------------------------------------------------------
 
@@ -112,6 +117,13 @@ public final class ImportTask extends Task {
     this.mediaFolder = name;
   }
 
+  /**
+   * @param componentFolder the name of the component folder.
+   */
+  public void setComponentFolder(String name) {
+    this.componentFolder = name;
+  }
+  
   /**
    * Create a parameter object and stores it in the list To be used by the XSLT transformation
    */
@@ -199,6 +211,7 @@ public final class ImportTask extends Task {
     if (!contentTypes.exists()) throw new BuildException("Not a valid DOCX: unable to find [Content_Types].xml");
     if (!relationships.exists()) throw new BuildException("Not a valid DOCX: unable to find _rels/.rels");
 
+    String componentFolderName = this.componentFolder == null? "components" : this.componentFolder;
     String mediaFolderName = this.mediaFolder == null? filename+"_files" : this.mediaFolder;
     
     // Parse templates
@@ -212,6 +225,7 @@ public final class ImportTask extends Task {
     
     parameters.put("_docxfilename", filename);
     parameters.put("_mediafoldername", mediaFolderName);
+    parameters.put("_componentfoldername", componentFolderName);
     if (this.config != null) {
       parameters.put("_configfileurl", this.config.toURI().toString());
     }
