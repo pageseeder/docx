@@ -18,6 +18,7 @@
 <!--
   Main template generating sections from the Word body element `w:body`
 -->
+
 <xsl:template match="w:body" mode="content">
   <!-- master document will contain link to all split files  -->
   <xsl:choose>
@@ -84,9 +85,9 @@
                         </xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
-
+                    
                     <xsl:result-document
-                      href="{concat($_outputfolder,if (config:generate-titles()) then translate($document-title,'\W','_') else concat(encode-for-uri($filename),'-',format-number(number($document-number), $zeropadding)),'.psml')}">
+                      href="{concat($_outputfolder,$component-folder-name, if (config:generate-titles()) then translate($document-title,'\W','_') else concat(encode-for-uri($filename),'-',format-number(number($document-number), $zeropadding)),'.psml')}">
 
                       <document level="portable">
                         <xsl:if test="config:document-type-for-split-style($body/w:p[1]/w:pPr/w:pStyle/@w:val) != ''">
@@ -113,7 +114,7 @@
 
                     <blockxref title="{$document-title}" frag="default" display="document"
                                type="embed" reverselink="true" reversetitle="" reversetype="none"
-                               href="{encode-for-uri(concat($document-full-filename,'.psml'))}">
+                               href="{encode-for-uri(concat($component-folder-name,$document-full-filename,'.psml'))}">
                       <!-- Not currently used: Levels push the heading level down ( so a Heading 1 at level 2, would be a Heading 3) -->
                       <xsl:if test="$level != '0'">
                         <xsl:attribute name="level" select="$level" />
@@ -142,8 +143,8 @@
           </section>
         </xsl:when>
         <xsl:otherwise>
-          <section id="content">
-            <xref-fragment id="content">
+          <section id="xrefs">
+            <xref-fragment id="2">
               <!-- Document split for each section break first, then styles then outline level.
               If any of the breaks match, only only break will be created  -->
               <xsl:for-each-group select="*" group-ending-with="w:p[fn:matches-document-split-sectionbreak(.)]">
@@ -213,7 +214,7 @@
 
                   <blockxref title="{$document-title}" frag="default" display="document"
                              type="embed" reverselink="true" reversetitle="" reversetype="none"
-                             href="{encode-for-uri(concat($document-full-filename,'.psml'))}">
+                             href="{encode-for-uri(concat($component-folder-name,$document-full-filename,'.psml'))}">
                     <!-- Not currently used: Levels push the heading level down ( so a Heading 1 at level 2, would be a Heading 3) -->
                     <xsl:if test="$level != '0'">
                       <xsl:attribute name="level" select="$level" />
