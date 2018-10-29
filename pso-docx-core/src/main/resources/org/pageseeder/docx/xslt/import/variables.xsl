@@ -589,4 +589,21 @@ Returns the boolean if the current node matches a outline level document break o
   </xsl:choose>
 </xsl:variable>
 
+<!--
+  Path for the component folder
+
+  @return component folder path
+-->
+<xsl:variable name="component-folder-name" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$_componentfoldername = ''">
+      <xsl:value-of select="encode-for-uri('')" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="encode-for-uri(concat($_componentfoldername,'/'))" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+
+
 </xsl:stylesheet>
