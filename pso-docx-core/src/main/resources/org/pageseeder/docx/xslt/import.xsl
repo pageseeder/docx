@@ -130,6 +130,9 @@
 <!-- Name of the media folder to reference images and external files -->
 <xsl:param name="_mediafoldername"  select="'media'" as="xs:string" />
 
+<!-- Name of the media folder to reference images and external files -->
+<xsl:param name="_componentfoldername"  select="'component'" as="xs:string" />
+
 <!-- Parameter to define if debug mode is set or not -->
 <xsl:param name="debug"  select="false()"  as="xs:boolean"/>
 
