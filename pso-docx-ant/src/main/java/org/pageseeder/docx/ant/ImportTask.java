@@ -51,7 +51,7 @@ public final class ImportTask extends Task {
   /**
    * List of parameters specified for the transformation into PSML
    */
-  private List<Parameter> params = new ArrayList<Parameter>();
+  private List<Parameter> params = new ArrayList<>();
 
   /**
    * The name of the media folder
@@ -123,7 +123,7 @@ public final class ImportTask extends Task {
   public void setComponentFolder(String name) {
     this.componentFolder = name;
   }
-  
+
   /**
    * Create a parameter object and stores it in the list To be used by the XSLT transformation
    */
@@ -186,13 +186,14 @@ public final class ImportTask extends Task {
         name = name.substring(0, name.length()-5);
       }
     }
-    
+
     String filename = this.source.getName();
     int pos = filename.lastIndexOf(".");
     if (pos > 0) {
     	filename = filename.substring(0, pos);
     }
-    
+    filename = filename.replaceAll(" ", "_");
+
     // Ensure that output folder exists
     if (!folder.exists()) {
       folder.mkdirs();
@@ -211,18 +212,18 @@ public final class ImportTask extends Task {
     if (!contentTypes.exists()) throw new BuildException("Not a valid DOCX: unable to find [Content_Types].xml");
     if (!relationships.exists()) throw new BuildException("Not a valid DOCX: unable to find _rels/.rels");
 
-    String componentFolderName = this.componentFolder == null? "components" : this.componentFolder;
-    String mediaFolderName = this.mediaFolder == null? filename+"_files" : this.mediaFolder;
-    
+    String componentFolderName = this.componentFolder == null ? "components" : this.componentFolder;
+    String mediaFolderName = this.mediaFolder == null ? "images" : this.mediaFolder;
+
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
 
     // Initiate parameters
-    Map<String, String> parameters = new HashMap<String, String>();
+    Map<String, String> parameters = new HashMap<>();
     parameters.put("_rootfolder", unpacked.toURI().toString());
     parameters.put("_outputfolder", outuri);
-    
+
     parameters.put("_docxfilename", filename);
     parameters.put("_mediafoldername", mediaFolderName);
     parameters.put("_componentfoldername", componentFolderName);
@@ -234,9 +235,9 @@ public final class ImportTask extends Task {
     for (Parameter p : this.params) {
       parameters.put(p.getName(), p.getValue());
     }
-    
+
 //    log(parameters.toString());
-    
+
     // 4. Unnest
     log("Unnest");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import-unnest.xsl");
@@ -244,7 +245,7 @@ public final class ImportTask extends Task {
     File newDocument = new File(unpacked, "word/new-document.xml");
     //Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(document, newDocument, unnest, parameters);
-    
+
     //4.1 Unnest Endnotes file if it exists
     File endnotes = new File(unpacked, "word/endnotes.xml");
     if(endnotes.canRead()){
@@ -259,8 +260,8 @@ public final class ImportTask extends Task {
     File imageList = new File(this.working, "image-list.txt");
     XSLT.transform(newDocument, imageList, renameImages, parameters);
     parameters.put("_imagelist", imageList.toURI().toString());
-    
-		
+
+
 		Scanner in;
 		try {
 			in = new Scanner(imageList);
@@ -278,22 +279,22 @@ public final class ImportTask extends Task {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	// 3. copy the media files
     log("Copy media");
-    
+
     copyMedia(unpacked, folder, mediaFolderName);
-    
+
     Templates renameRels = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-rels.xsl");
     File rels = new File(unpacked, "word/_rels/document.xml.rels");
     File newRels = new File(unpacked, "word/_rels/new-document.xml.rels");
     XSLT.transform(rels, newRels, renameRels, parameters);
-    
-    
+
+
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
 
-    
+
 
     // Transform
     XSLT.transform(contentTypes, new File(folder, filename+".psml"), templates, parameters);
