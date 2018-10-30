@@ -30,14 +30,7 @@
         </xsl:if>
       </uri>
     </documentinfo>
-    <xsl:choose>
-      <xsl:when test="$generate-processed-psml">
-        <xsl:apply-templates select="w:body" mode="processed-psml" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="w:body" mode="content" />
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:apply-templates select="w:body" mode="content" />
   </document>
 
   <xsl:if test="config:generate-index-files()">

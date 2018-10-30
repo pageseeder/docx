@@ -114,7 +114,9 @@ public final class PSMLProcessor {
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
     String outuri = folder.toURI().toString();
-    String mediaFolderName = this._builder.media() == null ? name + "_files" : this._builder.media();
+
+    String componentFolderName = this._builder.component() == null ? "components" : this._builder.component();
+    String mediaFolderName = this._builder.media() == null ? "images" : this._builder.media();
 
     // Initiate parameters
     Map<String, String> parameters = new HashMap<>();
@@ -122,6 +124,7 @@ public final class PSMLProcessor {
     parameters.put("_outputfolder", outuri);
     parameters.put("_docxfilename", this._builder.source().getName());
     parameters.put("_mediafoldername", mediaFolderName);
+    parameters.put("_componentfoldername", componentFolderName);
     if (this._builder.config() != null) {
       parameters.put("_configfileurl", this._builder.config().toURI().toString());
     }
@@ -177,7 +180,7 @@ public final class PSMLProcessor {
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
     // Transform
-    XSLT.transform(contentTypes, new File(folder, name + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, name.replaceAll(" ", "_").toLowerCase() + ".psml"), templates, parameters);
 
   }
 
@@ -197,7 +200,7 @@ public final class PSMLProcessor {
       File[] files = media.listFiles();
       if (files != null) {
         for (File m : files) {
-          Files.copy(m, new File(mediaOut, m.getName()));
+          Files.copy(m, new File(mediaOut, m.getName().toLowerCase()));
         }
       }
     } catch (IOException ex) {
@@ -234,6 +237,11 @@ public final class PSMLProcessor {
      * The media files folder location.
      */
     private String media;
+
+    /**
+     * The component files folder location.
+     */
+    private String component;
 
     /**
      * List of custom parameters specified that can be specified from the command-line
@@ -292,11 +300,14 @@ public final class PSMLProcessor {
      * @return the media folder
      */
     private String media() {
-      if (this.media != null) {
-        return this.media;
-      } else {
-        return null;
-      }
+      return this.media;
+    }
+
+    /**
+     * @return the component folder
+     */
+    private String component() {
+      return this.component;
     }
 
     /**
@@ -360,6 +371,15 @@ public final class PSMLProcessor {
      */
     public Builder media(String media) {
       this.media = media;
+      return this;
+    }
+
+    /**
+     * @param component the component folder
+     * @return {@link Builder}
+     */
+    public Builder component(String component) {
+      this.component = component;
       return this;
     }
 

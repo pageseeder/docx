@@ -60,6 +60,7 @@
   </xsl:template>
 
   <xsl:template match="w:drawing" mode="content" as="element(image)">
+    <xsl:param name="component" select="false()" tunnel="yes"/>
     <xsl:variable name="rid" select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed" />
     <xsl:variable name="count-images-element" select="count($rid)" />
     <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
@@ -93,7 +94,7 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <image src="{concat($media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
+    <image src="{concat(if ($component) then '../' else '', $media-folder-name, lower-case(substring-after($target, 'media')))}" alt="{$alt}">
       <xsl:apply-templates select="." mode="drawing-element" />
     </image>
   </xsl:template>
@@ -144,6 +145,7 @@
   Generate a PSML `image` from a Word `w:pict`.
 -->
   <xsl:template match="v:shape[ancestor::w:pict or ancestor::w:object]" mode="content">
+    <xsl:param name="component" select="false()" tunnel="yes"/>
     <xsl:for-each select=".//w:txbxContent/w:p[w:pPr/w:pStyle/@w:val='Caption']">
       <block label="caption">
         <xsl:value-of select="w:r/w:t" />
@@ -155,7 +157,7 @@
       <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
       <xsl:variable name="alt" select="substring-after($target, 'media/')" />
 
-      <image src="{concat($media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
+      <image src="{concat(if ($component) then '../' else '', $media-folder-name, lower-case(substring-after($target, 'media')))}" alt="{$alt}">
         <xsl:apply-templates select="." mode="pict-group" />
       </image>
     </xsl:if>

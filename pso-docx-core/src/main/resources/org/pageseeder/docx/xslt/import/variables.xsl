@@ -36,7 +36,7 @@
 <xsl:variable name="styles" select="concat($_rootfolder,'word/styles.xml')" as="xs:string?" />
 
 <!-- name of the docx file without docx extention -->
-<xsl:variable name="filename" select="$_docxfilename"  as="xs:string?"/>
+<xsl:variable name="filename" select="lower-case(replace($_docxfilename,' ','_'))"  as="xs:string?"/>
 
 <!-- location of the relationship file from the input docx -->
 <xsl:variable name="rels" select="concat($_rootfolder,'word/_rels/new-document.xml.rels')"  as="xs:string?"/>
@@ -67,7 +67,7 @@
       <xsl:value-of select="$core//dc:title" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="$filename" />
+      <xsl:value-of select="$_docxfilename" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
@@ -588,5 +588,22 @@ Returns the boolean if the current node matches a outline level document break o
     </xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
+
+<!--
+  Path for the component folder
+
+  @return component folder path
+-->
+<xsl:variable name="component-folder-name" as="xs:string">
+  <xsl:choose>
+    <xsl:when test="$_componentfoldername = ''">
+      <xsl:value-of select="''" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="concat(encode-for-uri($_componentfoldername),'/')" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+
 
 </xsl:stylesheet>
