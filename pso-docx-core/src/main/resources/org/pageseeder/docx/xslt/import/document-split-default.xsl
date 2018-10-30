@@ -64,7 +64,7 @@
                 <xsl:variable name="document-full-filename">
                   <xsl:choose>
                     <xsl:when test="config:generate-titles()">
-                      <xsl:value-of select="replace($document-title,'\W','_')" />
+                      <xsl:value-of select="lower-case(replace($document-title,'\W','_'))" />
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="encode-for-uri(concat($filename,'-',format-number(number($document-number), $zeropadding)))" />
@@ -113,6 +113,7 @@
                         <xsl:apply-templates select="$body" mode="section-split">
                           <xsl:with-param name="document-title" select="$document-title" />
                           <xsl:with-param name="document-level" select="$level" tunnel="yes"/>
+                          <xsl:with-param name="component" select="$component-folder-name!=''" tunnel="yes" />
                         </xsl:apply-templates>
                       </document>
                     </xsl:when>
@@ -140,6 +141,7 @@
                           <xsl:apply-templates select="$body" mode="section-split">
                             <xsl:with-param name="document-title" select="$document-title" />
                             <xsl:with-param name="document-level" select="$level" tunnel="yes" />
+                            <xsl:with-param name="component" select="$component-folder-name!=''" tunnel="yes" />
                           </xsl:apply-templates>
                         </document>
                       </xsl:result-document>

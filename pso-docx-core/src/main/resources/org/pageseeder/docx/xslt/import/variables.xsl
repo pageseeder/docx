@@ -36,7 +36,7 @@
 <xsl:variable name="styles" select="concat($_rootfolder,'word/styles.xml')" as="xs:string?" />
 
 <!-- name of the docx file without docx extention -->
-<xsl:variable name="filename" select="$_docxfilename"  as="xs:string?"/>
+<xsl:variable name="filename" select="lower-case(replace($_docxfilename,' ','_'))"  as="xs:string?"/>
 
 <!-- location of the relationship file from the input docx -->
 <xsl:variable name="rels" select="concat($_rootfolder,'word/_rels/new-document.xml.rels')"  as="xs:string?"/>
@@ -67,7 +67,7 @@
       <xsl:value-of select="$core//dc:title" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="$filename" />
+      <xsl:value-of select="$_docxfilename" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:variable>

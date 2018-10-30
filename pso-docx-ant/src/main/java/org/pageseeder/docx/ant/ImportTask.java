@@ -192,7 +192,6 @@ public final class ImportTask extends Task {
     if (pos > 0) {
     	filename = filename.substring(0, pos);
     }
-    filename = filename.replaceAll(" ", "_");
 
     // Ensure that output folder exists
     if (!folder.exists()) {
@@ -297,7 +296,7 @@ public final class ImportTask extends Task {
 
 
     // Transform
-    XSLT.transform(contentTypes, new File(folder, filename+".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, filename.replaceAll(" ", "_").toLowerCase() + ".psml"), templates, parameters);
   }
 
   // Helpers
@@ -325,7 +324,7 @@ public final class ImportTask extends Task {
     try  {
       Files.ensureDirectoryExists(mediaOut);
       for (File m : media.listFiles()) {
-        Files.copy(m, new File(mediaOut, m.getName()));
+        Files.copy(m, new File(mediaOut, m.getName().toLowerCase()));
       }
     } catch (IOException ex) {
       // TODO clean up files

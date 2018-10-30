@@ -91,8 +91,6 @@ public final class PSMLProcessor {
       if (name.endsWith(".docx")) {
         name = name.substring(0, name.length() - 5);
       }
-      name = name.replaceAll(" ", "_");
-
     }
 
     // Ensure that output folder exists
@@ -182,7 +180,7 @@ public final class PSMLProcessor {
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
     // Transform
-    XSLT.transform(contentTypes, new File(folder, name + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, name.replaceAll(" ", "_").toLowerCase() + ".psml"), templates, parameters);
 
   }
 
@@ -202,7 +200,7 @@ public final class PSMLProcessor {
       File[] files = media.listFiles();
       if (files != null) {
         for (File m : files) {
-          Files.copy(m, new File(mediaOut, m.getName()));
+          Files.copy(m, new File(mediaOut, m.getName().toLowerCase()));
         }
       }
     } catch (IOException ex) {
