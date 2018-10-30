@@ -79,18 +79,21 @@ public final class PSMLProcessor {
     // The name of the presentation
     File folder;
     String name;
+    String cleanname;
     if (this._builder.destination().isFile()) {
       folder = this._builder.destination().getParentFile();
       name = this._builder.destination().getName();
       if (name.endsWith(".psml")) {
         name = name.substring(0, name.length() - 5);
       }
+      cleanname = name;
     } else {
       folder = this._builder.destination();
       name = this._builder.source().getName();
       if (name.endsWith(".docx")) {
         name = name.substring(0, name.length() - 5);
       }
+      cleanname = name.replaceAll(" ", "_").toLowerCase();
     }
 
     // Ensure that output folder exists
@@ -116,7 +119,8 @@ public final class PSMLProcessor {
     String outuri = folder.toURI().toString();
 
     String componentFolderName = this._builder.component() == null ? "components" : this._builder.component();
-    String mediaFolderName = this._builder.media() == null ? "images" : this._builder.media();
+    String mediaFolderName = this._builder.media() == null ? "images" :
+      ("".equals(this._builder.media()) ? cleanname + "_files" : this._builder.media());
 
     // Initiate parameters
     Map<String, String> parameters = new HashMap<>();
@@ -180,7 +184,7 @@ public final class PSMLProcessor {
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
     // Transform
-    XSLT.transform(contentTypes, new File(folder, name.replaceAll(" ", "_").toLowerCase() + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, cleanname + ".psml"), templates, parameters);
 
   }
 

@@ -192,6 +192,7 @@ public final class ImportTask extends Task {
     if (pos > 0) {
     	filename = filename.substring(0, pos);
     }
+    String cleanfilename = filename.replaceAll(" ", "_").toLowerCase();
 
     // Ensure that output folder exists
     if (!folder.exists()) {
@@ -212,7 +213,8 @@ public final class ImportTask extends Task {
     if (!relationships.exists()) throw new BuildException("Not a valid DOCX: unable to find _rels/.rels");
 
     String componentFolderName = this.componentFolder == null ? "components" : this.componentFolder;
-    String mediaFolderName = this.mediaFolder == null ? "images" : this.mediaFolder;
+    String mediaFolderName = this.mediaFolder == null ? "images" :
+      ("".equals(this.mediaFolder) ? cleanfilename + "_files" : this.mediaFolder);
 
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
@@ -296,7 +298,7 @@ public final class ImportTask extends Task {
 
 
     // Transform
-    XSLT.transform(contentTypes, new File(folder, filename.replaceAll(" ", "_").toLowerCase() + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, cleanfilename + ".psml"), templates, parameters);
   }
 
   // Helpers
