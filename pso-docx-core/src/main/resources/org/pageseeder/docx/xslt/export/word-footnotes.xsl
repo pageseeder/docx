@@ -22,16 +22,15 @@
   <xsl:copy>
     <xsl:copy-of select="@*" />
     <xsl:apply-templates select="w:footnote[@w:id = '-1' or @w:id = '0']" mode="numbering" />
-    <xsl:for-each select="$root-document//document[@type=config:footnotes-documenttype()]/section[ends-with(@id,'content')]/fragment">
-      <xsl:variable name="first-xref" select="($root-document//xref[@href=concat('#',current()/@id)])[1]" />
+    <xsl:for-each select="$root-document//xref[@documenttype=config:footnotes-documenttype()]/fragment">
       <w:footnote w:id="{position()}">
         <w:p>
           <w:pPr>
-            <w:pStyle w:val="{config:footnote-text-styleid($first-xref/ancestor::document[1]/documentinfo/uri/labels)}" />
+            <w:pStyle w:val="{config:footnote-text-styleid(./ancestor::document[1]/documentinfo/uri/labels)}" />
           </w:pPr>
           <w:r>
             <w:rPr>
-              <w:rStyle w:val="{config:footnote-reference-styleid($first-xref/ancestor::document[1]/documentinfo/uri/labels)}" />
+              <w:rStyle w:val="{config:footnote-reference-styleid(./ancestor::document[1]/documentinfo/uri/labels)}" />
             </w:rPr>
             <w:footnoteRef />
           </w:r>

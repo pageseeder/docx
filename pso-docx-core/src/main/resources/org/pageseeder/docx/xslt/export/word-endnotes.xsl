@@ -22,16 +22,15 @@
   <xsl:copy>
     <xsl:copy-of select="@*" />
     <xsl:apply-templates select="w:endnote[@w:id = '-1' or @w:id = '0']" mode="numbering" />
-    <xsl:for-each select="$root-document//document[@type=config:endnotes-documenttype()]/section[ends-with(@id,'content')]/fragment">
-      <xsl:variable name="first-xref" select="($root-document//xref[@href=concat('#',current()/@id)])[1]" />
+    <xsl:for-each select="$root-document//xref[@documenttype=config:endnotes-documenttype()]/fragment">
       <w:endnote w:id="{position()}">
         <w:p>
           <w:pPr>
-            <w:pStyle w:val="{config:endnote-text-styleid($first-xref/ancestor::document[1]/documentinfo/uri/labels)}" />
+            <w:pStyle w:val="{config:endnote-text-styleid(./ancestor::document[1]/documentinfo/uri/labels)}" />
           </w:pPr>
           <w:r>
             <w:rPr>
-              <w:rStyle w:val="{config:endnote-reference-styleid($first-xref/ancestor::document[1]/documentinfo/uri/labels)}" />
+              <w:rStyle w:val="{config:endnote-reference-styleid(./ancestor::document[1]/documentinfo/uri/labels)}" />
             </w:rPr>
             <w:endnoteRef />
           </w:r>

@@ -48,14 +48,14 @@
 <xsl:variable name="styles-template" select="'/word/styles.xml'" as="xs:string"/>
 
 <xsl:variable name="footnote-ids">
-  <xsl:for-each select="$root-document//document[@type=config:footnotes-documenttype()]/section[ends-with(@id,'content')]/fragment">
-    <footnote fragment="#{@id}" id="{position()}" />
+  <xsl:for-each select="$root-document//xref[@documenttype=config:footnotes-documenttype()]/fragment">
+    <footnote fragment="{@id}" id="{position()}" />
   </xsl:for-each>
 </xsl:variable>
 
 <xsl:variable name="endnote-ids">
-  <xsl:for-each select="$root-document//document[@type=config:endnotes-documenttype()]/section[ends-with(@id,'content')]/fragment">
-    <endnote fragment="#{@id}" id="{position()}" />
+  <xsl:for-each select="$root-document//xref[@documenttype=config:endnotes-documenttype()]/fragment">
+    <endnote fragment="{@id}" id="{position()}" />
   </xsl:for-each>
 </xsl:variable>
 
