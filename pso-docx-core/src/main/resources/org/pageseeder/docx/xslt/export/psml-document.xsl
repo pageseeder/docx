@@ -138,11 +138,8 @@
   <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
 
-<!-- Fragments nested inside properties fragment are not supported -->
-<xsl:template match="fragment[ancestor::properties-fragment]|properties-fragment[ancestor::properties-fragment]" mode="psml" />
-
 <!-- Template to match properties fragment and transform it into a table -->
-<xsl:template match="properties-fragment[not(ancestor::properties-fragment)]" mode="psml">
+<xsl:template match="properties-fragment" mode="psml">
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
   <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
   <w:tbl>

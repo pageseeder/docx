@@ -24,22 +24,22 @@
   <xsl:choose>
 
     <!-- Cross-reference to a footnote -->
-    <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@fragment=current()/@href]">
+    <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@fragment=current()/fragment/@id]">
       <w:r>
         <w:rPr>
             <w:rStyle w:val="{config:footnote-reference-styleid($labels)}"/>
         </w:rPr>
-        <w:footnoteReference w:id="{$footnote-ids/footnote[@fragment=current()/@href]/@id}"/>
+        <w:footnoteReference w:id="{$footnote-ids/footnote[@fragment=current()/fragment/@id]/@id}"/>
       </w:r>
     </xsl:when>
 
     <!-- Cross-reference to a endnote -->
-    <xsl:when test="@documenttype = config:endnotes-documenttype() and $endnote-ids/endnote[@fragment=current()/@href]">
+    <xsl:when test="@documenttype = config:endnotes-documenttype() and $endnote-ids/endnote[@fragment=current()/fragment/@id]">
       <w:r>
         <w:rPr>
             <w:rStyle w:val="{config:endnote-reference-styleid($labels)}"/>
         </w:rPr>
-        <w:endnoteReference w:id="{$endnote-ids/endnote[@fragment=current()/@href]/@id}"/>
+        <w:endnoteReference w:id="{$endnote-ids/endnote[@fragment=current()/fragment/@id]/@id}"/>
       </w:r>
     </xsl:when>
 
@@ -188,7 +188,8 @@
 -->
 <xsl:template match="xref" mode="psml">
   <xsl:choose>
-    <xsl:when test="document | fragment | media-fragment | xref-fragment | properties-fragment">
+    <xsl:when test="not(@type='alternate') and
+        exists(document | fragment | media-fragment | xref-fragment | properties-fragment)">
       <xsl:apply-templates mode="psml"/>
     </xsl:when>
     <xsl:otherwise>
