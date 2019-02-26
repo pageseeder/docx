@@ -529,12 +529,12 @@
 </xsl:function>
 
 <!--
-  Returns the naming of docx files on export master.
+  Returns the naming of docx files on export master (for backward compatibility only).
 
-  @return type of export: 'urititle' or 'uriid'
+  @return type of export: 'uriid' or ''
 -->
 <xsl:function name="config:master-select" as="xs:string">
-  <xsl:value-of select="if ($config-doc/config/default/master/@select = 'urititle') then 'urititle' else 'uriid'" />
+  <xsl:value-of select="if ($config-doc/config/default/master/@select = 'uriid') then 'uriid' else ''" />
 </xsl:function>
 
 <!--
