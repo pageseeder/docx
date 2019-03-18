@@ -461,6 +461,18 @@
   <xsl:param name="current" />
   <xsl:choose>
     <xsl:when test="$in-hyperlink = 'true'">
+      <xsl:variable name="bookmark-ref" select="$current/ancestor::w:hyperlink/@w:anchor" />
+      <xsl:variable name="htext">
+        <xsl:choose>
+          <xsl:when test="$current/ancestor::w:hyperlink/@title">
+            <xsl:value-of select="$current/ancestor::w:hyperlink/@title" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="string-join($current/ancestor::w:hyperlink//w:t//text(),'')" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      
       <xsl:choose>
         <xsl:when test="$current/ancestor::w:hyperlink/@r:id">
           <xsl:variable name="rid" select="$current/ancestor::w:hyperlink/@r:id" />
@@ -468,8 +480,12 @@
             <xsl:value-of select="$current/ancestor::w:hyperlink/w:r/w:t" />
           </link>
         </xsl:when>
+        <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
+          <link href="#{$bookmark-ref}">
+            <xsl:value-of select="$htext" />
+          </link>
+        </xsl:when>
         <xsl:when test="$current/ancestor::w:hyperlink/@w:anchor and fn:get-document-position($current/ancestor::w:hyperlink/@w:anchor) != '0'">
-          <xsl:variable name="bookmark-ref" select="$current/ancestor::w:hyperlink/@w:anchor" />
           <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none">
             <xsl:attribute name="title">
                <xsl:value-of select="string-join($current/ancestor::w:hyperlink//w:t//text(),'')" />
@@ -497,14 +513,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-            <xsl:choose>
-              <xsl:when test="$current/ancestor::w:hyperlink/@title">
-                <xsl:value-of select="$current/ancestor::w:hyperlink/@title" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="string-join($current/ancestor::w:hyperlink//w:t//text(),'')" />
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="$htext" />
           </xref>
         </xsl:when>
         <xsl:otherwise>
@@ -533,8 +542,9 @@
         <xsl:when test="$bookmark-ref = 'NONE'">
           <xsl:value-of select="$text" />
         </xsl:when>
-        <xsl:when test="contains(current()/preceding-sibling::w:instrText[1],('HYPERLINK')) and $bookmark-ref != ''">
-            <link href="{$bookmark-ref}"><xsl:value-of select="$text" /></link>
+        <xsl:when test="(contains(current()/preceding-sibling::w:instrText[1],('HYPERLINK'))
+                         or config:references-as-links()) and $bookmark-ref != ''">
+            <link href="#{$bookmark-ref}"><xsl:value-of select="$text" /></link>
           </xsl:when>
         <xsl:otherwise>
           <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none">

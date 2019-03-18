@@ -15,69 +15,11 @@
                 xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
-<!-- TODO Remove big chunks of commented code -->
-
 <!--
   template to handle w:hyperlink;
-  1. It it has a r:id attribute, then it is an external link
-  2. if it has a w:anchor attribute, it is an internal link
-  3. otherwise, keep the text
 -->
 <xsl:template match="w:hyperlink" mode="content">
-  <!--##link##-->
-<!--     <xsl:choose> -->
-<!--       <xsl:when test="@r:id"> -->
-<!--         <xsl:variable name="rid" select="@r:id" /> -->
-<!--         <link href="{$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target}"> -->
-<!--           <xsl:value-of select="w:r/w:t" /> -->
-<!--         </link> -->
-<!--       </xsl:when> -->
-<!--       <xsl:when test="@w:anchor"> -->
-<!--         <xsl:variable name="bookmark-ref" select="@w:anchor" /> -->
-
-
-<!--         <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"> -->
-<!--           <xsl:attribute name="title"> -->
-<!--                  <xsl:value-of select="string-join(.//w:t//text(),'')" /> -->
-<!--             </xsl:attribute> -->
-<!--           <xsl:attribute name="frag"> -->
-<!--           <xsl:choose> -->
-<!--           <xsl:when test="config:split-by-sections()"> -->
-<!--              <xsl:value-of select="fn:get-fragment-position($bookmark-ref)" /> -->
-<!--           </xsl:when> -->
-<!--           <xsl:otherwise> -->
-<!--              <xsl:value-of select="'Default'" /> -->
-<!--           </xsl:otherwise> -->
-<!--           </xsl:choose> -->
-
-<!--         </xsl:attribute> -->
-<!--           <xsl:attribute name="href"> -->
-<!--             <xsl:choose> -->
-<!--               <xsl:when test="config:split-by-documents()"> -->
-<!--                  <xsl:variable name="document-number"> -->
-<!--                   <xsl:value-of select="fn:get-document-position($bookmark-ref)" /> -->
-<!--                 </xsl:variable> -->
-<!--                 <xsl:value-of select="encode-for-uri(concat($filename,'-',format-number($document-number, $zeropadding),'.psml'))" /> -->
-<!--               </xsl:when> -->
-<!--               <xsl:otherwise> -->
-<!--                 <xsl:value-of select="encode-for-uri(concat($filename,'.psml'))" /> -->
-<!--               </xsl:otherwise> -->
-<!--             </xsl:choose> -->
-<!--           </xsl:attribute> -->
-<!--           <xsl:choose> -->
-<!--             <xsl:when test="@title"> -->
-<!--               <xsl:value-of select="@title" /> -->
-<!--             </xsl:when> -->
-<!--             <xsl:otherwise> -->
-<!--               <xsl:value-of select="string-join(.//w:t//text(),'')" /> -->
-<!--             </xsl:otherwise> -->
-<!--           </xsl:choose> -->
-<!--         </xref> -->
-<!--       </xsl:when> -->
-<!--       <xsl:otherwise> -->
   <xsl:apply-templates select="w:r" mode="content" />
-<!--       </xsl:otherwise> -->
-<!--     </xsl:choose> -->
 </xsl:template>
 
 
@@ -149,24 +91,35 @@
       </xsl:when>
     </xsl:choose>
   </xsl:variable>
-  <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
-        title="{string-join($current//w:t//text(), '')}"
-        frag="{if (config:split-by-sections()) then fn:get-fragment-position($bookmark-ref) else 'default'}">
-    <xsl:attribute name="href">
-      <xsl:choose>
-        <xsl:when test="config:split-by-documents()">
-          <xsl:variable name="document-number">
-            <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
-          </xsl:variable>
-          <xsl:value-of select="encode-for-uri(concat($filename, '-' ,format-number($document-number, $zeropadding), '.psml'))" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="encode-for-uri(concat($filename, '.psml'))" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
-    <xsl:value-of select="if (@title) then @title else string-join($current//w:t//text(), '')"/>
-  </xref>
+  <xsl:variable name="text" select="if (@title) then @title else string-join($current//w:t//text(), '')"/>
+  
+  <xsl:choose>
+    <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
+      <link href="#{$bookmark-ref}">
+        <xsl:value-of select="$text" />
+      </link>
+    </xsl:when>
+    <xsl:otherwise>
+      <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
+            title="{string-join($current//w:t//text(), '')}"
+            frag="{if (config:split-by-sections()) then fn:get-fragment-position($bookmark-ref) else 'default'}">
+        <xsl:attribute name="href">
+          <xsl:choose>
+            <xsl:when test="config:split-by-documents()">
+              <xsl:variable name="document-number">
+                <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
+              </xsl:variable>
+              <xsl:value-of select="encode-for-uri(concat($filename, '-' ,format-number($document-number, $zeropadding), '.psml'))" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="encode-for-uri(concat($filename, '.psml'))" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+        <xsl:value-of select="$text"/>
+      </xref>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <!--
@@ -184,8 +137,14 @@
       </xsl:when>
     </xsl:choose>
   </xsl:variable>
+  <xsl:variable name="text" select="if (@title) then @title else string-join(.//w:t//text(), '')"/>
 
   <xsl:choose>
+    <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
+      <link href="#{$bookmark-ref}">
+        <xsl:value-of select="$text"/>
+      </link>
+    </xsl:when>
     <xsl:when test="$bookmark-ref != ''">
       <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
             title="{string-join(.//w:t//text(), '')}">
@@ -212,7 +171,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
-        <xsl:value-of select="if (@title) then @title else string-join(.//w:t//text(), '')" />
+        <xsl:value-of select="$text"/>
       </xref>
     </xsl:when>
     <xsl:otherwise>

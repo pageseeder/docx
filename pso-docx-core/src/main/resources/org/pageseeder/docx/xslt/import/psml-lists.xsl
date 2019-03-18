@@ -87,6 +87,7 @@
         <xsl:apply-templates select="./*" mode="content">
           <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
         </xsl:apply-templates>
+        <xsl:sequence select="fn:generate-anchors(.)" />        
       </para>
     </xsl:otherwise>
   </xsl:choose>
@@ -146,6 +147,7 @@
         <xsl:apply-templates select="./*" mode="content">
           <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
         </xsl:apply-templates>
+        <xsl:sequence select="fn:generate-anchors(.)" />        
       </para>
     </xsl:otherwise>
   </xsl:choose>
@@ -269,6 +271,7 @@
     <xsl:attribute name="indent" select="$level" />
     <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$current-paragraph-style)" />
     <xsl:apply-templates select="$current/*"  mode="content"/>
+    <xsl:sequence select="fn:generate-anchors($current)" />
   </para>
   <xsl:for-each select="$nested-list">
     <xsl:call-template name="nested-lists">

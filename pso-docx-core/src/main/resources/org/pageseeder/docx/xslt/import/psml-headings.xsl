@@ -28,6 +28,7 @@
   </xsl:call-template>
 </xsl:template>
 
+
 <!-- 
   Template to match all paragraphs and ,according to the configuration file:
   1. Creates Headings
@@ -115,6 +116,7 @@
             </xsl:otherwise>
           </xsl:choose>
 
+          <xsl:sequence select="fn:generate-anchors(.)" />
         </xsl:element>
       </block>
     </xsl:when>
@@ -209,6 +211,8 @@
             </xsl:apply-templates>
           </xsl:otherwise>
         </xsl:choose>
+
+        <xsl:sequence select="fn:generate-anchors(.)" />
       </xsl:element>
     </xsl:otherwise>
   </xsl:choose>

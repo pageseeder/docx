@@ -77,7 +77,10 @@
       <xsl:choose>
         <xsl:when test="$continue-list">
           <xsl:for-each select="$continue-list">
-            <para><xsl:apply-templates select="."/></para>
+            <para>
+              <xsl:apply-templates select="."/>
+              <xsl:sequence select="fn:generate-anchors(.)" />
+            </para>
             <xsl:apply-templates select="following-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $sublevel-style]" mode="create-list"/>
           </xsl:for-each>
         </xsl:when>
@@ -116,6 +119,7 @@
     <xsl:if test="count($previous-upper-level) > 0 and not($previous-upper-level/w:pPr/w:pStyle/@w:val=$parent-style-expected)">
       <block label="{$item-style}">
         <xsl:apply-templates/>
+        <xsl:sequence select="fn:generate-anchors(.)" />
       </block>
       <xsl:message><xsl:value-of select="concat('DOCX IMPORT ERROR: The style ',$item-style,
           ' was not converted to a list item because it skips a level - SOME CONTENT MAY BE LOST.')" /></xsl:message>
@@ -182,7 +186,10 @@
     <xsl:variable name="orphan" select="if ($previous) then false() else true()"/>
     
     <xsl:if test="$orphan">
-      <para indent="{$indent-level}"><xsl:apply-templates/></para> 
+      <para indent="{$indent-level}">
+        <xsl:apply-templates/>
+        <xsl:sequence select="fn:generate-anchors(.)" />
+      </para> 
     </xsl:if>
   </xsl:template>
   
