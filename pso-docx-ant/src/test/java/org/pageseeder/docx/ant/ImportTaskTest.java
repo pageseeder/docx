@@ -1,15 +1,15 @@
 package org.pageseeder.docx.ant;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 import org.xmlunit.matchers.CompareMatcher;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ImportTaskTest {
 
@@ -45,6 +45,11 @@ public class ImportTaskTest {
   @Test
   public void testDefaultParagraphStylePara() throws IOException, SAXException {
     testIndividual("default-paragraph-style-para");
+  }
+
+  @Test
+  public void testDefaultReferencesLink() throws IOException, SAXException {
+    testIndividual("default-references-link");
   }
 
   @Test
@@ -692,14 +697,18 @@ public class ImportTaskTest {
     try {
       Assert.assertThat(actual, CompareMatcher.isIdenticalTo(expected));
     } catch (AssertionError error) {
-      System.err.println("Expected:");
-      copyToSystemErr(expected);
-      System.err.println();
-      System.err.println("Actual:");
-      copyToSystemErr(actual);
-      System.err.println();
-      Files.copy(expected, new File(result, "expected-" + actual.getName()));
-      Files.copy(actual, new File(result, "actual-" + actual.getName()));
+      //System.err.println("Expected:");
+      //copyToSystemErr(expected);
+      //System.err.println();
+      //System.err.println("Actual:");
+      //copyToSystemErr(actual);
+      //System.err.println();
+      File expfile = new File(result, "expected-" + actual.getName());
+      File actfile = new File(result, "actual-" + actual.getName());
+      System.err.println("Expected: " + expfile.getCanonicalPath());
+      System.err.println("Actual: " + actfile.getCanonicalPath());
+      Files.copy(expected, expfile);
+      Files.copy(actual, actfile);
       // uncomment the following to bulk update expected files for changes effecting multiple documents
       //Files.copy(actual, expected);
       throw error;

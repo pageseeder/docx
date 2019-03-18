@@ -238,7 +238,8 @@
       <xs:sequence>
         <xs:element ref="paragraphStyles" minOccurs="0" maxOccurs="1" />
         <xs:element ref="characterStyles" minOccurs="0" maxOccurs="1" />
-        <xs:element ref="smart-tag" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="smart-tag"       minOccurs="0" maxOccurs="1" />
+        <xs:element ref="references"      minOccurs="0" maxOccurs="1" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -272,6 +273,19 @@
   <xs:element name="smart-tag">
     <xs:complexType>
       <xs:attribute name="keep" type="xs:boolean" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="references">
+    <xs:complexType>
+      <xs:attribute name="psmlelement">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="link" />
+            <xs:enumeration value="xref" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
     

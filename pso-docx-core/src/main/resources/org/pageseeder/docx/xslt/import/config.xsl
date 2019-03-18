@@ -23,6 +23,25 @@
 <!-- The configuration file -->
 <xsl:variable name="config-doc" select="document($_configfileurl)" as="node()"/>
 
+<!-- Indicates whether internal references should be imported as PSML link elements -->
+<xsl:function name="config:references-as-links" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/styles/default/references/@psmlelement='link'"/>
+</xsl:function>
+
+<!-- 
+  Return anchor elements for each bookmarkStart child of current
+  
+  @param current  the current w:p element
+ -->
+<xsl:function name="fn:generate-anchors">
+  <xsl:param name="current"/>
+  <xsl:if test="config:references-as-links()">
+    <xsl:for-each select="$current/w:bookmarkStart">
+      <anchor name="{@w:name}" />
+    </xsl:for-each>
+  </xsl:if>
+</xsl:function>
+
 <!-- Indicates whether the mathml files should be generated -->
 <xsl:function name="config:generate-mathml-files" as="xs:boolean">
   <xsl:sequence select="$config-doc/config/split/mathml[@select= 'true']/@output= 'generate-files'"/>

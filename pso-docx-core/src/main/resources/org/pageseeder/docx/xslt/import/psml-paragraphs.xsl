@@ -42,6 +42,7 @@
      </xsl:apply-templates>
    
      <xsl:apply-templates select="descendant::v:textbox" mode="textbox" />
+     <xsl:sequence select="fn:generate-anchors(.)" />
   </block>
 </xsl:template>
 
@@ -66,6 +67,7 @@
         <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
       </xsl:apply-templates>
     </inline>
+    <xsl:sequence select="fn:generate-anchors(.)" />
   </para>
 </xsl:template>
 
@@ -79,6 +81,7 @@
         <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
       </xsl:apply-templates>
     </monospace>
+    <xsl:sequence select="fn:generate-anchors(.)" />
   </para>
 </xsl:template>
 
@@ -200,6 +203,7 @@
             </xsl:otherwise>
           </xsl:choose>
 
+          <xsl:sequence select="fn:generate-anchors(.)" />
         </xsl:element>
       </block>
     </xsl:when>
@@ -300,6 +304,8 @@
             </xsl:apply-templates>
           </xsl:otherwise>
         </xsl:choose>
+        
+        <xsl:sequence select="fn:generate-anchors(.)" />
       </xsl:element>
     </xsl:otherwise>
   </xsl:choose>
@@ -319,6 +325,7 @@
         <xsl:apply-templates select="*" mode="content">
           <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
         </xsl:apply-templates>
+        <xsl:sequence select="fn:generate-anchors(.)" />
       </block>
       <xsl:if test="w:pPr/w:sectPr/w:pgSz">
         <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
@@ -346,6 +353,7 @@
 	        <xsl:apply-templates select="*" mode="content">
 	          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
 	        </xsl:apply-templates>
+          <xsl:sequence select="fn:generate-anchors(.)" />
 	      </para>
       </xsl:variable>  
       <!-- don't output empty para containing section break -->
