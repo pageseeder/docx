@@ -131,7 +131,7 @@
   calculates the size of the rowspan
 -->
 <xsl:template name="count-rowspan">
-  <xsl:param name="row" select="/.." />
+  <xsl:param name="row" />
   <xsl:param name="colnum" select="0" />
 
   <xsl:variable name="cell"
