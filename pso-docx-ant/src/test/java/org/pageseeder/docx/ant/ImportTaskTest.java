@@ -208,6 +208,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testFormFields() throws IOException, SAXException {
+    testIndividual("form-fields");
+  }
+
+  @Test
   public void testHeadingsMultipleParagraphStyles() throws IOException, SAXException {
     testIndividual("headings-multiple-paragraph-styles");
   }
