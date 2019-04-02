@@ -157,7 +157,6 @@
 <xsl:template match="w:p" mode="inside-list">
   <xsl:variable name="level" select="fn:get-level-from-element(.)" />
   <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
-
   <xsl:variable name="nested-list"
     select="following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-abstract-num-id-from-element(.) = $abstract-num-id][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
   <item>
@@ -188,10 +187,11 @@
     </xsl:when>
     <xsl:otherwise>
       <!-- get next item if it is at the same level -->
+      
       <xsl:apply-templates
-        select="following-sibling::w:p[1]
-            [fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
-        mode="inside-list">
+        select="following-sibling::*[1]
+            [self::w:p and fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
+        mode="inside-list"> 
       </xsl:apply-templates>
     </xsl:otherwise>
   </xsl:choose>
