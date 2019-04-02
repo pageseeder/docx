@@ -54,18 +54,14 @@
             <xsl:variable name="isBullet" as="xs:boolean"
               select="if ($numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$currentNumId]/w:lvl[@w:ilvl=$currentLevel]/w:numFmt/@w:val='bullet') then true() else false()" />
 
-            <xsl:if test="not($isBullet)">
-              <xsl:choose>
-                <xsl:when test="config:get-numbered-heading-value($style-name)='prefix'">
-                  <xsl:if test="$has-numbering-format">
-                    <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$style-name)" />
-                  </xsl:if>
-                </xsl:when>
-                <xsl:when test="config:get-numbered-heading-value($style-name)='numbering'">
-                  <xsl:attribute name="numbered" select="'true'" />
-                </xsl:when>
-              </xsl:choose>
+            <xsl:if test="not($isBullet) and config:get-numbered-heading-value($style-name)='prefix'">
+              <xsl:if test="$has-numbering-format">
+                <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$style-name)" />
+              </xsl:if>
             </xsl:if>
+          </xsl:if>
+          <xsl:if test="config:get-numbered-heading-value($style-name)='numbering'">
+            <xsl:attribute name="numbered" select="'true'" />
           </xsl:if>
 
           <xsl:choose>
@@ -133,18 +129,14 @@
           <xsl:variable name="isBullet" as="xs:boolean"
             select="if ($numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$currentAbstractNumId]/w:lvl[@w:ilvl=$currentLevel]/w:numFmt/@w:val='bullet') then true() else false()" />
 
-          <xsl:if test="not($isBullet)">
-            <xsl:choose>
-              <xsl:when test="config:get-numbered-heading-value($style-name)='prefix'">
-                <xsl:if test="$has-numbering-format">
-                  <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$style-name)" />
-                </xsl:if>
-              </xsl:when>
-              <xsl:when test="config:get-numbered-heading-value($style-name)='numbering'">
-                <xsl:attribute name="numbered" select="'true'" />
-              </xsl:when>
-            </xsl:choose>
+          <xsl:if test="not($isBullet) and config:get-numbered-heading-value($style-name)='prefix'">
+            <xsl:if test="$has-numbering-format">
+              <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$style-name)" />
+            </xsl:if>
           </xsl:if>
+        </xsl:if>
+        <xsl:if test="config:get-numbered-heading-value($style-name)='numbering'">
+          <xsl:attribute name="numbered" select="'true'" />
         </xsl:if>
 
         <xsl:if test="config:numbering-list-prefix-exists()">

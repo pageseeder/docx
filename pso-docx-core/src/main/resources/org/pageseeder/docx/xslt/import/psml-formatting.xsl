@@ -65,9 +65,24 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
+    
     <xsl:choose>
-       <!-- Check if the text is inside a field code -->
+      <!-- Ignore text inside a form field -->
+      <xsl:when test="current()/name() = 'w:t' and
+          preceding::w:fldChar[@w:fldCharType='begin' or @w:fldCharType='end'][1][w:ffData/w:name/@w:val]">
+      </xsl:when>
+      
+      <!-- Handle form field -->
+      <xsl:when test="current()/name() = 'w:fldChar' and w:ffData/w:name/@w:val">
+        <inline label="ps_field">
+          <inline label="ps_field_name">
+            <xsl:value-of select="w:ffData/w:name/@w:val" />
+          </inline>
+          <xsl:value-of select="normalize-space(w:ffData/w:textInput/w:default/@w:val)" />
+        </inline>
+      </xsl:when>
+      
+      <!-- Check if the text is inside a field code -->
       <xsl:when test="current()/name() = 'w:t' and preceding::*[name() = 'w:fldChar'][1][@w:fldCharType='separate']">
         <xsl:call-template name="apply-wr-style">
           <xsl:with-param name="style" select="$character-style-name" />

@@ -88,7 +88,8 @@
           <!-- empty continue -->
           <xsl:apply-templates select="$current-item/following-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $sublevel-style]" mode="create-list"/>
         </xsl:otherwise>
-      </xsl:choose>   
+      </xsl:choose>
+      <xsl:sequence select="fn:generate-anchors(.)" />       
     </item>
   </xsl:template>
   

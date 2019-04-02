@@ -208,6 +208,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testFormFields() throws IOException, SAXException {
+    testIndividual("form-fields");
+  }
+
+  @Test
   public void testHeadingsMultipleParagraphStyles() throws IOException, SAXException {
     testIndividual("headings-multiple-paragraph-styles");
   }
@@ -327,6 +332,11 @@ public class ImportTaskTest {
     testIndividual("lists-bullet-style-gap-levels");
   }
 
+  @Test
+  public void testTableInsideList() throws IOException, SAXException {
+    testIndividual("table-inside-list");
+  }  
+  
   @Test
   public void testListsDefaultListRoleFalse() throws IOException, SAXException {
     testIndividual("lists-default-list-role-false");
