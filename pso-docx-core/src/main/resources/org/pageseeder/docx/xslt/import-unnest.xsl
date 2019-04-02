@@ -205,6 +205,30 @@
 <xsl:template match="w:snapToGrid    [$remove-paragraph-properties = 'true']" mode="simplify"/>
 <xsl:template match="w:mirrorIndents [$remove-paragraph-properties = 'true']" mode="simplify"/>
  
+<!-- Fix break pages with styles --> 
+<xsl:template match="w:p[w:pPr/w:sectPr and w:pPr/w:pStyle]" mode="simplify">
+  <xsl:variable name="content-section" select="if(w:r/w:t) then 'yes' else 'no'" />
+  <xsl:message><xsl:value-of select="$content-section" /></xsl:message>
+  <xsl:choose>
+    <xsl:when test="$content-section = 'no'">
+    </xsl:when>
+    <xsl:otherwise>
+      <w:p>
+        <xsl:copy-of select="w:pPr/*[not(name()='w:sectPr')]" />
+        <xsl:copy-of select="*[not(name()='w:pPr')]" />
+      </w:p>  
+    </xsl:otherwise>
+  </xsl:choose>
+  
+  <!-- Put the w:sectPr element in another w:p element when it has some content -->
+  <w:p>
+    <w:pPr>
+      <xsl:copy-of select="w:pPr/w:sectPr" />
+    </w:pPr>
+  </w:p>
+
+</xsl:template>
+ 
 <!-- simplifiy paragraphs -->
 <xsl:template match="w:p" mode="simplify">
   <w:p>
