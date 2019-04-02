@@ -208,7 +208,6 @@
 <!-- Fix break pages with styles --> 
 <xsl:template match="w:p[w:pPr/w:sectPr and w:pPr/w:pStyle]" mode="simplify">
   <xsl:variable name="content-section" select="if(w:r/w:t) then 'yes' else 'no'" />
-  <xsl:message><xsl:value-of select="$content-section" /></xsl:message>
   <xsl:choose>
     <xsl:when test="$content-section = 'no'">
     </xsl:when>
