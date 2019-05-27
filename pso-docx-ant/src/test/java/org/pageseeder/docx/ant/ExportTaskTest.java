@@ -1,13 +1,13 @@
 package org.pageseeder.docx.ant;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 import org.xmlunit.matchers.CompareMatcher;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Test cases for export task

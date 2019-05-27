@@ -34,6 +34,7 @@
 -->
 <xsl:template match="heading" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
+  <xsl:param name="fragment-id" tunnel="yes" />
   <xsl:variable name="vanish" select="config:labels-keep-heading-with-next($labels, @level, @numbered) or
       config:default-keep-heading-with-next(@level, @numbered)" />
   <w:p>
@@ -74,7 +75,18 @@
         </xsl:when>
       </xsl:choose>
     </xsl:if>
-    <xsl:apply-templates mode="psml" />
+    <xsl:choose>
+      <!-- if first heading in fragment add a heading bookmark for {heading} xrefs to use -->
+      <xsl:when test="not(ancestor::fragment[1]//*[self::heading or self::para]/following::heading[generate-id(.)=generate-id(current())])">
+        <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+        <w:bookmarkStart w:name="h-{$fragment-id}" w:id="{$bookmark-id}"/>
+          <xsl:apply-templates mode="psml" />
+        <w:bookmarkEnd  w:id="{$bookmark-id}" />     
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates mode="psml" />
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:if test="$vanish">
       <w:r>
         <w:t xml:space="preserve"> </w:t>

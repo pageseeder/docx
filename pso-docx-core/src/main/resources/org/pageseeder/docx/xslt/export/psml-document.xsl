@@ -112,7 +112,9 @@
   </xsl:if>
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
   <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
-    <xsl:apply-templates mode="psml" />
+    <xsl:apply-templates mode="psml">
+      <xsl:with-param name="fragment-id" tunnel="yes" select="@id" />
+    </xsl:apply-templates>
   <w:bookmarkEnd  w:id="{$bookmark-id}" />
 </xsl:template>
 

@@ -29,6 +29,16 @@
             display="template" type="none" uriid="28508"
             href="#28508-107" urititle="fn"
             mediatype="application/vnd.pageseeder.psml+xml">1.1 Numbered Target</xref> Referencing 1.1 Numbered Target</para>
+      <para><xref id="64977" title="{heading}" frag="107" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-107" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Numbered Target</xref> Referencing Numbered Target</para>
+      <para><xref id="64977" title="{heading}" frag="108" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-108" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Missing Target</xref> Referencing Missing Target</para>
     </fragment>
     <xref-fragment id="content">
       <blockxref uriid="28509" title="Test" frag="default" display="document"
@@ -299,7 +309,17 @@
     </fragment>
     <fragment id="28508-107">
       <heading level="2" numbered="true">Numbered Target</heading>
+      <heading level="2" numbered="true">Another Heading</heading>
       <para>Some text.</para>
+      <heading level="2" numbered="true">Another Heading</heading>
+      <para><anchor name="mytest1" /></para>
+    </fragment>
+    <fragment id="28508-108">
+      <para>Some text.</para>
+      <heading level="2" numbered="true">Another Heading</heading>
+    </fragment>
+    <fragment id="28508-109">
+      <heading level="2" numbered="true"><anchor name="mytest2" />Another Target</heading>
     </fragment>
   </section>
 </document>
