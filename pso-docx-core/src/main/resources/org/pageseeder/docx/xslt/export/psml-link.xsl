@@ -127,13 +127,72 @@
     <xsl:otherwise>
       <xsl:choose>
         <!-- if dynamic link text generate updatable reference -->
-        <xsl:when test="(@display='template' and (contains(@title,'{prefix}') or contains(@title,'{parentnumber}'))) or
-            config:generate-cross-references()">
+        <xsl:when test="@display='template' and
+            (contains(@title,'{prefix}') or contains(@title,'{parentnumber}') or contains(@title,'{heading}'))">
+          <!-- if link text contains {heading} or {parentnumber} add link for numbering -->
+          <xsl:if test="contains(@title,'{prefix}') or contains(@title,'{parentnumber}')">
+            <w:r>
+              <w:fldChar w:fldCharType="begin"/>
+            </w:r>
+            <w:r>
+              <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','f-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
+              <!-- Preserve style after update -->
+              <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="separate"/>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rStyle w:val="{config:xrefconfig-reference-styleid($labels, @config)}"/>
+                <xsl:call-template name="apply-run-style" />
+              </w:rPr>
+              <w:t><xsl:value-of select="if (@display='template' and contains(@title,'{heading}')) then
+                substring-before(.,' ') else ."/></w:t>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="end"/>
+            </w:r>
+          </xsl:if>
+          <!-- if both numbering and heading add a space between them -->
+          <xsl:if test="(contains(@title,'{prefix}') or contains(@title,'{parentnumber}')) and contains(@title,'{heading}')">
+            <w:r>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+          </xsl:if>
+          <!-- if link text contains {heading} add link for heading -->
+          <xsl:if test="contains(@title,'{heading}')">
+            <w:r>
+              <w:fldChar w:fldCharType="begin"/>
+            </w:r>
+            <w:r>
+              <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','h-', substring-after(@href, '#'),' \h ')"/></w:instrText>
+              <!-- Preserve style after update -->
+              <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="separate"/>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rStyle w:val="{config:xrefconfig-reference-styleid($labels, @config)}"/>
+                <xsl:call-template name="apply-run-style" />
+              </w:rPr>
+              <w:t><xsl:value-of select="if (@display='template' and (contains(@title,'{prefix}') or contains(@title,'{parentnumber}'))) then
+                substring-after(.,' ') else ."/></w:t>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="end"/>
+            </w:r>
+          </xsl:if>
+        </xsl:when>
+        <!-- if force generation if updatable reference -->
+        <xsl:when test="config:generate-cross-references()">
           <w:r>
             <w:fldChar w:fldCharType="begin"/>
           </w:r>
           <w:r>
-            <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','f-', substring-after(@href, '#'),' \r \h ')"/></w:instrText>
+            <w:instrText xml:space="preserve"><xsl:value-of select="concat('REF ','f-', substring-after(@href, '#'),' \h ')"/></w:instrText>
             <!-- Preserve style after update -->
             <w:instrText xml:space="preserve"> \* MERGEFORMAT </w:instrText>
           </w:r>
@@ -151,19 +210,6 @@
           <w:r>
             <w:fldChar w:fldCharType="end"/>
           </w:r>
-          <!-- if link text also contains {heading} add another link for heading -->
-          <xsl:if test="@display='template' and contains(@title,'{heading}')">
-            <w:hyperlink w:anchor="{concat('f-', substring-after(@href, '#'))}" w:history="1">
-              <w:r>
-                <w:rPr>
-                  <w:rStyle w:val="{config:xrefconfig-reference-styleid($labels, @config)}"/>
-                  <xsl:call-template name="apply-run-style" />
-                </w:rPr>
-                <w:t xml:space="preserve"> </w:t>
-                <w:t><xsl:value-of select="substring-after(.,' ')" /></w:t>
-              </w:r>
-            </w:hyperlink>          
-          </xsl:if>
         </xsl:when>
         <!-- otherwise use hyperlink for fixed text-->
         <xsl:otherwise>
