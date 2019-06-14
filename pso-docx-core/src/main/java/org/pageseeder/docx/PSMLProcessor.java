@@ -3,6 +3,12 @@
  */
 package org.pageseeder.docx;
 
+import org.pageseeder.docx.util.Files;
+import org.pageseeder.docx.util.XSLT;
+import org.pageseeder.docx.util.ZipUtils;
+
+import javax.xml.transform.Templates;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -10,12 +16,6 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.xml.transform.Templates;
-
-import org.pageseeder.docx.util.Files;
-import org.pageseeder.docx.util.XSLT;
-import org.pageseeder.docx.util.ZipUtils;
 
 /**
  * Converts DocX to PSML.
@@ -77,23 +77,18 @@ public final class PSMLProcessor {
     }
 
     // The name of the presentation
+    String sourcename = this._builder.source().getName();
+    if (sourcename.toLowerCase().endsWith(".docx")) {
+      sourcename = sourcename.substring(0, sourcename.length()-5);
+    }
     File folder;
-    String name;
-    String cleanname;
-    if (this._builder.destination().isFile()) {
+    String filename;
+    if (this._builder.destination().getName().endsWith(".psml")) {
       folder = this._builder.destination().getParentFile();
-      name = this._builder.destination().getName();
-      if (name.endsWith(".psml")) {
-        name = name.substring(0, name.length() - 5);
-      }
-      cleanname = name;
+      filename = this._builder.destination().getName().substring(0, this._builder.destination().getName().length() - 5);;
     } else {
       folder = this._builder.destination();
-      name = this._builder.source().getName();
-      if (name.endsWith(".docx")) {
-        name = name.substring(0, name.length() - 5);
-      }
-      cleanname = name.replaceAll(" ", "_").toLowerCase();
+      filename = sourcename.replaceAll(" ", "_").toLowerCase();
     }
 
     // Ensure that output folder exists
@@ -120,13 +115,13 @@ public final class PSMLProcessor {
 
     String componentFolderName = this._builder.component() == null ? "components" : this._builder.component();
     String mediaFolderName = this._builder.media() == null ? "images" :
-      ("".equals(this._builder.media()) ? cleanname + "_files" : this._builder.media());
+      ("".equals(this._builder.media()) ? filename + "_files" : this._builder.media());
 
     // Initiate parameters
     Map<String, String> parameters = new HashMap<>();
     parameters.put("_rootfolder", unpacked.toURI().toString());
     parameters.put("_outputfolder", outuri);
-    parameters.put("_docxfilename", this._builder.source().getName());
+    parameters.put("_docxfilename", sourcename);
     parameters.put("_mediafoldername", mediaFolderName);
     parameters.put("_componentfoldername", componentFolderName);
     if (this._builder.config() != null) {
@@ -184,7 +179,7 @@ public final class PSMLProcessor {
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
     // Transform
-    XSLT.transform(contentTypes, new File(folder, cleanname + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters);
 
   }
 

@@ -160,7 +160,7 @@ public final class ExportTask extends Task {
       if (p.getName().startsWith("_")) { throw new BuildException("parameter names must not start with an underscore"); }
     }
 
-    // The name of the presentation
+    // The name of the source
     String name = this.source.getName();
     if (name.endsWith(".psml")) {
       name = name.substring(0, name.length() - 5);
