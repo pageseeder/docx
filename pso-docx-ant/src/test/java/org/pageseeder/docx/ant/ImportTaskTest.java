@@ -335,8 +335,8 @@ public class ImportTaskTest {
   @Test
   public void testTableInsideList() throws IOException, SAXException {
     testIndividual("table-inside-list");
-  }  
-  
+  }
+
   @Test
   public void testListsDefaultListRoleFalse() throws IOException, SAXException {
     testIndividual("lists-default-list-role-false");

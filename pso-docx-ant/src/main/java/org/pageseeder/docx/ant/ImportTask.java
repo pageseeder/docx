@@ -3,22 +3,18 @@
  */
 package org.pageseeder.docx.ant;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-
-import javax.xml.transform.Templates;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.pageseeder.docx.util.Files;
 import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
+
+import javax.xml.transform.Templates;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * An ANT task to import a DOCX file as one or more PageSeeder documents
@@ -170,29 +166,20 @@ public final class ImportTask extends Task {
       log("Using default wpml configuration for import");
     }
 
-    // The folder and name of the DOCX
-    File folder = null;
-    String name = null;
-    if (this.destination.isFile()) {
+    // The folder and name of the destination
+    String sourcename = this.source.getName();
+    if (sourcename.toLowerCase().endsWith(".docx")) {
+      sourcename = sourcename.substring(0, sourcename.length()-5);
+    }
+    File folder;
+    String filename;
+    if (this.destination.getName().endsWith(".psml")) {
       folder = this.destination.getParentFile();
-      name = this.destination.getName();
-      if (name.endsWith(".psml")) {
-        name = name.substring(0, name.length()-5);
-      }
+      filename = this.destination.getName().substring(0, this.destination.getName().length()-5);
     } else {
       folder = this.destination;
-      name = this.source.getName();
-      if (name.endsWith(".docx")) {
-        name = name.substring(0, name.length()-5);
-      }
+      filename = sourcename.replaceAll(" ", "_").toLowerCase();
     }
-
-    String filename = this.source.getName();
-    int pos = filename.lastIndexOf(".");
-    if (pos > 0) {
-    	filename = filename.substring(0, pos);
-    }
-    String cleanfilename = filename.replaceAll(" ", "_").toLowerCase();
 
     // Ensure that output folder exists
     if (!folder.exists()) {
@@ -214,7 +201,7 @@ public final class ImportTask extends Task {
 
     String componentFolderName = this.componentFolder == null ? "components" : this.componentFolder;
     String mediaFolderName = this.mediaFolder == null ? "images" :
-      ("".equals(this.mediaFolder) ? cleanfilename + "_files" : this.mediaFolder);
+      ("".equals(this.mediaFolder) ? filename + "_files" : this.mediaFolder);
 
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import.xsl");
@@ -225,7 +212,7 @@ public final class ImportTask extends Task {
     parameters.put("_rootfolder", unpacked.toURI().toString());
     parameters.put("_outputfolder", outuri);
 
-    parameters.put("_docxfilename", filename);
+    parameters.put("_docxfilename", sourcename);
     parameters.put("_mediafoldername", mediaFolderName);
     parameters.put("_componentfoldername", componentFolderName);
     if (this.config != null) {
@@ -298,7 +285,7 @@ public final class ImportTask extends Task {
 
 
     // Transform
-    XSLT.transform(contentTypes, new File(folder, cleanfilename + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters);
   }
 
   // Helpers

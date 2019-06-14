@@ -3,23 +3,19 @@
  */
 package org.pageseeder.docx.ant;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Templates;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.pageseeder.docx.util.Files;
 import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
+
+import javax.xml.transform.Templates;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * An ANT task to export a PageSeeder document to a Word document using the DOCX format.
@@ -164,7 +160,7 @@ public final class ExportTask extends Task {
       if (p.getName().startsWith("_")) { throw new BuildException("parameter names must not start with an underscore"); }
     }
 
-    // The name of the presentation
+    // The name of the source
     String name = this.source.getName();
     if (name.endsWith(".psml")) {
       name = name.substring(0, name.length() - 5);
@@ -172,7 +168,7 @@ public final class ExportTask extends Task {
 
     // Defaulting destination directory
     if (this.destination == null) {
-      this.destination = new File(this.source.getParentFile(), ".docx");
+      this.destination = new File(this.source.getParentFile(), name + ".docx");
       log("Destination set to " + this.destination.getName());
     }
 
