@@ -73,12 +73,12 @@
       <!-- Get all indents of this level (current item level) which has the current item as the first preceding (logical Parent) -->
       <xsl:variable name="continue-list" select="following-sibling::*[w:pPr/w:pStyle/@w:val = $continue-style and ($edge-id = '' or following-sibling::*[generate-id(.) = $edge-id])]"/>
 
-      <xsl:apply-templates select="$current-item/node()"/>
+      <xsl:apply-templates select="$current-item/node()"  mode="content"/>
       <xsl:choose>
         <xsl:when test="$continue-list">
           <xsl:for-each select="$continue-list">
             <para>
-              <xsl:apply-templates select="."/>
+              <xsl:apply-templates select="node()" mode="content"/>
               <xsl:sequence select="fn:generate-anchors(.)" />
             </para>
             <xsl:apply-templates select="following-sibling::*[1][name()='w:p' and w:pPr/w:pStyle/@w:val = $sublevel-style]" mode="create-list"/>
@@ -168,7 +168,7 @@
       <xsl:with-param name="indent-level" select="'5'"/>
     </xsl:apply-templates>
   </xsl:template>
-
+  
   <xsl:template match="w:p" mode="check-continue-list-styles">
 
     <!-- All the styles allowed to precede this list continue  -->
