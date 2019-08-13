@@ -102,7 +102,7 @@
     <xsl:otherwise>
       <w:r>
         <w:rPr>
-        <xsl:call-template name="apply-run-style" />
+          <xsl:call-template name="apply-run-style" />
         </w:rPr>
         <xsl:choose>
           <xsl:when test="ancestor::dfx:del">
@@ -136,7 +136,7 @@
 <!--
   Other inline elements: just keep processing
 -->
-<xsl:template match="bold|italic|monospace|sub|sup|underline" mode="psml">
+<xsl:template match="bold|italic|monospace|sub|sup|underline|placeholder" mode="psml">
   <xsl:apply-templates mode="psml"/>
 </xsl:template>
 

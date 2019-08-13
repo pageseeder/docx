@@ -298,6 +298,15 @@
       <!-- otherwise, inherit style from paragraph -->
     </xsl:choose>
   </xsl:if>
+  <!-- `placeholder` -->
+  <xsl:choose>
+    <xsl:when test="ancestor::placeholder/@unresolved='true' and config:placeholder-unresolved-styleid()">
+      <w:rStyle w:val="{config:placeholder-unresolved-styleid()}"/>
+    </xsl:when>
+    <xsl:when test="ancestor::placeholder and config:placeholder-resolved-styleid()">
+      <w:rStyle w:val="{config:placeholder-resolved-styleid()}"/>
+    </xsl:when>
+  </xsl:choose>
   <!-- `monospace` -->
   <xsl:if test="ancestor::monospace">
     <w:rStyle w:val="HTMLCode"/>   

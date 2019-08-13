@@ -439,6 +439,34 @@
 </xsl:function>
 
 <!--
+  Returns the style ID for the resolved placeholder style.
+
+  @return the style ID or '' if none defined
+-->
+<xsl:function name="config:placeholder-resolved-styleid" as="xs:string?">
+  <xsl:variable name="style" select="$config-doc/config/default/placeholders/@resolvedstyle" />
+  <xsl:if test="$style">
+    <xsl:variable name="styleid"
+      select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+    <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
+  </xsl:if>
+</xsl:function>
+
+<!--
+  Returns the style ID for the unresolved placeholder style.
+
+  @return the style ID or '' if none defined
+-->
+<xsl:function name="config:placeholder-unresolved-styleid" as="xs:string?">
+  <xsl:variable name="style" select="$config-doc/config/default/placeholders/@unresolvedstyle" />
+  <xsl:if test="$style">
+    <xsl:variable name="styleid"
+      select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style]/@w:styleId"/>
+    <xsl:value-of select="if (string($styleid)!='') then $styleid else 'DefaultParagraphFont'" />
+  </xsl:if>
+</xsl:function>
+
+<!--
   Indicate whether cross-references should be generated.
 
   @return true or false

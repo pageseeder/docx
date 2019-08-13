@@ -242,7 +242,7 @@
 <xsl:template match="displaytitle|documentinfo|uri|reversexrefs|fragmentinfo|locator|metadata" mode="psml"/>
 
 <!-- If could not match any, print this error message -->
-<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item]" mode="psml" priority="-1">
+<xsl:template match="*[ancestor::para or ancestor::mitem or ancestor::item or ancestor::heading]" mode="psml" priority="-1">
   <w:r>
     <w:rPr>
       <w:color w:val="991111" /><!-- TODO Magic number? -->

@@ -339,6 +339,16 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testPlaceholder() throws IOException, SAXException {
+    testIndividual("placeholder");
+  }
+
+  @Test
+  public void testPlaceholderStyle() throws IOException, SAXException {
+    testIndividual("placeholder-style");
+  }
+
+  @Test
   public void testPreformatSet() throws IOException, SAXException {
     testIndividual("preformat-set");
   }

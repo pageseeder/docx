@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?stylesheet format="schema" xsl-rootelement="root"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.12">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.1">
 
   <xs:annotation>
     <xs:documentation>This is the XML schema for PSML document processed content.</xs:documentation>
@@ -37,7 +37,7 @@
       </xs:attribute>
       <xs:attribute name="schemaversion" type="xs:string">
         <xs:annotation>
-          <xs:documentation>The version of the PSML schema: currently set to "0.9". INFORMATIONAL - ignored by upload.</xs:documentation>
+          <xs:documentation>The version of the PSML schema. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="type" type="document-type">
@@ -75,7 +75,7 @@
           <xs:documentation>The URI ID of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="publicationid" type="xs:string">
+      <xs:attribute name="publicationid" type="publication-id">
         <xs:annotation>
           <xs:documentation>The publication ID of the document. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
@@ -140,9 +140,9 @@
           <xs:documentation>The title for the section.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="fragmenttype" type="fragment-type">
+      <xs:attribute name="fragmenttype" type="fragment-type-list">
         <xs:annotation>
-          <xs:documentation>A fragment type.</xs:documentation>
+          <xs:documentation>A list of fragment types allowed.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="lockstructure" type="xs:boolean" default="true">
@@ -255,6 +255,11 @@
       <xs:attribute name="labels" type="label-list">
         <xs:annotation>
           <xs:documentation>The fragment's labels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="deleted" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>If 'true' this fragment will be ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -428,7 +433,8 @@
     </xs:annotation>
     <xs:complexType>
       <xs:all>
-        <xs:element ref="uri" />
+        <xs:element ref="uri"          minOccurs="0" />
+        <xs:element ref="publication"  minOccurs="0" />
         <xs:element ref="compareto"    minOccurs="0" />
         <xs:element ref="versions"     minOccurs="0" />
         <xs:element ref="reversexrefs" minOccurs="0" />
@@ -532,6 +538,49 @@
       <xs:attribute name="size" type="xs:long">
         <xs:annotation>
           <xs:documentation>The file size in bytes (non PSML only).  INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       publication element
+   =================================================================
+  -->
+  <xs:element name="publication">
+    <xs:annotation>
+      <xs:documentation>The publication of the document</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="id" type="publication-id" use="required">
+        <xs:annotation>
+          <xs:documentation>User entered unique publication identifier.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="publication-type">
+        <xs:annotation>
+          <xs:documentation>Publication type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="hostid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>ID of the host. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="rooturiid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>ID of the root document. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Publication title. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="defaultgroupid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>ID of the publication's default group. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -1070,7 +1119,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:sequence>
-        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -1657,6 +1706,7 @@
       <xs:element ref="link" />
       <xs:element ref="anchor" />
       <xs:element ref="inline" />
+      <xs:element ref="placeholder" />
       <xs:element ref="monospace" />
     </xs:choice>
   </xs:group>
@@ -1690,6 +1740,30 @@
           <xs:documentation>Label of this inline content</xs:documentation>
         </xs:annotation>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   =================================================================
+       placeholder element
+   =================================================================
+  -->
+  <xs:element name="placeholder">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="name" type="label" use="required">
+            <xs:annotation>
+              <xs:documentation>The name of the metadata property containing the resolved content.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="unresolved" type="xs:boolean" fixed="true">
+            <xs:annotation>
+              <xs:documentation>Present when the placeholder cannot be resolved to a property.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
     </xs:complexType>
   </xs:element>
 
@@ -1803,7 +1877,7 @@
         and must be URL encoded (overrides docid and uriid).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="config" type="xs:string">
+    <xs:attribute name="config" type="xref-config">
       <xs:annotation>
         <xs:documentation>The name of an XRef configuration used when creating/editing this XRef.</xs:documentation>
       </xs:annotation>
@@ -1921,7 +1995,19 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="publication-id">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="document-type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="publication-type">
     <xs:restriction base="xs:string">
       <xs:pattern value="[a-zA-Z0-9_]+"/>
     </xs:restriction>
@@ -1945,6 +2031,12 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="fragment-type-list">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-\.,]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="role">
     <xs:restriction base="xs:string">
       <xs:pattern value="[a-zA-Z0-9_\-]+"/>
@@ -1960,6 +2052,12 @@
   <xs:simpleType name="label-list">
     <xs:restriction base="xs:string">
       <xs:pattern value="[a-zA-Z0-9_\-,]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="xref-config">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9\-_]+"/>
     </xs:restriction>
   </xs:simpleType>
 

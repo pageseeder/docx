@@ -153,6 +153,7 @@
           <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
           <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
           <xs:element ref="xrefs" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="placeholders" minOccurs="0" maxOccurs="1" />
   			</xs:sequence>
         <xs:sequence>
           <xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
@@ -209,6 +210,13 @@
       <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
       <xs:attribute name="hyperlinkstyle" type="xs:string" />
       <xs:attribute name="referencestyle" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="placeholders">
+    <xs:complexType>      
+      <xs:attribute name="resolvedstyle" type="xs:string" />
+      <xs:attribute name="unresolvedstyle" type="xs:string" />
     </xs:complexType>
   </xs:element>
 
