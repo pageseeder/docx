@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <placeholders resolvedstyle="PS Hyperlink" unresolvedstyle="PS Unresolved" />
+  </default>
+  <elements>
+    <heading>
+      <level value="1" wordstyle="Heading Unnumbered 1"/>
+      <level value="2" wordstyle="Heading Unnumbered 2"/>
+    </heading>
+  </elements>
+</config>
