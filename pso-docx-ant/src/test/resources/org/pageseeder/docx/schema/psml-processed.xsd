@@ -392,13 +392,18 @@
       </xs:attribute>
       <xs:attribute name="count" default="1">
         <xs:annotation>
-          <xs:documentation>The property's value count or 'n' for unbounded (ignored for markdown).</xs:documentation>
+          <xs:documentation>The property's value count or 'n' for unbounded (deprecated).</xs:documentation>
         </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:pattern value="[0-9n]+"/>
           </xs:restriction>
         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="multiple" type="xs:boolean" fixed="true">
+        <xs:annotation>
+          <xs:documentation>If present the property can have multiple values (ignored for markdown).</xs:documentation>
+        </xs:annotation>
       </xs:attribute>
     </xs:complexType>
   </xs:element>

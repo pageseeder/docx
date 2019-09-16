@@ -180,21 +180,6 @@
         <w:tcW w:w="0" w:type="auto"/>
       </w:tcPr>
       <xsl:choose>
-        <!-- when contains mixed content -->
-        <xsl:when test="not(@datatype)">
-          <w:p>
-            <w:r>
-              <w:t><xsl:value-of select="@value"/></w:t>
-            </w:r>
-          </w:p>
-        </xsl:when>
-        <xsl:when test="@datatype = 'text'">
-          <w:p>
-            <w:r>
-              <w:t><xsl:value-of select="@value"/></w:t>
-            </w:r>
-          </w:p>
-        </xsl:when>
         <xsl:when test="@datatype = 'xref'">
           <w:p>
             <xsl:apply-templates mode="psml"/>
@@ -214,22 +199,21 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
-        <xsl:when test="@datatype = 'string'">
-          <w:p>
-            <w:r>
-              <w:t><xsl:value-of select="@value"/></w:t>
-            </w:r>
-          </w:p>
-        </xsl:when>
-        <xsl:when test="@datatype = 'datetime'">
-          <w:p>
-            <w:r>
-              <w:t><xsl:value-of select="@value"/></w:t>
-            </w:r>
-          </w:p>
+        <xsl:when test="value">
+          <xsl:for-each select="value">
+            <w:p>
+              <w:r>
+                <w:t><xsl:value-of select="."/></w:t>
+              </w:r>
+            </w:p>
+          </xsl:for-each>
         </xsl:when>
         <xsl:otherwise>
-          <w:p/>
+          <w:p>
+            <w:r>
+              <w:t><xsl:value-of select="@value"/></w:t>
+            </w:r>
+          </w:p>
         </xsl:otherwise>
       </xsl:choose>
     </w:tc>
