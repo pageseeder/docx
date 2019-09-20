@@ -1332,7 +1332,7 @@ Returns the default table width value based on a table role.
 <xsl:function name="config:labels-keep-block-with-next" as="xs:boolean">
   <xsl:param name="document-label"/>
   <xsl:param name="label"/>
-  <xsl:value-of select="exists($config-doc/config/elements[@label = $document-label]/block/label[@value=$label]/keep-paragraph-with-next)"/>
+  <xsl:sequence select="exists($config-doc/config/elements[@label = $document-label]/block/label[@value=$label]/keep-paragraph-with-next)"/>
 </xsl:function>
 
 <!--

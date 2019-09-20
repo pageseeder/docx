@@ -114,8 +114,10 @@
   </section>
   <section id="10">
     <properties-fragment id="10">
-      <property name="manufacturer" title="Manufacturer"
-        value="Manufacturer 1" />
+      <property name="manufacturers" title="Manufacturer" multiple="true">
+        <value>Manufacturer 1</value>
+        <value>Manufacturer 2</value>
+      </property>
       <property name="model" title="Model" value="Model A" />
       </properties-fragment>
     <properties-fragment id="10-1" type="citation">
