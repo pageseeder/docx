@@ -48,8 +48,22 @@
     <xsl:variable name="number-of-columns" select="count(w:tr[1]/w:tc[not(w:tcPr/w:gridSpan)]) +  + sum(w:tr[1]/w:tc/w:tcPr/w:gridSpan/@w:val)"/>
 
     <xsl:variable name="current-table" select="current()"/>
+
+    <xsl:variable name="total-width" select="number(sum(w:tblGrid/w:gridCol/@w:w))" />
+
+    <xsl:variable name="columns-width">
+      <cols>
+      <xsl:for-each select="w:tblGrid/w:gridCol">
+        <xsl:variable name="value-width" select="(number(@w:w) div $total-width) * number(100)" />
+        <xsl:variable name="content" select="concat(substring(string($value-width),1,2),'%')" />
+        <col><xsl:value-of select="$content" /></col>
+      </xsl:for-each>
+      </cols>
+    </xsl:variable>
+
     <xsl:for-each select="1 to xs:integer($number-of-columns)">
-      <col>
+      <xsl:variable name="pos" select="position()" />
+      <col width="{$columns-width/cols/col[position() = $pos]}">
         <xsl:if test=".=1 and $current-table/w:tblPr/w:tblLook/@w:firstColumn='1'">
           <xsl:attribute name="part" select="'header'"/>
         </xsl:if>
