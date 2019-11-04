@@ -54,7 +54,8 @@
     <xsl:variable name="columns-width">
       <cols>
       <xsl:for-each select="w:tblGrid/w:gridCol">
-        <xsl:variable name="value-width" select="(number(@w:w) div $total-width) * number(100)" />
+        <xsl:variable name="value" select="(number(@w:w) div $total-width) * number(100)" />
+        <xsl:variable name="value-width" select="if(position()=last()) then $value + 1 else $value" />
         <xsl:variable name="content" select="concat(substring(string($value-width),1,2),'%')" />
         <col><xsl:value-of select="$content" /></col>
       </xsl:for-each>
@@ -63,7 +64,10 @@
 
     <xsl:for-each select="1 to xs:integer($number-of-columns)">
       <xsl:variable name="pos" select="position()" />
-      <col width="{$columns-width/cols/col[position() = $pos]}">
+      <col>
+        <xsl:if test="$columns-width/cols/col">
+          <xsl:attribute name="width" select="$columns-width/cols/col[position() = $pos]"/>
+        </xsl:if>
         <xsl:if test=".=1 and $current-table/w:tblPr/w:tblLook/@w:firstColumn='1'">
           <xsl:attribute name="part" select="'header'"/>
         </xsl:if>
