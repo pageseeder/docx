@@ -338,6 +338,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testTableColAutoWidth() throws IOException, SAXException {
+    testIndividual("table-col-auto-width");
+  }
+
+  @Test
   public void testTableInsideList() throws IOException, SAXException {
     testIndividual("table-inside-list");
   }
