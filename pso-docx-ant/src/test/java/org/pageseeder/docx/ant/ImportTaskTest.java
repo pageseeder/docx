@@ -333,6 +333,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testTableColWidth() throws IOException, SAXException {
+    testIndividual("table-col-width");
+  }
+
+  @Test
   public void testTableInsideList() throws IOException, SAXException {
     testIndividual("table-inside-list");
   }
