@@ -54,8 +54,7 @@
     <xsl:variable name="columns-width">
       <cols>
       <xsl:for-each select="w:tblGrid/w:gridCol">
-        <xsl:variable name="value" select="(number(@w:w) div $total-width) * number(100)" />
-        <xsl:variable name="value-width" select="if(position()=last()) then $value + 1 else $value" />
+        <xsl:variable name="value-width" select="round-half-to-even((number(@w:w) div $total-width) * number(100))" />
         <xsl:variable name="content" select="concat(substring(string($value-width),1,2),'%')" />
         <col><xsl:value-of select="$content" /></col>
       </xsl:for-each>
