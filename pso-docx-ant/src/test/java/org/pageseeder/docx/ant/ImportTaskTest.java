@@ -358,8 +358,8 @@ public class ImportTaskTest {
   }
 
   @Test
-  public void testListsLinkedListStyles() throws IOException, SAXException {
-    testIndividual("lists-linked-list-styles");
+  public void testListsLinkedListStylesSplit() throws IOException, SAXException {
+    testIndividual("lists-linked-list-styles-split");
   }
 
   @Test
@@ -697,7 +697,11 @@ public class ImportTaskTest {
 
     // validate config file
     File import_config = new File(test, "word-import-config.xml");
-    Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
+    // if not using deprecated split element then validate config
+    if (!test.getName().contains("split") && !test.getName().contains("mathml")) {
+      Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
+    }
+
     task.setConfig(import_config);
 
     task.setDest(result);
