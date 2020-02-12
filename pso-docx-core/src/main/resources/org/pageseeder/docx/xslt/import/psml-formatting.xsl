@@ -494,7 +494,7 @@
           </link>
         </xsl:when>
         <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
-          <link href="#{$bookmark-ref}">
+          <link href="#b{$bookmark-ref}">
             <xsl:value-of select="$htext" />
           </link>
         </xsl:when>
@@ -557,7 +557,7 @@
         </xsl:when>
         <xsl:when test="(contains(current()/preceding-sibling::w:instrText[1],('HYPERLINK'))
                          or config:references-as-links()) and $bookmark-ref != ''">
-            <link href="#{$bookmark-ref}"><xsl:value-of select="$text" /></link>
+            <link href="#b{$bookmark-ref}"><xsl:value-of select="$text" /></link>
           </xsl:when>
         <xsl:otherwise>
           <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none">

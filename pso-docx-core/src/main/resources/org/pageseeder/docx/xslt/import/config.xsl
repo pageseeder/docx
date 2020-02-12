@@ -37,7 +37,7 @@
   <xsl:param name="current"/>
   <xsl:if test="config:references-as-links()">
     <xsl:for-each select="$current/w:bookmarkStart">
-      <anchor name="{@w:name}" />
+      <anchor name="b{@w:name}" />
     </xsl:for-each>
   </xsl:if>
 </xsl:function>
