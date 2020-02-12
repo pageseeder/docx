@@ -22,37 +22,41 @@
   Generate `endnotes/endnotes.psml` file from the `w:endnotes` element.
 -->
 <xsl:template match="w:endnotes" mode="endnotes">
-  <xsl:result-document href="{concat($_outputfolder, 'endnotes/endnotes.psml')}">
-    <document level="portable">
-      <documentinfo>
-        <uri title="{concat($document-title,' endnotes')}">
-          <displaytitle>
-            <xsl:value-of select="concat($document-title,' endnotes')" />
-          </displaytitle>
-        </uri>
-      </documentinfo>
-      <section id="body">
-        <xsl:choose>
-          <xsl:when test="config:convert-endnotes-type() = 'generate-files'">
-            <xref-fragment id="body">
-              <xsl:apply-templates select="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-files" />
-            </xref-fragment>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates select="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-fragments" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </section>
-    </document>
-  </xsl:result-document>
+  <xsl:if test="w:endnote[not(@w:id='-1')][not(@w:id='0')]">
+    <xsl:result-document href="{concat($_outputfolder, 'components/endnotes.psml')}">
+      <document type="endnotes" level="portable">
+        <documentinfo>
+          <uri title="Endnotes" />
+        </documentinfo>
+
+        <section id="title">
+          <fragment id="0">
+            <heading level="1">Endnotes</heading>
+          </fragment>
+        </section>
+
+        <section id="content">
+          <xsl:choose>
+            <xsl:when test="config:convert-endnotes-type() = 'generate-files'">
+              <xref-fragment id="content">
+                <xsl:apply-templates select="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-files" />
+              </xref-fragment>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="w:endnote[not(@w:id='-1')][not(@w:id='0')]" mode="endnotes-generate-fragments" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </section>
+      </document>
+    </xsl:result-document>
+  </xsl:if>
 </xsl:template>
 
 <!--
-  Generate a fragment with the heading and associated content for a matching `w:endnote` element
+  Generate a fragment with content for a matching `w:endnote` element
 -->
 <xsl:template match="w:endnote" mode="endnotes-generate-fragments" as="element(fragment)">
   <fragment id="{@w:id}">
-    <heading level="4"><xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(count(preceding-sibling::w:endnote[not(@w:id='-1')][not(@w:id='0')]) + 1,'endnote'),']')"/></heading>
     <xsl:apply-templates mode="content"/>
   </fragment>
 </xsl:template>
