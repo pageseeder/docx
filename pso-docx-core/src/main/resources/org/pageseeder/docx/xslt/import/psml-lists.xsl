@@ -158,12 +158,12 @@
   <xsl:variable name="level" select="fn:get-level-from-element(.)" />
   <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
   <xsl:variable name="nested-list"
-    select="following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-abstract-num-id-from-element(.) = $abstract-num-id][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
+    select="following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
   <item>
     <xsl:apply-templates  mode="content"/>
     <xsl:for-each select="$nested-list">
       <xsl:call-template name="list">
-        <xsl:with-param name="abstract-id" select="$abstract-num-id" />
+        <xsl:with-param name="abstract-id" select="fn:get-abstract-num-id-from-element(.)" />
         <xsl:with-param name="level" select="fn:get-level-from-element(.)" />
         <xsl:with-param name="id" select="@id" />
       </xsl:call-template>
@@ -177,7 +177,7 @@
 
   <xsl:choose>
     <xsl:when test="$nested-list">
-        <!-- skip to next item at this level just after nested list -->
+      <!-- skip to next item at this level just after nested list -->
       <xsl:apply-templates
         select="following-sibling::w:p
             [fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id][1]
@@ -187,7 +187,6 @@
     </xsl:when>
     <xsl:otherwise>
       <!-- get next item if it is at the same level -->
-      
       <xsl:apply-templates
         select="following-sibling::*[1]
             [self::w:p and fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
