@@ -85,6 +85,27 @@
                 content some content some content some content some
                 content some content some content some content some
                 content some content some content.
+                <xref id="1658569" title="f{fragment}" frag="2"
+                      reversefrag="2" reversetitle="" reverselink="true"
+                      reversetype="none" display="template" config="footnote"
+                      type="alternate" uriid="61096" href="footnotes.psml"
+                      urititle="Footnotes" mediatype="application/vnd.pageseeder.psml+xml"
+                      documenttype="footnotes">
+                  <locator id="45271" fragment="61096-2" editid="108296"
+                           modified="2018-06-19T15:08:11+10:00">
+                    <reversexrefs>
+                      <reversexref uriid="61095"
+                                   href="footnotes-content.psml" frag="2"
+                                   urititle="Footnotes-content" mediatype="application/vnd.pageseeder.psml+xml"
+                                   id="165856" title="" type="none" forwardtype="alternate"
+                                   forwardtitle="f{fragment}" forwarddisplay="template"
+                                   forwardfrag="2" />
+                    </reversexrefs>
+                  </locator>
+                  <fragment id="61096-2">
+                    <para>Footnote 1</para>
+                  </fragment>
+                </xref>
               </para>
               <para>
                 Some content some content some content some content some
@@ -225,7 +246,7 @@
                     </reversexrefs>
                   </locator>
                   <fragment id="4_61096-5">
-                    <para>Footnote 4</para>
+                    <heading level="4">Footnote 4</heading>
                     <para>Second para</para>
                   </fragment>
                 </xref>

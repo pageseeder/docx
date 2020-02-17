@@ -37,9 +37,9 @@
           <w:r>
             <w:t xml:space="preserve"> </w:t>
           </w:r>
-          <xsl:apply-templates select="para[1]/node()" mode="psml" />
+          <xsl:apply-templates select="*[1]/node()" mode="psml" />
         </w:p>
-        <xsl:apply-templates select="node()[preceding-sibling::para]" mode="psml" />
+        <xsl:apply-templates select="*[position() gt 1]" mode="psml" />
       </w:endnote>
     </xsl:for-each>
   </xsl:copy>
