@@ -95,7 +95,7 @@
   
   <xsl:choose>
     <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
-      <link href="#{$bookmark-ref}">
+      <link href="#b{$bookmark-ref}">
         <xsl:value-of select="$text" />
       </link>
     </xsl:when>
@@ -141,7 +141,7 @@
 
   <xsl:choose>
     <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
-      <link href="#{$bookmark-ref}">
+      <link href="#b{$bookmark-ref}">
         <xsl:value-of select="$text"/>
       </link>
     </xsl:when>

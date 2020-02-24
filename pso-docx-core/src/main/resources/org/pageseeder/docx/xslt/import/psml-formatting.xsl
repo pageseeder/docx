@@ -165,44 +165,42 @@
         <xsl:apply-templates select="current()" mode="content" />
       </xsl:when>
       <xsl:when test="current()/name() = 'w:footnoteReference' and config:convert-footnotes()">
-        <sup>
-          <xsl:choose>
-          <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
+        <xsl:choose>
+        <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
+          <sup>
             <xref frag="default" display="manual" type="none" title="{concat('[',fn:get-formated-footnote-endnote-value(@w:id,'footnote'),']')}"
-            reverselink="true" reversetitle="" reversetype="none" labels="footnote"
-            href="footnotes/footnotes{@w:id}.psml">
-            <xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(@w:id,'footnote'),']')" />
+                  reverselink="true" reversetitle="" reversetype="none" labels="footnote"
+                  href="footnotes/footnotes{@w:id}.psml">
+              <xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(@w:id,'footnote'),']')" />
+            </xref>
+          </sup>
+        </xsl:when>
+        <xsl:otherwise>
+          <xref frag="{@w:id}" display="template" type="alternate" title="f{{fragment}}"
+                reverselink="true" reversetitle="" reversetype="none" config="footnote"
+                href="components/footnotes.psml">f<xsl:value-of select="@w:id" />
           </xref>
-          </xsl:when>
-          <xsl:otherwise>
-            <xref frag="{@w:id}" display="manual" type="none" title="{concat('[',fn:get-formated-footnote-endnote-value(@w:id,'footnote'),']')}"
-            reverselink="true" reversetitle="" reversetype="none" labels="footnote"
-            href="footnotes/footnotes.psml">
-            <xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(@w:id,'footnote'),']')" />
-          </xref>
-          </xsl:otherwise>
-          </xsl:choose>
-        </sup>
+        </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="current()/name() = 'w:endnoteReference' and config:convert-endnotes()">
-        <sup>
-          <xsl:choose>
-          <xsl:when test="config:convert-endnotes-type() = 'generate-files'">
+        <xsl:choose>
+        <xsl:when test="config:convert-endnotes-type() = 'generate-files'">
+          <sup>
             <xref frag="default" display="manual" type="none" title="{concat('[',fn:get-formated-footnote-endnote-value(@w:id,'endnote'),']')}"
-            reverselink="true" reversetitle="" reversetype="none" labels="endnote"
-            href="endnotes/endnotes{@w:id}.psml">
-            <xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(@w:id,'endnote'),']')" />
+                  reverselink="true" reversetitle="" reversetype="none" labels="endnote"
+                  href="endnotes/endnotes{@w:id}.psml">
+              <xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(@w:id,'endnote'),']')" />
+            </xref>
+          </sup>
+        </xsl:when>
+        <xsl:otherwise>
+          <xref frag="{@w:id}" display="template" type="alternate" title="e{{fragment}}"
+                reverselink="true" reversetitle="" reversetype="none" config="endnote"
+                href="components/endnotes.psml">e<xsl:value-of select="@w:id" />
           </xref>
-          </xsl:when>
-          <xsl:otherwise>
-            <xref frag="{@w:id}" display="manual" type="none" title="{concat('[',fn:get-formated-footnote-endnote-value(@w:id,'endnote'),']')}"
-            reverselink="true" reversetitle="" reversetype="none" labels="endnote"
-            href="endnotes/endnotes.psml">
-            <xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(@w:id,'endnote'),']')" />
-          </xref>
-          </xsl:otherwise>
-          </xsl:choose>
-        </sup>
+        </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
     </xsl:choose>
   </xsl:for-each>
@@ -496,7 +494,7 @@
           </link>
         </xsl:when>
         <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
-          <link href="#{$bookmark-ref}">
+          <link href="#b{$bookmark-ref}">
             <xsl:value-of select="$htext" />
           </link>
         </xsl:when>
@@ -559,7 +557,7 @@
         </xsl:when>
         <xsl:when test="(contains(current()/preceding-sibling::w:instrText[1],('HYPERLINK'))
                          or config:references-as-links()) and $bookmark-ref != ''">
-            <link href="#{$bookmark-ref}"><xsl:value-of select="$text" /></link>
+            <link href="#b{$bookmark-ref}"><xsl:value-of select="$text" /></link>
           </xsl:when>
         <xsl:otherwise>
           <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none">

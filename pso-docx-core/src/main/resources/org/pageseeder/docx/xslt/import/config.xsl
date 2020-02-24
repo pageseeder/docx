@@ -37,7 +37,7 @@
   <xsl:param name="current"/>
   <xsl:if test="config:references-as-links()">
     <xsl:for-each select="$current/w:bookmarkStart">
-      <anchor name="{@w:name}" />
+      <anchor name="b{@w:name}" />
     </xsl:for-each>
   </xsl:if>
 </xsl:function>
@@ -49,17 +49,17 @@
 
 <!-- Indicates whether the mathml content should be generated -->
 <xsl:function name="config:generate-mathml" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/mathml/@select= 'true'"/>
+  <xsl:sequence select="not($config-doc/config/split/mathml/@select= 'false')"/>
 </xsl:function>
 
 <!-- Indicates whether the mathml files should be converted -->
 <xsl:function name="config:convert-omml-to-mml" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/mathml[@select= 'true']/@convert-to-mml= 'true'"/>
+  <xsl:sequence select="not($config-doc/config/split/mathml/@convert-to-mml= 'false')"/>
 </xsl:function>
 
 <!-- Indicates whether the footnote files should be converted -->
 <xsl:function name="config:convert-footnotes" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/footnotes/@select= 'true'"/>
+  <xsl:sequence select="not($config-doc/config/split/footnotes/@select= 'false')"/>
 </xsl:function>
 
 <!-- variable to define what type of conversion to be used for footnotes-->
@@ -74,7 +74,7 @@
 
 <!-- boolean variable to convert or not endnote files -->
 <xsl:function name="config:convert-endnotes" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/endnotes/@select= 'true'"/>
+  <xsl:sequence select="not($config-doc/config/split/endnotes/@select= 'false')"/>
 </xsl:function>
 
 <!-- variable to define what type of conversion to be used for endnotes-->

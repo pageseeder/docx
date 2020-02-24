@@ -1,9 +1,9 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.6.2">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.6.3">
 
   <xs:element name="config">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="split" minOccurs="0" maxOccurs="1" />
+        <!-- <xs:element ref="split" minOccurs="0" maxOccurs="1" /> deprecated -->
         <xs:element ref="lists" minOccurs="0" maxOccurs="1" />
         <xs:element ref="styles" minOccurs="0" maxOccurs="1" />
       </xs:sequence>
@@ -11,6 +11,7 @@
     </xs:complexType>
   </xs:element>
 
+  <!-- deprecated
   <xs:element name="split">
     <xs:complexType>
       <xs:sequence>
@@ -136,6 +137,7 @@
       <xs:attribute name="select" type="xs:string"/>
     </xs:complexType>
   </xs:element>
+  -->
 
   <xs:element name="lists">
     <xs:complexType>

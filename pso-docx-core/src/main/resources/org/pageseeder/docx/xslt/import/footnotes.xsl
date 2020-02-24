@@ -19,36 +19,42 @@
                 exclude-result-prefixes="#all">
 
 <!--
-  Generate `footnotes/footnotes.psml` file from the `w:footnotes` element.
+  Generate `components/footnotes.psml` file from the `w:footnotes` element.
 -->
 <xsl:template match="w:footnotes" mode="footnotes">
-  <xsl:result-document href="{concat($_outputfolder, 'footnotes/footnotes.psml')}">
-    <document level="portable">
-      <documentinfo>
-        <uri title="{concat($document-title, ' footnotes')}">
-          <displaytitle><xsl:value-of select="concat($document-title, ' footnotes')" /></displaytitle>
-        </uri>
-      </documentinfo>
-      <section id="body">
-        <xsl:choose>
-          <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
-            <xref-fragment id="body">
-              <xsl:apply-templates select="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-files" />
-            </xref-fragment>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates select="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-fragments" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </section>
-    </document>
-  </xsl:result-document>
+  <xsl:if test="w:footnote[not(@w:id='-1')][not(@w:id='0')]">
+    <xsl:result-document href="{concat($_outputfolder, 'components/footnotes.psml')}">
+      <document type="footnotes" level="portable">
+        <documentinfo>
+          <uri title="Footnotes" />
+        </documentinfo>
+
+        <section id="title">
+          <fragment id="0">
+            <heading level="1">Footnotes</heading>
+          </fragment>
+        </section>
+
+        <section id="content">
+          <xsl:choose>
+            <xsl:when test="config:convert-footnotes-type() = 'generate-files'">
+              <xref-fragment id="content">
+                <xsl:apply-templates select="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-files" />
+              </xref-fragment>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="w:footnote[not(@w:id='-1')][not(@w:id='0')]" mode="footnotes-generate-fragments" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </section>
+      </document>
+    </xsl:result-document>
+  </xsl:if>
 </xsl:template>
 
-<!-- Template to match each footnote and generate a heading for it and it's content for each fragment-->
+<!-- Template to match each footnote and generate it's content for each fragment-->
 <xsl:template match="w:footnote" mode="footnotes-generate-fragments">
   <fragment id="{@w:id}">
-    <heading level="4"><xsl:value-of select="concat('[',fn:get-formated-footnote-endnote-value(count(preceding-sibling::w:footnote[not(@w:id='-1')][not(@w:id='0')]) + 1,'footnote'),']')"/></heading>
     <xsl:apply-templates mode="content"/>
   </fragment>
 </xsl:template>

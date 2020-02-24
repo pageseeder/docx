@@ -152,21 +152,6 @@
               </xsl:if>
             </xsl:for-each-group>
           </xsl:for-each-group>
-          <xsl:if test="doc-available($footnotes-file) and config:convert-footnotes()">
-            <blockxref title="{concat($document-title,' footnotes')}" frag="default" display="document"
-                       type="embed" reverselink="true" reversetitle="" reversetype="none"
-                       href="footnotes/footnotes.psml">
-              <xsl:value-of select="concat($document-title,' footnotes')" />
-            </blockxref>
-          </xsl:if>
-
-          <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
-            <blockxref title="{concat($document-title,' endnotes')}" frag="default" display="document"
-                       type="embed" reverselink="true" reversetitle="" reversetype="none"
-                       href="endnotes/endnotes.psml">
-              <xsl:value-of select="concat($document-title,' endnotes')" />
-            </blockxref>
-          </xsl:if>
         </xref-fragment>
       </section>
     </xsl:when>
@@ -176,28 +161,7 @@
           <xsl:apply-templates select="*" mode="bodycopy" />
         </body>
       </xsl:variable>
-
       <xsl:apply-templates select="$body" mode="section-split"/>
-
-      <xsl:if test="doc-available($footnotes-file) and config:convert-footnotes()">
-        <xref-fragment id="footnotes">
-          <blockxref title="{concat($document-title,' footnotes')}" frag="default" display="document"
-                     type="embed" reverselink="true" reversetitle="" reversetype="none"
-                     href="footnotes/footnotes.psml">
-            <xsl:value-of select="concat($document-title,' footnotes')" />
-          </blockxref>
-        </xref-fragment>
-      </xsl:if>
-
-      <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
-        <xref-fragment id="endnotes">
-          <blockxref title="{concat($document-title,' endnotes')}" frag="default" display="document"
-                     type="embed" reverselink="true" reversetitle="" reversetype="none"
-                     href="endnotes/endnotes.psml">
-            <xsl:value-of select="concat($document-title,' endnotes')" />
-          </blockxref>
-        </xref-fragment>
-      </xsl:if>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
