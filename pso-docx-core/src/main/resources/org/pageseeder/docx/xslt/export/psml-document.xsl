@@ -199,6 +199,9 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
+        <xsl:when test="@datatype = 'markup'">
+          <xsl:apply-templates mode="psml"/>
+        </xsl:when>
         <xsl:when test="value">
           <xsl:for-each select="value">
             <w:p>

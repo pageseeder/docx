@@ -129,6 +129,9 @@
       <property name="description2" title="Description2" datatype="markdown">
         <markdown><heading level="2">Heading</heading><para>My <bold>special</bold> source</para><para>New line</para></markdown>
       </property>
+      <property name="description3" title="Description3" datatype="markup">
+        <heading level="2">Heading</heading><para>My <bold>special</bold> source<sup>2</sup></para><para>New line</para>
+      </property>
       <property name="source" title="Source" datatype="xref">
         <xref id="164180" frag="default" reversefrag="1"
           reversetitle="" reverselink="true" reversetype="none"

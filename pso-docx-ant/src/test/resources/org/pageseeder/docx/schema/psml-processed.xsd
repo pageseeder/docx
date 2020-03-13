@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?stylesheet format="schema" xsl-rootelement="root"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.2">
 
   <xs:annotation>
     <xs:documentation>This is the XML schema for PSML document processed content.</xs:documentation>
@@ -113,7 +113,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  
+
   <!--
    =================================================================
        section element
@@ -361,7 +361,7 @@
   -->
   <xs:element name="property">
     <xs:complexType>
-      <xs:sequence>
+      <xs:choice>
         <xs:element name="value" minOccurs="0" maxOccurs="unbounded" type="xs:string">
           <xs:annotation>
             <xs:documentation>The property's values (if multiple)</xs:documentation>
@@ -369,7 +369,14 @@
         </xs:element>
         <xs:element ref="xref" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="markdown" minOccurs="0" maxOccurs="1" />
-      </xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="heading" />
+          <xs:element ref="para" />
+          <xs:element ref="list" />
+          <xs:element ref="nlist" />
+          <xs:element ref="preformat" />
+        </xs:choice>
+      </xs:choice>
       <xs:attribute name="title" type="xs:string">
         <xs:annotation>
           <xs:documentation>The property's title (for UI).</xs:documentation>
@@ -387,7 +394,7 @@
       </xs:attribute>
       <xs:attribute name="datatype" type="xs:string">
         <xs:annotation>
-          <xs:documentation>The property's data type (e.g. date, xref or markdown).</xs:documentation>
+          <xs:documentation>The property's data type (e.g. date, xref, markup or markdown).</xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="count" default="1">
@@ -417,7 +424,7 @@
         <xs:group ref="block-style-group"     minOccurs="0" maxOccurs="unbounded" />
       </xs:choice>
     </xs:complexType>
-  </xs:element> 
+  </xs:element>
 
   <!--
       **************************************************************************************************
@@ -1259,7 +1266,7 @@
   <xs:element name="heading">
     <xs:complexType mixed="true">
       <xs:group ref="character-style-group" minOccurs="0" maxOccurs="unbounded" />
-      <xs:attribute name="level" type="xs:positiveInteger">
+      <xs:attribute name="level" type="xs:positiveInteger" use="required">
         <xs:annotation>
           <xs:documentation>The level of the heading.</xs:documentation>
         </xs:annotation>
@@ -1428,7 +1435,7 @@
           <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
-       <xs:attribute name="span" type="xs:positiveInteger">
+      <xs:attribute name="span" type="xs:positiveInteger">
         <xs:annotation>
           <xs:documentation>Number of columns this applies to.</xs:documentation>
         </xs:annotation>
@@ -1585,12 +1592,12 @@
     <xs:attribute name="width">
       <xs:annotation>
         <xs:documentation>Width of cell in pixels or percent (pixels if no px or % suffix). DEPRECATED - use col/@width.</xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:pattern value="[0-9\.]+(px|%)?"/>
-          </xs:restriction>
-        </xs:simpleType>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9\.]+(px|%)?"/>
+        </xs:restriction>
+      </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
 
@@ -1814,7 +1821,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  
+
   <!--
    =================================================================
        xref element
@@ -1879,7 +1886,7 @@
     <xs:attribute name="href" type="xs:string">
       <xs:annotation>
         <xs:documentation>When uploading this may be a path relative to the current document or an absolute path beginning with /
-        and must be URL encoded (overrides docid and uriid).</xs:documentation>
+          and must be URL encoded (overrides docid and uriid).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="config" type="xref-config">
