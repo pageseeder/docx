@@ -200,7 +200,18 @@
           </xsl:choose>
         </xsl:when>
         <xsl:when test="@datatype = 'markup'">
-          <xsl:apply-templates mode="psml"/>
+          <xsl:choose>
+            <xsl:when test="*">
+              <xsl:apply-templates mode="psml"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <w:p>
+                <w:r>
+                  <w:t></w:t>
+                </w:r>
+              </w:p>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:when test="value">
           <xsl:for-each select="value">
