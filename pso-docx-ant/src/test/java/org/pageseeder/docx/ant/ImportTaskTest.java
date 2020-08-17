@@ -358,6 +358,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testListsHyperlink() throws IOException, SAXException {
+    testIndividual("lists-hyperlink");
+  }
+
+  @Test
   public void testListsLinkedListStylesSplit() throws IOException, SAXException {
     testIndividual("lists-linked-list-styles-split");
   }

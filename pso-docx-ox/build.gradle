@@ -13,20 +13,20 @@ dependencies {
   compile (
     project(':pso-docx-core'),
     'org.slf4j:slf4j-api:1.7.12',
-    
-    //Ox 
-    'org.pageseeder.ox:pso-ox-core:2.2.6-beta.2',   
-    
+
+    //Ox
+    'org.pageseeder.ox:pso-ox-core:2.2.6-beta.2',
+
     //XML
-    'org.pageseeder.xmlwriter:pso-xmlwriter:1.0.2',   
+    'org.pageseeder.xmlwriter:pso-xmlwriter:1.0.2',
   )
-  
+
   runtime (
     'org.pageseeder.schematron:pso-schematron:1.2.+',
     'org.pageseeder.cobble:pso-cobble:0.3.1',
-    'net.sf.saxon:Saxon-HE:9.7.0-2'
+    'net.sf.saxon:Saxon-HE:10.1'
   )
-  
+
   testCompile (
     'xmlunit:xmlunit:1.6',
     'junit:junit:4+',
@@ -37,7 +37,7 @@ dependencies {
   testRuntime (
     'org.pageseeder.schematron:pso-schematron:1.2.+',
     'org.pageseeder.cobble:pso-cobble:0.3.1',
-    'net.sf.saxon:Saxon-HE:9.7.0-2'   
+    'net.sf.saxon:Saxon-HE:10.1'
   )
 
 }
