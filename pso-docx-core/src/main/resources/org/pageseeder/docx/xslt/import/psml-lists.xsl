@@ -87,12 +87,12 @@
         <xsl:apply-templates select="./*" mode="content">
           <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
         </xsl:apply-templates>
-        <xsl:sequence select="fn:generate-anchors(.)" />        
+        <xsl:sequence select="fn:generate-anchors(.)" />
       </para>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
-  
+
 <!-- template to handle list creation -->
 <xsl:template match="w:p[w:pPr/w:numPr[w:ilvl][w:numId] and not(matches(w:pPr/w:pStyle/@w:val,$numbering-paragraphs-list-string)) and not(w:pPr/w:numPr/w:numId/@w:val = '0') and config:get-psml-element(w:pPr/w:pStyle/@w:val) = '']" mode="content">
   <xsl:variable name="style-name" select="w:pPr/w:pStyle/@w:val" />
@@ -147,7 +147,7 @@
         <xsl:apply-templates select="./*" mode="content">
           <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
         </xsl:apply-templates>
-        <xsl:sequence select="fn:generate-anchors(.)" />        
+        <xsl:sequence select="fn:generate-anchors(.)" />
       </para>
     </xsl:otherwise>
   </xsl:choose>
@@ -172,7 +172,7 @@
       <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
       <block label="{$type-page}" />
     </xsl:if>
-    <xsl:sequence select="fn:generate-anchors(.)" />  
+    <xsl:sequence select="fn:generate-anchors(.)" />
   </item>
 
   <xsl:choose>
@@ -190,13 +190,13 @@
       <xsl:apply-templates
         select="following-sibling::*[1]
             [self::w:p and fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
-        mode="inside-list"> 
+        mode="inside-list">
       </xsl:apply-templates>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 
-<!-- 
+<!--
   create list or nlist, based on the list type defined
   in numbering.xml
 
@@ -231,7 +231,7 @@
             <xsl:when test="preceding::w:p[fn:get-abstract-num-id-from-element(.) = $abstract-id][1][fn:get-level-from-element(.) &lt; $level]">
               <xsl:value-of select="'1'"/>
             </xsl:when>
-            <xsl:when test="preceding-sibling::w:p[fn:get-abstract-num-id-from-element(.) = $abstract-id][fn:get-level-from-element(.)=$level]">
+            <xsl:when test="preceding-sibling::w:p[fn:get-abstract-num-id-from-element(.) = $abstract-id][fn:get-level-from-element(.)=$level][$list-paragraphs//*[@id = $id]]">
               <xsl:call-template name="get-numbering-value-from-node">
                 <xsl:with-param name="current-node" select="$list-paragraphs//*[@id = $id]"/>
               </xsl:call-template>
@@ -257,7 +257,7 @@
   </xsl:choose>
 </xsl:template>
 
-<!-- 
+<!--
   Template to create lists as numbered paragraphs
 -->
 <xsl:template name="create-item">
@@ -312,7 +312,7 @@
   </xsl:choose>
 </xsl:template>
 
-<!-- 
+<!--
   Template to handle nested lists as numbered paragraphs
 -->
 <xsl:template name="nested-lists">
