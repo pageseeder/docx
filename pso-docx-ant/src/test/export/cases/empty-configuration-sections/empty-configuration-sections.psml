@@ -134,7 +134,13 @@
       </property>
       <property name="description4" title="Description4" datatype="markup">
       </property>
-      <property name="source" title="Source" datatype="xref">
+      <property name="source" title="Source" datatype="xref" multiple="true">
+        <xref id="164179" frag="default" reversefrag="1"
+              reversetitle="" reverselink="true" reversetype="none"
+              display="document" type="alternate" uriid="72868"
+              href="_local/documents/sources/source-003.psml"
+              urititle="First book" mediatype="application/vnd.pageseeder.psml+xml"
+              documenttype="source">First book</xref>
         <xref id="164180" frag="default" reversefrag="1"
           reversetitle="" reverselink="true" reversetype="none"
           display="document" type="alternate" uriid="72869"
@@ -159,11 +165,27 @@
           </document>
         </xref>
       </property>
+      <property name="links" datatype="link" multiple="true">
+        <link href="http://pageseeder.com/" uriid="742376">http://pageseeder.com/</link>
+        <link href="https://en.wikipedia.org/wiki/English_Wikipedia" uriid="15877">
+          <document id="15877" schemaversion="1.3" date="2021-01-29T16:59:35+11:00" version="current" level="metadata">
+            <documentinfo>
+              <uri id="15877" scheme="https" host="en.wikipedia.org" port="443" path="/wiki/English_Wikipedia" decodedpath="/wiki/English_Wikipedia" external="true" mediatype="text/html" size="307980" created="2021-01-29T15:54:25+11:00" modified="2021-01-29T16:59:35+11:00" title="English Wikipedia - Wikipedia">
+                <displaytitle>English Wikipedia - Wikipedia</displaytitle>
+              </uri>
+              <reversexrefs>
+                <reversexref uriid="9716" href="documents/deafult_4.psml" frag="2" urititle="Deafult 4" mediatype="application/vnd.pageseeder.psml+xml" id="26989" title="" type="none" forwardtype="link" forwardfrag="default" labels="link1"/>
+              </reversexrefs>
+            </documentinfo>
+            <fragmentinfo/>
+            <metadata/>
+          </document>http://pageseeder.com/</link>
+      </property>
     </properties-fragment>
   </section>
   <section id="11">
     <fragment id="11">
-      <para>Following section contains property fragments without content
+      <para>Following section <link href="http://pageseeder.com/" uriid="742376">http://pageseeder.com/</link> contains property fragments without content
       </para>
     </fragment>
   </section>

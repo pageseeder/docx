@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?stylesheet format="schema" xsl-rootelement="root"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.2">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.3">
 
   <xs:annotation>
     <xs:documentation>This is the XML schema for PSML document processed content.</xs:documentation>
@@ -368,6 +368,7 @@
           </xs:annotation>
         </xs:element>
         <xs:element ref="xref" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="link" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="markdown" minOccurs="0" maxOccurs="1" />
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element ref="heading" />
@@ -530,6 +531,11 @@
       <xs:attribute name="documenttype" type="document-type">
         <xs:annotation>
           <xs:documentation>Document type (aka document config). Used by upload if no document/@type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="urltype" type="document-type">
+        <xs:annotation>
+          <xs:documentation>URL type. Used by upload if no document/@type.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="mediatype" type="xs:string">
@@ -741,7 +747,7 @@
           <xs:documentation>The version (e.g. 0.01)</xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="publicationid" type="xs:string">
+      <xs:attribute name="publicationid" type="publication-id">
         <xs:annotation>
           <xs:documentation>The publication ID</xs:documentation>
         </xs:annotation>
@@ -853,6 +859,7 @@
             - embed: Replace this element's content with the document/fragment pointed to when publishing (only valid for blockxref);
             - transclude: Replace this element's content with the document/fragment pointed to when displaying (only valid for blockxref);
             - image: Replace this element's src with the image pointed to when displaying (only valid for image);
+            - link: Display as a link (only valid for link);
             - math: Replace this element's content with a media-fragment containing the math content pointed to when displaying.
           </xs:documentation>
         </xs:annotation>
@@ -863,6 +870,7 @@
             <xs:enumeration value="embed" />
             <xs:enumeration value="transclude" />
             <xs:enumeration value="image" />
+            <xs:enumeration value="link" />
             <xs:enumeration value="math" />
           </xs:restriction>
         </xs:simpleType>
@@ -904,6 +912,11 @@
       <xs:attribute name="documenttype" type="xs:string">
         <xs:annotation>
           <xs:documentation>The source document type.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="urltype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The source URL type.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -977,6 +990,11 @@
       <xs:attribute name="editid" type="xs:long">
         <xs:annotation>
           <xs:documentation>The XLink ID for the latest edit. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="checked" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The last date the URL metadata was checked, for URLs only. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -1787,8 +1805,17 @@
   <xs:element name="link">
     <xs:complexType mixed="true">
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:group ref="character-style-group" />
-        <xs:element ref="image" />
+        <xs:element ref="bold" />
+        <xs:element ref="italic" />
+        <xs:element ref="underline" />
+        <xs:element ref="br" />
+        <xs:element ref="sub" />
+        <xs:element ref="sup" />
+        <xs:element ref="anchor" />
+        <xs:element ref="inline" />
+        <xs:element ref="placeholder" />
+        <xs:element ref="monospace" />
+        <xs:element ref="document" />
       </xs:choice>
       <xs:attribute name="href" type="xs:string" use="required">
         <xs:annotation>
@@ -1797,7 +1824,37 @@
       </xs:attribute>
       <xs:attribute name="role" type="role">
         <xs:annotation>
-          <xs:documentation>Custom value that can be used for formatting.</xs:documentation>
+          <xs:documentation>Custom value that can be used for formatting (deprecated, use @labels instead).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="uriid" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>The ID of the target URL.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="frag" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The target fragment.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="mediatype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The target URL's media type. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="urltype" type="document-type">
+        <xs:annotation>
+          <xs:documentation>The target URL's type. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>Link labels.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="unresolved" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>If 'true' the target URL doesn't exist in PageSeeder. INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
