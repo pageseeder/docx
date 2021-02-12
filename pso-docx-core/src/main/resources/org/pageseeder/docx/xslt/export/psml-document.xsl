@@ -28,7 +28,7 @@
   <xsl:choose>
     <!-- don't include footnotes and endnotes documents -->
     <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
-    <!-- for bibliography only output title section and field code -->    
+    <!-- for bibliography only output title section and field code -->
     <xsl:when test="@type=config:citations-documenttype()">
       <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
       <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
@@ -181,9 +181,18 @@
       </w:tcPr>
       <xsl:choose>
         <xsl:when test="@datatype = 'xref'">
-          <w:p>
-            <xsl:apply-templates mode="psml"/>
-          </w:p>
+          <xsl:for-each select="xref">
+            <w:p>
+              <xsl:apply-templates mode="psml" select="." />
+            </w:p>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:when test="@datatype = 'link'">
+          <xsl:for-each select="link">
+            <w:p>
+              <xsl:apply-templates mode="psml" select="." />
+            </w:p>
+          </xsl:for-each>
         </xsl:when>
         <xsl:when test="@datatype = 'markdown'">
           <xsl:choose>
