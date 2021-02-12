@@ -181,6 +181,8 @@
             <metadata/>
           </document>http://pageseeder.com/</link>
       </property>
+      <property name="links2" datatype="link" multiple="true">
+      </property>
     </properties-fragment>
   </section>
   <section id="11">

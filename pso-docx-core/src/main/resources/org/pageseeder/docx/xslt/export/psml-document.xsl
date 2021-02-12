@@ -181,18 +181,40 @@
       </w:tcPr>
       <xsl:choose>
         <xsl:when test="@datatype = 'xref'">
-          <xsl:for-each select="xref">
-            <w:p>
-              <xsl:apply-templates mode="psml" select="." />
-            </w:p>
-          </xsl:for-each>
+          <xsl:choose>
+            <xsl:when test="xref">
+              <xsl:for-each select="xref">
+                <w:p>
+                  <xsl:apply-templates mode="psml" select="." />
+                </w:p>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <w:p>
+                <w:r>
+                  <w:t></w:t>
+                </w:r>
+              </w:p>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:when test="@datatype = 'link'">
-          <xsl:for-each select="link">
-            <w:p>
-              <xsl:apply-templates mode="psml" select="." />
-            </w:p>
-          </xsl:for-each>
+          <xsl:choose>
+            <xsl:when test="link">
+              <xsl:for-each select="link">
+                <w:p>
+                  <xsl:apply-templates mode="psml" select="." />
+                </w:p>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <w:p>
+                <w:r>
+                  <w:t></w:t>
+                </w:r>
+              </w:p>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:when test="@datatype = 'markdown'">
           <xsl:choose>
