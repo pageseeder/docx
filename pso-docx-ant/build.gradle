@@ -1,36 +1,28 @@
-plugins {
-  id "com.jfrog.bintray" version "1.7"
-}
-
 description = "ANT tasks and definition for DOCX API"
-
-apply plugin: 'maven-publish'
-apply from: "$rootDir/gradle/publishing.gradle"
 
 dependencies {
 
   // DOCX module dependencies
-  compile project(':pso-docx-core')
+  implementation project(':pso-docx-core')
 
   compileOnly (
-    'org.apache.ant:ant:1.8.1'
+    "org.apache.ant:ant:$antVersion"
   )
 
   // Test dependencies
-  testCompile (
-    'org.apache.ant:ant:1.8.1',
-    'junit:junit:4.12',
+  testImplementation (
+    "org.apache.ant:ant:$antVersion",
+    "junit:junit:$junitVersion",
     'org.hamcrest:java-hamcrest:2.0.0.0',
     'org.hamcrest:hamcrest-junit:2.0.0.0',
     'org.xmlunit:xmlunit-core:2.3.0',
     'org.xmlunit:xmlunit-matchers:2.3.0'
   )
 
-  testRuntime (
-    'org.pageseeder.schematron:pso-schematron:1.2.+',
-    'org.pageseeder.cobble:pso-cobble:0.3.1',
-    'net.sf.saxon:Saxon-HE:10.1',
-
+  testRuntimeOnly (
+    "org.pageseeder.schematron:pso-schematron:$psoSchematronVersion",
+    "org.pageseeder.cobble:pso-cobble:$psoCobleVersion",
+    "net.sf.saxon:Saxon-HE:$saxonHEVersion",
   )
 
 }
