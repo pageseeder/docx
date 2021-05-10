@@ -1,17 +1,11 @@
-plugins {
-  id "com.jfrog.bintray" version "1.7"
-}
 
 description = "Core DOCX API"
 
-apply plugin: 'maven-publish'
-apply from: "$rootDir/gradle/publishing.gradle"
-
 dependencies {
 
-  testCompile (
-    'xmlunit:xmlunit:1.6',
-    'junit:junit:4+'
+  testImplementation (
+    "xmlunit:xmlunit:$xmlunitVersion",
+    "junit:junit:$junitVersion"
   )
 
 }
