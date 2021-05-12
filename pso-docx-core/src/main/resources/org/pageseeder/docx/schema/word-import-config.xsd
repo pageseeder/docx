@@ -3,7 +3,7 @@
   <xs:element name="config">
     <xs:complexType>
       <xs:sequence>
-        <!-- <xs:element ref="split" minOccurs="0" maxOccurs="1" /> deprecated -->
+        <xs:element ref="split" minOccurs="0" maxOccurs="1" />
         <xs:element ref="lists" minOccurs="0" maxOccurs="1" />
         <xs:element ref="styles" minOccurs="0" maxOccurs="1" />
       </xs:sequence>
@@ -11,25 +11,15 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- deprecated
   <xs:element name="split">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="main" minOccurs="0" maxOccurs="1" />
-        <xs:element ref="document" minOccurs="0" maxOccurs="1" />
-        <xs:element ref="section" minOccurs="0" maxOccurs="1" />
+        <!-- <xs:element ref="main" minOccurs="0" maxOccurs="1" /> deprecated -->
+        <!-- <xs:element ref="document" minOccurs="0" maxOccurs="1" /> deprecated -->
+        <!-- <xs:element ref="section" minOccurs="0" maxOccurs="1" /> deprecated -->
         <xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
         <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
         <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="main">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="type" minOccurs="0" maxOccurs="1" type="xs:string" />
-        <xs:element name="label" minOccurs="0" maxOccurs="1" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -74,6 +64,16 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- deprecated
+  <xs:element name="main">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" minOccurs="0" maxOccurs="1" type="xs:string" />
+        <xs:element name="label" minOccurs="0" maxOccurs="1" type="xs:string" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 
@@ -216,7 +216,7 @@
       <xs:attribute name="label" type="xs:string" />
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="styles">
     <xs:complexType>
       <xs:sequence>
@@ -290,7 +290,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-    
+
    <xs:element name="wordstyle">
     <xs:complexType>
         <xs:all>
