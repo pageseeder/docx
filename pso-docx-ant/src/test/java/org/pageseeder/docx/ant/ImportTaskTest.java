@@ -703,7 +703,7 @@ public class ImportTaskTest {
     // validate config file
     File import_config = new File(test, "word-import-config.xml");
     // if not using deprecated split element then validate config
-    if (!test.getName().contains("split") && !test.getName().contains("mathml")) {
+    if (!test.getName().contains("split")) {
       Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
     }
 

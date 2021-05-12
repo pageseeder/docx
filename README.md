@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/pageseeder/maven/docx/images/download.svg) ](https://bintray.com/pageseeder/maven/docx/_latestVersion)
+[![Maven Central](https://img.shields.io/maven-central/v/org.pageseeder.docx/pso-docx-core.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22org.pageseeder.docx%22%20AND%20a:%22pso-docx-core%22)
 
 # docx
 DOCX import and export API
