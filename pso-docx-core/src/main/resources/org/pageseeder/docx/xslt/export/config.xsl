@@ -40,9 +40,9 @@
     [ps-document-modified]
     [ps-current-date]
     [ps-document-labels]
-  
+
   @param token   the token string
-  
+
   @return the substituted value or the original token if not recognized
 -->
 <xsl:function name="config:ps-token" as="xs:string">
@@ -918,6 +918,26 @@ Returns the default table width value based on a table role.
 </xsl:function>
 
 <!--
+  Returns the configured style for ps:image element for label specific documents.
+
+  @param document-label the document label
+  @return the w:style
+-->
+  <xsl:function name="config:image-wordstyle-for-document-label" as="xs:string">
+    <xsl:param name="document-label"/>
+    <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/image/@wordstyle)" />
+  </xsl:function>
+
+<!--
+  Returns the configured style for ps:image element for default documents.
+
+  @return the w:style
+-->
+  <xsl:function name="config:image-wordstyle-for-default-document" as="xs:string">
+    <xsl:value-of select="string($config-doc/config/elements[not(@label)]/image/@wordstyle)" />
+  </xsl:function>
+
+<!--
   Returns the configured w:style for ps:block element for label specific documents.
 
   @param document-label the document label
@@ -1391,7 +1411,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
-  
+
   <xsl:variable name="list-style" select="config:list-style-for-document-label($document-label, $list-role, $list-type)" />
   <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
 </xsl:function>
@@ -1410,7 +1430,7 @@ Returns the default table width value based on a table role.
   <xsl:param name="list-role"/>
   <xsl:param name="list-level"/>
   <xsl:param name="list-type"/>
-  
+
   <xsl:variable name="list-style" select="config:list-style-for-default-document($list-role, $list-type)" />
   <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
 </xsl:function>

@@ -28,7 +28,7 @@
     <xsl:choose>
 
       <!-- TODO The code below should be implemented using a specific mode so that it is more extensible and easier to document -->
-      
+
       <!-- Paragraphs within blocks -->
       <xsl:when test="self::para and parent::block">
         <xsl:choose>
@@ -69,7 +69,7 @@
         <xsl:variable name="cell" select="(ancestor::*[name()='cell' or name()='hcell'])[1]" />
         <!-- TODO how should colspan and rowspan be handled for header? -->
         <xsl:variable name="header" select="$row/@part='header' or
-            $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />        
+            $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />
         <xsl:choose>
           <xsl:when test="$header">
             <xsl:value-of select="config:table-head-style($labels, $table/@role)" />
@@ -110,6 +110,21 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="$default-paragraph-style"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+
+      <!-- image -->
+      <xsl:when test="self::image">
+        <xsl:choose>
+          <xsl:when test="config:image-wordstyle-for-document-label($labels) != ''">
+            <xsl:value-of select="config:image-wordstyle-for-document-label($labels)"/>
+          </xsl:when>
+          <xsl:when test="config:image-wordstyle-for-default-document() !=''">
+            <xsl:value-of select="config:image-wordstyle-for-default-document()"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$default-character-style"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -309,7 +324,7 @@
   </xsl:choose>
   <!-- `monospace` -->
   <xsl:if test="ancestor::monospace">
-    <w:rStyle w:val="HTMLCode"/>   
+    <w:rStyle w:val="HTMLCode"/>
   </xsl:if>
   <!-- `superscript` -->
   <xsl:if test="ancestor::sup">

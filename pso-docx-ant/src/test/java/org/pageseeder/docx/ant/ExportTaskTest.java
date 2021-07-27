@@ -219,6 +219,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testImagesStyleSet() throws IOException, SAXException {
+    testIndividual("images-style-set");
+  }
+
+  @Test
   public void testInlineDefaultNone() throws IOException, SAXException {
     testIndividual("inline-default-none");
   }
