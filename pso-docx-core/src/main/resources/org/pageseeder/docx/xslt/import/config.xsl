@@ -28,9 +28,9 @@
   <xsl:sequence select="$config-doc/config/styles/default/references/@psmlelement='link'"/>
 </xsl:function>
 
-<!-- 
+<!--
   Return anchor elements for each bookmarkStart child of current
-  
+
   @param current  the current w:p element
  -->
 <xsl:function name="fn:generate-anchors">
@@ -44,7 +44,7 @@
 
 <!-- Indicates whether the mathml files should be generated -->
 <xsl:function name="config:generate-mathml-files" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/mathml[@select= 'true']/@output= 'generate-files'"/>
+  <xsl:sequence select="$config-doc/config/split/mathml/@output= 'generate-files'"/>
 </xsl:function>
 
 <!-- Indicates whether the mathml content should be generated -->
@@ -64,10 +64,9 @@
 
 <!-- variable to define what type of conversion to be used for footnotes-->
 <xsl:function name="config:convert-footnotes-type" as="xs:string">
-  <xsl:variable name="output" select="$config-doc/config/split/footnotes[@select= 'true']/@output"/>
+  <xsl:variable name="output" select="$config-doc/config/split/footnotes/@output"/>
   <xsl:choose>
     <xsl:when test="$output='generate-files'">generate-files</xsl:when>
-    <xsl:when test="$output='generate-fragments'">generate-fragments</xsl:when>
     <xsl:otherwise>generate-fragments</xsl:otherwise>
   </xsl:choose>
 </xsl:function>
@@ -79,10 +78,9 @@
 
 <!-- variable to define what type of conversion to be used for endnotes-->
 <xsl:function name="config:convert-endnotes-type" as="xs:string">
-  <xsl:variable name="output" select="$config-doc/config/split/endnotes[@select= 'true']/@output"/>
+  <xsl:variable name="output" select="$config-doc/config/split/endnotes/@output"/>
   <xsl:choose>
     <xsl:when test="$output='generate-files'">generate-files</xsl:when>
-    <xsl:when test="$output='generate-fragments'">generate-fragments</xsl:when>
     <xsl:otherwise>generate-fragments</xsl:otherwise>
   </xsl:choose>
 </xsl:function>

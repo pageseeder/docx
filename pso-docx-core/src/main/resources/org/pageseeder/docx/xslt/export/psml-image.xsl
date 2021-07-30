@@ -48,6 +48,9 @@
     </xsl:when>
     <xsl:otherwise>
       <w:r>
+        <w:pPr>
+          <xsl:call-template name="apply-style" />
+        </w:pPr>
         <xsl:call-template name="create-drawing-for-image"/>
       </w:r>
     </xsl:otherwise>

@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -130,55 +131,30 @@ public final class PSMLProcessor {
     // Add custom parameters
     parameters.putAll(this._builder.params());
 
-    // 4. Unnest
+    // 3. Unnest
     log("Unnest");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import-unnest.xsl");
     File document = new File(unpacked, "word/document.xml");
     File newDocument = new File(unpacked, "word/new-document.xml");
-//    Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(document, newDocument, unnest, parameters);
 
-    //4.1 Unnest Endnotes file if it exists
+    // 3.1 Unnest Endnotes file if it exists
     File endnotes = new File(unpacked, "word/endnotes.xml");
     if(endnotes.canRead()){
     	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters);
     }
-    //4.1 Unnest Footnotes file if it exists
+    // 3.2 Unnest Footnotes file if it exists
     File footnotes = new File(unpacked, "word/footnotes.xml");
     if(footnotes.canRead()){
     	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
     }
 
-    Templates renameImages = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-images.xsl");
-    File imageList = new File(this._builder.working(), "image-list.txt");
-    XSLT.transform(newDocument, imageList, renameImages, parameters);
-    parameters.put("_imagelist", imageList.toURI().toString());
-
-		Scanner in = new Scanner(imageList);
-		while(in.hasNextLine()){
-			String line = in.nextLine();
-			String[] params = line.split("###");
-			if(params.length == 3){
-				File imageFile = new File(unpacked, "word/" + params[0]);
-				imageFile.renameTo(new File(unpacked, "word/" + params[2]));
-				imageFile.delete();
-			}
-		}
-		in.close();
-
-	  // 3. copy the media files
+	// 4. copy the media files
     log("Copy media");
-
     copyMedia(unpacked, folder, mediaFolderName);
-
-    Templates renameRels = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import/rename-rels.xsl");
-    File rels = new File(unpacked, "word/_rels/document.xml.rels");
-    File newRels = new File(unpacked, "word/_rels/new-document.xml.rels");
-    XSLT.transform(rels, newRels, renameRels, parameters);
 
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
-    // Transform
     XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters);
 
   }
@@ -199,7 +175,8 @@ public final class PSMLProcessor {
       File[] files = media.listFiles();
       if (files != null) {
         for (File m : files) {
-          Files.copy(m, new File(mediaOut, m.getName().toLowerCase()));
+          // decode filename because the image/@src will be decoded by PageSeeder
+          Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
         }
       }
     } catch (IOException ex) {

@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.6">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.7">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -19,7 +19,7 @@
 				<xs:element ref="description" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="subject" minOccurs="0" maxOccurs="1" />
 				<xs:element name="title" minOccurs="0" maxOccurs="1">
-          <xs:complexType>      
+          <xs:complexType>
             <xs:attribute name="select" type="xs:string"/>
           </xs:complexType>
         </xs:element>
@@ -27,17 +27,17 @@
 				<xs:element ref="version" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="revision" minOccurs="0" maxOccurs="1" />
         <xs:element name="keywords" minOccurs="0" maxOccurs="1">
-          <xs:complexType>      
+          <xs:complexType>
             <xs:attribute name="select" type="xs:string"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="created" minOccurs="0" maxOccurs="1">
-          <xs:complexType>      
+          <xs:complexType>
             <xs:attribute name="select" type="xs:string"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="modified" minOccurs="0" maxOccurs="1">
-          <xs:complexType>      
+          <xs:complexType>
             <xs:attribute name="select" type="xs:string"/>
           </xs:complexType>
         </xs:element>
@@ -46,37 +46,37 @@
 	</xs:element>
 
 	<xs:element name="creator">
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:attribute name="select" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="description">
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:attribute name="select" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="subject">
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:attribute name="select" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="category">
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:attribute name="select" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="version">
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:attribute name="select" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="revision">
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:attribute name="select" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
@@ -179,20 +179,20 @@
 			<xs:attribute name="generate" type="xs:boolean"/>
 		</xs:complexType>
 	</xs:element>
-  
+
   <xs:element name="mathml">
     <xs:complexType>
       <xs:attribute name="generate" type="xs:boolean"/>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="citations">
     <xs:complexType>
       <xs:attribute name="documenttype" type="xs:string"/>
       <xs:attribute name="pageslabel" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="endnotes">
     <xs:complexType>
       <xs:attribute name="documenttype" type="xs:string"/>
@@ -206,7 +206,7 @@
   </xs:element>
 
   <xs:element name="xrefs">
-    <xs:complexType>      
+    <xs:complexType>
       <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
       <xs:attribute name="hyperlinkstyle" type="xs:string" />
       <xs:attribute name="referencestyle" type="xs:string" />
@@ -214,7 +214,7 @@
   </xs:element>
 
   <xs:element name="placeholders">
-    <xs:complexType>      
+    <xs:complexType>
       <xs:attribute name="resolvedstyle" type="xs:string" />
       <xs:attribute name="unresolvedstyle" type="xs:string" />
     </xs:complexType>
@@ -224,6 +224,7 @@
 		<xs:complexType>
 			<xs:all>
 				<xs:element ref="block" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="image" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="tables" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="preformat" minOccurs="0" maxOccurs="1" />
@@ -246,6 +247,12 @@
 				<xs:element ref="ignore" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="default" type="xs:string" default="generate-ps-style"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="image">
+		<xs:complexType>
+			<xs:attribute name="wordstyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -318,14 +325,14 @@
       <xs:attribute name="bodystyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
-  
+
   <xs:element name="width">
     <xs:complexType>
       <xs:attribute name="type" type="xs:string" default="pct"/>
       <xs:attribute name="value" type="xs:string" default="5000"/>
     </xs:complexType>
   </xs:element>
-  
+
 	<xs:element name="heading">
 		<xs:complexType>
 			<xs:sequence>
@@ -412,7 +419,7 @@
 	</xs:element>
 
   <xs:element name="title">
-    <xs:complexType>      
+    <xs:complexType>
       <xs:attribute name="wordstyle" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -448,7 +455,7 @@
 			<xs:attribute name="value" type="xs:string"/>
       <xs:attribute name="liststyle" type="xs:string"/>
 		</xs:complexType>
-	</xs:element>	
+	</xs:element>
 
   <xs:element name="xref">
     <xs:complexType>
@@ -466,20 +473,20 @@
       <xs:attribute name="textstyle" type="xs:string"/>
       <xs:attribute name="referencestyle" type="xs:string"/>
     </xs:complexType>
-  </xs:element> 
+  </xs:element>
 
   <xs:element name="endnote">
     <xs:complexType>
       <xs:attribute name="textstyle" type="xs:string"/>
       <xs:attribute name="referencestyle" type="xs:string"/>
     </xs:complexType>
-  </xs:element> 
+  </xs:element>
 
   <xs:element name="citation">
     <xs:complexType>
       <xs:attribute name="referencestyle" type="xs:string"/>
     </xs:complexType>
-  </xs:element> 
+  </xs:element>
 
   <xs:element name="xrefconfig">
     <xs:complexType>
@@ -487,6 +494,6 @@
       <xs:attribute name="hyperlinkstyle" type="xs:string"/>
       <xs:attribute name="referencestyle" type="xs:string"/>
     </xs:complexType>
-  </xs:element> 
+  </xs:element>
 
 </xs:schema>

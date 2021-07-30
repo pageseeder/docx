@@ -39,7 +39,7 @@
 <xsl:variable name="filename" select="lower-case(replace($_docxfilename,' ','_'))"  as="xs:string?"/>
 
 <!-- location of the relationship file from the input docx -->
-<xsl:variable name="rels" select="concat($_rootfolder,'word/_rels/new-document.xml.rels')"  as="xs:string?"/>
+<xsl:variable name="rels" select="concat($_rootfolder,'word/_rels/document.xml.rels')"  as="xs:string?"/>
 
 <!-- document node of the main document.xml file of the docx input document  -->
 <xsl:variable name="main-document" select="document($main)" as="node()"/>
