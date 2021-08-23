@@ -41,7 +41,7 @@
  else '^No Selected Value$'"/>
 </xsl:function>
 
-<!-- 
+<!--
   Function to return the corresponding Abstract Number Id from word, from the input parameter, according to it's style
  -->
 <xsl:function name="fn:get-abstract-num-id-from-element" as="xs:string?">
@@ -474,7 +474,7 @@
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>
-  
+
 <!--
   Returns the string after a given delimiter, from an input string
 
@@ -519,7 +519,7 @@
 <xsl:function name="fn:get-bookmark-value" as="xs:string">
   <xsl:param name="string" />
   <xsl:param name="reference" />
-  <xsl:analyze-string regex="^(.*)[{$reference}]\s+([\w_\.]+).*" select="$string">
+  <xsl:analyze-string regex="^(.*)[{$reference}]\s+([\S]+).*" select="$string">
     <xsl:matching-substring>
       <xsl:value-of select="regex-group(2)" />
     </xsl:matching-substring>
@@ -724,7 +724,7 @@
     <xsl:when test="$current-style = $list-level5">
       <xsl:value-of select="$list-continue-level5" />
     </xsl:when>
-  </xsl:choose> 
+  </xsl:choose>
 </xsl:function>
 
 <!-- Function that uses to define the next upper list styles for each ListBullet level -->
@@ -743,7 +743,7 @@
     <xsl:when test="$current-style = $list-level5">
       <xsl:value-of select="$list-level4" />
     </xsl:when>
-  </xsl:choose> 
+  </xsl:choose>
 </xsl:function>
 
 <!-- Function that uses to define the next lower list styles for each ListBullet level -->
@@ -762,7 +762,7 @@
     <xsl:when test="$current-style = $list-level4">
       <xsl:value-of select="$list-level5" />
     </xsl:when>
-  </xsl:choose> 
+  </xsl:choose>
 </xsl:function>
 
 </xsl:stylesheet>
