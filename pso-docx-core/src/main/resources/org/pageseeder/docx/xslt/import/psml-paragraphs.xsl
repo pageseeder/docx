@@ -40,7 +40,7 @@
     <xsl:apply-templates select="./*" mode="content">
       <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
      </xsl:apply-templates>
-   
+
      <xsl:apply-templates select="descendant::v:textbox" mode="textbox" />
      <xsl:sequence select="fn:generate-anchors(.)" />
   </block>
@@ -114,6 +114,9 @@
           <xsl:if test="config:get-para-indent($style-name) != ''">
             <xsl:attribute name="indent" select="config:get-para-indent($style-name)" />
           </xsl:if>
+          <xsl:if test="config:get-numbered-para-value($style-name)='numbering'">
+            <xsl:attribute name="numbered" select="'true'" />
+          </xsl:if>
           <xsl:if test="$current/w:pPr/w:numPr/w:numId or matches($style-name,$numbering-paragraphs-list-string)">
             <xsl:variable name="currentNumId">
               <xsl:value-of select="fn:get-numid-from-style($current)" />
@@ -127,16 +130,11 @@
               select="if ($numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$currentNumId]/w:lvl[@w:ilvl=$currentLevel]/w:numFmt/@w:val='bullet') then true() else false()" />
 
             <xsl:if test="not($isBullet)">
-              <xsl:choose>
-                <xsl:when test="config:get-numbered-para-value($style-name)='prefix'">
+              <xsl:if test="config:get-numbered-para-value($style-name)='prefix'">
                   <xsl:if test="$has-numbering-format">
                     <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$style-name)" />
                   </xsl:if>
-                </xsl:when>
-                <xsl:when test="config:get-numbered-para-value($style-name)='numbering'">
-                  <xsl:attribute name="numbered" select="'true'" />
-                </xsl:when>
-              </xsl:choose>
+              </xsl:if>
 
             </xsl:if>
           </xsl:if>
@@ -212,6 +210,9 @@
         <xsl:if test="config:get-para-indent($style-name) != ''">
           <xsl:attribute name="indent" select="config:get-para-indent($style-name)" />
         </xsl:if>
+        <xsl:if test="config:get-numbered-para-value($style-name)='numbering'">
+          <xsl:attribute name="numbered" select="'true'" />
+        </xsl:if>
         <xsl:if test="$current/w:pPr/w:numPr/w:numId or matches($style-name,$numbering-paragraphs-list-string)">
 
           <xsl:variable name="currentNumId">
@@ -230,16 +231,11 @@
             select="if ($numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$currentAbstractNumId]/w:lvl[@w:ilvl=$currentLevel]/w:numFmt/@w:val='bullet') then true() else false()" />
 
           <xsl:if test="not($isBullet)">
-            <xsl:choose>
-              <xsl:when test="config:get-numbered-para-value($style-name)='prefix'">
+            <xsl:if test="config:get-numbered-para-value($style-name)='prefix'">
                 <xsl:if test="$has-numbering-format">
                   <xsl:attribute name="prefix" select="fn:get-numbering-value-from-paragraph-style($current,$style-name)" />
                 </xsl:if>
-              </xsl:when>
-              <xsl:when test="config:get-numbered-para-value($style-name)='numbering'">
-                <xsl:attribute name="numbered" select="'true'" />
-              </xsl:when>
-            </xsl:choose>
+            </xsl:if>
           </xsl:if>
         </xsl:if>
 
@@ -304,7 +300,7 @@
             </xsl:apply-templates>
           </xsl:otherwise>
         </xsl:choose>
-        
+
         <xsl:sequence select="fn:generate-anchors(.)" />
       </xsl:element>
     </xsl:otherwise>
@@ -331,7 +327,7 @@
         <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
 	      <block label="{$type-page}" />
 	    </xsl:if>
-      <xsl:apply-templates mode="textbox" /> 
+      <xsl:apply-templates mode="textbox" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:variable name="content-para">
@@ -355,17 +351,17 @@
 	        </xsl:apply-templates>
           <xsl:sequence select="fn:generate-anchors(.)" />
 	      </para>
-      </xsl:variable>  
+      </xsl:variable>
       <!-- don't output empty para containing section break -->
       <xsl:if test="$content-para/para/node() or not(w:pPr/w:sectPr/w:pgSz)">
-        <xsl:copy-of select="$content-para" />       
+        <xsl:copy-of select="$content-para" />
       </xsl:if>
       <xsl:if test="w:pPr/w:sectPr/w:pgSz">
         <xsl:variable name="type-page" select="if (w:pPr/w:sectPr/w:pgSz/@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
         <block label="{$type-page}" />
       </xsl:if>
     </xsl:otherwise>
-  </xsl:choose>  
+  </xsl:choose>
 </xsl:template>
 
 <!--
@@ -379,7 +375,7 @@
     <block label="{$type-page}" />
   </xsl:if>
 </xsl:template>
- 
+
 <!--
   Template to match the midle of section word page
 
@@ -388,6 +384,6 @@
 <xsl:template match="w:sectPr/w:pgSz[ancestor::w:pPr[w:pStyle/@w:val = $config-doc/config/styles/wordstyle/@name]]" mode="content">
   <xsl:variable name="type-page" select="if (@w:orient) then 'ps_landscape_end' else 'ps_portrait_end'" />
   <block label="{$type-page}" />
-</xsl:template>    
+</xsl:template>
 
 </xsl:stylesheet>
