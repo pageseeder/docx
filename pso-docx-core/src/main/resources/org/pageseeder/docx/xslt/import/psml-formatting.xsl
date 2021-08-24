@@ -65,13 +65,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:choose>
       <!-- Ignore text inside a form field -->
       <xsl:when test="current()/name() = 'w:t' and
           preceding::w:fldChar[@w:fldCharType='begin' or @w:fldCharType='end'][1][w:ffData/w:name/@w:val]">
       </xsl:when>
-      
+
       <!-- Handle form field -->
       <xsl:when test="current()/name() = 'w:fldChar' and w:ffData/w:name/@w:val">
         <inline label="ps_field">
@@ -81,7 +81,7 @@
           <xsl:value-of select="normalize-space(w:ffData/w:textInput/w:default/@w:val)" />
         </inline>
       </xsl:when>
-      
+
       <!-- Check if the text is inside a field code -->
       <xsl:when test="current()/name() = 'w:t' and preceding::*[name() = 'w:fldChar'][1][@w:fldCharType='separate']">
         <xsl:call-template name="apply-wr-style">
@@ -485,7 +485,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      
+
       <xsl:choose>
         <xsl:when test="$current/ancestor::w:hyperlink/@r:id">
           <xsl:variable name="rid" select="$current/ancestor::w:hyperlink/@r:id" />
@@ -545,6 +545,9 @@
           </xsl:when>
           <xsl:when test="contains(current()/preceding-sibling::w:instrText[1],('HYPERLINK'))">
             <xsl:value-of select="fn:get-bookmark-value-hyperlink(current()/preceding-sibling::w:instrText[1],'HYPERLINK')" />
+          </xsl:when>
+          <xsl:when test="contains(current()/preceding-sibling::w:instrText[1],('CITATION'))">
+            <xsl:value-of select="concat('s-',fn:get-bookmark-value(current()/preceding-sibling::w:instrText[1],'CITATION'))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="'NONE'" />
