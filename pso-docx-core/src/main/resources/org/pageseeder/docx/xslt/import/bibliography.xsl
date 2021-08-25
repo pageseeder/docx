@@ -26,7 +26,7 @@
 
 <!-- Template to match each source -->
 <xsl:template match="b:Source" mode="bibliography">
-  <block label="Source">
+  <block label="BibSource">
     <anchor name="bs-{b:Tag}" />
     <xsl:for-each select="b:Author/b:Author/b:NameList/b:Person">
       <para>
