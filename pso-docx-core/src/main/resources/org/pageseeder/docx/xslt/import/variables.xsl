@@ -59,9 +59,6 @@
 <!-- Endnote file path -->
 <xsl:variable name="endnotes-file" select="concat($_rootfolder,'/word/new-endnotes.xml')"/>
 
-<!-- Bibliography file -->
-<xsl:variable name="bibliography" select="concat($_rootfolder,'customXML/item1.xml')"/>
-
   <!-- Variable that defines name of the tile for the main document -->
 <xsl:variable name="document-title" as="xs:string?">
   <xsl:variable name="core" select="document(concat($_rootfolder,'docProps/core.xml'))" />
