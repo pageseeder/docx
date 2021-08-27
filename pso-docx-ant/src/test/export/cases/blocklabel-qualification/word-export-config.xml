@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config>
+  <elements>
+    <heading>
+      <level value="1" wordstyle="Heading Unnum 1"/>
+      <level value="2" wordstyle="Heading Unnum 2"/>
+    </heading>
+    <para>
+      <indent level="0" wordstyle="List Continue"/>
+    </para>
+    <list liststyle="Bulleted List" />
+    <nlist liststyle="Numbered List" />
+  </elements>
+  <elements blocklabel="block2">
+    <!--
+    <heading>
+      <level value="2" wordstyle="Heading Unnum 3"/>
+    </heading>
+    -->
+    <para>
+      <indent level="0" wordstyle="List Continue 2"/>
+    </para>
+    <!--
+    <list liststyle="Numbered List" />
+    <nlist liststyle="Bulleted List" />
+    -->
+  </elements>
+  <elements label="appendix">
+    <heading>
+      <level value="1" wordstyle="heading 1"/>
+      <level value="2" wordstyle="heading 2"/>
+    </heading>
+    <para>
+      <indent level="0" wordstyle="List Continue 3"/>
+    </para>
+    <block default="generate-ps-style">
+      <label value="block1" wordstyle="Title" />
+      <label value="block2" wordstyle="Caption" />
+    </block>
+    <list liststyle="Numbered List" />
+    <nlist liststyle="Bulleted List" />
+  </elements>
+  <elements label="appendix" blocklabel="block2">
+    <!--
+    <heading>
+      <level value="2" wordstyle="Heading 3"/>
+    </heading>
+    -->
+    <para>
+      <indent level="0" wordstyle="List Continue 4"/>
+    </para>
+    <!--
+    <list liststyle="Bulleted List" />
+    <nlist liststyle="Numbered List" />
+    -->
+  </elements>
+</config>

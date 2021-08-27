@@ -1504,6 +1504,71 @@ Returns the default table width value based on a table role.
   </xsl:choose>
 </xsl:function>
 
+<!--
+  Returns the configured ps:para w:style for a specific block label and document label
+
+  @param block-label the closest ancestor block label
+  @param document-label the current document label
+  @param indent-level the current ps:para indent level
+  @param numbered the @ps:numbered attribute of the ps:para
+  @param prefix the current ps:para prefix
+
+  @return the w:style
+-->
+<xsl:function name="config:para-wordstyle-for-block-label-document-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="indent-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label
+    ][@blocklabel = $block-label]/para/indent[if($numbered)
+    then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+    then @prefixed='true' else not(@prefixed='true')]"/>
+  <xsl:choose>
+    <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
+      <xsl:value-of select="$indent[@level='0'][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
+      <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+  <!--
+  Returns the configured ps:para w:style for a specific block label
+
+  @param block-label the closest ancestor block label
+  @param indent-level the current ps:para indent level
+  @param numbered the @ps:numbered attribute of the ps:para
+  @param prefix the current ps:para prefix
+
+  @return the w:style
+-->
+<xsl:function name="config:para-wordstyle-for-block-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="indent-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)
+  ][@blocklabel = $block-label]/para/indent[if($numbered)
+  then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+  then @prefixed='true' else not(@prefixed='true')]"/>
+  <xsl:choose>
+    <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
+      <xsl:value-of select="$indent[@level='0'][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
+      <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
 
 <!--
   Returns the configured ps:para w:style for a specific document label
@@ -1511,6 +1576,7 @@ Returns the default table width value based on a table role.
   @param document-label the current document label
   @param indent-level the current ps:para indent level
   @param numbered the @ps:numbered attribute of the ps:para
+  @param prefix the current ps:para prefix
 
   @return the w:style
 -->
@@ -1519,7 +1585,8 @@ Returns the default table width value based on a table role.
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label]/para/indent[if($numbered)
+  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label
+    ][not(@blocklabel)]/para/indent[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
@@ -1540,6 +1607,7 @@ Returns the default table width value based on a table role.
 
   @param indent-level the current ps:para indent level
   @param numbered the @ps:numbered attribute of the ps:para
+  @param prefix the current ps:para prefix
 
   @return the w:style
 -->
@@ -1547,7 +1615,8 @@ Returns the default table width value based on a table role.
   <xsl:param name="indent-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)]/para/indent[if($numbered)
+  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)
+    ][not(@blocklabel)]/para/indent[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>

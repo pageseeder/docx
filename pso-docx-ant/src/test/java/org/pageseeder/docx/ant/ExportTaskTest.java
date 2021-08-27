@@ -79,6 +79,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testBlocklabelQualification() throws IOException, SAXException {
+    testIndividual("blocklabel-qualification");
+  }
+
+  @Test
   public void testCommentsFalse() throws IOException, SAXException {
     testIndividual("comments-false");
   }

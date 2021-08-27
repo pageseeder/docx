@@ -31,7 +31,14 @@
 
       <!-- Paragraphs within blocks -->
       <xsl:when test="self::para and parent::block">
+        <xsl:variable name="blocklabel" select="(ancestor::block)[last()]/@label" />
         <xsl:choose>
+          <xsl:when test="config:para-wordstyle-for-block-label-document-label($blocklabel,$labels,./@indent, ./@numbered, ./@prefix) != ''">
+            <xsl:value-of select="config:para-wordstyle-for-block-label-document-label($blocklabel,$labels, ./@indent, ./@numbered, ./@prefix)"/>
+          </xsl:when>
+          <xsl:when test="config:para-wordstyle-for-block-label($blocklabel,./@indent, ./@numbered, ./@prefix) != ''">
+            <xsl:value-of select="config:para-wordstyle-for-block-label($blocklabel, ./@indent, ./@numbered, ./@prefix)"/>
+          </xsl:when>
           <xsl:when test="config:block-wordstyle-for-document-label($labels, parent::block/@label) = 'generate-ps-style'">
             <xsl:value-of select="concat('ps_blk_',parent::block/@label)"/>
           </xsl:when>
@@ -55,6 +62,12 @@
           </xsl:when>
           <xsl:when test="config:block-default-wordstyle-for-default-document() !=''">
             <xsl:value-of select="config:block-default-wordstyle-for-default-document()"/>
+          </xsl:when>
+          <xsl:when test="config:para-wordstyle-for-document-label($labels,./@indent, ./@numbered, ./@prefix) != ''">
+            <xsl:value-of select="config:para-wordstyle-for-document-label($labels, ./@indent, ./@numbered, ./@prefix)"/>
+          </xsl:when>
+          <xsl:when test="config:para-wordstyle-for-default-document(./@indent, ./@numbered, ./@prefix) != ''">
+            <xsl:value-of select="config:para-wordstyle-for-default-document(./@indent, ./@numbered, ./@prefix)"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="$default-paragraph-style"/>
@@ -227,7 +240,14 @@
       </xsl:when>
 
       <xsl:when test="self::para">
+        <xsl:variable name="blocklabel" select="(ancestor::block)[last()]/@label" />
         <xsl:choose>
+          <xsl:when test="config:para-wordstyle-for-block-label-document-label($blocklabel,$labels,./@indent, ./@numbered, ./@prefix) != ''">
+            <xsl:value-of select="config:para-wordstyle-for-block-label-document-label($blocklabel,$labels, ./@indent, ./@numbered, ./@prefix)"/>
+          </xsl:when>
+          <xsl:when test="config:para-wordstyle-for-block-label($blocklabel,./@indent, ./@numbered, ./@prefix) != ''">
+            <xsl:value-of select="config:para-wordstyle-for-block-label($blocklabel, ./@indent, ./@numbered, ./@prefix)"/>
+          </xsl:when>
           <xsl:when test="config:para-wordstyle-for-document-label($labels,./@indent, ./@numbered, ./@prefix) != ''">
             <xsl:value-of select="config:para-wordstyle-for-document-label($labels, ./@indent, ./@numbered, ./@prefix)"/>
           </xsl:when>
