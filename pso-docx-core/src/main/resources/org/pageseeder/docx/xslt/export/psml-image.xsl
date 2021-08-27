@@ -17,6 +17,7 @@
                 xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
                 xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
                 xmlns:fn="http://pageseeder.org/docx/function"
+                xmlns:config="http://pageseeder.org/docx/config"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -61,10 +62,35 @@
   Template to create the `w:drawing` object from the image
 -->
 <xsl:template name="create-drawing-for-image" as="element(w:drawing)">
+  <xsl:param name="labels" tunnel="yes"/>
   <xsl:variable name="id"     select="count(preceding::image) + 1"/>
   <xsl:variable name="title"  select="string(@alt)"/>
-  <xsl:variable name="width"  select="fn:dimension-to-emu(@width, 3048000)"/>
-  <xsl:variable name="height" select="fn:dimension-to-emu(@height, 2032000)"/>
+  <xsl:variable name="maxwidth" select="config:image-maxwidth($labels)" />
+  <xsl:variable name="pixelwidth" select="if (contains(@width,'px')) then substring-before(@width, 'px') else @width" />
+  <xsl:variable name="pixelheight" select="if (contains(@height,'px')) then substring-before(@height, 'px') else @height" />
+  <xsl:variable name="width">
+    <xsl:choose>
+      <xsl:when test="$maxwidth castable as xs:integer and $pixelwidth castable as xs:integer and
+                      xs:integer($pixelwidth) gt xs:integer($maxwidth)">
+        <xsl:value-of select="fn:dimension-to-emu($maxwidth, 3048000)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="fn:dimension-to-emu(@width, 3048000)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:variable name="height">
+    <xsl:choose>
+      <xsl:when test="$maxwidth castable as xs:integer and $pixelwidth castable as xs:integer and
+                      xs:integer($pixelwidth) gt xs:integer($maxwidth) and $pixelheight castable as xs:integer">
+        <xsl:value-of select="fn:pixels-to-emu(
+                              xs:integer($maxwidth) div xs:integer($pixelwidth) * xs:integer($pixelheight))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="fn:dimension-to-emu(@height, 2032000)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
   <w:drawing>
     <wp:inline distT="0" distB="0" distL="0" distR="0">
       <wp:extent cx="{$width}" cy="{$height}" />
@@ -118,7 +144,7 @@
       <xsl:value-of select="fn:pixels-to-emu(number(substring-before($dimension, 'px')))" />
     </xsl:when>
     <xsl:when test="$dimension castable as xs:integer">
-      <xsl:value-of select="fn:pixels-to-emu($dimension)" />
+      <xsl:value-of select="fn:pixels-to-emu(xs:integer($dimension))" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="$default" />

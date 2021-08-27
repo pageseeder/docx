@@ -923,19 +923,40 @@ Returns the default table width value based on a table role.
   @param document-label the document label
   @return the w:style
 -->
-  <xsl:function name="config:image-wordstyle-for-document-label" as="xs:string">
-    <xsl:param name="document-label"/>
-    <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/image/@wordstyle)" />
-  </xsl:function>
+<xsl:function name="config:image-wordstyle-for-document-label" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/image/@wordstyle)" />
+</xsl:function>
 
 <!--
   Returns the configured style for ps:image element for default documents.
 
   @return the w:style
 -->
-  <xsl:function name="config:image-wordstyle-for-default-document" as="xs:string">
-    <xsl:value-of select="string($config-doc/config/elements[not(@label)]/image/@wordstyle)" />
-  </xsl:function>
+<xsl:function name="config:image-wordstyle-for-default-document" as="xs:string">
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/image/@wordstyle)" />
+</xsl:function>
+
+<!--
+  Returns the configured maximum width for ps:image element for label specific documents
+  with fall back to default configuration.
+
+  @param document-label the document label
+  @return the  maximum width
+-->
+<xsl:function name="config:image-maxwidth" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:variable name="specific"
+                select="string($config-doc/config/elements[@label = $document-label]/image/@maxwidth)" />
+  <xsl:choose>
+    <xsl:when test="not($document-label = '' or $specific = '')">
+      <xsl:value-of select="$specific" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="string($config-doc/config/elements[not(@label)]/image/@maxwidth)" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
 
 <!--
   Returns the configured w:style for ps:block element for label specific documents.
