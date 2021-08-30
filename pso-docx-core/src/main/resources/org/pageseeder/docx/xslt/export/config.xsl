@@ -942,18 +942,41 @@ Returns the default table width value based on a table role.
   with fall back to default configuration.
 
   @param document-label the document label
-  @return the  maximum width
+  @return the  maximum width in pixels
 -->
 <xsl:function name="config:image-maxwidth" as="xs:string">
   <xsl:param name="document-label"/>
-  <xsl:variable name="specific"
+  <xsl:variable name="specificmax"
                 select="string($config-doc/config/elements[@label = $document-label]/image/@maxwidth)" />
+  <xsl:variable name="defaultmax"
+                select="string($config-doc/config/elements[not(@label)]/image/@maxwidth)" />
   <xsl:choose>
-    <xsl:when test="not($document-label = '' or $specific = '')">
-      <xsl:value-of select="$specific" />
+    <xsl:when test="not($document-label = '' or $specificmax = '')">
+      <xsl:value-of select="$specificmax" />
+    </xsl:when>
+    <xsl:when test="not($defaultmax = '')">
+      <xsl:value-of select="$defaultmax" />
+    </xsl:when>
+    <xsl:otherwise>620</xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the configured image label which will ignore image maxwidth.
+
+  @param document-label the document label
+  @return the label
+-->
+<xsl:function name="config:image-widelabel" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:variable name="specificlabel"
+                select="string($config-doc/config/elements[@label = $document-label]/image/@widelabel)" />
+  <xsl:choose>
+    <xsl:when test="not($document-label = '' or $specificlabel = '')">
+      <xsl:value-of select="$specificlabel" />
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="string($config-doc/config/elements[not(@label)]/image/@maxwidth)" />
+      <xsl:value-of select="string($config-doc/config/elements[not(@label)]/image/@widelabel)" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>

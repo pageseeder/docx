@@ -255,6 +255,7 @@
 		<xs:complexType>
 			<xs:attribute name="wordstyle" type="xs:string"/>
 			<xs:attribute name="maxwidth" type="xs:integer"/>
+			<xs:attribute name="widelabel" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 

@@ -68,10 +68,11 @@
   <xsl:variable name="maxwidth" select="config:image-maxwidth($labels)" />
   <xsl:variable name="pixelwidth" select="if (contains(@width,'px')) then substring-before(@width, 'px') else @width" />
   <xsl:variable name="pixelheight" select="if (contains(@height,'px')) then substring-before(@height, 'px') else @height" />
+  <xsl:variable name="ignoremax" as="xs:boolean" select="not(@labels = '') and @labels = config:image-widelabel($labels)" />
   <xsl:variable name="width">
     <xsl:choose>
       <xsl:when test="$maxwidth castable as xs:integer and $pixelwidth castable as xs:integer and
-                      xs:integer($pixelwidth) gt xs:integer($maxwidth)">
+                      xs:integer($pixelwidth) gt xs:integer($maxwidth) and not($ignoremax)">
         <xsl:value-of select="fn:dimension-to-emu($maxwidth, 3048000)"/>
       </xsl:when>
       <xsl:otherwise>
@@ -82,7 +83,8 @@
   <xsl:variable name="height">
     <xsl:choose>
       <xsl:when test="$maxwidth castable as xs:integer and $pixelwidth castable as xs:integer and
-                      xs:integer($pixelwidth) gt xs:integer($maxwidth) and $pixelheight castable as xs:integer">
+                      xs:integer($pixelwidth) gt xs:integer($maxwidth) and $pixelheight castable as xs:integer and
+                      not($ignoremax)">
         <xsl:value-of select="fn:pixels-to-emu(
                               xs:integer($maxwidth) div xs:integer($pixelwidth) * xs:integer($pixelheight))"/>
       </xsl:when>
