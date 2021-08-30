@@ -193,7 +193,14 @@
 
       <!-- Heading -->
       <xsl:when test="self::heading">
+        <xsl:variable name="blocklabel" select="(ancestor::block)[last()]/@label" />
         <xsl:choose>
+          <xsl:when test="config:heading-wordstyle-for-block-label-document-label($blocklabel,$labels,@level,@numbered,@prefix) != ''">
+            <xsl:value-of select="config:heading-wordstyle-for-block-label-document-label($blocklabel,$labels,@level,@numbered,@prefix)"/>
+          </xsl:when>
+          <xsl:when test="config:heading-wordstyle-for-block-label($blocklabel,@level,@numbered,@prefix) != ''">
+            <xsl:value-of select="config:heading-wordstyle-for-block-label($blocklabel,@level,@numbered,@prefix)"/>
+          </xsl:when>
           <xsl:when test="config:heading-wordstyle-for-document-label($labels,@level,@numbered,@prefix) != ''">
             <xsl:value-of select="config:heading-wordstyle-for-document-label($labels,@level,@numbered,@prefix)"/>
           </xsl:when>
@@ -223,10 +230,17 @@
 
       <!-- List item -->
       <xsl:when test="ancestor::item[1]">
+        <xsl:variable name="blocklabel" select="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/(ancestor::block)[last()]/@label" />
         <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist)"/>
         <xsl:variable name="role"      select="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
         <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
         <xsl:choose>
+          <xsl:when test="config:list-paragraphstyle-for-block-label-document-label($blocklabel,$labels,$role,$level,$list-type) != ''">
+            <xsl:value-of select="config:list-paragraphstyle-for-block-label-document-label($blocklabel,$labels,$role,$level,$list-type)"/>
+          </xsl:when>
+          <xsl:when test="config:list-paragraphstyle-for-block-label($blocklabel,$role,$level,$list-type) != ''">
+            <xsl:value-of select="config:list-paragraphstyle-for-block-label($blocklabel,$role,$level,$list-type)"/>
+          </xsl:when>
           <xsl:when test="config:list-paragraphstyle-for-document-label($labels,$role,$level,$list-type) != ''">
             <xsl:value-of select="config:list-paragraphstyle-for-document-label($labels,$role,$level,$list-type)"/>
           </xsl:when>

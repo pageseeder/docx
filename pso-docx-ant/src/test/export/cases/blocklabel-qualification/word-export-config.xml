@@ -12,18 +12,14 @@
     <nlist liststyle="Numbered List" />
   </elements>
   <elements blocklabel="block2">
-    <!--
     <heading>
       <level value="2" wordstyle="Heading Unnum 3"/>
     </heading>
-    -->
     <para>
       <indent level="0" wordstyle="List Continue 2"/>
     </para>
-    <!--
     <list liststyle="Numbered List" />
     <nlist liststyle="Bulleted List" />
-    -->
   </elements>
   <elements label="appendix">
     <heading>
@@ -41,17 +37,13 @@
     <nlist liststyle="Bulleted List" />
   </elements>
   <elements label="appendix" blocklabel="block2">
-    <!--
     <heading>
-      <level value="2" wordstyle="Heading 3"/>
+      <level value="2" wordstyle="heading 3"/>
     </heading>
-    -->
     <para>
       <indent level="0" wordstyle="List Continue 4"/>
     </para>
-    <!--
     <list liststyle="Bulleted List" />
     <nlist liststyle="Numbered List" />
-    -->
   </elements>
 </config>

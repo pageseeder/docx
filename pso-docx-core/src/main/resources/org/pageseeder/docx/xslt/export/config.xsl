@@ -1075,11 +1075,57 @@ Returns the default table width value based on a table role.
 </xsl:function>
 
 <!--
+  Returns the configured w:style for ps:heading element with block labels and document label.
+
+  @param document-label the block label
+  @param document-label the document label
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @param prefix the prefix attribute value of the heading
+
+  @return the w:style
+-->
+<xsl:function name="config:heading-wordstyle-for-block-label-document-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="heading-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label
+][@blocklabel = $block-label]/heading/level[if($numbered)
+then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
+</xsl:function>
+
+<!--
+  Returns the configured w:style for ps:heading element with block labels in default documents.
+
+  @param document-label the block label
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @param prefix the prefix attribute value of the heading
+
+  @return the w:style
+-->
+<xsl:function name="config:heading-wordstyle-for-block-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="heading-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)
+  ][@blocklabel = $block-label]/heading/level[if($numbered)
+  then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+  then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
+</xsl:function>
+
+<!--
   Returns the configured w:style for ps:heading element for label specific documents.
 
   @param document-label the document label
   @param heading-level the current heading level
   @param numbered the numbered attribute value of the heading
+  @param prefix the prefix attribute value of the heading
+
   @return the w:style
 -->
 <xsl:function name="config:heading-wordstyle-for-document-label" as="xs:string">
@@ -1087,7 +1133,8 @@ Returns the default table width value based on a table role.
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/heading/level[if($numbered)
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label
+    ][not(@blocklabel)]/heading/level[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
@@ -1097,13 +1144,16 @@ Returns the default table width value based on a table role.
 
   @param heading-level the current heading level
   @param numbered the numbered attribute value of the heading
+  @param prefix the prefix attribute value of the heading
+
   @return the w:style
 -->
 <xsl:function name="config:heading-wordstyle-for-default-document" as="xs:string">
   <xsl:param name="heading-level"/>
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
-  <xsl:value-of select="string($config-doc/config/elements[not(@label)]/heading/level[if($numbered)
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)
+    ][not(@blocklabel)]/heading/level[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
@@ -1440,6 +1490,50 @@ Returns the default table width value based on a table role.
 </xsl:function>
 
 <!--
+  Returns the configured ps:list paragraph w:style for block label specific documents
+  NOTE: Returns a style ID not name.
+
+  @param block-label the current block label
+  @param document-label the current document label
+  @param list-role the current list role
+  @param list-level the current list level
+  @param list-type list or nlist
+
+  @return the w:style ID
+-->
+<xsl:function name="config:list-paragraphstyle-for-block-label-document-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-level"/>
+  <xsl:param name="list-type"/>
+
+  <xsl:variable name="list-style" select="config:list-style-for-block-label-document-label($block-label, $document-label, $list-role, $list-type)" />
+  <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
+</xsl:function>
+
+<!--
+  Returns the configured ps:list paragraph w:style for block label default documents
+  NOTE: Returns a style ID not name.
+
+  @param block-label the current block label
+  @param list-role the current list role
+  @param list-level the current list level
+  @param list-type list or nlist
+
+  @return the w:style ID
+-->
+<xsl:function name="config:list-paragraphstyle-for-block-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-level"/>
+  <xsl:param name="list-type"/>
+
+  <xsl:variable name="list-style" select="config:list-style-for-block-label($block-label, $list-role, $list-type)" />
+  <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
+</xsl:function>
+
+<!--
   Returns the configured ps:list paragraph w:style for document label specific documents
   NOTE: Returns a style ID not name.
 
@@ -1480,6 +1574,66 @@ Returns the default table width value based on a table role.
 </xsl:function>
 
 <!--
+  Returns the configured ps:list  w:style for block label specific documents
+
+  @param block-label the current block label
+  @param document-label the current document label
+  @param list-role the current list role
+
+  @return the w:style
+-->
+<xsl:function name="config:list-style-for-block-label-document-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-type"/>
+  <xsl:choose>
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[@label = $document-label
+      ][@blocklabel = $block-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[@label = $document-label
+        ][@blocklabel = $block-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label
+      ][@blocklabel = $block-label]/*[name() = $list-type]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[@label = $document-label
+        ][@blocklabel = $block-label]/*[name() = $list-type]/@liststyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the configured ps:list  w:style for block label default documents
+
+  @param block-label the current block label
+  @param list-role the current list role
+
+  @return the w:style
+-->
+<xsl:function name="config:list-style-for-block-label" as="xs:string">
+  <xsl:param name="block-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-type"/>
+  <xsl:choose>
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[not(@label)
+        ][@blocklabel = $block-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[not(@label)
+          ][@blocklabel = $block-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)
+        ][@blocklabel = $block-label]/*[name() = $list-type]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[not(@label)
+          ][@blocklabel = $block-label]/*[name() = $list-type]/@liststyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the configured ps:list  w:style for document label specific documents
 
   @param document-label the current document label
@@ -1492,11 +1646,15 @@ Returns the default table width value based on a table role.
   <xsl:param name="list-role"/>
   <xsl:param name="list-type"/>
   <xsl:choose>
-    <xsl:when test="$list-role != '' and $config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[@label = $document-label
+        ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[@label = $document-label
+          ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
     </xsl:when>
-    <xsl:when test="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/@liststyle">
-      <xsl:value-of select="$config-doc/config/elements[@label = $document-label]/*[name() = $list-type]/@liststyle" />
+    <xsl:when test="$config-doc/config/elements[@label = $document-label
+        ][not(@blocklabel)]/*[name() = $list-type]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[@label = $document-label
+          ][not(@blocklabel)]/*[name() = $list-type]/@liststyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
@@ -1515,11 +1673,15 @@ Returns the default table width value based on a table role.
   <xsl:param name="list-role"/>
   <xsl:param name="list-type"/>
   <xsl:choose>
-    <xsl:when test="$list-role != '' and $config-doc/config/elements[not(@label)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[not(@label)
+        ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[not(@label)
+          ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
     </xsl:when>
-    <xsl:when test="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/@liststyle">
-      <xsl:value-of select="$config-doc/config/elements[not(@label)]/*[name() = $list-type]/@liststyle" />
+    <xsl:when test="$config-doc/config/elements[not(@label)
+        ][not(@blocklabel)]/*[name() = $list-type]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[not(@label)
+          ][not(@blocklabel)]/*[name() = $list-type]/@liststyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
