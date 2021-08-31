@@ -609,6 +609,31 @@
 </xsl:function>
 
 <!--
+  Returns the index document label configured.
+
+  @return the document label
+-->
+<xsl:function name="config:index-documentlabel" as="xs:string">
+  <xsl:value-of select="$config-doc/config/default/indexdoc/@documentlabel" />
+</xsl:function>
+
+<!--
+  Returns the number of index columns configured (default 2).
+
+  @return the number of columns
+-->
+<xsl:function name="config:index-columns" as="xs:integer">
+  <xsl:variable name="columns" select="$config-doc/config/default/indexdoc/@columns" />
+  <xsl:choose>
+    <xsl:when test="$columns castable as xs:integer and
+        xs:integer($columns) gt 0 and xs:integer($columns) lt 5">
+      <xsl:value-of select="$columns" />
+    </xsl:when>
+    <xsl:otherwise>2</xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the list of default inline labels to transform to fieldcodes.
 
   @return the list of inline labels

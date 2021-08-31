@@ -314,6 +314,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testInlineIndexLabel() throws IOException, SAXException {
+    testIndividual("inline-index-label");
+  }
+
+  @Test
   public void testLargePSML() throws IOException, SAXException {
     long start = System.currentTimeMillis();
     testIndividual("large-psml", "document");
