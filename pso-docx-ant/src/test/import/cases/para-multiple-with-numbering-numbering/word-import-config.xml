@@ -26,5 +26,9 @@
 			<indent value="6" />
 			<numbering select="true" value="numbering"/>
 		</wordstyle>
+		<wordstyle name="List" psmlelement="para">
+			<indent value="1" />
+			<numbering select="true" value="numbering"/>
+		</wordstyle>
 	</styles>
 </config>

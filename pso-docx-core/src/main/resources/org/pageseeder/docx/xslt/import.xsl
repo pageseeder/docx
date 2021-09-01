@@ -25,10 +25,10 @@
      b) Selected Outline Level
      c) Selected Paragraph Style
      d) ALWAYS break for bookmark ( so that if there is any reference, there will be a section to point to
-  
+
   4) Table of Contents:
       Option to convert or not word TOC ( will be converted as normal sections,paragraphs,xrefs for bookmarks, etc...)
-      
+
   5) Paragraph Styles
       Can be converted into:
         a) Headings
@@ -36,16 +36,16 @@
         c) Para elements
           i) Para elements can be enumerated with a prefix
         d) Inline elements
-        e) Any defined element in the configuration file ( title, etc...) 
-        
+        e) Any defined element in the configuration file ( title, etc...)
+
   6) numbering
-     A function for picking up manual numbering is now available [a),b),c);(i),(ii),(iii);1.,2.,3.;etc...] 
+     A function for picking up manual numbering is now available [a),b),c);(i),(ii),(iii);1.,2.,3.;etc...]
      used to number paragraphs and set prefix
-      
+
   7) smartTags are converted and can be:
      a) normal text
-     b) inline label     
-     
+     b) inline label
+
   8) Text runs can be conveted with:
      a) bold
      b) italic
@@ -56,16 +56,16 @@
         can be:
           i)  A specific inline label
           ii) A pre-defined inline label
-  
-  9) hyperlinks and bookmarks are converted into xrefs           
-  
+
+  9) hyperlinks and bookmarks are converted into xrefs
+
   10) table styles are saved under the [@role] attribute
-  
+
   11) lists are supported
         TODO: support for named list style as block label
-  
+
   12) images are supported
-  
+
   @author Hugo Inacio
   @author Christophe Lauret
 
@@ -105,7 +105,10 @@
 <!-- Shapes support -->
 <xsl:import href="import/textbox.xsl" />
 
-<!-- Other generated filed -->
+<!-- Bibliography -->
+<xsl:import href="import/bibliography.xsl" />
+
+<!-- Other generated files -->
 <xsl:import href="import/endnotes.xsl" />
 <xsl:import href="import/footnotes.xsl" />
 <xsl:import href="import/index.xsl" />

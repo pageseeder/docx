@@ -59,7 +59,7 @@
 <!-- Endnote file path -->
 <xsl:variable name="endnotes-file" select="concat($_rootfolder,'/word/new-endnotes.xml')"/>
 
-<!-- Variable that defines name of the tile for the main document -->
+  <!-- Variable that defines name of the tile for the main document -->
 <xsl:variable name="document-title" as="xs:string?">
   <xsl:variable name="core" select="document(concat($_rootfolder,'docProps/core.xml'))" />
   <xsl:choose>

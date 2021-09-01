@@ -53,6 +53,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testDefaultReferencesLinkBibliography() throws IOException, SAXException {
+    testIndividual("default-references-link-bibliography");
+  }
+
+  @Test
   public void testDocumentSplitDocumentFalse() throws IOException, SAXException {
     testIndividual("document-split-document-false");
   }

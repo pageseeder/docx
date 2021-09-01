@@ -48,6 +48,30 @@
       </w:p>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
     </xsl:when>
+    <!-- for index output field code after title section -->
+    <xsl:when test="not(config:index-documentlabel() = '') and
+        tokenize(documentinfo/uri/labels,',') = config:index-documentlabel()">
+      <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+      <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
+      <xsl:apply-templates select="section[ends-with(@id,'title')]" mode="psml" >
+        <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+      </xsl:apply-templates>
+      <w:p>
+        <w:r>
+          <w:fldChar w:fldCharType="begin" w:dirty="true" />
+        </w:r>
+        <w:r>
+          <w:instrText xml:space="preserve">INDEX \c "<xsl:value-of select="config:index-columns()" />"</w:instrText>
+        </w:r>
+        <w:r>
+          <w:fldChar w:fldCharType="end" w:dirty="true" />
+        </w:r>
+      </w:p>
+      <xsl:apply-templates select="section[not(ends-with(@id,'title'))]" mode="psml" >
+        <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+      </xsl:apply-templates>
+      <w:bookmarkEnd w:id="{$bookmark-id}"/>
+    </xsl:when>
     <!-- root document -->
     <xsl:when test="not(ancestor::document)">
       <w:document>

@@ -25,6 +25,11 @@
         <image src="image2.jpeg"
           alt="image2.jpeg" width="261" height="196" />
       </para>
+      <para>Big image:</para>
+      <para>
+        <image src="image1.jpg" labels="big"
+               alt="image1.jpg" width="1200" height="900" />
+      </para>
     </fragment>
   </section>
 </document>

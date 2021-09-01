@@ -72,7 +72,6 @@
     <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-index-labels())">
       <xsl:variable name="quote">"</xsl:variable>
       <w:r>
-        <w:t><xsl:value-of select="$text"/></w:t>
         <w:fldChar w:fldCharType="begin"/>
         <w:instrText><xsl:value-of select="concat(' XE ', $quote, $text, $quote, ' ')"/></w:instrText>
         <w:fldChar w:fldCharType="separate"/>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <indexdoc documentlabel="indexdoc" columns="1" />
+  </default>
+  <elements>
+    <inline>
+      <index label="index" />
+    </inline>
+  </elements>
+</config>

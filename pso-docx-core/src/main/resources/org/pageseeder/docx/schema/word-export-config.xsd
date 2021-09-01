@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.7">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.8">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -143,22 +143,18 @@
 
 	<xs:element name="default">
 		<xs:complexType>
-      <xs:choice>
-  			<xs:sequence>
-  				<xs:element ref="defaultparagraphstyle" minOccurs="0" maxOccurs="1" />
-  				<xs:element ref="defaultcharacterstyle" minOccurs="0" maxOccurs="1" />
-  				<xs:element ref="comments" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="citations" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="xrefs" minOccurs="0" maxOccurs="1" />
-          <xs:element ref="placeholders" minOccurs="0" maxOccurs="1" />
-  			</xs:sequence>
-        <xs:sequence>
-          <xs:element ref="level" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
-      </xs:choice>
+			<xs:all>
+				<xs:element ref="defaultparagraphstyle" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="defaultcharacterstyle" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="comments" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="citations" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="xrefs" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="placeholders" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="indexdoc" minOccurs="0" maxOccurs="1" />
+			</xs:all>
 		</xs:complexType>
 	</xs:element>
 
@@ -220,6 +216,20 @@
     </xs:complexType>
   </xs:element>
 
+	<xs:element name="indexdoc">
+		<xs:complexType>
+			<xs:attribute name="documentlabel" type="xs:string" />
+			<xs:attribute name="columns">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="elements">
 		<xs:complexType>
 			<xs:all>
@@ -237,6 +247,7 @@
         <xs:element ref="xref" minOccurs="0" maxOccurs="1" />
 			</xs:all>
 			<xs:attribute name="label" type="xs:string"/>
+			<xs:attribute name="blocklabel" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -253,6 +264,8 @@
 	<xs:element name="image">
 		<xs:complexType>
 			<xs:attribute name="wordstyle" type="xs:string"/>
+			<xs:attribute name="maxwidth" type="xs:integer"/>
+			<xs:attribute name="widelabel" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -263,6 +276,7 @@
 				<xs:element ref="ignore" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="tab" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="fieldcode" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="index" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="default" type="xs:string" default="generate-ps-style"/>
 		</xs:complexType>
@@ -302,6 +316,12 @@
 			<xs:attribute name="value" type="xs:string"/>
 			<xs:attribute name="regexp" type="xs:string" default="%arabic%"/>
 			<xs:attribute name="type" type="xs:string" default="SEQ"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="index">
+		<xs:complexType>
+			<xs:attribute name="label" type="xs:string" />
 		</xs:complexType>
 	</xs:element>
 

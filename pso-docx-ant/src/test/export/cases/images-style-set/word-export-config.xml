@@ -2,6 +2,6 @@
 
 <config>
 	<elements>
-    <image wordstyle="Image" />
+    <image wordstyle="Image" maxwidth="400" widelabel="big" />
   </elements>
 </config>

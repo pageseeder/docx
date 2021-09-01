@@ -111,6 +111,11 @@
           <xs:element ref="properties-fragment" minOccurs="0" />
         </xs:choice>
       </xs:sequence>
+      <xs:attribute name="overwrite" type="xs:boolean" default="true">
+        <xs:annotation>
+          <xs:documentation>Whether or not the fragments can be overwritten on an upload (new ones will always be created).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -478,6 +483,11 @@
         </xs:element>
         <xs:element ref="labels" minOccurs="0" />
       </xs:all>
+      <xs:attribute name="archived" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Whether the document is archived. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="id" type="xs:long">
         <xs:annotation>
           <xs:documentation>Unique and permanent URI identifier. INFORMATIONAL - ignored by upload.</xs:documentation>
@@ -550,13 +560,27 @@
       </xs:attribute>
       <xs:attribute name="folder" type="xs:boolean">
         <xs:annotation>
-          <xs:documentation>If 'true' this is a folder (for external URI only).</xs:documentation>
+          <xs:documentation>If 'true' this is a folder (for external URI only). DEPRECATED.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="size" type="xs:long">
         <xs:annotation>
           <xs:documentation>The file size in bytes (non PSML only).  INFORMATIONAL - ignored by upload.</xs:documentation>
         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="source">
+        <xs:annotation>
+          <xs:documentation>The URL source (for external URI only).  INFORMATIONAL - ignored by upload.:
+            - pageseeder: a URL to the PageSeeder user interface;
+            - virtual: a URL to a virtual host.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pageseeder" />
+            <xs:enumeration value="virtual" />
+          </xs:restriction>
+        </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
   </xs:element>
@@ -642,6 +666,31 @@
       <xs:attribute name="docid" type="document-id">
         <xs:annotation>
           <xs:documentation>The docid of the compare document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="scheme" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The scheme of the compare document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="host" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The host of the compare document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="port" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>The port of the compare document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="path" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The path of the compare document.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="decodedpath" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The decoded path of the compare document.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -786,6 +835,11 @@
       <xs:documentation>A cross-reference from another document. INFORMATIONAL - ignored by upload.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
+      <xs:attribute name="archived" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Whether the source document is archived</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="uriid" type="xs:long">
         <xs:annotation>
           <xs:documentation>The ID of the source document</xs:documentation>
@@ -1026,6 +1080,11 @@
       <xs:sequence>
         <xs:element ref="locator" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
+      <xs:attribute name="structure-modified" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>The last date the document structure was modified. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -1321,6 +1380,11 @@
       <xs:sequence>
         <xs:element ref="document" minOccurs="0" maxOccurs="1" />
       </xs:sequence>
+      <xs:attribute name="archived" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Whether the image is archived. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="src" type="xs:string">
         <xs:annotation>
           <xs:documentation>Path for image (overrides docid and uriid).</xs:documentation>
@@ -1354,6 +1418,11 @@
       <xs:attribute name="unresolved" type="xs:boolean">
         <xs:annotation>
           <xs:documentation>If 'true' the target image doesn't exsist. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="labels" type="label-list">
+        <xs:annotation>
+          <xs:documentation>Image labels.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
@@ -1817,6 +1886,11 @@
         <xs:element ref="monospace" />
         <xs:element ref="document" />
       </xs:choice>
+      <xs:attribute name="archived" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Whether the URL is archived. INFORMATIONAL - ignored by upload.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="href" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>URL for link target.</xs:documentation>
@@ -1930,6 +2004,11 @@
       <xs:element ref="xref-fragment" />
       <xs:element ref="properties-fragment" />
     </xs:choice>
+    <xs:attribute name="archived" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Whether the target document is archived. INFORMATIONAL - ignored by upload.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="id" type="xs:long">
       <xs:annotation>
         <xs:documentation>XLink ID of the cross reference. INFORMATIONAL - ignored by upload.</xs:documentation>

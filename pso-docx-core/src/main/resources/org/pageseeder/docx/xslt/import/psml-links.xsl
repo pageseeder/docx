@@ -22,8 +22,9 @@
   <xsl:apply-templates select="w:r" mode="content" />
 </xsl:template>
 
-
 <!--
+  THIS CODE DOES NOT SEEM TO BE USED
+
   template to handle fields;
   Currently handles REF , PAGEREF and HYPERLINK options, and transforms them into xrefs
 -->
@@ -92,7 +93,7 @@
     </xsl:choose>
   </xsl:variable>
   <xsl:variable name="text" select="if (@title) then @title else string-join($current//w:t//text(), '')"/>
-  
+
   <xsl:choose>
     <xsl:when test="$bookmark-ref != '' and config:references-as-links()">
       <link href="#b{$bookmark-ref}">

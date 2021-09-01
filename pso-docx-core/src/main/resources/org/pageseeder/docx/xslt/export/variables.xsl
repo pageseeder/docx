@@ -1031,8 +1031,15 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="blocklabel" select="(ancestor::block)[last()]/@label" />
     <xsl:variable name="list-style-name" >
       <xsl:choose>
+        <xsl:when test="config:list-style-for-block-label-document-label($blocklabel,$labels,$role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-block-label-document-label($blocklabel,$labels,$role,$list-type)"/>
+        </xsl:when>
+        <xsl:when test="config:list-style-for-block-label($blocklabel,$role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-block-label($blocklabel,$role,$list-type)"/>
+        </xsl:when>
         <xsl:when test="config:list-style-for-document-label($labels,$role,$list-type) != ''">
           <xsl:value-of select="config:list-style-for-document-label($labels,$role,$list-type)"/>
         </xsl:when>
@@ -1048,7 +1055,7 @@
     <xsl:variable name="list-style" select="document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $list-style-name]/@w:styleId"/>
 
     <xsl:variable name="abstract-num" select="document(concat($_dotxfolder, $numbering-template))//w:abstractNum[w:styleLink/@w:val = $list-style]"/>
-    
+
     <xsl:variable name="abstract-num-id">
       <xsl:choose>
         <!-- if abstractNum not found try to find default -->
@@ -1061,7 +1068,7 @@
               <xsl:message>DOCX EXPORT ERROR: No style found for <xsl:value-of
                 select="$list-type"/> with role=<xsl:value-of select="$role"/> (URI ID: <xsl:value-of
                 select="/document/documentinfo/uri/@id" />)</xsl:message>
-              <xsl:value-of select="'0'" />  
+              <xsl:value-of select="'0'" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="document(concat($_dotxfolder, $numbering-template))//w:num[@w:numId=$num-id]/w:abstractNumId/@w:val"/>
@@ -1073,7 +1080,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:choose>
       <xsl:when test="$list-type = 'nlist'">
         <nlist start="{if (@start) then @start else 1}" >
