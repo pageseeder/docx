@@ -537,6 +537,9 @@
     <xsl:when test="$in-link = 'true'">
       <xsl:variable name="bookmark-ref">
         <xsl:choose>
+          <xsl:when test="contains(current()/preceding-sibling::w:instrText[1],('STYLEREF'))">
+            <xsl:value-of select="'NONE'" />
+          </xsl:when>
           <xsl:when test="contains(current()/preceding-sibling::w:instrText[1],('REF'))">
             <xsl:value-of select="fn:get-bookmark-value(current()/preceding-sibling::w:instrText[1],'REF')" />
           </xsl:when>

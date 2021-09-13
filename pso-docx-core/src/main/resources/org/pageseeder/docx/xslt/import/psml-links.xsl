@@ -28,7 +28,8 @@
   template to handle fields;
   Currently handles REF , PAGEREF and HYPERLINK options, and transforms them into xrefs
 -->
-<xsl:template match="w:r[w:t != ''][w:fldChar[@w:fldCharType='separate']][w:instrText[matches(text(),'PAGEREF|REF|HYPERLINK|SEQ Table')]]">
+<xsl:template match="w:r[w:t != ''][w:fldChar[@w:fldCharType='separate']][w:instrText[matches(text(),
+    'PAGEREF|REF|HYPERLINK|SEQ Table')][not(matches(text(),'STYLEREF'))]]">
   <xsl:param name="in-heading" select="false()" />
 
   <xsl:variable name="field-type">
@@ -130,6 +131,7 @@
 <xsl:template match="w:fldSimple" mode="content">
   <xsl:variable name="bookmark-ref">
     <xsl:choose>
+      <xsl:when test="contains(@w:instr, ('STYLEREF'))" />
       <xsl:when test="contains(@w:instr, ('REF'))">
         <xsl:value-of select="fn:get-bookmark-value(@w:instr, 'REF')" />
       </xsl:when>
