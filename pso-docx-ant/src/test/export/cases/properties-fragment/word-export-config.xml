@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<config>
+  <elements>
+    <properties-fragments>
+      <properties-fragment  tablestyle="PS Table"
+                            titlestyle="heading 1" valuestyle="heading 9" />
+      <properties-fragment  type="citation" tablestyle="Table Grid"
+                            titlestyle="Table Header" valuestyle="Table Body">
+        <width type="pct" value="100%" />
+      </properties-fragment>
+    </properties-fragments>
+  </elements>
+</config>

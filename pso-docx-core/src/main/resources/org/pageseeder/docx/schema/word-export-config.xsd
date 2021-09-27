@@ -238,6 +238,7 @@
 				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="tables" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="preformat" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="properties-fragments" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="heading" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="para" minOccurs="0" maxOccurs="1" />
         <xs:element ref="title" minOccurs="0" maxOccurs="1" />
@@ -322,6 +323,26 @@
 	<xs:element name="index">
 		<xs:complexType>
 			<xs:attribute name="label" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="properties-fragments">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="properties-fragment" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="properties-fragment">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="width" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="type" type="xs:string" />
+			<xs:attribute name="tablestyle" type="xs:string"/>
+			<xs:attribute name="titlestyle" type="xs:string"/>
+			<xs:attribute name="valuestyle" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 

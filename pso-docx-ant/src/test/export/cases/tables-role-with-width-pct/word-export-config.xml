@@ -4,7 +4,7 @@
 	<elements>
 		<tables>
 			<table  role="tablea" tablestyle="Normal Table ">
-				<width type="pct" value="4000"/>
+				<width type="pct" value="80%"/>
 			</table>
 		</tables>
 	</elements>

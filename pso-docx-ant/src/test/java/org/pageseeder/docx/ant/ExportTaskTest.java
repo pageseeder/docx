@@ -368,6 +368,10 @@ public final class ExportTaskTest {
     testIndividual("preformat-set");
   }
 
+  @Test
+  public void testPropertiesFragment() throws IOException, SAXException {
+    testIndividual("properties-fragment");
+  }
 
   @Test
   public void testTableCellWhitespace() throws IOException, SAXException {

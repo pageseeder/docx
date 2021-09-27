@@ -4,7 +4,7 @@
 	<elements>
 		<tables>
 			<table  default="Table Grid">
-				<width type="pct" value="4000"/>
+				<width type="pct" value="80%"/>
 			</table>
 		</tables>
 	</elements>

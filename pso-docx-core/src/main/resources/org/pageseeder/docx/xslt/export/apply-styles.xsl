@@ -75,6 +75,12 @@
         </xsl:choose>
       </xsl:when>
 
+      <!-- Paragraphs within property -->
+      <xsl:when test="self::para and ancestor::properties-fragment">
+        <xsl:variable name="props" select="ancestor::properties-fragment[1]" />
+        <xsl:value-of select="config:properties-value-style-name($labels, $props/@type)" />
+      </xsl:when>
+
       <!-- Paragraphs within table -->
       <xsl:when test="self::para and ancestor::table">
         <xsl:variable name="table" select="ancestor::table[1]" />
