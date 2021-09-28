@@ -143,7 +143,7 @@
               created="2018-06-20T13:50:23+10:00" modified="2018-11-07T10:18:53+11:00"
               title="Endnotes-content2">
               <displaytitle>Endnotes-content2</displaytitle>
-              <labels>appendix</labels>
+              <labels>appendix,test</labels>
             </uri>
             <reversexrefs>
               <reversexref uriid="61098" href="xref-endnotes.psml"

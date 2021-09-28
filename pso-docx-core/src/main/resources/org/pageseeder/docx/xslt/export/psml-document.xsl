@@ -23,8 +23,7 @@
   This is typically the entry point for processing the PSML, but it could also be transcluded content!
 -->
 <xsl:template match="document" mode="psml">
-  <!-- TODO all functions treat labels as a single label so this will not work if there is more than one -->
-  <xsl:variable name="labels" select="string(documentinfo/uri/labels)" as="xs:string"/>
+  <xsl:variable name="labels" select="tokenize(documentinfo/uri/labels,',')" as="xs:string*"/>
   <xsl:choose>
     <!-- don't include footnotes and endnotes documents -->
     <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
