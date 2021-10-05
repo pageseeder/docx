@@ -350,6 +350,10 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="table" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="col" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="row" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="hcell" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="cell" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -367,12 +371,127 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="col">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="row">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="height" minOccurs="0" />
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="cansplit" type="xs:boolean"/>
+			<xs:attribute name="align">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="center|start|end"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="hcell">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="width" minOccurs="0" />
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="valign">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="bottom|center|top"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="cell">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="width" minOccurs="0" />
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="valign">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="bottom|center|top"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="height">
+		<xs:complexType>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="atleast|exact"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:integer" use="required" />
+		</xs:complexType>
+	</xs:element>
+
   <xs:element name="width">
     <xs:complexType>
-      <xs:attribute name="type" type="xs:string" default="pct"/>
-      <xs:attribute name="value" type="xs:string" default="5000"/>
+      <xs:attribute name="type" default="pct">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="dxa|pct|auto"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+      <xs:attribute name="value" default="5000">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d*%?"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
     </xs:complexType>
   </xs:element>
+
+	<xs:element name="shading">
+		<xs:complexType>
+			<xs:attribute name="fill">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[A-Fa-f0-9]{6}|auto"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="borders">
+		<xs:complexType>
+			<xs:attribute name="value">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="((top|bottom|start|end),?)+"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
 
 	<xs:element name="heading">
 		<xs:complexType>

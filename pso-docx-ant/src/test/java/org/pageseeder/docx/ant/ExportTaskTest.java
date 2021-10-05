@@ -379,6 +379,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testTablesColRowHcellCellRole() throws IOException, SAXException {
+    testIndividual("tables-col-row-hcell-cell-role");
+  }
+
+  @Test
   public void testTablesDefaultEmpty() throws IOException, SAXException {
     testIndividual("tables-default-empty");
   }
