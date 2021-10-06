@@ -389,7 +389,7 @@
 				<xs:element ref="borders" minOccurs="0" />
 			</xs:all>
 			<xs:attribute name="role" type="xs:string"/>
-			<xs:attribute name="cansplit" type="xs:boolean"/>
+			<xs:attribute name="cantsplit" type="xs:boolean"/>
 			<xs:attribute name="align">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">

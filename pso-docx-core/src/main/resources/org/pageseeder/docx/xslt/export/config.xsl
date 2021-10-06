@@ -1041,6 +1041,49 @@
 </xsl:function>
 
 <!--
+  Returns the document label and row role specific row config
+  otherwise the document label specific row config
+  otherwise the document role specific row config
+  otherwise the default row config
+  otherwise nothing.
+
+  Row config format:
+  <row role="[row role]"
+       cansplit="[true|false]"
+       align="[center|start|end]">
+    <height type="[atleast|exact]" value=""/>
+    <shading fill="" />
+    <borders value="[top][,][bottom][,][start][,][end]"/>
+  </row>
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the row config or nothing
+-->
+<xsl:function name="config:table-row" as="element(row)?">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-config" select="$config-doc/config/elements[@label = $document-label]/tables/row[@role = $role]"/>
+  <xsl:variable name="label-config" select="$config-doc/config/elements[@label = $document-label]/tables/row[not(@role)]"/>
+  <xsl:variable name="role-config" select="$config-doc/config/elements[not(@label)]/tables/row[@role = $role]"/>
+  <xsl:variable name="default-config" select="$config-doc/config/elements[not(@label)]/tables/row[not(@role)]"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-config">
+      <xsl:sequence select="$label-role-config" />
+    </xsl:when>
+    <xsl:when test="$label-config">
+      <xsl:sequence select="$label-config" />
+    </xsl:when>
+    <xsl:when test="$role-config">
+      <xsl:sequence select="$role-config" />
+    </xsl:when>
+    <xsl:when test="$default-config">
+      <xsl:sequence select="$default-config" />
+    </xsl:when>
+  </xsl:choose>
+</xsl:function>
+<!--
   Returns the default table width type.
 
   @return the word table with type

@@ -33,10 +33,10 @@
 				<borders value="top,bottom" />
 				<height type="exact" value="1000"/>
 			</row>
-			<row role="row3" align="end" cansplit="true">
+			<row role="row3" align="end" cantsplit="true">
 				<borders value="top,bottom,start" />
 			</row>
-			<row role="row4" cansplit="false">
+			<row role="row4" cantsplit="false">
 				<borders value="top,bottom,start,end" />
 			</row>
 

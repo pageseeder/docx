@@ -76,7 +76,7 @@
 					<hcell role="hcell3">C</hcell>
 					<hcell role="hcell4">D</hcell>
 				</row>
-				<row role="row2">
+				<row part="header" role="row2">
 					<cell role="cell1">E</cell>
 					<cell role="cell2">F</cell>
 					<cell role="cell3">G</cell>
@@ -108,7 +108,7 @@
 					<cell>D</cell>
 				</row>
 				<row>
-					<cell>E</cell>
+					<hcell>E</hcell>
 					<cell>F</cell>
 					<cell>G</cell>
 					<cell>H</cell>

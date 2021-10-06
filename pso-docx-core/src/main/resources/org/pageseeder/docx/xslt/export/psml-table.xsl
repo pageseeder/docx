@@ -180,12 +180,13 @@
   </w:tbl>
 </xsl:template>
 
-<!-- 
-  Template that creates each row recursively. 
+<!--
+  Template that creates each row recursively.
 
   It calls a template to calculate the preceding row's colspans and rowspans
 -->
 <xsl:template name="create-rows-recursively">
+  <xsl:param name="labels" tunnel="yes" />
   <xsl:param name="row-position" />
   <xsl:param name="previous-position" />
   <xsl:param name="previous-row" as="element()" />
@@ -194,14 +195,25 @@
 
   <xsl:variable name="current" select="$row" />
 
-  <xsl:choose>
-    <xsl:when test="$previous-position = 0">
-      <w:tr>
-        <xsl:if test="$row/hcell">
-          <w:trPr>
-            <w:tblHeader/>
-          </w:trPr>
-        </xsl:if>
+  <w:tr>
+    <xsl:if test="$row/@part='header'">
+      <w:trPr>
+        <w:tblHeader/>
+      </w:trPr>
+    </xsl:if>
+    <xsl:variable name="row-config" select="config:table-row($labels,$row/@role)" />
+    <xsl:if test="$row-config/@cantsplit='true'">
+      <w:cantSplit/>
+    </xsl:if>
+    <xsl:if test="$row-config/@align">
+      <w:jc w:val="{$row-config/@align}"/>
+    </xsl:if>
+    <xsl:if test="$row-config/height">
+      <w:trHeight w:val="{$row-config/height/@value}"
+                   w:hRule="{if ($row-config/height/@type='exact') then 'exact' else 'atLeast'}"/>
+    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="$previous-position = 0">
         <xsl:for-each select="$row/*[name() = 'cell' or 'hcell']">
           <xsl:variable name="position" select="position()"/>
           <w:tc>
@@ -233,10 +245,8 @@
             </xsl:choose>
           </w:tc>
         </xsl:for-each>
-      </w:tr>
-    </xsl:when>
-    <xsl:otherwise>
-      <w:tr>
+      </xsl:when>
+      <xsl:otherwise>
         <xsl:for-each select="$previous-row/*[name() = 'cell' or 'hcell']">
           <xsl:variable name="position" select="position()"/>
           <xsl:variable name="row-position" select="
@@ -312,11 +322,9 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:for-each>
-
-      </w:tr>
-    </xsl:otherwise>
-  </xsl:choose>
-
+      </xsl:otherwise>
+    </xsl:choose>
+  </w:tr>
 
   <xsl:if test="$row/following-sibling::row[1]">
     <xsl:variable name="previous-row" as="element()">
@@ -333,7 +341,7 @@
       <xsl:with-param name="previous-position" select="count($row/following-sibling::row[1]/preceding-sibling::row)" />
       <xsl:with-param name="previous-row" select="$previous-row" as="element()" />
       <xsl:with-param name="row" select="$row/following-sibling::row[1]" as="node()" />
-        <xsl:with-param name="column-properties" select="$column-properties" as="element()" />
+      <xsl:with-param name="column-properties" select="$column-properties" as="element()" />
     </xsl:call-template>
 
   </xsl:if>
