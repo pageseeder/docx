@@ -96,7 +96,7 @@
 <!--
   Returns type of current element.
 
-  @param name the elements name 
+  @param name the elements name
 
   @return the type of pageseeder element
 -->
@@ -119,7 +119,7 @@
 <!--
   Returns string with leading spaces trimmed.
 
-  @param arg the string to be space stripped 
+  @param arg the string to be space stripped
 
   @return string with leading spaces trimmed.
 -->
@@ -131,7 +131,7 @@
 <!--
   Returns string with trailing spaces trimmed.
 
-  @param arg the string to be space stripped 
+  @param arg the string to be space stripped
 
   @return string with trailing spaces trimmed.
 -->
@@ -164,9 +164,9 @@
   <xsl:param name="node"/>
   <xsl:choose>
     <xsl:when test="$node/@width">
-      <xsl:analyze-string regex="(\d+)(.*)" select="$node/@width">
+      <xsl:analyze-string regex="([\d|\.]+)(%|px)?" select="$node/@width">
         <xsl:matching-substring>
-          <xsl:attribute name="w:w" select="if(regex-group(2) = '%') then number(regex-group(1)) * 50 else number(regex-group(1)) * 15"/>
+          <xsl:attribute name="w:w" select="if(regex-group(2) = '%') then regex-group(0) else number(regex-group(1)) * 15"/>
           <xsl:attribute name="w:type" select="if(regex-group(2) = '%') then 'pct' else 'dxa'"/>
         </xsl:matching-substring>
         <xsl:non-matching-substring/>

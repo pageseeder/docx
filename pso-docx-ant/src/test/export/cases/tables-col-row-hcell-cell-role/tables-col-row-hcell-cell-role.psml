@@ -24,22 +24,19 @@
 				<col width="80px" role="col3"/>
 				<col width="200px" role="col4"/>
 				<row part="header" role="row1">
-					<cell>A text A text A text A text A text A text A text A text A text A text A text A text A text A text A text
-						A text A text A text A text A text A text A text A text A text A text A text A text A text A text A text</cell>
+					<cell>A text A text A text A text A text A text A text A text A text A text</cell>
 					<cell>B</cell>
 					<cell>C</cell>
 					<cell>D</cell>
 				</row>
 				<row role="row2">
-					<cell>E text E text E text E text E text E text E text E text E text E text E text E text E text E text E text
-						E text E text E text E text E text E text E text E text E text E text E text E text E text E text E text </cell>
+					<cell>E text E text E text E text E text E text E text E text E text E text</cell>
 					<cell>F</cell>
 					<cell>G</cell>
 					<cell>H</cell>
 				</row>
 				<row role="row3">
-					<cell>I text I text I text I text I text I text I text I text I text I text I text I text I text I text I text
-						I text I text I text I text I text I text I text I text I text I text I text I text I text I text I text I</cell>
+					<cell>I text I text I text I text I text I text I text I text I text I text I text I text I text I text</cell>
 					<cell>J</cell>
 					<cell>K</cell>
 					<cell>L</cell>

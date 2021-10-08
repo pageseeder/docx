@@ -145,9 +145,9 @@
           <col>
             <xsl:choose>
               <xsl:when test="@width">
-                <xsl:analyze-string regex="(\d+)(.*)" select="@width">
+                <xsl:analyze-string regex="([\d|\.]+)(%|px)?" select="@width">
                   <xsl:matching-substring>
-                    <xsl:attribute name="value" select="if(regex-group(2) = '%') then number(regex-group(1)) * 50 else number(regex-group(1)) * 15"/>
+                    <xsl:attribute name="value" select="if(regex-group(2) = '%') then regex-group(0) else number(regex-group(1)) * 15"/>
                     <xsl:attribute name="type" select="if(regex-group(2) = '%') then 'pct' else 'dxa'"/>
                   </xsl:matching-substring>
                   <xsl:non-matching-substring>

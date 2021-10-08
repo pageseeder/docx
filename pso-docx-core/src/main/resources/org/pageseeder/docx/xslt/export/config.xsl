@@ -1083,6 +1083,7 @@
     </xsl:when>
   </xsl:choose>
 </xsl:function>
+
 <!--
   Returns the default table width type.
 
