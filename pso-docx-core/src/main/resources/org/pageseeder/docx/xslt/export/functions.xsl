@@ -180,6 +180,30 @@
 </xsl:function>
 
 <!--
+  Return the table width in dxa (20th of a point), otherwise 5000
+
+  @param width  specified table width in format ([\d|\.]+)(%|px)?
+
+  @return the widht in dxa
+<xsl:function name="fn:table-width-dxa">
+  <xsl:param name="width" as="xs:string?" />
+  <xsl:analyze-string regex="([\d|\.]+)(%|px)?" select="$width">
+    <xsl:matching-substring>
+      <xsl:choose>
+        <xsl:when test="regex-group(2) = '%'">
+          <xsl:value-of select="floor(50 * number(regex-group(1)))" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="number(regex-group(1)) * 15" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:matching-substring>
+    <xsl:non-matching-substring>5000</xsl:non-matching-substring>
+  </xsl:analyze-string>
+</xsl:function>
+-->
+
+<!--
   Returns the word numeric value for pageseeder numeric value.
 
   @param regexp-value the value of the current regex value

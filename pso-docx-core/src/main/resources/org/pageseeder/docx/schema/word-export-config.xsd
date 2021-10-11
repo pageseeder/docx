@@ -368,6 +368,13 @@
 			<xs:attribute name="tablestyle" type="xs:string"/>
       <xs:attribute name="headstyle" type="xs:string"/>
       <xs:attribute name="bodystyle" type="xs:string"/>
+			<xs:attribute name="layout">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="fixed|autofit"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 
@@ -482,16 +489,64 @@
 
 	<xs:element name="borders">
 		<xs:complexType>
-			<xs:attribute name="value">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:pattern value="((top|bottom|start|end),?)+"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
+			<xs:all>
+				<xs:element name="top"    type="border" minOccurs="0" />
+				<xs:element name="bottom" type="border" minOccurs="0" />
+				<xs:element name="start"  type="border" minOccurs="0" />
+				<xs:element name="end"    type="border" minOccurs="0" />
+			</xs:all>
 		</xs:complexType>
 	</xs:element>
 
+	<xs:complexType name="border">
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="single" />
+					<xs:enumeration value="dashDotStroked" />
+					<xs:enumeration value="dashed" />
+					<xs:enumeration value="dashSmallGap" />
+					<xs:enumeration value="dotDash" />
+					<xs:enumeration value="dotDotDash" />
+					<xs:enumeration value="dotted" />
+					<xs:enumeration value="double" />
+					<xs:enumeration value="doubleWave" />
+					<xs:enumeration value="inset" />
+					<xs:enumeration value="none" />
+					<xs:enumeration value="outset" />
+					<xs:enumeration value="thick" />
+					<xs:enumeration value="thickThinLargeGap" />
+					<xs:enumeration value="thickThinMediumGap" />
+					<xs:enumeration value="thickThinSmallGap" />
+					<xs:enumeration value="thinThickLargeGap" />
+					<xs:enumeration value="thinThickMediumGap" />
+					<xs:enumeration value="thinThickSmallGap" />
+					<xs:enumeration value="thinThickThinLargeGap" />
+					<xs:enumeration value="thinThickThinMediumGap" />
+					<xs:enumeration value="thinThickThinSmallGap" />
+					<xs:enumeration value="threeDEmboss" />
+					<xs:enumeration value="threeDEngrave" />
+					<xs:enumeration value="triple" />
+					<xs:enumeration value="wave" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="color">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[A-Fa-f0-9]{6}|auto"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="size">
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="2"/>
+					<xs:maxInclusive value="96"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
 
 	<xs:element name="heading">
 		<xs:complexType>

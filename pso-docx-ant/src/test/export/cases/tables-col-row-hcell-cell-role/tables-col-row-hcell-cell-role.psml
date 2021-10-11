@@ -111,6 +111,33 @@
 					<cell>H</cell>
 				</row>
 			</table>
+			<heading level="2">Table 5</heading>
+			<table role="table1">
+				<col width="10.1%"/>
+				<col width="19.9%"/>
+				<col width="20%"/>
+				<col width="50%"/>
+				<row part="header">
+					<cell colspan="2">AB</cell>
+					<cell>C</cell>
+					<cell>D</cell>
+				</row>
+				<row>
+					<cell rowspan="2">EI</cell>
+					<cell>F</cell>
+					<cell colspan="2">GH</cell>
+				</row>
+				<row>
+					<cell rowspan="2">J</cell>
+					<cell>K</cell>
+					<cell>L</cell>
+				</row>
+				<row>
+					<cell>M</cell>
+					<cell>N</cell>
+					<cell>O</cell>
+				</row>
+			</table>
 		</fragment>
 	</section>
 </document>
