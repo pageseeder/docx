@@ -126,13 +126,11 @@
       <xsl:if test="@summary">
         <w:tblDescription w:val="{@summary}"/>
       </xsl:if>
-      <!-- Not sure what this is for and it seems to be changed by Word when you open the file anyway
-      <w:tblLook w:val="05E0"
-                 w:firstRow="{if(row[1][@part = 'header']) then 1 else 0}"
+      <!-- Required to correctly format header/footer columns/rows -->
+      <w:tblLook w:firstRow="{if(row[1][@part = 'header']) then 1 else 0}"
                  w:lastRow="{if(row[last()][@part = 'footer']) then 1 else 0}"
                  w:firstColumn="{if(col[1][@part = 'header']) then 1 else 0}"
                  w:lastColumn="{if(col[last()][@part = 'footer']) then 1 else 0}"/>
-      -->
     </w:tblPr>
     <xsl:variable name="max-columns" select="count(row[1]/*[name() = 'cell' or 'hcell'][not(@colspan)]) + sum(row[1]/*[name() = 'cell' or 'hcell'][@colspan]/@colspan) cast as xs:integer" />
 
