@@ -23,8 +23,7 @@
   This is typically the entry point for processing the PSML, but it could also be transcluded content!
 -->
 <xsl:template match="document" mode="psml">
-  <!-- TODO all functions treat labels as a single label so this will not work if there is more than one -->
-  <xsl:variable name="labels" select="string(documentinfo/uri/labels)" as="xs:string"/>
+  <xsl:variable name="labels" select="tokenize(documentinfo/uri/labels,',')" as="xs:string*"/>
   <xsl:choose>
     <!-- don't include footnotes and endnotes documents -->
     <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
@@ -166,18 +165,32 @@
 
 <!-- Template to match properties fragment and transform it into a table -->
 <xsl:template match="properties-fragment" mode="psml">
+  <xsl:param name="labels" tunnel="yes" />
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
   <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
   <w:tbl>
     <w:tblPr>
-      <w:tblBorders>
-        <w:top w:val="single" w:sz="4" w:space="0" w:color="auto" />
-        <w:left w:val="single" w:sz="4" w:space="0" w:color="auto" />
-        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto" />
-        <w:right w:val="single" w:sz="4" w:space="0" w:color="auto" />
-        <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto" />
-        <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
-      </w:tblBorders>
+      <xsl:variable name="styleid" select="config:properties-table-style($labels, @type)" />
+      <xsl:choose>
+        <xsl:when test="$styleid != ''">
+          <w:tblStyle w:val="{$styleid}" />
+        </xsl:when>
+        <xsl:otherwise>
+          <w:tblBorders>
+            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto" />
+            <w:left w:val="single" w:sz="4" w:space="0" w:color="auto" />
+            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto" />
+            <w:right w:val="single" w:sz="4" w:space="0" w:color="auto" />
+            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto" />
+            <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
+          </w:tblBorders>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="config:properties-table-width($labels, @type) != '' and
+                    config:properties-table-width-type($labels, @type) != ''">
+        <w:tblW w:w="{config:properties-table-width($labels, @type)}"
+                w:type="{config:properties-table-width-type($labels, @type)}" />
+      </xsl:if>
     </w:tblPr>
     <xsl:apply-templates mode="psml" />
   </w:tbl>
@@ -186,12 +199,19 @@
 
 <!-- Template to handle each `property` -->
 <xsl:template match="property" mode="psml">
+  <xsl:param name="labels" tunnel="yes" />
   <w:tr>
     <w:tc>
       <w:tcPr>
         <w:tcW w:w="0" w:type="auto"/>
       </w:tcPr>
       <w:p>
+        <xsl:variable name="title-styleid" select="config:properties-title-style($labels, ../@type)" />
+        <xsl:if test="$title-styleid != ''">
+          <w:pPr>
+            <w:pStyle w:val="{$title-styleid}" />
+          </w:pPr>
+        </xsl:if>
         <w:r>
           <w:t>
             <xsl:value-of select="if (@title) then @title else @name"/>
@@ -203,18 +223,29 @@
       <w:tcPr>
         <w:tcW w:w="0" w:type="auto"/>
       </w:tcPr>
+      <xsl:variable name="value-styleid" select="config:properties-value-style($labels, ../@type)" />
       <xsl:choose>
         <xsl:when test="@datatype = 'xref'">
           <xsl:choose>
             <xsl:when test="xref">
               <xsl:for-each select="xref">
                 <w:p>
+                  <xsl:if test="$value-styleid != ''">
+                    <w:pPr>
+                      <w:pStyle w:val="{$value-styleid}" />
+                    </w:pPr>
+                  </xsl:if>
                   <xsl:apply-templates mode="psml" select="." />
                 </w:p>
               </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
               <w:p>
+                <xsl:if test="$value-styleid != ''">
+                  <w:pPr>
+                    <w:pStyle w:val="{$value-styleid}" />
+                  </w:pPr>
+                </xsl:if>
                 <w:r>
                   <w:t></w:t>
                 </w:r>
@@ -227,12 +258,22 @@
             <xsl:when test="link">
               <xsl:for-each select="link">
                 <w:p>
+                  <xsl:if test="$value-styleid != ''">
+                    <w:pPr>
+                      <w:pStyle w:val="{$value-styleid}" />
+                    </w:pPr>
+                  </xsl:if>
                   <xsl:apply-templates mode="psml" select="." />
                 </w:p>
               </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
               <w:p>
+                <xsl:if test="$value-styleid != ''">
+                  <w:pPr>
+                    <w:pStyle w:val="{$value-styleid}" />
+                  </w:pPr>
+                </xsl:if>
                 <w:r>
                   <w:t></w:t>
                 </w:r>
@@ -247,6 +288,11 @@
             </xsl:when>
             <xsl:otherwise>
               <w:p>
+                <xsl:if test="$value-styleid != ''">
+                  <w:pPr>
+                    <w:pStyle w:val="{$value-styleid}" />
+                  </w:pPr>
+                </xsl:if>
                 <w:r>
                   <w:t><xsl:value-of select="markdown"/></w:t>
                 </w:r>
@@ -261,6 +307,11 @@
             </xsl:when>
             <xsl:otherwise>
               <w:p>
+                <xsl:if test="$value-styleid != ''">
+                  <w:pPr>
+                    <w:pStyle w:val="{$value-styleid}" />
+                  </w:pPr>
+                </xsl:if>
                 <w:r>
                   <w:t></w:t>
                 </w:r>
@@ -271,6 +322,11 @@
         <xsl:when test="value">
           <xsl:for-each select="value">
             <w:p>
+              <xsl:if test="$value-styleid != ''">
+                <w:pPr>
+                  <w:pStyle w:val="{$value-styleid}" />
+                </w:pPr>
+              </xsl:if>
               <w:r>
                 <w:t><xsl:value-of select="."/></w:t>
               </w:r>
@@ -279,6 +335,11 @@
         </xsl:when>
         <xsl:otherwise>
           <w:p>
+            <xsl:if test="$value-styleid != ''">
+              <w:pPr>
+                <w:pStyle w:val="{$value-styleid}" />
+              </w:pPr>
+            </xsl:if>
             <w:r>
               <w:t><xsl:value-of select="@value"/></w:t>
             </w:r>

@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<tables>
+			<!-- Tables -->
+			<table role="table1" tablestyle="Plain Table 4" />
+			<table role="table2" tablestyle="PS Table" layout="fixed">
+				<width type="pct" value="80%"/>
+			</table>
+
+			<!-- Columns -->
+      <col role="col1">
+				<shading fill="00FF00" />
+			  <borders>
+					<top type="single" color="000000" size="2" />
+				</borders>
+			</col>
+			<col role="col2">
+				<borders>
+				  <top type="single" color="000000" size="2" />
+				  <bottom type="double" color="FF0000" size="3" />
+				</borders>
+			</col>
+			<col role="col3">
+				<borders>
+				  <top type="single" color="000000" size="2" />
+				  <bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+				</borders>
+			</col>
+			<col role="col4">
+				<borders>
+				  <top type="single" color="000000" size="2" />
+				  <bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+					<end type="wave" color="0000FF" size="5" />
+				</borders>
+		  </col>
+
+			<!-- Rows -->
+			<row role="row1" align="center">
+				<shading fill="FF0000" />
+				<borders>
+					<top type="single" color="000000" size="2" />
+				</borders>
+				<height type="atleast" value="1000"/>
+			</row>
+			<row role="row2" align="start">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+				</borders>
+				<height type="exact" value="1000"/>
+			</row>
+			<row role="row3" align="end" cantsplit="true">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+				</borders>
+			</row>
+			<row role="row4" cantsplit="false">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+					<end type="wave" color="0000FF" size="5" />
+				</borders>
+			</row>
+
+			<!-- HCells -->
+			<hcell role="hcell1" valign="bottom">
+				<shading fill="0000FF" />
+				<borders>
+					<top type="single" color="000000" size="2" />
+				</borders>
+				<width type="pct" value="30%"/>
+			</hcell>
+			<hcell role="hcell2" valign="center">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+				</borders>
+				<width type="dxa" value="1000"/>
+			</hcell>
+			<hcell role="hcell3" valign="top">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+				</borders>
+				<width type="auto" />
+			</hcell>
+			<hcell role="hcell4">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+					<end type="wave" color="0000FF" size="5" />
+				</borders>
+				<width type="auto" />
+			</hcell>
+
+			<!-- Cells -->
+			<cell role="cell4" valign="bottom">
+				<shading fill="0000FF" />
+				<borders>
+					<top type="single" color="000000" size="2" />
+				</borders>
+				<width type="pct" value="30%"/>
+			</cell>
+			<cell role="cell3" valign="center">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+				</borders>
+				<width type="dxa" value="1000"/>
+			</cell>
+			<cell role="cell2" valign="top">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+				</borders>
+				<width type="auto" />
+			</cell>
+			<cell role="cell1">
+				<borders>
+					<top type="single" color="000000" size="2" />
+					<bottom type="double" color="FF0000" size="3" />
+					<start type="dashed" color="00FF00" size="4" />
+					<end type="wave" color="0000FF" size="5" />
+				</borders>
+				<width type="auto" />
+			</cell>
+		</tables>
+	</elements>
+</config>

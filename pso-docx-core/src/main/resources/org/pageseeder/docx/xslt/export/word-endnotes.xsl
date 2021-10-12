@@ -23,14 +23,15 @@
     <xsl:copy-of select="@*" />
     <xsl:apply-templates select="w:endnote[@w:id = '-1' or @w:id = '0']" mode="numbering" />
     <xsl:for-each select="$root-document//xref[@documenttype=config:endnotes-documenttype()]/fragment">
+      <xsl:variable name="doclabels" select="tokenize(./ancestor::document[1]/documentinfo/uri/labels,',')" />
       <w:endnote w:id="{position()}">
         <w:p>
           <w:pPr>
-            <w:pStyle w:val="{config:endnote-text-styleid(./ancestor::document[1]/documentinfo/uri/labels)}" />
+            <w:pStyle w:val="{config:endnote-text-styleid($doclabels)}" />
           </w:pPr>
           <w:r>
             <w:rPr>
-              <w:rStyle w:val="{config:endnote-reference-styleid(./ancestor::document[1]/documentinfo/uri/labels)}" />
+              <w:rStyle w:val="{config:endnote-reference-styleid($doclabels)}" />
             </w:rPr>
             <w:endnoteRef />
           </w:r>

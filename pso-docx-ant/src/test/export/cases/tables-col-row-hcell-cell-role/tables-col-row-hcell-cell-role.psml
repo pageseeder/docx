@@ -1,0 +1,143 @@
+<document id="186961" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable">
+	<documentinfo>
+		<uri id="186961" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/1.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/1.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-25T16:59:17+11:00" title="Tables">
+			<displaytitle>Tables</displaytitle>
+		</uri>
+		<reversexrefs>
+			<reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455189" title="Test Files" type="none" forwardtype="embed"/>
+		</reversexrefs>
+	</documentinfo>
+	<fragmentinfo>
+		<locator id="103093" fragment="1" editid="466348" modified="2013-04-22T15:40:15+10:00"/>
+	</fragmentinfo>
+	<section id="title">
+		<fragment id="title">
+			<heading level="1">Tables</heading>
+		</fragment>
+	</section>
+	<section id="1">
+		<fragment id="1">
+			<heading level="2">Table 1</heading>
+			<table width="400" role="table1">
+				<col width="40" role="col1"/>
+				<col width="80px" role="col2"/>
+				<col width="80px" role="col3"/>
+				<col width="200px" role="col4"/>
+				<row part="header" role="row1">
+					<cell>A text A text A text A text A text A text</cell>
+					<cell>B</cell>
+					<cell>C</cell>
+					<cell>D</cell>
+				</row>
+				<row role="row2">
+					<cell>E text E text E text E text E text E text E text E text E text E text</cell>
+					<cell>F</cell>
+					<cell>G</cell>
+					<cell>H</cell>
+				</row>
+				<row role="row3">
+					<cell>I text I text I text I text I text I text I text I text I text I text I text I text I text I text</cell>
+					<cell>J</cell>
+					<cell>K</cell>
+					<cell>L</cell>
+				</row>
+			</table>
+			<heading level="2">Table 2</heading>
+			<table width="400px" role="table1">
+				<col width="10.1%" role="col1"/>
+				<col width="19.9%" role="col2"/>
+				<col width="20%" role="col3"/>
+				<col width="50%" role="col4"/>
+				<row part="header">
+					<hcell role="hcell1">A</hcell>
+					<hcell role="hcell2">B</hcell>
+					<hcell role="hcell3">C</hcell>
+					<hcell role="hcell4">D</hcell>
+				</row>
+				<row>
+					<cell role="cell1">E</cell>
+					<cell role="cell2">F</cell>
+					<cell role="cell3">G</cell>
+					<cell role="cell4">H</cell>
+				</row>
+			</table>
+			<heading level="2">Table 3</heading>
+			<table width="50.1%" role="table1">
+				<col width="10.1%"/>
+				<col width="19.9%"/>
+				<col width="20%"/>
+				<col width="50%"/>
+				<row part="header" role="row1">
+					<hcell role="hcell1">A</hcell>
+					<hcell role="hcell2">B</hcell>
+					<hcell role="hcell3">C</hcell>
+					<hcell role="hcell4">D</hcell>
+				</row>
+				<row part="header" role="row2">
+					<cell role="cell1">E</cell>
+					<cell role="cell2">F</cell>
+					<cell role="cell3">G</cell>
+					<cell role="cell4">H</cell>
+				</row>
+				<row role="row3">
+					<cell>I</cell>
+					<cell>J</cell>
+					<cell>K</cell>
+					<cell>L</cell>
+				</row>
+				<row role="row4">
+					<cell>M</cell>
+					<cell>N</cell>
+					<cell>O</cell>
+					<cell>P</cell>
+				</row>
+			</table>
+			<heading level="2">Table 4</heading>
+			<table role="table2">
+				<col width="10.1%"/>
+				<col width="19.9%"/>
+				<col width="20%"/>
+				<col width="50%"/>
+				<row part="header">
+					<cell>A</cell>
+					<cell>B</cell>
+					<cell>C</cell>
+					<cell>D</cell>
+				</row>
+				<row>
+					<hcell>E</hcell>
+					<cell>F</cell>
+					<cell>G</cell>
+					<cell>H</cell>
+				</row>
+			</table>
+			<heading level="2">Table 5</heading>
+			<table width="80%">
+				<col width="10.1%"/>
+				<col width="19.9%"/>
+				<col width="20%"/>
+				<col width="50%"/>
+				<row part="header">
+					<cell colspan="2">AB</cell>
+					<cell>C</cell>
+					<cell>D</cell>
+				</row>
+				<row>
+					<cell rowspan="2">EI</cell>
+					<cell>F</cell>
+					<cell colspan="2">GH</cell>
+				</row>
+				<row>
+					<cell rowspan="2">J</cell>
+					<cell>K</cell>
+					<cell>L</cell>
+				</row>
+				<row>
+					<cell>M</cell>
+					<cell>N</cell>
+					<cell>O</cell>
+				</row>
+			</table>
+		</fragment>
+	</section>
+</document>

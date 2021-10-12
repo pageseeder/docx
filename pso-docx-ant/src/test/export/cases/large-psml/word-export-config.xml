@@ -22,7 +22,7 @@
     <outline generate="true" select="1-9" /> <!-- 1|1-2|5-9|etc from 1 up to 9-->
     <paragraph generate="false">
       <!-- any paragraph style defined in the document with the corresponding TOC indent level  -->
-      <!-- 
+      <!--
       <style value="[word style]" indent="[indent level]" />
        -->
     </paragraph>
@@ -42,19 +42,19 @@
     <block default="generate-ps-style">
 
     </block>
-    
+
     <!-- default options:"generate-ps-style|none" -->
     <!-- label options:"generate-ps-style|[name of style]" -->
     <inline default="generate-ps-style">
-  
+
     </inline>
-    
+
     <tables>
       <table default="PS Table" headstyle="PS Table Header" bodystyle="PS Table Body">
-        <width type="pct" value="5000"/>
+        <width type="pct" value="100%"/>
       </table>
     </tables>
-    
+
     <!-- NOTE: wordstyle "heading [x]" only must be in lower case -->
     <heading>
       <!-- Unnumbered headings -->
@@ -180,15 +180,15 @@
     </para>
 
     <preformat wordstyle="HTML Preformatted"/>
-    
+
     <nlist liststyle="Numbered List">
-      <!-- 
+      <!--
       <role value="[value of role]" liststyle="[word list style]" />
        -->
     </nlist>
-    
+
     <list liststyle="Bulleted List">
-      <!-- 
+      <!--
       <role value="[value of role]" liststyle="[word list style]" />
        -->
     </list>

@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.7.8">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.21">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -238,6 +238,7 @@
 				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="tables" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="preformat" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="properties-fragments" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="heading" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="para" minOccurs="0" maxOccurs="1" />
         <xs:element ref="title" minOccurs="0" maxOccurs="1" />
@@ -325,10 +326,34 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="properties-fragments">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="properties-fragment" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="properties-fragment">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="width" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="type" type="xs:string" />
+			<xs:attribute name="tablestyle" type="xs:string"/>
+			<xs:attribute name="titlestyle" type="xs:string"/>
+			<xs:attribute name="valuestyle" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="tables">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="table" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="col" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="row" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="hcell" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="cell" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -343,15 +368,185 @@
 			<xs:attribute name="tablestyle" type="xs:string"/>
       <xs:attribute name="headstyle" type="xs:string"/>
       <xs:attribute name="bodystyle" type="xs:string"/>
+			<xs:attribute name="layout">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="fixed|autofit"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="col">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="row">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="height" minOccurs="0" />
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="cantsplit" type="xs:boolean"/>
+			<xs:attribute name="align">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="center|start|end"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="hcell">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="width" minOccurs="0" />
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="valign">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="bottom|center|top"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="cell">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="width" minOccurs="0" />
+				<xs:element ref="shading" minOccurs="0" />
+				<xs:element ref="borders" minOccurs="0" />
+			</xs:all>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="valign">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="bottom|center|top"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="height">
+		<xs:complexType>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="atleast|exact"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:integer" use="required" />
 		</xs:complexType>
 	</xs:element>
 
   <xs:element name="width">
     <xs:complexType>
-      <xs:attribute name="type" type="xs:string" default="pct"/>
-      <xs:attribute name="value" type="xs:string" default="5000"/>
+      <xs:attribute name="type" default="pct">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="dxa|pct|auto"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+      <xs:attribute name="value" default="5000">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d*%?"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
     </xs:complexType>
   </xs:element>
+
+	<xs:element name="shading">
+		<xs:complexType>
+			<xs:attribute name="fill">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[A-Fa-f0-9]{6}|auto"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="borders">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="top"    type="border" minOccurs="0" />
+				<xs:element name="bottom" type="border" minOccurs="0" />
+				<xs:element name="start"  type="border" minOccurs="0" />
+				<xs:element name="end"    type="border" minOccurs="0" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="border">
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="single" />
+					<xs:enumeration value="dashDotStroked" />
+					<xs:enumeration value="dashed" />
+					<xs:enumeration value="dashSmallGap" />
+					<xs:enumeration value="dotDash" />
+					<xs:enumeration value="dotDotDash" />
+					<xs:enumeration value="dotted" />
+					<xs:enumeration value="double" />
+					<xs:enumeration value="doubleWave" />
+					<xs:enumeration value="inset" />
+					<xs:enumeration value="none" />
+					<xs:enumeration value="outset" />
+					<xs:enumeration value="thick" />
+					<xs:enumeration value="thickThinLargeGap" />
+					<xs:enumeration value="thickThinMediumGap" />
+					<xs:enumeration value="thickThinSmallGap" />
+					<xs:enumeration value="thinThickLargeGap" />
+					<xs:enumeration value="thinThickMediumGap" />
+					<xs:enumeration value="thinThickSmallGap" />
+					<xs:enumeration value="thinThickThinLargeGap" />
+					<xs:enumeration value="thinThickThinMediumGap" />
+					<xs:enumeration value="thinThickThinSmallGap" />
+					<xs:enumeration value="threeDEmboss" />
+					<xs:enumeration value="threeDEngrave" />
+					<xs:enumeration value="triple" />
+					<xs:enumeration value="wave" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="color">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[A-Fa-f0-9]{6}|auto"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="size">
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="2"/>
+					<xs:maxInclusive value="96"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
 
 	<xs:element name="heading">
 		<xs:complexType>

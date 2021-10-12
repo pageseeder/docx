@@ -709,10 +709,218 @@
 </xsl:function>
 
 <!--
-  Returns the default table style.
+  Returns the document label and properties-fragment type specific property table style
+  otherwise the document label specific property table style
+  otherwise the document role specific property table style
+  otherwise the default property table style
+  otherwise the default paragraph style.
 
-  @return the word table style
+  @param document-label the document label
+  @param type the properties-fragment type
+
+  @return the word style ID or empty
 -->
+<xsl:function name="config:properties-table-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="type"/>
+  <xsl:variable name="label-type-style" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[@type = $type]/@tablestyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[not(@type)]/@tablestyle"/>
+  <xsl:variable name="type-style" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[@type = $type]/@tablestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[not(@type)]/@tablestyle"/>
+  <xsl:variable name="style-name">
+    <xsl:choose>
+      <xsl:when test="$label-type-style != ''">
+        <xsl:value-of select="$label-type-style" />
+      </xsl:when>
+      <xsl:when test="$label-style != ''">
+        <xsl:value-of select="$label-style" />
+      </xsl:when>
+      <xsl:when test="$type-style != ''">
+        <xsl:value-of select="$type-style" />
+      </xsl:when>
+      <xsl:when test="$default-style != ''">
+        <xsl:value-of select="$default-style" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$default-paragraph-style" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $style-name]/@w:styleId)"/>
+</xsl:function>
+
+<!--
+  Returns the document label and properties-fragment type specific property table width
+  otherwise the document label specific property table width
+  otherwise the document role specific property table width
+  otherwise the default property table width.
+
+  @param document-label the document label
+  @param type the properties-fragment type
+
+  @return the width value or empty
+-->
+<xsl:function name="config:properties-table-width" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="type"/>
+  <xsl:variable name="label-type-width" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[@type = $type]/width/@value"/>
+  <xsl:variable name="label-width" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[not(@type)]/width/@value"/>
+  <xsl:variable name="type-width" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[@type = $type]/width/@value"/>
+  <xsl:variable name="default-width" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[not(@type)]/width/@value"/>
+  <xsl:choose>
+    <xsl:when test="$label-type-width != ''">
+      <xsl:value-of select="$label-type-width" />
+    </xsl:when>
+    <xsl:when test="$label-width != ''">
+      <xsl:value-of select="$label-width" />
+    </xsl:when>
+    <xsl:when test="$type-width != ''">
+      <xsl:value-of select="$type-width" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$default-width" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and properties-fragment type specific property table width type
+  otherwise the document label specific property table width type
+  otherwise the document role specific property table width type
+  otherwise the default property table width type.
+
+  @param document-label the document label
+  @param type the properties-fragment type
+
+  @return the width type or empty
+-->
+<xsl:function name="config:properties-table-width-type" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="type"/>
+  <xsl:variable name="label-type-width" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[@type = $type]/width/@type"/>
+  <xsl:variable name="label-width" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[not(@type)]/width/@type"/>
+  <xsl:variable name="type-width" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[@type = $type]/width/@type"/>
+  <xsl:variable name="default-width" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[not(@type)]/width/@type"/>
+  <xsl:choose>
+    <xsl:when test="$label-type-width != ''">
+      <xsl:value-of select="$label-type-width" />
+    </xsl:when>
+    <xsl:when test="$label-width != ''">
+      <xsl:value-of select="$label-width" />
+    </xsl:when>
+    <xsl:when test="$type-width != ''">
+      <xsl:value-of select="$type-width" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$default-width" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+
+  <!--
+    Returns the document label and properties-fragment type specific property title style
+    otherwise the document label specific property title style
+    otherwise the document role specific property title style
+    otherwise the default property title style
+    otherwise the default paragraph style.
+
+    @param document-label the document label
+    @param type the properties-fragment type
+
+    @return the word style ID or empty
+  -->
+<xsl:function name="config:properties-title-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="type"/>
+  <xsl:variable name="label-type-style" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[@type = $type]/@titlestyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[not(@type)]/@titlestyle"/>
+  <xsl:variable name="type-style" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[@type = $type]/@titlestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[not(@type)]/@titlestyle"/>
+  <xsl:variable name="style-name">
+    <xsl:choose>
+      <xsl:when test="$label-type-style != ''">
+        <xsl:value-of select="$label-type-style" />
+      </xsl:when>
+      <xsl:when test="$label-style != ''">
+        <xsl:value-of select="$label-style" />
+      </xsl:when>
+      <xsl:when test="$type-style != ''">
+        <xsl:value-of select="$type-style" />
+      </xsl:when>
+      <xsl:when test="$default-style != ''">
+        <xsl:value-of select="$default-style" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$default-paragraph-style" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId)"/>
+</xsl:function>
+
+<!--
+  Returns the document label and properties-fragment type specific property value style
+  otherwise the document label specific property value style
+  otherwise the document role specific property value style
+  otherwise the default property value style
+  otherwise the default paragraph style.
+
+  @param document-label the document label
+  @param type the properties-fragment type
+
+  @return the word style ID or empty
+-->
+<xsl:function name="config:properties-value-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="type"/>
+  <xsl:variable name="style-name" select="config:properties-value-style-name($document-label, $type)" />
+  <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[w:name/@w:val = $style-name]/@w:styleId)"/>
+</xsl:function>
+
+<!--
+  Returns the document label and properties-fragment type specific property value style
+  otherwise the document label specific property value style
+  otherwise the document role specific property value style
+  otherwise the default property value style
+  otherwise the default paragraph style.
+
+  @param document-label the document label
+  @param type the properties-fragment type
+
+  @return the word style name or empty
+-->
+<xsl:function name="config:properties-value-style-name" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="type"/>
+  <xsl:variable name="label-type-style" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[@type = $type]/@valuestyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/properties-fragments/properties-fragment[not(@type)]/@valuestyle"/>
+  <xsl:variable name="type-style" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[@type = $type]/@valuestyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/properties-fragments/properties-fragment[not(@type)]/@valuestyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-type-style != ''">
+      <xsl:value-of select="$label-type-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$type-style != ''">
+      <xsl:value-of select="$type-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$default-paragraph-style" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+  <!--
+    Returns the default table style.
+
+    @return the word table style
+  -->
 <xsl:function name="config:default-table-style" as="xs:string">
   <xsl:variable name="table-name" select="$config-doc/config/elements[not(@label)]/tables/table/@default"/>
   <xsl:value-of select="string(document(concat($_dotxfolder, $styles-template))//w:style[@w:type = 'table'][w:name/@w:val = $table-name]/@w:styleId)" />
@@ -766,7 +974,7 @@
   @param document-label the document label
   @param role the table role
 
-  @return the word table width type
+  @return the word style name
 -->
 <xsl:function name="config:table-head-style" as="xs:string">
   <xsl:param name="document-label"/>
@@ -804,7 +1012,7 @@
   @param document-label the document label
   @param role the table role
 
-  @return the word table width type
+  @return the word style name
 -->
 <xsl:function name="config:table-body-style" as="xs:string">
   <xsl:param name="document-label"/>
@@ -829,6 +1037,213 @@
     <xsl:otherwise>
       <xsl:value-of select="$default-paragraph-style" />
     </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and table role specific table layout
+  otherwise the document label specific table layout
+  otherwise the document role specific table layout
+  otherwise the default table layout
+  otherwise empty.
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the table layout or empty
+-->
+<xsl:function name="config:table-layout" as="xs:string?">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-layout" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@layout"/>
+  <xsl:variable name="label-layout" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@layout"/>
+  <xsl:variable name="role-layout" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@layout"/>
+  <xsl:variable name="default-layout" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@layout"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-layout != ''">
+      <xsl:value-of select="$label-role-layout" />
+    </xsl:when>
+    <xsl:when test="$label-layout != ''">
+      <xsl:value-of select="$label-layout" />
+    </xsl:when>
+    <xsl:when test="$role-layout != ''">
+      <xsl:value-of select="$role-layout" />
+    </xsl:when>
+    <xsl:when test="$default-layout != ''">
+      <xsl:value-of select="$default-layout" />
+    </xsl:when>
+    <xsl:otherwise></xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and col role specific col config
+  otherwise the document label specific col config
+  otherwise the document role specific col config
+  otherwise the default col config
+  otherwise nothing.
+
+  col config format:
+  <col role="[col role]">
+    <shading fill="" />
+    <borders value="[top][,][bottom][,][start][,][end]"/>
+  </col>
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the col config or nothing
+-->
+<xsl:function name="config:table-col" as="element(col)?">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-config" select="$config-doc/config/elements[@label = $document-label]/tables/col[@role = $role]"/>
+  <xsl:variable name="label-config" select="$config-doc/config/elements[@label = $document-label]/tables/col[not(@role)]"/>
+  <xsl:variable name="role-config" select="$config-doc/config/elements[not(@label)]/tables/col[@role = $role]"/>
+  <xsl:variable name="default-config" select="$config-doc/config/elements[not(@label)]/tables/col[not(@role)]"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-config">
+      <xsl:sequence select="$label-role-config" />
+    </xsl:when>
+    <xsl:when test="$label-config">
+      <xsl:sequence select="$label-config" />
+    </xsl:when>
+    <xsl:when test="$role-config">
+      <xsl:sequence select="$role-config" />
+    </xsl:when>
+    <xsl:when test="$default-config">
+      <xsl:sequence select="$default-config" />
+    </xsl:when>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and row role specific row config
+  otherwise the document label specific row config
+  otherwise the document role specific row config
+  otherwise the default row config
+  otherwise nothing.
+
+  Row config format:
+  <row role="[row role]"
+       cansplit="[true|false]"
+       align="[center|start|end]">
+    <height type="[atleast|exact]" value=""/>
+    <shading fill="" />
+    <borders value="[top][,][bottom][,][start][,][end]"/>
+  </row>
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the row config or nothing
+-->
+<xsl:function name="config:table-row" as="element(row)?">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-config" select="$config-doc/config/elements[@label = $document-label]/tables/row[@role = $role]"/>
+  <xsl:variable name="label-config" select="$config-doc/config/elements[@label = $document-label]/tables/row[not(@role)]"/>
+  <xsl:variable name="role-config" select="$config-doc/config/elements[not(@label)]/tables/row[@role = $role]"/>
+  <xsl:variable name="default-config" select="$config-doc/config/elements[not(@label)]/tables/row[not(@role)]"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-config">
+      <xsl:sequence select="$label-role-config" />
+    </xsl:when>
+    <xsl:when test="$label-config">
+      <xsl:sequence select="$label-config" />
+    </xsl:when>
+    <xsl:when test="$role-config">
+      <xsl:sequence select="$role-config" />
+    </xsl:when>
+    <xsl:when test="$default-config">
+      <xsl:sequence select="$default-config" />
+    </xsl:when>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and hcell role specific hcell config
+  otherwise the document label specific hcell config
+  otherwise the document role specific hcell config
+  otherwise the default hcell config
+  otherwise nothing.
+
+  Hcell config format:
+  <hcell role="[hcell role]"
+       valign="[bottom|center|top]">
+    <width type="[dxa|pct|auto]" value=""/>
+    <shading fill="" />
+    <borders value="[top][,][bottom][,][start][,][end]"/>
+  </hcell>
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the hcell config or nothing
+-->
+<xsl:function name="config:table-hcell" as="element(hcell)?">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-config" select="$config-doc/config/elements[@label = $document-label]/tables/hcell[@role = $role]"/>
+  <xsl:variable name="label-config" select="$config-doc/config/elements[@label = $document-label]/tables/hcell[not(@role)]"/>
+  <xsl:variable name="role-config" select="$config-doc/config/elements[not(@label)]/tables/hcell[@role = $role]"/>
+  <xsl:variable name="default-config" select="$config-doc/config/elements[not(@label)]/tables/hcell[not(@role)]"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-config">
+      <xsl:sequence select="$label-role-config" />
+    </xsl:when>
+    <xsl:when test="$label-config">
+      <xsl:sequence select="$label-config" />
+    </xsl:when>
+    <xsl:when test="$role-config">
+      <xsl:sequence select="$role-config" />
+    </xsl:when>
+    <xsl:when test="$default-config">
+      <xsl:sequence select="$default-config" />
+    </xsl:when>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and cell role specific cell config
+  otherwise the document label specific cell config
+  otherwise the document role specific cell config
+  otherwise the default cell config
+  otherwise nothing.
+
+  Cell config format:
+  <cell role="[cell role]"
+       valign="[bottom|center|top]">
+    <width type="[dxa|pct|auto]" value=""/>
+    <shading fill="" />
+    <borders value="[top][,][bottom][,][start][,][end]"/>
+  </cell>
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the cell config or nothing
+-->
+<xsl:function name="config:table-cell" as="element(cell)?">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-config" select="$config-doc/config/elements[@label = $document-label]/tables/cell[@role = $role]"/>
+  <xsl:variable name="label-config" select="$config-doc/config/elements[@label = $document-label]/tables/cell[not(@role)]"/>
+  <xsl:variable name="role-config" select="$config-doc/config/elements[not(@label)]/tables/cell[@role = $role]"/>
+  <xsl:variable name="default-config" select="$config-doc/config/elements[not(@label)]/tables/cell[not(@role)]"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-config">
+      <xsl:sequence select="$label-role-config" />
+    </xsl:when>
+    <xsl:when test="$label-config">
+      <xsl:sequence select="$label-config" />
+    </xsl:when>
+    <xsl:when test="$role-config">
+      <xsl:sequence select="$role-config" />
+    </xsl:when>
+    <xsl:when test="$default-config">
+      <xsl:sequence select="$default-config" />
+    </xsl:when>
   </xsl:choose>
 </xsl:function>
 

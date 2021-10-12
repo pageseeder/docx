@@ -19,9 +19,11 @@
                 xmlns:ct="http://schemas.openxmlformats.org/package/2006/content-types"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 xmlns:config="http://pageseeder.org/docx/config"
+                xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
+                xmlns:cust="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
                 exclude-result-prefixes="#all">
 
-<!-- 
+<!--
   Template to handle creation of content_types.xml file from Template and input document
 -->
 <xsl:template match="/" mode="content-types">
@@ -51,7 +53,7 @@
   </xsl:for-each>
 </xsl:template>
 
-<!-- 
+<!--
   Template to handle creation of files referenced by `content_types.xml` file
 -->
 <xsl:template name="create-documents">
@@ -156,6 +158,11 @@
               </xsl:otherwise>
             </xsl:choose>
           </cp:coreProperties>
+        </xsl:result-document>
+      </xsl:when>
+      <xsl:when test="matches(@PartName,'/docProps/custom.xml')">
+        <xsl:result-document href="{concat($_outputfolder,@PartName)}">
+          <xsl:apply-templates select="document(concat($_dotxfolder,encode-for-uri(@PartName)))" mode="custom" />
         </xsl:result-document>
       </xsl:when>
       <xsl:otherwise>
@@ -315,6 +322,31 @@
       </Relationships>
     </xsl:result-document>
   </xsl:if>
+</xsl:template>
+
+<!-- Template to update version custom docproperty -->
+<xsl:template match="cust:property[lower-case(@name) = 'version' and vt:lpwstr]" mode="custom">
+  <xsl:copy>
+    <xsl:copy-of select="@*" />
+    <vt:lpwstr>
+      <xsl:choose>
+        <xsl:when test="config:version() != ''">
+          <xsl:value-of select="config:ps-token(config:version())" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="vt:lpwstr" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </vt:lpwstr>
+  </xsl:copy>
+</xsl:template>
+
+<!-- Template to copy each node recursively -->
+<xsl:template match="* | @*" mode="custom">
+  <xsl:copy>
+    <xsl:copy-of select="@*" />
+    <xsl:apply-templates mode="custom" />
+  </xsl:copy>
 </xsl:template>
 
 <!-- Template to copy each node recursively -->

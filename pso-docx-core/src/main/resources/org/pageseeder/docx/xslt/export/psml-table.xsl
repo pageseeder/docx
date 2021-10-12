@@ -115,6 +115,10 @@
           </w:tblW>
         </xsl:otherwise>
       </xsl:choose>
+      <xsl:variable name="layout" select="config:table-layout($labels, @role)" />
+      <xsl:if test="$layout != ''">
+        <w:tblLayout w:type="{$layout}"/>
+      </xsl:if>
       <!-- TODO There is already a condition for caption above -->
       <xsl:if test="caption">
         <w:tblCaption w:val="{caption}"/>
@@ -122,32 +126,51 @@
       <xsl:if test="@summary">
         <w:tblDescription w:val="{@summary}"/>
       </xsl:if>
-      <w:tblLook w:val="05E0"
-                 w:firstRow="{if(row[1][@part = 'header']) then 1 else 0}"
+      <!-- Required to correctly format header/footer columns/rows -->
+      <w:tblLook w:firstRow="{if(row[1][@part = 'header']) then 1 else 0}"
                  w:lastRow="{if(row[last()][@part = 'footer']) then 1 else 0}"
                  w:firstColumn="{if(col[1][@part = 'header']) then 1 else 0}"
                  w:lastColumn="{if(col[last()][@part = 'footer']) then 1 else 0}"/>
     </w:tblPr>
     <xsl:variable name="max-columns" select="count(row[1]/*[name() = 'cell' or 'hcell'][not(@colspan)]) + sum(row[1]/*[name() = 'cell' or 'hcell'][@colspan]/@colspan) cast as xs:integer" />
 
-<!--       <xsl:if test="col[@width]"> -->
-<!--         <w:tblGrid> -->
-<!--           <xsl:for-each select="col"> -->
-<!--             <w:gridCol> -->
-<!--               <xsl:attribute name="w:w" select="format-number(number(substring-before(@width,'px')) * 15, '#######')" /> -->
-<!--             </w:gridCol> -->
-<!--           </xsl:for-each> -->
-<!--         </w:tblGrid> -->
-<!--       </xsl:if> -->
+    <!-- tblGrid is only used when <w:tblLayout w:type="fixed"/>
+    <xsl:if test="col[@width]">
+      <xsl:variable name="total-width" select="if (@width) then fn:table-width-dxa(@width) else '5000'" />
+      <w:tblGrid>
+        <xsl:for-each select="col">
+          <w:gridCol>
+            <xsl:attribute name="w:w">
+              <xsl:analyze-string regex="([\d|\.]+)(%|px)?" select="@width">
+                <xsl:matching-substring>
+                  <xsl:choose>
+                    <xsl:when test="regex-group(2) = '%'">
+                      <xsl:value-of select="floor(number($total-width) * number(regex-group(1)) div 100)" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="number(regex-group(1)) * 15" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:matching-substring>
+                <!- - this shouldn't happen - ->
+                <xsl:non-matching-substring>200</xsl:non-matching-substring>
+              </xsl:analyze-string>
+            </xsl:attribute>
+          </w:gridCol>
+        </xsl:for-each>
+      </w:tblGrid>
+    </xsl:if>
+    -->
+
     <xsl:variable name="column-properties" as="element()">
       <columns>
         <xsl:for-each select="./col">
           <col>
             <xsl:choose>
               <xsl:when test="@width">
-                <xsl:analyze-string regex="(\d+)(.*)" select="@width">
+                <xsl:analyze-string regex="([\d|\.]+)(%|px)?" select="@width">
                   <xsl:matching-substring>
-                    <xsl:attribute name="value" select="if(regex-group(2) = '%') then number(regex-group(1)) * 50 else number(regex-group(1)) * 15"/>
+                    <xsl:attribute name="value" select="if(regex-group(2) = '%') then regex-group(0) else number(regex-group(1)) * 15"/>
                     <xsl:attribute name="type" select="if(regex-group(2) = '%') then 'pct' else 'dxa'"/>
                   </xsl:matching-substring>
                   <xsl:non-matching-substring>
@@ -180,12 +203,13 @@
   </w:tbl>
 </xsl:template>
 
-<!-- 
-  Template that creates each row recursively. 
+<!--
+  Template that creates each row recursively.
 
   It calls a template to calculate the preceding row's colspans and rowspans
 -->
 <xsl:template name="create-rows-recursively">
+  <xsl:param name="labels" tunnel="yes" />
   <xsl:param name="row-position" />
   <xsl:param name="previous-position" />
   <xsl:param name="previous-row" as="element()" />
@@ -194,25 +218,36 @@
 
   <xsl:variable name="current" select="$row" />
 
-  <xsl:choose>
-    <xsl:when test="$previous-position = 0">
-      <w:tr>
-        <xsl:if test="$row/hcell">
-          <w:trPr>
-            <w:tblHeader/>
-          </w:trPr>
-        </xsl:if>
+  <w:tr>
+    <w:trPr>
+      <xsl:if test="$row/@part='header'">
+        <!-- Note that headers will not repeat if there is not room for them due to <w:cantSplit/> -->
+        <w:tblHeader/>
+      </xsl:if>
+      <xsl:variable name="row-config" select="config:table-row($labels,$row/@role)" />
+      <xsl:if test="$row-config/@cantsplit='true'">
+        <w:cantSplit/>
+      </xsl:if>
+      <xsl:if test="$row-config/@align">
+        <w:jc w:val="{$row-config/@align}"/>
+      </xsl:if>
+      <xsl:if test="$row-config/height">
+        <w:trHeight w:val="{$row-config/height/@value}"
+                     w:hRule="{if ($row-config/height/@type='exact') then 'exact' else 'atLeast'}"/>
+      </xsl:if>
+    </w:trPr>
+    <xsl:choose>
+      <xsl:when test="$previous-position = 0">
         <xsl:for-each select="$row/*[name() = 'cell' or 'hcell']">
           <xsl:variable name="position" select="position()"/>
           <w:tc>
             <w:tcPr>
-              <w:tcW w:w="{$column-properties/col[position() = $position]/@value}" w:type="{$column-properties/col[position() = $position]/@type}" />
-              <xsl:if test="@colspan">
-                <w:gridSpan w:val="{@colspan}" />
-              </xsl:if>
-              <xsl:if test="@rowspan">
-                <w:vMerge w:val="restart" />
-              </xsl:if>
+              <xsl:call-template name="add-cell-properties">
+                <xsl:with-param name="labels"            select="$labels" tunnel="yes"/>
+                <xsl:with-param name="cell"              select="."/>
+                <xsl:with-param name="position"          select="$position"/>
+                <xsl:with-param name="column-properties" select="$column-properties"/>
+              </xsl:call-template>
             </w:tcPr>
             <xsl:choose>
               <!-- when contains mixed content -->
@@ -233,10 +268,8 @@
             </xsl:choose>
           </w:tc>
         </xsl:for-each>
-      </w:tr>
-    </xsl:when>
-    <xsl:otherwise>
-      <w:tr>
+      </xsl:when>
+      <xsl:otherwise>
         <xsl:for-each select="$previous-row/*[name() = 'cell' or 'hcell']">
           <xsl:variable name="position" select="position()"/>
           <xsl:variable name="row-position" select="
@@ -247,7 +280,7 @@
                 <xsl:when test="not(@colspans)">
                   <w:tc>
                     <w:tcPr>
-                      <w:tcW w:w="{$column-properties/col[position() = $position]/@value}" w:type="{$column-properties/col[position() = $position]/@type}" />
+                      <!-- <w:tcW w:w="{$column-properties/col[position() = $position]/@value}" w:type="{$column-properties/col[position() = $position]/@type}" /> -->
                       <w:vMerge />
                     </w:tcPr>
                     <w:p />
@@ -260,7 +293,7 @@
                   <xsl:variable name="number-of-colspans" select="count(following-sibling::*[@colspans = $colspans-value]) + 1" />
                   <w:tc>
                     <w:tcPr>
-                      <w:tcW w:w="{$column-properties/col[position() = $position]/@value}" w:type="{$column-properties/col[position() = $position]/@type}" />
+                      <!-- <w:tcW w:w="{$column-properties/col[position() = $position]/@value}" w:type="{$column-properties/col[position() = $position]/@type}" /> -->
                       <w:gridSpan w:val="{$number-of-colspans}" />
                       <w:vMerge />
                     </w:tcPr>
@@ -271,19 +304,17 @@
             </xsl:when>
             <xsl:otherwise>
               <xsl:for-each select="$current/*[name() = 'cell' or 'hcell']">
-              <xsl:variable name="position" select="position()"/>
                 <xsl:variable name="current-row-position" select="count(preceding-sibling::*[name() = 'cell' or 'hcell'][not(@colspan)]) + sum(preceding-sibling::*[name() = 'cell' or 'hcell'][@colspan]/@colspan) + 1" />
                 <xsl:choose>
                   <xsl:when test="$row-position = $current-row-position">
                     <w:tc>
                       <w:tcPr>
-                        <w:tcW w:w="{$column-properties/col[position() = $position]/@value}" w:type="{$column-properties/col[position() = $position]/@type}" />
-                        <xsl:if test="@colspan">
-                          <w:gridSpan w:val="{@colspan}" />
-                        </xsl:if>
-                        <xsl:if test="@rowspan">
-                          <w:vMerge w:val="restart" />
-                        </xsl:if>
+                        <xsl:call-template name="add-cell-properties">
+                          <xsl:with-param name="labels"            select="$labels" tunnel="yes"/>
+                          <xsl:with-param name="cell"              select="."/>
+                          <xsl:with-param name="position"          select="$position"/>
+                          <xsl:with-param name="column-properties" select="$column-properties"/>
+                        </xsl:call-template>
                       </w:tcPr>
                       <xsl:choose>
                         <!-- when contains mixed content -->
@@ -312,11 +343,9 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:for-each>
-
-      </w:tr>
-    </xsl:otherwise>
-  </xsl:choose>
-
+      </xsl:otherwise>
+    </xsl:choose>
+  </w:tr>
 
   <xsl:if test="$row/following-sibling::row[1]">
     <xsl:variable name="previous-row" as="element()">
@@ -333,11 +362,66 @@
       <xsl:with-param name="previous-position" select="count($row/following-sibling::row[1]/preceding-sibling::row)" />
       <xsl:with-param name="previous-row" select="$previous-row" as="element()" />
       <xsl:with-param name="row" select="$row/following-sibling::row[1]" as="node()" />
-        <xsl:with-param name="column-properties" select="$column-properties" as="element()" />
+      <xsl:with-param name="column-properties" select="$column-properties" as="element()" />
     </xsl:call-template>
 
   </xsl:if>
 
+</xsl:template>
+
+<xsl:template name="add-cell-properties">
+  <xsl:param name="labels" tunnel="yes" />
+  <xsl:param name="cell" as="element()"/>
+  <xsl:param name="position" as="xs:integer"/>
+  <xsl:param name="column-properties" as="element()"/>
+
+  <xsl:variable name="cell-config" select="if (name($cell) = 'hcell') then
+      config:table-hcell($labels, $cell/@role) else config:table-cell($labels, $cell/@role)" />
+  <xsl:variable name="row-config" select="config:table-row($labels, $cell/../@role)" />
+  <xsl:variable name="col-config" select="config:table-col($labels, $cell/../../col[position() = $position]/@role)" />
+
+  <xsl:if test="$cell/@colspan">
+    <w:gridSpan w:val="{$cell/@colspan}" />
+  </xsl:if>
+  <xsl:if test="$cell/@rowspan">
+    <w:vMerge w:val="restart" />
+  </xsl:if>
+
+  <xsl:if test="$cell-config/@valign">
+    <w:vAlign w:val="{$cell-config/@valign}" />
+  </xsl:if>
+
+  <!-- For width use cell config then row config then col attributes -->
+  <xsl:variable name="width-config" select="if ($cell-config/width) then $cell-config/width
+      else if ($row-config/width) then $row-config/width else $column-properties/col[position() = $position]" />
+  <w:tcW w:w="{$width-config/@value}" w:type="{$width-config/@type}" />
+
+  <!-- For shading use cell config then row config then col config -->
+  <xsl:variable name="shading-config" select="if ($cell-config/shading) then $cell-config/shading
+      else if ($row-config/shading) then $row-config/shading else $col-config/shading" />
+  <xsl:if test="$shading-config/@fill">
+    <w:shd w:fill="{$shading-config/@fill}" />
+  </xsl:if>
+
+  <!-- For borders use cell config then row config then col config -->
+  <xsl:variable name="borders-config" select="if ($cell-config/borders) then $cell-config/borders
+      else if ($row-config/borders) then $row-config/borders else $col-config/borders" />
+  <xsl:if test="$borders-config">
+    <w:tcBorders>
+      <xsl:if test="$borders-config/top">
+        <w:top w:val="{$borders-config/top/@type}" w:color="{$borders-config/top/@color}" w:sz="{$borders-config/top/@size}" />
+      </xsl:if>
+      <xsl:if test="$borders-config/bottom">
+        <w:bottom w:val="{$borders-config/bottom/@type}" w:color="{$borders-config/bottom/@color}" w:sz="{$borders-config/bottom/@size}" />
+      </xsl:if>
+      <xsl:if test="$borders-config/start">
+        <w:start w:val="{$borders-config/start/@type}" w:color="{$borders-config/start/@color}" w:sz="{$borders-config/start/@size}" />
+      </xsl:if>
+      <xsl:if test="$borders-config/end">
+        <w:end w:val="{$borders-config/end/@type}" w:color="{$borders-config/end/@color}" w:sz="{$borders-config/end/@size}" />
+      </xsl:if>
+    </w:tcBorders>
+  </xsl:if>
 </xsl:template>
 
 <!-- Template to normalize the preceding row colspans and rowspans -->

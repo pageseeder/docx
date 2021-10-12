@@ -67,7 +67,6 @@
     <xsl:when test="$config-doc/config/elements/inline[@default = 'generate-ps-style']">
       <xsl:for-each select="document//inline">
         <xsl:choose>
-          <xsl:when test="ancestor::document[1]/document/documentinfo/uri/labels"/>
           <xsl:when test="$config-doc/config/elements/inline/label[@value = current()/@label]"/>
           <xsl:when test="$config-doc/config/elements/inline/ignore[@value = current()/@label]"/>
           <xsl:when test="$config-doc/config/elements/inline/tab[@value = current()/@label]"/>
@@ -93,9 +92,7 @@
    <xsl:choose>
     <xsl:when test="$config-doc/config/elements/block[@default = 'generate-ps-style']">
       <xsl:for-each select="document//block">
-        <xsl:variable name="documentLabel" select="ancestor::document[1]/document/documentinfo/uri/labels"/>
         <xsl:choose>
-          <xsl:when test="$documentLabel != '' and $config-doc/config/elements[matches(@label,$documentLabel)]/block/@default != 'generate-ps-style'"/>
           <xsl:when test="$config-doc/config/elements/block/label[@value = current()/@label]"/>
           <xsl:when test="$config-doc/config/elements/block/ignore[@value = current()/@label]"/>
           <xsl:when test="$config-doc/config/elements/block/tab[@value = current()/@label]"/>
@@ -162,8 +159,9 @@
       <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
       <xsl:variable name="flags">
         <xsl:choose>
-          <xsl:when test="$current/preceding::heading[ancestor::document[1]/documentinfo/uri/labels = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix != ''">
-            <xsl:variable name="preceding-heading-value" select="$current/preceding::heading[ancestor::document[1]/documentinfo/uri/labels = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix"/>
+          <xsl:when test="$current/preceding::heading[tokenize(ancestor::document[1]/documentinfo/uri/labels,',') = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix != ''">
+            <xsl:variable name="preceding-heading-value" select="$current/preceding::heading[
+                tokenize(ancestor::document[1]/documentinfo/uri/labels,',') = $document-label][@level &lt;= number($heading-level)][1][@level = $heading-level]/@prefix"/>
             <xsl:choose>
               <xsl:when test="number(fn:get-number-from-regexp($preceding-heading-value,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
                 <xsl:value-of select="'\n'"/>
@@ -534,8 +532,9 @@
       <xsl:variable name="real-regular-expression" select="fn:replace-regexp($regexp)"/>
       <xsl:variable name="flags">
        <xsl:choose>
-          <xsl:when test="$current/preceding::para[ancestor::document[1]/documentinfo/uri/labels = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix != ''">
-            <xsl:variable name="precedingparavalue" select="$current/preceding::para[ancestor::document[1]/documentinfo/uri/labels = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix"/>
+          <xsl:when test="$current/preceding::para[tokenize(ancestor::document[1]/documentinfo/uri/labels,',') = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix != ''">
+            <xsl:variable name="precedingparavalue" select="$current/preceding::para[
+                tokenize(ancestor::document[1]/documentinfo/uri/labels,',') = $document-label][@indent &lt;= number($current-indent)][1][@indent = $current-indent]/@prefix"/>
             <xsl:choose>
               <xsl:when test="number(fn:get-number-from-regexp($precedingparavalue,$regexp,$real-regular-expression)) + 1 = number(fn:get-number-from-regexp($current/@prefix,$regexp,$real-regular-expression))">
                 <xsl:value-of select="'\n'"/>
@@ -1021,10 +1020,10 @@
     <xsl:variable name="role" select="ancestor-or-self::*[name() = 'list' or name() = 'nlist'][last()]/@role"/>
     <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist) + 1"/>
     <xsl:variable name="list-type" select="./name()"/>
-    <xsl:variable name="labels">
+    <xsl:variable name="labels" as="xs:string*">
       <xsl:choose>
         <xsl:when test="ancestor::document[1]/documentinfo/uri/labels">
-          <xsl:value-of select="ancestor::document[1]/documentinfo/uri/labels"/>
+          <xsl:sequence select="tokenize(ancestor::document[1]/documentinfo/uri/labels,',')" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="''"/>
