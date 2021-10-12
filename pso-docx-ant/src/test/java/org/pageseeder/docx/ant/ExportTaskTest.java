@@ -95,7 +95,7 @@ public final class ExportTaskTest {
 
   @Test
   public void testCoreProperties() throws IOException, SAXException {
-    testIndividual("core-properties", "document,core");
+    testIndividual("core-properties", "document,core,custom");
   }
 
   @Test
@@ -581,7 +581,7 @@ public final class ExportTaskTest {
         for (String name : names) {
           File actual = new File(result,
               ("document".equals(name) ? "" :
-                "core".equals(name) ? "working/prepacked/docProps/" :
+                ("core".equals(name) || "custom".equals(name)) ? "working/prepacked/docProps/" :
                 "item1".equals(name) ? "working/prepacked/customXml/" :
                 "working/prepacked/word/") + name + ".xml");
           File expected = new File(dir, name + ".xml");
