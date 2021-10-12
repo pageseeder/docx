@@ -4,7 +4,8 @@
 	<elements>
 		<tables>
 			<!-- Tables -->
-			<table role="table1" tablestyle="PS Table" layout="fixed">
+			<table role="table1" tablestyle="Plain Table 4" />
+			<table role="table2" tablestyle="PS Table" layout="fixed">
 				<width type="pct" value="80%"/>
 			</table>
 

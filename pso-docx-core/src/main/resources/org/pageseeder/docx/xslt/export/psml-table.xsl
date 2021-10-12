@@ -126,11 +126,13 @@
       <xsl:if test="@summary">
         <w:tblDescription w:val="{@summary}"/>
       </xsl:if>
+      <!-- Not sure what this is for and it seems to be changed by Word when you open the file anyway
       <w:tblLook w:val="05E0"
                  w:firstRow="{if(row[1][@part = 'header']) then 1 else 0}"
                  w:lastRow="{if(row[last()][@part = 'footer']) then 1 else 0}"
                  w:firstColumn="{if(col[1][@part = 'header']) then 1 else 0}"
                  w:lastColumn="{if(col[last()][@part = 'footer']) then 1 else 0}"/>
+      -->
     </w:tblPr>
     <xsl:variable name="max-columns" select="count(row[1]/*[name() = 'cell' or 'hcell'][not(@colspan)]) + sum(row[1]/*[name() = 'cell' or 'hcell'][@colspan]/@colspan) cast as xs:integer" />
 
@@ -219,22 +221,23 @@
   <xsl:variable name="current" select="$row" />
 
   <w:tr>
-    <xsl:if test="$row/@part='header'">
-      <w:trPr>
+    <w:trPr>
+      <xsl:if test="$row/@part='header'">
+        <!-- Note that headers will not repeat if there is not room for them due to <w:cantSplit/> -->
         <w:tblHeader/>
-      </w:trPr>
-    </xsl:if>
-    <xsl:variable name="row-config" select="config:table-row($labels,$row/@role)" />
-    <xsl:if test="$row-config/@cantsplit='true'">
-      <w:cantSplit/>
-    </xsl:if>
-    <xsl:if test="$row-config/@align">
-      <w:jc w:val="{$row-config/@align}"/>
-    </xsl:if>
-    <xsl:if test="$row-config/height">
-      <w:trHeight w:val="{$row-config/height/@value}"
-                   w:hRule="{if ($row-config/height/@type='exact') then 'exact' else 'atLeast'}"/>
-    </xsl:if>
+      </xsl:if>
+      <xsl:variable name="row-config" select="config:table-row($labels,$row/@role)" />
+      <xsl:if test="$row-config/@cantsplit='true'">
+        <w:cantSplit/>
+      </xsl:if>
+      <xsl:if test="$row-config/@align">
+        <w:jc w:val="{$row-config/@align}"/>
+      </xsl:if>
+      <xsl:if test="$row-config/height">
+        <w:trHeight w:val="{$row-config/height/@value}"
+                     w:hRule="{if ($row-config/height/@type='exact') then 'exact' else 'atLeast'}"/>
+      </xsl:if>
+    </w:trPr>
     <xsl:choose>
       <xsl:when test="$previous-position = 0">
         <xsl:for-each select="$row/*[name() = 'cell' or 'hcell']">
@@ -377,7 +380,7 @@
   <xsl:variable name="cell-config" select="if (name($cell) = 'hcell') then
       config:table-hcell($labels, $cell/@role) else config:table-cell($labels, $cell/@role)" />
   <xsl:variable name="row-config" select="config:table-row($labels, $cell/../@role)" />
-  <xsl:variable name="col-config" select="config:table-row($labels, $cell/../../col[position() = $position]/@role)" />
+  <xsl:variable name="col-config" select="config:table-col($labels, $cell/../../col[position() = $position]/@role)" />
 
   <xsl:if test="$cell/@colspan">
     <w:gridSpan w:val="{$cell/@colspan}" />

@@ -18,13 +18,13 @@
 	<section id="1">
 		<fragment id="1">
 			<heading level="2">Table 1</heading>
-			<table width="400">
+			<table width="400" role="table1">
 				<col width="40" role="col1"/>
 				<col width="80px" role="col2"/>
 				<col width="80px" role="col3"/>
 				<col width="200px" role="col4"/>
 				<row part="header" role="row1">
-					<cell>A text A text A text A text A text A text A text A text A text A text</cell>
+					<cell>A text A text A text A text A text A text</cell>
 					<cell>B</cell>
 					<cell>C</cell>
 					<cell>D</cell>
@@ -43,7 +43,7 @@
 				</row>
 			</table>
 			<heading level="2">Table 2</heading>
-			<table width="400px" >
+			<table width="400px" role="table1">
 				<col width="10.1%" role="col1"/>
 				<col width="19.9%" role="col2"/>
 				<col width="20%" role="col3"/>
@@ -62,7 +62,7 @@
 				</row>
 			</table>
 			<heading level="2">Table 3</heading>
-			<table width="50.1%" >
+			<table width="50.1%" role="table1">
 				<col width="10.1%"/>
 				<col width="19.9%"/>
 				<col width="20%"/>
@@ -93,7 +93,7 @@
 				</row>
 			</table>
 			<heading level="2">Table 4</heading>
-			<table role="table1">
+			<table role="table2">
 				<col width="10.1%"/>
 				<col width="19.9%"/>
 				<col width="20%"/>
@@ -112,7 +112,7 @@
 				</row>
 			</table>
 			<heading level="2">Table 5</heading>
-			<table role="table1">
+			<table width="80%">
 				<col width="10.1%"/>
 				<col width="19.9%"/>
 				<col width="20%"/>
