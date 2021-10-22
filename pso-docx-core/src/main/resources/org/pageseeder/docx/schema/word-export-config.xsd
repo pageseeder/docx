@@ -233,6 +233,7 @@
 	<xs:element name="elements">
 		<xs:complexType>
 			<xs:all>
+				<xs:element ref="document" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="block" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="image" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />
@@ -249,6 +250,12 @@
 			</xs:all>
 			<xs:attribute name="label" type="xs:string"/>
 			<xs:attribute name="blocklabel" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="document">
+		<xs:complexType>
+			<xs:attribute name="wordsection" type="xs:integer"/>
 		</xs:complexType>
 	</xs:element>
 

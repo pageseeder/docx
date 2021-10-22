@@ -317,6 +317,23 @@
 </xsl:function>
 
 <!--
+  Returns the word section number for a document label otherwise 1.
+
+  @param document-label the document label
+
+  @return the section number
+-->
+<xsl:function name="config:section-number" as="xs:integer">
+  <xsl:param name="document-label"/>
+
+  <xsl:variable name="label-section" select="$config-doc/config/elements[@label = $document-label]/document/@wordsection"/>
+  <xsl:variable name="default-section" select="$config-doc/config/elements[not(@label)]/document/@wordsection"/>
+  <xsl:value-of select="if ($label-section) then number($label-section)
+                        else if ($default-section) then number($default-section)
+                        else 1" />
+</xsl:function>
+
+<!--
   Returns the style ID for the configured footnote text style.
 
   @param document-label the document label

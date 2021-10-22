@@ -24,6 +24,23 @@
 -->
 <xsl:template match="document" mode="psml">
   <xsl:variable name="labels" select="tokenize(documentinfo/uri/labels,',')" as="xs:string*"/>
+  <!-- if not root document add previous section info -->
+  <xsl:if test="ancestor::document">
+    <xsl:variable name="previous-fragment" select="(preceding::fragment|ancestor::fragment)[last()]" />
+    <xsl:variable name="previous-labels"
+                  select="tokenize($previous-fragment/ancestor::document[1]/documentinfo/uri/labels,',')"
+                  as="xs:string*"/>
+    <xsl:variable name="section-properties"
+                  select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[
+                        position()=config:section-number($previous-labels)]"/>
+    <xsl:if test="$section-properties">
+      <w:p>
+        <w:pPr>
+          <xsl:copy-of select="$section-properties"/>
+        </w:pPr>
+      </w:p>
+    </xsl:if>
+  </xsl:if>
   <xsl:choose>
     <!-- don't include footnotes and endnotes documents -->
     <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
@@ -81,7 +98,9 @@
           <xsl:apply-templates select="section|toc" mode="psml">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
           </xsl:apply-templates>
-          <xsl:variable name="section-properties" select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
+          <xsl:variable name="section-properties"
+                        select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[
+                        position()=config:section-number($labels)]"/>
           <xsl:choose>
             <xsl:when test="$section-properties">
               <xsl:copy-of select="$section-properties"/>
@@ -101,6 +120,16 @@
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
+      <xsl:variable name="section-properties"
+                    select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[
+                        position()=config:section-number($labels)]"/>
+      <xsl:if test="$section-properties">
+        <w:p>
+          <w:pPr>
+            <xsl:copy-of select="$section-properties"/>
+          </w:pPr>
+        </w:p>
+      </xsl:if>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
