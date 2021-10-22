@@ -121,7 +121,7 @@
 <xsl:template match="fragment" mode="psml">
   <!-- TODO generate comments for other xref-fragment, properties-fragment, media-fragment -->
   <xsl:if test="config:generate-comments()">
-    <xsl:variable name="id" select="count(preceding::fragment) + 1"/>
+    <xsl:variable name="id" select="count(preceding::fragment) + count(ancestor::fragment) + 1"/>
     <w:p>
      <w:commentRangeStart w:id="{$id}"/>
       <w:r>

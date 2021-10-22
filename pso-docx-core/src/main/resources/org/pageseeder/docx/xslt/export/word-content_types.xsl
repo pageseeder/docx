@@ -246,10 +246,13 @@
       <w:comments>
         <xsl:for-each select=".//fragment">
           <xsl:variable name="id" select="position()" />
+          <xsl:variable name="document-uri" select="if (ancestor::blockxref) then
+              ancestor::blockxref[1]/@uriid else ancestor::document[1]/documentinfo/uri/@id" />
           <xsl:variable name="filename">
-            <xsl:value-of select="./ancestor::document[1]/uri/displaytitle" />
+            <xsl:value-of select="if (ancestor::blockxref) then
+            ancestor::blockxref[1]/@urititle else ancestor::document[1]/documentinfo/uri/displaytitle" />
           </xsl:variable>
-          <w:comment w:id="{$id}" w:initials="PS" w:author="Pageseeder">
+          <w:comment w:id="{$id}" w:initials="PS" w:author="PageSeeder">
             <w:p>
               <w:pPr>
                 <w:pStyle w:val="CommentReference" />
@@ -260,13 +263,13 @@
                 </w:rPr>
                 <w:annotationRef />
                 <w:t>
-                  <xsl:text>File:</xsl:text>
+                  <xsl:text>File: </xsl:text>
                   <xsl:value-of select="$filename" />
                 </w:t>
                 <w:br />
                 <w:t>
-                  <xsl:text>Fragment:</xsl:text>
-                  <xsl:value-of select="@id" />
+                  <xsl:text>Fragment: </xsl:text>
+                  <xsl:value-of select="if (starts-with(@id, $document-uri)) then substring-after(@id, '-') else @id" />
                 </w:t>
                 <w:br />
               </w:r>
@@ -288,30 +291,15 @@
 
     <xsl:result-document href="{concat($_outputfolder,'word/_rels/comments.xml.rels')}">
       <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-        <xsl:for-each select=".//section">
+        <xsl:for-each select=".//fragment">
           <xsl:variable name="id" select="position()" />
-          <xsl:variable name="document-uri" select="./ancestor::document[1]/@id" />
+          <xsl:variable name="document-uri" select="if (ancestor::blockxref) then
+              ancestor::blockxref[1]/@uriid else ancestor::document[1]/documentinfo/uri/@id" />
           <xsl:variable name="document-host" select="./ancestor::document[1]/documentinfo/uri/@host" />
-          <xsl:variable name="real-section-id">
-            <xsl:variable name="match">
-              <xsl:for-each select="ancestor::document">
-                <xsl:value-of select="concat(./documentinfo/uri/@id,'-')" />
-              </xsl:for-each>
-              <xsl:if test="count(ancestor::document) = 0">
-                <xsl:text>-</xsl:text>
-              </xsl:if>
-            </xsl:variable>
-
-            <xsl:analyze-string regex="({$match})" select="./@id">
-              <xsl:matching-substring>
-              </xsl:matching-substring>
-              <xsl:non-matching-substring>
-                <xsl:value-of select="." />
-              </xsl:non-matching-substring>
-            </xsl:analyze-string>
-          </xsl:variable>
+          <xsl:variable name="real-fragment-id"
+                        select="if (starts-with(@id, $document-uri)) then substring-after(@id, '-') else @id" />
           <xsl:variable name="mail-to">
-            <xsl:value-of select="concat('mailto:',$document-uri,'-',$real-section-id,'@',$document-host)" />
+            <xsl:value-of select="concat('mailto:',$document-uri,'-',$real-fragment-id,'@',$document-host)" />
           </xsl:variable>
 
           <Relationship Id="{concat('rId',$id)}"
