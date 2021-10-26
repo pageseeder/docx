@@ -27,4 +27,9 @@
   </xsl:copy>
 </xsl:template>
 
+<!-- copy all other elements unchanged -->
+<xsl:template match="@*|node()" mode="citations">
+  <xsl:copy><xsl:apply-templates select="@*|node()" mode="citations"/></xsl:copy>
+</xsl:template>
+
 </xsl:stylesheet>

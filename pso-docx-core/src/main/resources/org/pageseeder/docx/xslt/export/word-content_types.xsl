@@ -41,6 +41,14 @@
         </xsl:if>
         <xsl:if test=".[name() = 'Override'][@PartName != '/word/document.xml'][@PartName != '/word/comments.xml']">
           <xsl:copy-of select="." />
+          <xsl:if test="starts-with(@PartName, '/customXml/itemProps')">
+            <xsl:variable name="suffix" select="substring-after(@PartName, '/customXml/itemProps')"/>
+            <xsl:if test="doc-available(concat($_dotxfolder,'/customXml/item',$suffix))">
+              <xsl:result-document href="{concat($_outputfolder,'customXml/item',$suffix)}">
+                <xsl:apply-templates select="document(concat($_dotxfolder,'/customXml/item',$suffix))" mode="citations" />
+              </xsl:result-document>
+            </xsl:if>
+          </xsl:if>
         </xsl:if>
       </xsl:for-each>
       <!-- TODO: Extension should probably look for last '.' -->
@@ -225,12 +233,6 @@
   <xsl:if test="doc-available(concat($_dotxfolder,'/word/endnotes.xml'))">
     <xsl:result-document href="{concat($_outputfolder,'word/endnotes.xml')}">
       <xsl:apply-templates select="document(concat($_dotxfolder,'/word/endnotes.xml'))" mode="endnotes" />
-    </xsl:result-document>
-  </xsl:if>
-
-  <xsl:if test="doc-available(concat($_dotxfolder,'/customXml/item1.xml'))">
-    <xsl:result-document href="{concat($_outputfolder,'customXml/item1.xml')}">
-      <xsl:apply-templates select="document(concat($_dotxfolder,'/customXml/item1.xml'))" mode="citations" />
     </xsl:result-document>
   </xsl:if>
 
