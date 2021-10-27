@@ -239,7 +239,8 @@
     <xsl:choose>
       <xsl:when test="$previous-position = 0">
         <xsl:for-each select="$row/*[name() = 'cell' or 'hcell']">
-          <xsl:variable name="position" select="position()"/>
+          <xsl:variable name="position" select="xs:integer(count(preceding-sibling::*[not(@colspan)]) +
+              sum(preceding-sibling::*/@colspan) + 1)"/>
           <w:tc>
             <w:tcPr>
               <xsl:call-template name="add-cell-properties">
