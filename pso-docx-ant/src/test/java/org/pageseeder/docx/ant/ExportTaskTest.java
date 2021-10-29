@@ -374,6 +374,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testSectionSet() throws IOException, SAXException {
+    testIndividual("section-set");
+  }
+
+  @Test
   public void testTableCellWhitespace() throws IOException, SAXException {
     testIndividual("table-cell-whitespace");
   }

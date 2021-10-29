@@ -24,6 +24,20 @@
 -->
 <xsl:template match="document" mode="psml">
   <xsl:variable name="labels" select="tokenize(documentinfo/uri/labels,',')" as="xs:string*"/>
+  <xsl:variable name="current-sec-num" select="config:section-number($labels)" />
+  <xsl:variable name="previous-sec-num" select="config:section-number(
+          tokenize(preceding::*[1]/ancestor::document[1]/documentinfo/uri/labels,','))" />
+  <xsl:if test="$current-sec-num != $previous-sec-num">
+    <xsl:variable name="section-properties" select="(document(
+          concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=$previous-sec-num]"/>
+    <xsl:if test="$section-properties">
+      <w:p>
+        <w:pPr>
+          <xsl:copy-of select="$section-properties"/>
+        </w:pPr>
+      </w:p>
+    </xsl:if>
+  </xsl:if>
   <xsl:choose>
     <!-- don't include footnotes and endnotes documents -->
     <xsl:when test="@type=config:footnotes-documenttype() or @type=config:endnotes-documenttype()" />
@@ -46,6 +60,9 @@
         </w:r>
       </w:p>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
+      <xsl:call-template name="add-section">
+        <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+      </xsl:call-template>
     </xsl:when>
     <!-- for index output field code after title section -->
     <xsl:when test="not(config:index-documentlabel() = '') and
@@ -70,6 +87,9 @@
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
+      <xsl:call-template name="add-section">
+        <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+      </xsl:call-template>
     </xsl:when>
     <!-- root document -->
     <xsl:when test="not(ancestor::document)">
@@ -81,15 +101,9 @@
           <xsl:apply-templates select="section|toc" mode="psml">
             <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
           </xsl:apply-templates>
-          <xsl:variable name="section-properties" select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
-          <xsl:choose>
-            <xsl:when test="$section-properties">
-              <xsl:copy-of select="$section-properties"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <w:sectPr/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:call-template name="add-section">
+            <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+          </xsl:call-template>
         </w:body>
       </w:document>
     </xsl:when>
@@ -101,8 +115,43 @@
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
       </xsl:apply-templates>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
+      <xsl:call-template name="add-section">
+        <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+      </xsl:call-template>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template name="add-section">
+  <xsl:param name="labels" tunnel="yes"/>
+  <!-- Add section properties only if there's not a document directly after and not at the end of the content -->
+  <!-- NOTE: Text between <document> elements that is not in it’s own element will not trigger a section break -->
+  <xsl:if test="not(following::*[1]/descendant-or-self::document) and
+      not(.//document[not(following::*)])">
+    <xsl:variable name="current-sec-num" select="config:section-number($labels)" />
+    <xsl:variable name="next-sec-num" select="config:section-number(
+      tokenize(following::*[1]/ancestor::document[1]/documentinfo/uri/labels,','))" />
+    <!-- If this section is different from the next or at the end of the document add section properties -->
+    <xsl:if test="$current-sec-num != $next-sec-num or not(following::*)">
+      <xsl:variable name="section-properties" select="(document(
+      concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=$current-sec-num]"/>
+      <xsl:if test="$section-properties">
+        <xsl:choose>
+          <xsl:when test="not(following::*)">
+            <!-- no para for last section -->
+            <xsl:copy-of select="$section-properties"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <w:p>
+              <w:pPr>
+                <xsl:copy-of select="$section-properties"/>
+              </w:pPr>
+            </w:p>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+    </xsl:if>
+  </xsl:if>
 </xsl:template>
 
 <!--
@@ -121,7 +170,7 @@
 <xsl:template match="fragment" mode="psml">
   <!-- TODO generate comments for other xref-fragment, properties-fragment, media-fragment -->
   <xsl:if test="config:generate-comments()">
-    <xsl:variable name="id" select="count(preceding::fragment) + 1"/>
+    <xsl:variable name="id" select="count(preceding::fragment) + count(ancestor::fragment) + 1"/>
     <w:p>
      <w:commentRangeStart w:id="{$id}"/>
       <w:r>

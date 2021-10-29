@@ -95,9 +95,9 @@
 			<heading level="2">Table 4</heading>
 			<table role="table2">
 				<col width="10.1%"/>
+				<col width="30%"/>
 				<col width="19.9%"/>
-				<col width="20%"/>
-				<col width="50%"/>
+				<col width="40%"/>
 				<row part="header">
 					<cell>A</cell>
 					<cell>B</cell>
@@ -114,9 +114,9 @@
 			<heading level="2">Table 5</heading>
 			<table width="80%">
 				<col width="10.1%"/>
+				<col width="30%" role="col4"/>
 				<col width="19.9%"/>
-				<col width="20%"/>
-				<col width="50%"/>
+				<col width="40%"/>
 				<row part="header">
 					<cell colspan="2">AB</cell>
 					<cell>C</cell>

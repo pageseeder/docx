@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+  <elements>
+    <document wordsection="3" />
+  </elements>
+  <elements label="appendix">
+    <document wordsection="1" />
+  </elements>
+  <elements label="landscape">
+    <document wordsection="2" />
+  </elements>
+</config>

@@ -2,7 +2,7 @@
 <!--
   XSLT module to generate bibliography entries as nested block and inline elements.
 
-  In OOXML, the bibliography is stored in the `customXML/item1.xml` file.
+  In OOXML, the bibliography is stored in the `customXML/item[N].xml` file.
 
   @author Philip Rutherford
 
@@ -18,10 +18,13 @@
   Generate bibliography entries.
 -->
 <xsl:template match="w:p[w:r/w:instrText='BIBLIOGRAPHY']" mode="content">
-  <xsl:variable name="bibliography-file" select="concat($_rootfolder,'customXML/item1.xml')"/>
-  <xsl:if test="doc-available($bibliography-file)">
-    <xsl:apply-templates select="document($bibliography-file)/b:Sources/b:Source" mode="bibliography" />
-  </xsl:if>
+  <!-- check first 5 customXML/item[N].xml files -->
+  <xsl:for-each select="1 to 5">
+    <xsl:variable name="bibliography-file" select="concat($_rootfolder,'customXML/item',.,'.xml')"/>
+    <xsl:if test="doc-available($bibliography-file)">
+      <xsl:apply-templates select="document($bibliography-file)/b:Sources/b:Source" mode="bibliography" />
+    </xsl:if>
+  </xsl:for-each>
 </xsl:template>
 
 <!-- Template to match each source -->
