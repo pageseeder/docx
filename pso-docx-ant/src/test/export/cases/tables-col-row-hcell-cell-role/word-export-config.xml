@@ -13,28 +13,28 @@
       <col role="col1">
 				<shading fill="00FF00" />
 			  <borders>
-					<top type="single" color="000000" size="2" />
+					<top type="single" color="000000" size="60" />
 				</borders>
 			</col>
 			<col role="col2">
 				<borders>
-				  <top type="single" color="000000" size="2" />
-				  <bottom type="double" color="FF0000" size="3" />
+				  <top type="single" color="000000" size="60" />
+				  <bottom type="double" color="FF0000" size="40" />
 				</borders>
 			</col>
 			<col role="col3">
 				<borders>
-				  <top type="single" color="000000" size="2" />
-				  <bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
+				  <top type="single" color="000000" size="60" />
+				  <bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
 				</borders>
 			</col>
 			<col role="col4">
 				<borders>
-				  <top type="single" color="000000" size="2" />
-				  <bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
-					<end type="wave" color="0000FF" size="5" />
+				  <top type="single" color="000000" size="60" />
+				  <bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
+					<end type="wave" color="0000FF" size="2" />
 				</borders>
 		  </col>
 
@@ -42,30 +42,30 @@
 			<row role="row1" align="center">
 				<shading fill="FF0000" />
 				<borders>
-					<top type="single" color="000000" size="2" />
+					<top type="single" color="000000" size="60" />
 				</borders>
 				<height type="atleast" value="1000"/>
 			</row>
 			<row role="row2" align="start">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
 				</borders>
 				<height type="exact" value="1000"/>
 			</row>
 			<row role="row3" align="end" cantsplit="true">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
 				</borders>
 			</row>
 			<row role="row4" cantsplit="false">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
-					<end type="wave" color="0000FF" size="5" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
+					<end type="wave" color="0000FF" size="2" />
 				</borders>
 			</row>
 
@@ -73,31 +73,31 @@
 			<hcell role="hcell1" valign="bottom">
 				<shading fill="0000FF" />
 				<borders>
-					<top type="single" color="000000" size="2" />
+					<top type="single" color="000000" size="60" />
 				</borders>
-				<width type="pct" value="30%"/>
+				<width type="pct" value="20%"/>
 			</hcell>
 			<hcell role="hcell2" valign="center">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
 				</borders>
 				<width type="dxa" value="1000"/>
 			</hcell>
 			<hcell role="hcell3" valign="top">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
 				</borders>
 				<width type="auto" />
 			</hcell>
 			<hcell role="hcell4">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
-					<end type="wave" color="0000FF" size="5" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
+					<end type="wave" color="0000FF" size="2" />
 				</borders>
 				<width type="auto" />
 			</hcell>
@@ -106,31 +106,31 @@
 			<cell role="cell4" valign="bottom">
 				<shading fill="0000FF" />
 				<borders>
-					<top type="single" color="000000" size="2" />
+					<top type="single" color="000000" size="60" />
 				</borders>
-				<width type="pct" value="30%"/>
+				<width type="pct" value="20%"/>
 			</cell>
 			<cell role="cell3" valign="center">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
 				</borders>
 				<width type="dxa" value="1000"/>
 			</cell>
 			<cell role="cell2" valign="top">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
 				</borders>
 				<width type="auto" />
 			</cell>
 			<cell role="cell1">
 				<borders>
-					<top type="single" color="000000" size="2" />
-					<bottom type="double" color="FF0000" size="3" />
-					<start type="dashed" color="00FF00" size="4" />
-					<end type="wave" color="0000FF" size="5" />
+					<top type="single" color="000000" size="60" />
+					<bottom type="double" color="FF0000" size="40" />
+					<start type="dashed" color="00FF00" size="20" />
+					<end type="wave" color="0000FF" size="2" />
 				</borders>
 				<width type="auto" />
 			</cell>

@@ -27,7 +27,7 @@
   <xsl:variable name="current-sec-num" select="config:section-number($labels)" />
   <xsl:variable name="previous-sec-num" select="config:section-number(
           tokenize(preceding::*[1]/ancestor::document[1]/documentinfo/uri/labels,','))" />
-  <xsl:if test="$current-sec-num != $previous-sec-num">
+  <xsl:if test="$current-sec-num != $previous-sec-num and ancestor::document">
     <xsl:variable name="section-properties" select="(document(
           concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=$previous-sec-num]"/>
     <xsl:if test="$section-properties">
