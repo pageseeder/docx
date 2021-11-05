@@ -4,4 +4,18 @@
 	<toc generate="true" style="TOC1">
    <headings generate="true" select="1-9" />
   </toc>
+  <elements>
+    <heading>
+      <!-- Unnumbered headings -->
+      <level value="1" wordstyle="heading 1"/>
+      <level value="2" wordstyle="heading 2"/>
+      <level value="3" wordstyle="heading 3"/>
+      <level value="4" wordstyle="heading 4"/>
+      <level value="5" wordstyle="heading 5"/>
+      <level value="6" wordstyle="heading 6"/>
+      <level value="7" wordstyle="heading 7"/>
+      <level value="8" wordstyle="heading 8"/>
+      <level value="9" wordstyle="heading 9"/>
+    </heading>
+  </elements>
 </config>
