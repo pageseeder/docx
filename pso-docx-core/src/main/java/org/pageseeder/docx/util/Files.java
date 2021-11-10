@@ -62,6 +62,23 @@ public class Files {
   }
 
   /**
+   * Rename all the files in the specified directory by adding a prefix to them.
+   *
+   * @param dir    the directory
+   * @param prefix the prefix
+   */
+  public static void renameFiles(File dir, String prefix) {
+    if (dir.exists() && dir.isDirectory()) {
+      File[] children = dir.listFiles();
+      if (children != null) {
+        for (File child : children) {
+          child.renameTo(new File(dir, prefix + child.getName()));
+        }
+      }
+    }
+  }
+
+  /**
    * @param source The source folder
    * @param target The target folder
    * @throws IOException when I/O error occur.

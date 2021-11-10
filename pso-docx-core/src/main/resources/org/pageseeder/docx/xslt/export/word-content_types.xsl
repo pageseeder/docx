@@ -21,6 +21,7 @@
                 xmlns:config="http://pageseeder.org/docx/config"
                 xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
                 xmlns:cust="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
+                xmlns:rel="http://schemas.openxmlformats.org/package/2006/relationships"
                 exclude-result-prefixes="#all">
 
 <!--
@@ -46,6 +47,22 @@
             <xsl:if test="doc-available(concat($_dotxfolder,'/customXml/item',$suffix))">
               <xsl:result-document href="{concat($_outputfolder,'customXml/item',$suffix)}">
                 <xsl:apply-templates select="document(concat($_dotxfolder,'/customXml/item',$suffix))" mode="citations" />
+              </xsl:result-document>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="starts-with(@PartName, '/word/header')">
+            <xsl:variable name="suffix" select="substring-after(@PartName, '/word/header')"/>
+            <xsl:if test="doc-available(concat($_dotxfolder,'/word/_rels/header',$suffix, '.rels'))">
+              <xsl:result-document href="{concat($_outputfolder,'/word/_rels/header',$suffix, '.rels')}">
+                <xsl:apply-templates select="document(concat($_dotxfolder,'/word/_rels/header',$suffix, '.rels'))" mode="relationship" />
+              </xsl:result-document>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="starts-with(@PartName, '/word/footer')">
+            <xsl:variable name="suffix" select="substring-after(@PartName, '/word/footer')"/>
+            <xsl:if test="doc-available(concat($_dotxfolder,'/word/_rels/footer',$suffix, '.rels'))">
+              <xsl:result-document href="{concat($_outputfolder,'/word/_rels/footer',$suffix, '.rels')}">
+                <xsl:apply-templates select="document(concat($_dotxfolder,'/word/_rels/footer',$suffix, '.rels'))" mode="relationship" />
               </xsl:result-document>
             </xsl:if>
           </xsl:if>
@@ -185,7 +202,7 @@
     <xsl:result-document href="{concat($_outputfolder,'word/_rels/document.xml.rels')}">
       <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
         <xsl:for-each select="document($_document-relationship)//*">
-          <xsl:copy-of select=".[name() = 'Relationship'][@Target!='comments.xml']"/>
+          <xsl:apply-templates select=".[name() = 'Relationship'][@Target!='comments.xml']" mode="relationship"/>
         </xsl:for-each>
         <xsl:if test="config:generate-comments()">
           <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1))}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"
@@ -336,6 +353,24 @@
   <xsl:copy>
     <xsl:copy-of select="@*" />
     <xsl:apply-templates mode="custom" />
+  </xsl:copy>
+</xsl:template>
+
+<!-- Template to prefix media files to avoid clashes -->
+<xsl:template match="rel:Relationship" mode="relationship">
+  <xsl:copy>
+    <xsl:copy-of select="@*[name() != 'Target']" />
+    <xsl:attribute name="Target" select="if (starts-with(@Target, 'media/'))
+      then concat('media/', $_mediaprefix, substring-after(@Target, 'media/')) else @Target " />
+    <xsl:apply-templates mode="relationship" />
+  </xsl:copy>
+</xsl:template>
+
+<!-- Template to copy each node recursively -->
+<xsl:template match="*" mode="relationship">
+  <xsl:copy>
+    <xsl:copy-of select="@*" />
+    <xsl:apply-templates mode="relationship" />
   </xsl:copy>
 </xsl:template>
 

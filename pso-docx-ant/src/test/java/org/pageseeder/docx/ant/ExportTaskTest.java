@@ -175,7 +175,8 @@ public final class ExportTaskTest {
 
   @Test
   public void testEmptyConfigurationImages() throws IOException, SAXException {
-    testIndividual("empty-configuration-images");
+    testIndividual("empty-configuration-images",
+            "document,document.xml.rels,footer3.xml.rels,header3.xml.rels");
   }
 
   @Test
@@ -589,6 +590,9 @@ public final class ExportTaskTest {
                 ("core".equals(name) || "custom".equals(name)) ? "working/prepacked/docProps/" :
                 "item1".equals(name) ? "working/prepacked/customXml/" :
                 "working/prepacked/word/") + name + ".xml");
+          if (name.endsWith(".rels")) {
+            actual = new File(result, "working/prepacked/word/_rels/" + name);
+          }
           File expected = new File(dir, name + ".xml");
 
           // Check that the files exist

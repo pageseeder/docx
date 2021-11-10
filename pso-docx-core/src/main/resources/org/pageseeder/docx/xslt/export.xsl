@@ -88,6 +88,9 @@
 <!-- The name of the DOCX file to create -->
 <xsl:param name="_docxfilename"/>
 
+<!-- Prefix for template media files to avoid clashes with PSML images -->
+<xsl:param name="_mediaprefix"/>
+
 <!-- The location of the configuration file used -->
 <xsl:param name="_configfileurl"/>
 
