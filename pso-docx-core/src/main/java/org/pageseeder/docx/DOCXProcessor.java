@@ -107,18 +107,21 @@ public final class DOCXProcessor {
     ZipUtils.unzip(this._builder.dotx(), prepacked);
     File document = new File(prepacked, "word/document.xml");
     Files.ensureDirectoryExists(document.getParentFile());
+    // prefix template media files with a random string to avoid clashes with PSML images
+    File mediaFolder = new File(prepacked, "word/media");
+    String mediaPrefix = "kwo5nu83zotp2-";
+    Files.renameFiles(mediaFolder, mediaPrefix);
 
-    // 3. (extra) copy everything from the media folder to prepacked folder
+    // 4. (extra) copy everything from the media folder to prepacked folder
     if (this._builder.media() != null) {
       log("Copy media files");
-      File mediaFolder = new File(prepacked, "word/media");
       if (!mediaFolder.exists()) {
         mediaFolder.mkdirs();
       }
       Files.copyDirectory(this._builder.media(), mediaFolder);
     }
 
-    // 4. Unnest the files
+    // 5. Unnest the files
     log("Unnest");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export-unnest.xsl");
     File sourceDocument = this._builder.source();
@@ -127,7 +130,7 @@ public final class DOCXProcessor {
     Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters);
 
-    // 5. Process the files
+    // 6. Process the files
     log("Process with XSLT");
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export.xsl");
@@ -137,6 +140,7 @@ public final class DOCXProcessor {
     parameters.put("_outputfolder", prepacked.toURI().toString());
     parameters.put("_dotxfolder", dotx.toURI().toString());
     parameters.put("_docxfilename", this._builder.destination().getName());
+    parameters.put("_mediaprefix", mediaPrefix);
     if (this._builder.config() != null) {
       parameters.put("_configfileurl", this._builder.config().toURI().toString());
     }
@@ -147,7 +151,7 @@ public final class DOCXProcessor {
     // Transform
     XSLT.transform(newSourceDocument, document, templates, parameters);
 
-    // 6. Move or Zip the generated content
+    // 7. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
       log("Moving");
       prepacked.renameTo(this._builder.destination());

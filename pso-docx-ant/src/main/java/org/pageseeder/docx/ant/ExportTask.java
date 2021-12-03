@@ -204,11 +204,14 @@ public final class ExportTask extends Task {
     ZipUtils.unzip(this.dotx, prepacked);
     File document = new File(prepacked, "word/document.xml");
     Files.ensureDirectoryExists(document.getParentFile());
+    // prefix template media files with a random string to avoid clashes with PSML images
+    File mediaFolder = new File(prepacked, "word/media");
+    String mediaPrefix = "kwo5nu83zotp2-";
+    Files.renameFiles(mediaFolder, mediaPrefix);
 
-    // 3. (extra) copy everything from the media folder to prepacked folder
+    // 4. (extra) copy everything from the media folder to prepacked folder
     if (this.media != null) {
       log("Copy media files");
-      File mediaFolder = new File(prepacked, "word/media");
       if (!mediaFolder.exists()) {
         mediaFolder.mkdirs();
       }
@@ -220,7 +223,7 @@ public final class ExportTask extends Task {
       }
     }
 
-    // 4. Unnest the files
+    // 5. Unnest the files
     log("Unnest");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export-unnest.xsl");
     File sourceDocument = this.source;
@@ -229,8 +232,7 @@ public final class ExportTask extends Task {
     Map<String, String> noParameters = Collections.emptyMap();
     XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters);
 
-
-    // 5. Process the files
+    // 6. Process the files
     log("Process with XSLT");
 
     // Parse templates
@@ -241,6 +243,7 @@ public final class ExportTask extends Task {
     parameters.put("_outputfolder", prepacked.toURI().toString());
     parameters.put("_dotxfolder", dotx.toURI().toString());
     parameters.put("_docxfilename", this.destination.getName());
+    parameters.put("_mediaprefix", mediaPrefix);
     if (this.config != null) {
       parameters.put("_configfileurl", this.config.toURI().toString());
     }
@@ -253,7 +256,7 @@ public final class ExportTask extends Task {
     // Transform
     XSLT.transform(newSourceDocument, document, templates, parameters);
 
-    // 6. Move or Zip the generated content
+    // 7. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
       log("Moving");
       prepacked.renameTo(this.destination);
