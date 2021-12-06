@@ -278,8 +278,11 @@ public final class ImportTask extends Task {
     try  {
       Files.ensureDirectoryExists(mediaOut);
       for (File m : media.listFiles()) {
-        // decode filename because the image/@src will be decoded by PageSeeder
-        Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
+        // don't import template images
+        if (!m.getName().startsWith(ExportTask.MEDIA_PREFIX)) {
+          // decode filename because the image/@src will be decoded by PageSeeder
+          Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
+        }
       }
     } catch (IOException ex) {
       // TODO clean up files
