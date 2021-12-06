@@ -563,7 +563,11 @@
         </xsl:when>
         <xsl:when test="(contains(current()/preceding-sibling::w:instrText[1],('HYPERLINK'))
                          or config:references-as-links()) and $bookmark-ref != ''">
-            <link href="#b{$bookmark-ref}"><xsl:value-of select="$text" /></link>
+            <xsl:variable name="href"
+                          select="if (starts-with($bookmark-ref, 'https://')
+                          or starts-with($bookmark-ref, 'http://') or starts-with($bookmark-ref, 'mailto:'))
+                          then $bookmark-ref else concat('#b', $bookmark-ref)"/>
+            <link href="{$href}"><xsl:value-of select="$text" /></link>
           </xsl:when>
         <xsl:otherwise>
           <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none">

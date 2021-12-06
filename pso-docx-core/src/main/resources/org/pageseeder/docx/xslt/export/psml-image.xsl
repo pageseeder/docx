@@ -63,7 +63,8 @@
 -->
 <xsl:template name="create-drawing-for-image" as="element(w:drawing)">
   <xsl:param name="labels" tunnel="yes"/>
-  <xsl:variable name="id"     select="count(preceding::image) + 1"/>
+  <!-- Add 100 to avoid clash with template images -->
+  <xsl:variable name="id"     select="count(preceding::image) + 100"/>
   <xsl:variable name="title"  select="string(@alt)"/>
   <xsl:variable name="maxwidth" select="config:image-maxwidth($labels)" />
   <xsl:variable name="pixelwidth" select="if (contains(@width,'px')) then substring-before(@width, 'px') else @width" />

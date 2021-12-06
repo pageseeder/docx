@@ -26,6 +26,11 @@ import java.util.*;
 public final class ExportTask extends Task {
 
   /**
+   * Used to prefix filenames of template images to avoid clashes with PSML images.
+   */
+  public static String MEDIA_PREFIX = "kwo5nu83zotp2-";
+
+  /**
    * The PageSeeder documents to export.
    *
    * <p>The source should point to the main PSML document.
@@ -186,13 +191,13 @@ public final class ExportTask extends Task {
     }
 
     // 1. Let's unzip the dotx
-    log("Extracting DOTX: " + this.dotx.getName());
+    log("Extracting template: " + this.dotx.getName());
     File dotx = new File(this.working, "dotx");
     dotx.mkdirs();
     ZipUtils.unzip(this.dotx, dotx);
 
     // 2. Sanity check
-    log("Checking DOTX");
+    log("Checking template");
     File contentTypes = new File(dotx, "[Content_Types].xml");
     File relationships = new File(dotx, "_rels/.rels");
     if (!contentTypes.exists()) { throw new BuildException("Not a valid DOTX: unable to find [Content_Types].xml"); }
@@ -204,27 +209,28 @@ public final class ExportTask extends Task {
     ZipUtils.unzip(this.dotx, prepacked);
     File document = new File(prepacked, "word/document.xml");
     Files.ensureDirectoryExists(document.getParentFile());
-    // prefix template media files with a random string to avoid clashes with PSML images
     File mediaFolder = new File(prepacked, "word/media");
-    String mediaPrefix = "kwo5nu83zotp2-";
-    Files.renameFiles(mediaFolder, mediaPrefix);
+    // for backward compatibility don't prefix when PSML images already copied to media folder
+    String mediaPrefix = "";
 
     // 4. (extra) copy everything from the media folder to prepacked folder
     if (this.media != null) {
-      log("Copy media files");
+      log("Copying media files");
       if (!mediaFolder.exists()) {
         mediaFolder.mkdirs();
       }
+      // prefix template media files with a random string to avoid clashes with PSML images
+      mediaPrefix = MEDIA_PREFIX;
+      Files.renameFiles(mediaFolder, mediaPrefix);
       try {
         Files.copyDirectory(this.media, mediaFolder);
       } catch (IOException e) {
-        // FIXME store to somewhere for debug.
-        e.printStackTrace();
+        log("Failed to copy media files: " + e.getMessage());
       }
     }
 
     // 5. Unnest the files
-    log("Unnest");
+    log("Unnesting");
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export-unnest.xsl");
     File sourceDocument = this.source;
     File newSourceDocument = new File(this.working, "unnested/document-unnested.psml");
@@ -233,7 +239,7 @@ public final class ExportTask extends Task {
     XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters);
 
     // 6. Process the files
-    log("Process with XSLT");
+    log("Processing with XSLT");
 
     // Parse templates
     Templates templates = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/export.xsl");
@@ -262,13 +268,12 @@ public final class ExportTask extends Task {
       prepacked.renameTo(this.destination);
     // for backward compatibility
     } else if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
-      log("Debug Mode");
+      log("Copying processed PSML");
       File newDestinationDocument = new File(this.destination.getParentFile() + "/document.xml");
       try {
         Files.copy(document, newDestinationDocument);
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        log("Failed to copy processed PSML: " + e.getMessage());
       }
       this.destination.getParentFile().mkdirs();
       ZipUtils.zip(prepacked, this.destination);

@@ -175,8 +175,11 @@ public final class PSMLProcessor {
       File[] files = media.listFiles();
       if (files != null) {
         for (File m : files) {
-          // decode filename because the image/@src will be decoded by PageSeeder
-          Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
+          // don't import template images
+          if (!m.getName().startsWith(DOCXProcessor.MEDIA_PREFIX)) {
+            // decode filename because the image/@src will be decoded by PageSeeder
+            Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
+          }
         }
       }
     } catch (IOException ex) {

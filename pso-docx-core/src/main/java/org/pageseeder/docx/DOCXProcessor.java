@@ -29,6 +29,11 @@ import org.pageseeder.docx.util.ZipUtils;
 public final class DOCXProcessor {
 
   /**
+   * Used to prefix filenames of template images to avoid clashes with PSML images.
+   */
+  public static String MEDIA_PREFIX = "kwo5nu83zotp2-";
+
+  /**
    * The builder
    */
   private final Builder _builder;
@@ -107,10 +112,9 @@ public final class DOCXProcessor {
     ZipUtils.unzip(this._builder.dotx(), prepacked);
     File document = new File(prepacked, "word/document.xml");
     Files.ensureDirectoryExists(document.getParentFile());
-    // prefix template media files with a random string to avoid clashes with PSML images
     File mediaFolder = new File(prepacked, "word/media");
-    String mediaPrefix = "kwo5nu83zotp2-";
-    Files.renameFiles(mediaFolder, mediaPrefix);
+    // for backward compatibility don't prefix when PSML images already copied to media folder
+    String mediaPrefix = "";
 
     // 4. (extra) copy everything from the media folder to prepacked folder
     if (this._builder.media() != null) {
@@ -118,6 +122,9 @@ public final class DOCXProcessor {
       if (!mediaFolder.exists()) {
         mediaFolder.mkdirs();
       }
+      // prefix template media files with a random string to avoid clashes with PSML images
+      mediaPrefix = MEDIA_PREFIX;
+      Files.renameFiles(mediaFolder, mediaPrefix);
       Files.copyDirectory(this._builder.media(), mediaFolder);
     }
 
