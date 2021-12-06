@@ -55,7 +55,7 @@
 <!-- 1. Simplify by removing markup                                                            -->
 <!-- ========================================================================================= -->
 
-<!-- 
+<!--
    Purge the data from all the empty runs and run properties
 -->
 <xsl:function name="f:simplify">
@@ -204,8 +204,8 @@
 <xsl:template match="w:textAlignment [$remove-paragraph-properties = 'true']" mode="simplify"/>
 <xsl:template match="w:snapToGrid    [$remove-paragraph-properties = 'true']" mode="simplify"/>
 <xsl:template match="w:mirrorIndents [$remove-paragraph-properties = 'true']" mode="simplify"/>
- 
-<!-- Fix break pages with styles --> 
+
+<!-- Fix break pages with styles -->
 <xsl:template match="w:p[w:pPr/w:sectPr and w:pPr/w:pStyle]" mode="simplify">
   <xsl:variable name="content-section" select="if(w:r/w:t) then 'yes' else 'no'" />
   <xsl:choose>
@@ -215,10 +215,10 @@
       <w:p>
         <xsl:copy-of select="w:pPr/*[not(name()='w:sectPr')]" />
         <xsl:copy-of select="*[not(name()='w:pPr')]" />
-      </w:p>  
+      </w:p>
     </xsl:otherwise>
   </xsl:choose>
-  
+
   <!-- Put the w:sectPr element in another w:p element when it has some content -->
   <w:p>
     <w:pPr>
@@ -227,19 +227,26 @@
   </w:p>
 
 </xsl:template>
- 
+
 <!-- simplifiy paragraphs -->
 <xsl:template match="w:p" mode="simplify">
   <w:p>
 	<!-- Add all bookmarkStart out of w:p element ancestor to the next w:p element -->
 	<xsl:if test="self::w:p[not(ancestor::w:p) and preceding-sibling::*[1][self::w:bookmarkStart]]">
-	  <xsl:variable name="first-not-bookmark-id" select="generate-id(preceding-sibling::w:p[1])" />
 	  <xsl:variable name="bookmark-starts">
-	    <xsl:copy-of select="preceding-sibling::w:bookmarkStart[preceding-sibling::*[$first-not-bookmark-id = generate-id(.)]]" />
+      <xsl:choose>
+        <xsl:when test="preceding-sibling::w:p[1]">
+          <xsl:variable name="first-not-bookmark-id" select="generate-id(preceding-sibling::w:p[1])" />
+          <xsl:copy-of select="preceding-sibling::w:bookmarkStart[preceding-sibling::*[$first-not-bookmark-id = generate-id(.)]]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="preceding-sibling::w:bookmarkStart"/>
+        </xsl:otherwise>
+      </xsl:choose>
 	  </xsl:variable>
 	  <xsl:copy-of select="$bookmark-starts/w:bookmarkStart" />
 	</xsl:if>
-  
+
     <xsl:for-each-group select="*" group-starting-with="w:r[w:fldChar[@w:fldCharType='begin']]">
       <xsl:for-each-group select="current-group()" group-ending-with="w:r[w:fldChar[@w:fldCharType='end']]">
         <xsl:choose>
@@ -261,13 +268,13 @@
       </xsl:for-each-group>
     </xsl:for-each-group>
   </w:p>
-</xsl:template>   
+</xsl:template>
 
 <!-- ========================================================================================= -->
 <!-- Remove empty runs and run properties                                                      -->
 <!-- ========================================================================================= -->
 
-<!-- 
+<!--
    Purge the data from all the empty runs and run properties
 -->
 <xsl:function name="f:purge">
@@ -289,7 +296,7 @@
 <!-- Templates to consolidate the runs that share the same properties                          -->
 <!-- ========================================================================================= -->
 
-<!-- 
+<!--
    Purge the data from all the empty runs and run properties
 -->
 <xsl:function name="f:consolidate">
@@ -445,14 +452,14 @@
   <xsl:text>}</xsl:text>
 </xsl:template>
 
- <!-- 
+ <!--
   Templates to output a XML tree as text
   <a>
     <b c="1">
       text
     </b>
   </a>
-      
+
   To display the source XML simply use <xsl:apply-templates mode="xml"/>
 -->
 <xsl:template match="*" mode="encode">
