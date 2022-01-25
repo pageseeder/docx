@@ -12,6 +12,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:dfx="http://www.topologi.com/2005/Diff-X"
+                xmlns:diff="https://www.pageseeder.org/diffx"
                 xmlns:config="http://pageseeder.org/docx/config"
                 xmlns:fn="http://pageseeder.org/docx/function"
                 exclude-result-prefixes="#all">
@@ -104,8 +105,12 @@
           <xsl:call-template name="apply-run-style" />
         </w:rPr>
         <xsl:choose>
+          <xsl:when test="ancestor::diff:del">
+            <w:delText xml:space="preserve"><xsl:value-of select="$text" /></w:delText>
+          </xsl:when>
+          <!-- for backward compatibility -->
           <xsl:when test="ancestor::dfx:del">
-          <w:delText xml:space="preserve"><xsl:value-of select="$text" /></w:delText>
+            <w:delText xml:space="preserve"><xsl:value-of select="$text" /></w:delText>
           </xsl:when>
           <xsl:otherwise>
             <w:t xml:space="preserve"><xsl:value-of select="$text" /></w:t>
@@ -140,6 +145,22 @@
 </xsl:template>
 
 <!-- Match inserted content: only used when diffx is applied -->
+<xsl:template match="diff:ins" mode="psml">
+  <w:ins w:author="Pageseeder" w:date="{fn:get-current-date()}">
+    <xsl:attribute name="w:id" select="count(preceding::diff:ins) + count(preceding::diff:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
+    <xsl:apply-templates mode="psml"/>
+  </w:ins>
+</xsl:template>
+
+<!-- Match deleted content: only used when diffx is applied -->
+<xsl:template match="diff:del" mode="psml">
+  <w:del w:author="Pageseeder" w:date="{fn:get-current-date()}">
+    <xsl:attribute name="w:id" select="count(preceding::diff:ins) + count(preceding::diff:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
+    <xsl:apply-templates mode="psml"/>
+  </w:del>
+</xsl:template>
+
+<!-- Match inserted content: only used when diffx is applied - for backward compatibility -->
 <xsl:template match="dfx:ins" mode="psml">
 <w:ins w:author="Pageseeder" w:date="{fn:get-current-date()}">
   <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
@@ -147,7 +168,7 @@
 </w:ins>
 </xsl:template>
 
-<!-- Match deleted content: only used when diffx is applied -->
+<!-- Match deleted content: only used when diffx is applied - for backward compatibility -->
 <xsl:template match="dfx:del" mode="psml">
   <w:del w:author="Pageseeder" w:date="{fn:get-current-date()}">
     <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
