@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.21">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.27">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -250,6 +250,7 @@
 			</xs:all>
 			<xs:attribute name="label" type="xs:string"/>
 			<xs:attribute name="blocklabel" type="xs:string"/>
+			<xs:attribute name="fragmentlabel" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 

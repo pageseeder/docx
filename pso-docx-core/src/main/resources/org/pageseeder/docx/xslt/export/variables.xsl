@@ -1031,6 +1031,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="blocklabel" select="(ancestor::block)[last()]/@label" />
+    <xsl:variable name="fragmentlabel" select="tokenize((ancestor::fragment)[last()]/@labels,',')" />
     <xsl:variable name="list-style-name" >
       <xsl:choose>
         <xsl:when test="config:list-style-for-block-label-document-label($blocklabel,$labels,$role,$list-type) != ''">
@@ -1038,6 +1039,12 @@
         </xsl:when>
         <xsl:when test="config:list-style-for-block-label($blocklabel,$role,$list-type) != ''">
           <xsl:value-of select="config:list-style-for-block-label($blocklabel,$role,$list-type)"/>
+        </xsl:when>
+        <xsl:when test="config:list-style-for-fragment-label-document-label($fragmentlabel,$labels,$role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-fragment-label-document-label($fragmentlabel,$labels,$role,$list-type)"/>
+        </xsl:when>
+        <xsl:when test="config:list-style-for-fragment-label($fragmentlabel,$role,$list-type) != ''">
+          <xsl:value-of select="config:list-style-for-fragment-label($fragmentlabel,$role,$list-type)"/>
         </xsl:when>
         <xsl:when test="config:list-style-for-document-label($labels,$role,$list-type) != ''">
           <xsl:value-of select="config:list-style-for-document-label($labels,$role,$list-type)"/>

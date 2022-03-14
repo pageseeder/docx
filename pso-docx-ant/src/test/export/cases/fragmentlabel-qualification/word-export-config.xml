@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config version="0.8.27">
+  <elements>
+    <heading>
+      <level value="1" wordstyle="Heading Unnum 1"/>
+      <level value="2" wordstyle="Heading Unnum 2"/>
+    </heading>
+    <para>
+      <indent level="0" wordstyle="List Continue"/>
+    </para>
+    <list liststyle="Bulleted List" />
+    <nlist liststyle="Numbered List" />
+  </elements>
+  <elements fragmentlabel="block2">
+    <heading>
+      <level value="2" wordstyle="Heading Unnum 3"/>
+    </heading>
+    <para>
+      <indent level="0" wordstyle="List Continue 2"/>
+    </para>
+    <list liststyle="Numbered List" />
+    <nlist liststyle="Bulleted List" />
+  </elements>
+  <elements label="appendix">
+    <heading>
+      <level value="1" wordstyle="heading 1"/>
+      <level value="2" wordstyle="heading 2"/>
+    </heading>
+    <para>
+      <indent level="0" wordstyle="List Continue 3"/>
+    </para>
+    <list liststyle="Numbered List" />
+    <nlist liststyle="Bulleted List" />
+  </elements>
+  <elements label="appendix" fragmentlabel="block2">
+    <heading>
+      <level value="2" wordstyle="heading 3"/>
+    </heading>
+    <para>
+      <indent level="0" wordstyle="List Continue 4"/>
+    </para>
+    <list liststyle="Bulleted List" />
+    <nlist liststyle="Numbered List" />
+  </elements>
+  <elements label="appendix" fragmentlabel="block1">
+    <para>
+      <indent level="0" wordstyle="Title"/>
+    </para>
+  </elements>
+  <elements label="appendix" blocklabel="block3">
+    <para>
+      <indent level="0" wordstyle="Caption"/>
+    </para>
+  </elements>
+</config>

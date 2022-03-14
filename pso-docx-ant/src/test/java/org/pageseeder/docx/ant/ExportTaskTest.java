@@ -200,6 +200,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testFragmentlabelQualification() throws IOException, SAXException {
+    testIndividual("fragmentlabel-qualification");
+  }
+
+  @Test
   public void testParagraphIndentStylesSet() throws IOException, SAXException {
     testIndividual("paragraph-indent-style-set");
   }
