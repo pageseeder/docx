@@ -1555,6 +1555,29 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
 </xsl:function>
 
 <!--
+  Returns the configured w:style for ps:heading element with fragment labels and document label.
+
+  @param document-label the fragment label
+  @param document-label the document label
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @param prefix the prefix attribute value of the heading
+
+  @return the w:style
+-->
+<xsl:function name="config:heading-wordstyle-for-fragment-label-document-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="heading-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:value-of select="string($config-doc/config/elements[@label = $document-label
+][@fragmentlabel = $fragment-label]/heading/level[if($numbered)
+then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
+</xsl:function>
+
+<!--
   Returns the configured w:style for ps:heading element with block labels in default documents.
 
   @param document-label the block label
@@ -1576,6 +1599,27 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
 </xsl:function>
 
 <!--
+  Returns the configured w:style for ps:heading element with fragment labels in default documents.
+
+  @param document-label the fragment label
+  @param heading-level the current heading level
+  @param numbered the numbered attribute value of the heading
+  @param prefix the prefix attribute value of the heading
+
+  @return the w:style
+-->
+<xsl:function name="config:heading-wordstyle-for-fragment-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="heading-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:value-of select="string($config-doc/config/elements[not(@label)
+][@fragmentlabel = $fragment-label]/heading/level[if($numbered)
+then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
+</xsl:function>
+
+<!--
   Returns the configured w:style for ps:heading element for label specific documents.
 
   @param document-label the document label
@@ -1591,7 +1635,7 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
   <xsl:value-of select="string($config-doc/config/elements[@label = $document-label
-    ][not(@blocklabel)]/heading/level[if($numbered)
+    ][not(@blocklabel)][not(@fragmentlabel)]/heading/level[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
@@ -1610,7 +1654,7 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
   <xsl:value-of select="string($config-doc/config/elements[not(@label)
-    ][not(@blocklabel)]/heading/level[if($numbered)
+    ][not(@blocklabel)][not(@fragmentlabel)]/heading/level[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordstyle)" />
 </xsl:function>
@@ -1991,6 +2035,50 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
 </xsl:function>
 
 <!--
+  Returns the configured ps:list paragraph w:style for fragment label specific documents
+  NOTE: Returns a style ID not name.
+
+  @param fragment-label the current fragment label
+  @param document-label the current document label
+  @param list-role the current list role
+  @param list-level the current list level
+  @param list-type list or nlist
+
+  @return the w:style ID
+-->
+<xsl:function name="config:list-paragraphstyle-for-fragment-label-document-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-level"/>
+  <xsl:param name="list-type"/>
+
+  <xsl:variable name="list-style" select="config:list-style-for-fragment-label-document-label($fragment-label, $document-label, $list-role, $list-type)" />
+  <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
+</xsl:function>
+
+<!--
+  Returns the configured ps:list paragraph w:style for fragment label default documents
+  NOTE: Returns a style ID not name.
+
+  @param fragment-label the current fragment label
+  @param list-role the current list role
+  @param list-level the current list level
+  @param list-type list or nlist
+
+  @return the w:style ID
+-->
+<xsl:function name="config:list-paragraphstyle-for-fragment-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-level"/>
+  <xsl:param name="list-type"/>
+
+  <xsl:variable name="list-style" select="config:list-style-for-fragment-label($fragment-label, $list-role, $list-type)" />
+  <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
+</xsl:function>
+
+<!--
   Returns the configured ps:list paragraph w:style for document label specific documents
   NOTE: Returns a style ID not name.
 
@@ -2091,6 +2179,66 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
 </xsl:function>
 
 <!--
+  Returns the configured ps:list  w:style for fragment label specific documents
+
+  @param fragment-label the current fragment label
+  @param document-label the current document label
+  @param list-role the current list role
+
+  @return the w:style
+-->
+<xsl:function name="config:list-style-for-fragment-label-document-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-type"/>
+  <xsl:choose>
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[@label = $document-label
+    ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[@label = $document-label
+      ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label
+    ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[@label = $document-label
+      ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/@liststyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the configured ps:list  w:style for fragment label default documents
+
+  @param fragment-label the current fragment label
+  @param list-role the current list role
+
+  @return the w:style
+-->
+<xsl:function name="config:list-style-for-fragment-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="list-role"/>
+  <xsl:param name="list-type"/>
+  <xsl:choose>
+    <xsl:when test="$list-role != '' and $config-doc/config/elements[not(@label)
+      ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[not(@label)
+        ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)
+      ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/@liststyle">
+      <xsl:value-of select="$config-doc/config/elements[not(@label)
+        ][@fragmentlabel = $fragment-label]/*[name() = $list-type]/@liststyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the configured ps:list  w:style for document label specific documents
 
   @param document-label the current document label
@@ -2104,14 +2252,14 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
   <xsl:param name="list-type"/>
   <xsl:choose>
     <xsl:when test="$list-role != '' and $config-doc/config/elements[@label = $document-label
-        ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+        ][not(@blocklabel)][not(@fragmentlabel)][not(@fragmentlabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label
-          ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+          ][not(@blocklabel)][not(@fragmentlabel)][not(@fragmentlabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[@label = $document-label
-        ][not(@blocklabel)]/*[name() = $list-type]/@liststyle">
+        ][not(@blocklabel)][not(@fragmentlabel)][not(@fragmentlabel)]/*[name() = $list-type]/@liststyle">
       <xsl:value-of select="$config-doc/config/elements[@label = $document-label
-          ][not(@blocklabel)]/*[name() = $list-type]/@liststyle" />
+          ][not(@blocklabel)][not(@fragmentlabel)][not(@fragmentlabel)]/*[name() = $list-type]/@liststyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
@@ -2131,14 +2279,14 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
   <xsl:param name="list-type"/>
   <xsl:choose>
     <xsl:when test="$list-role != '' and $config-doc/config/elements[not(@label)
-        ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
+        ][not(@blocklabel)][not(@fragmentlabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)
-          ][not(@blocklabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
+          ][not(@blocklabel)][not(@fragmentlabel)]/*[name() = $list-type]/role[@value=$list-role]/@liststyle" />
     </xsl:when>
     <xsl:when test="$config-doc/config/elements[not(@label)
-        ][not(@blocklabel)]/*[name() = $list-type]/@liststyle">
+        ][not(@blocklabel)][not(@fragmentlabel)]/*[name() = $list-type]/@liststyle">
       <xsl:value-of select="$config-doc/config/elements[not(@label)
-          ][not(@blocklabel)]/*[name() = $list-type]/@liststyle" />
+          ][not(@blocklabel)][not(@fragmentlabel)]/*[name() = $list-type]/@liststyle" />
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="''" />
@@ -2213,6 +2361,72 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
 </xsl:function>
 
 <!--
+  Returns the configured ps:para w:style for a specific fragment label and document label
+
+  @param fragment-label the closest ancestor fragment label
+  @param document-label the current document label
+  @param indent-level the current ps:para indent level
+  @param numbered the @ps:numbered attribute of the ps:para
+  @param prefix the current ps:para prefix
+
+  @return the w:style
+-->
+<xsl:function name="config:para-wordstyle-for-fragment-label-document-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="document-label"/>
+  <xsl:param name="indent-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label
+  ][@fragmentlabel = $fragment-label]/para/indent[if($numbered)
+  then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+  then @prefixed='true' else not(@prefixed='true')]"/>
+  <xsl:choose>
+    <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
+      <xsl:value-of select="$indent[@level='0'][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
+      <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the configured ps:para w:style for a specific fragment label
+
+  @param fragment-label the closest ancestor fragment label
+  @param indent-level the current ps:para indent level
+  @param numbered the @ps:numbered attribute of the ps:para
+  @param prefix the current ps:para prefix
+
+  @return the w:style
+-->
+<xsl:function name="config:para-wordstyle-for-fragment-label" as="xs:string">
+  <xsl:param name="fragment-label"/>
+  <xsl:param name="indent-level"/>
+  <xsl:param name="numbered"/>
+  <xsl:param name="prefix"/>
+  <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)
+  ][@fragmentlabel = $fragment-label]/para/indent[if($numbered)
+  then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
+  then @prefixed='true' else not(@prefixed='true')]"/>
+  <xsl:choose>
+    <xsl:when test="not($indent-level) and $indent[@level='0']/@wordstyle">
+      <xsl:value-of select="$indent[@level='0'][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:when test="$indent[@level=$indent-level]/@wordstyle">
+      <xsl:value-of select="$indent[@level=$indent-level][1]/@wordstyle" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the configured ps:para w:style for a specific document label
 
   @param document-label the current document label
@@ -2228,7 +2442,7 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
   <xsl:variable name="indent" select="$config-doc/config/elements[@label = $document-label
-    ][not(@blocklabel)]/para/indent[if($numbered)
+    ][not(@blocklabel)][not(@fragmentlabel)]/para/indent[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
@@ -2258,7 +2472,7 @@ then @prefixed='true' else not(@prefixed='true')][@value=$heading-level]/@wordst
   <xsl:param name="numbered"/>
   <xsl:param name="prefix"/>
   <xsl:variable name="indent" select="$config-doc/config/elements[not(@label)
-    ][not(@blocklabel)]/para/indent[if($numbered)
+    ][not(@blocklabel)][not(@fragmentlabel)]/para/indent[if($numbered)
     then (@numbered = $numbered) else not(@numbered='true')][if($prefix)
     then @prefixed='true' else not(@prefixed='true')]"/>
   <xsl:choose>
