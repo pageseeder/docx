@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="61094" schemaversion="0.12" type="references"
+					date="2018-11-07T09:46:34+11:00" version="current" level="processed">
+	<documentinfo>
+		<uri id="61094" scheme="http" host="localhost" port="80"
+				 path="/ps/report/local1/test/xref-footnotes.psml" decodedpath="/ps/report/local1/test/xref-footnotes.psml"
+				 external="false" mediatype="application/vnd.pageseeder.psml+xml"
+				 documenttype="references" created="2018-06-19T14:45:38+10:00"
+				 modified="2018-11-07T09:46:34+11:00" title="XRef-footnotes">
+			<displaytitle>XRef-footnotes</displaytitle>
+		</uri>
+	</documentinfo>
+	<fragmentinfo>
+		<locator id="45269" fragment="61094-2" editid="165862"
+						 modified="2018-11-07T09:46:34+11:00" />
+	</fragmentinfo>
+	<metadata />
+	<section id="61094-title">
+		<fragment id="61094-1">
+			<heading level="1">XRef-footnotes</heading>
+		</fragment>
+	</section>
+	<toc />
+	<section id="61094-xrefs">
+		<xref-fragment id="61094-2">
+			<blockxref id="108288" frag="default" reversefrag="2"
+								 reversetitle="" reverselink="true" reversetype="none" display="document"
+								 type="embed" uriid="61095" href="footnotes-content.psml"
+								 urititle="Footnotes-content" mediatype="application/vnd.pageseeder.psml+xml">
+				<document id="61095" schemaversion="0.12"
+									date="2018-11-07T09:45:39+11:00" version="current" level="processed">
+					<documentinfo>
+						<uri id="61095" scheme="http" host="localhost" port="80"
+								 path="/ps/report/local1/test/footnotes-content.psml"
+								 decodedpath="/ps/report/local1/test/footnotes-content.psml"
+								 external="false" mediatype="application/vnd.pageseeder.psml+xml"
+								 created="2018-06-19T14:46:34+10:00" modified="2018-11-07T09:45:39+11:00"
+								 title="Footnotes-content">
+							<displaytitle>Footnotes-content</displaytitle>
+						</uri>
+						<reversexrefs>
+							<reversexref uriid="61094" href="xref-footnotes.psml"
+													 frag="2" urititle="XRef-footnotes" mediatype="application/vnd.pageseeder.psml+xml"
+													 documenttype="references" id="108288" title="" type="none"
+													 forwardtype="embed" forwarddisplay="document"
+													 forwardfrag="default" />
+						</reversexrefs>
+					</documentinfo>
+					<fragmentinfo>
+						<locator id="45270" fragment="61095-2" editid="165858"
+										 modified="2018-11-07T09:45:39+11:00" />
+					</fragmentinfo>
+					<metadata />
+					<section id="61095-title">
+						<fragment id="61095-1">
+							<heading level="2">Footnotes-content</heading>
+						</fragment>
+					</section>
+					<toc />
+					<section id="61095-content">
+						<fragment id="61095-2">
+							<heading level="3">A heading</heading>
+							<para>A para</para>
+							<block label="block1">
+								<para>Block 1 para</para>
+							</block>
+							<list>
+								<item>List item 1
+									<list>
+										<item>List item 1A</item>
+									</list>
+								</item>
+								<item>List item 1</item>
+							</list>
+							<nlist>
+								<item>Numbered item 1
+									<nlist>
+										<item>Numbered item 1A</item>
+									</nlist>
+								</item>
+								<item>Numbered item 1</item>
+							</nlist>
+							<block label="block1">
+								<block label="block2">
+									<heading level="4">A heading</heading>
+									<para>A para</para>
+									<blockxref id="108288" frag="2" reversefrag="2"
+														 reversetitle="" reverselink="true" reversetype="none" display="document"
+														 type="transclude" uriid="61095" href="footnotes-content.psml"
+														 urititle="Footnotes-content" mediatype="application/vnd.pageseeder.psml+xml">
+										<fragment id="2">
+											<para>Transcluded para</para>
+										</fragment>
+									</blockxref>
+									<block label="block1">
+										<para>Block 1 para</para>
+									</block>
+									<list>
+										<item>List item 1
+											<list>
+												<item>List item 1A</item>
+											</list>
+										</item>
+										<item>List item 1</item>
+									</list>
+									<nlist>
+										<item>Numbered item 1
+											<nlist>
+												<item>Numbered item 1A</item>
+											</nlist>
+										</item>
+										<item>Numbered item 1</item>
+									</nlist>
+								</block>
+							</block>
+						</fragment>
+					</section>
+				</document>
+			</blockxref>
+			<blockxref id="108305" frag="default" reversefrag="2"
+								 reversetitle="" reverselink="true" reversetype="none" display="document"
+								 type="embed" uriid="61097" href="footnotes-content2.psml"
+								 urititle="Footnotes-content2" urilabels="appendix"
+								 mediatype="application/vnd.pageseeder.psml+xml">
+				<document id="61097" schemaversion="0.12"
+									date="2018-11-07T09:46:13+11:00" version="current" level="processed">
+					<documentinfo>
+						<uri id="61097" scheme="http" host="localhost" port="80"
+								 path="/ps/report/local1/test/footnotes-content2.psml"
+								 decodedpath="/ps/report/local1/test/footnotes-content2.psml"
+								 external="false" mediatype="application/vnd.pageseeder.psml+xml"
+								 created="2018-06-20T13:17:59+10:00" modified="2018-11-07T09:46:13+11:00"
+								 title="Footnotes-content2">
+							<displaytitle>Footnotes-content2</displaytitle>
+							<labels>test,appendix</labels>
+						</uri>
+						<reversexrefs>
+							<reversexref uriid="61094" href="xref-footnotes.psml"
+													 frag="2" urititle="XRef-footnotes" mediatype="application/vnd.pageseeder.psml+xml"
+													 documenttype="references" id="108305" title="" type="none"
+													 forwardtype="embed" forwarddisplay="document"
+													 forwardfrag="default" />
+						</reversexrefs>
+					</documentinfo>
+					<fragmentinfo>
+						<locator id="45274" fragment="61097-2" editid="165861"
+										 modified="2018-11-07T09:46:13+11:00" />
+					</fragmentinfo>
+					<metadata />
+					<section id="61097-title">
+						<fragment id="61097-1">
+							<heading level="2">Footnotes-content2</heading>
+						</fragment>
+					</section>
+					<toc />
+					<section id="61097-content">
+						<fragment id="61097-2">
+							<heading level="3">A heading</heading>
+							<para>A para</para>
+							<block label="block1">
+								<para>Block 1 para</para>
+							</block>
+							<list>
+								<item>List item 1
+									<list>
+										<item>List item 1A</item>
+									</list>
+								</item>
+								<item>List item 1</item>
+							</list>
+							<nlist>
+								<item>Numbered item 1
+									<nlist>
+										<item>Numbered item 1A</item>
+									</nlist>
+								</item>
+								<item>Numbered item 1</item>
+							</nlist>
+							<block label="block1">
+								<block label="block2">
+									<heading level="4">A heading</heading>
+									<para>A para</para>
+									<blockxref id="108288" frag="2" reversefrag="2"
+														 reversetitle="" reverselink="true" reversetype="none" display="document"
+														 type="transclude" uriid="61095" href="footnotes-content.psml"
+														 urititle="Footnotes-content" mediatype="application/vnd.pageseeder.psml+xml">
+										<fragment id="2">
+											<para>Transcluded para</para>
+										</fragment>
+									</blockxref>
+									<block label="block1">
+										<para>Block 1 para</para>
+									</block>
+									<list>
+										<item>List item 1
+											<list>
+												<item>List item 1A</item>
+											</list>
+										</item>
+										<item>List item 1</item>
+									</list>
+									<nlist>
+										<item>Numbered item 1
+											<nlist>
+												<item>Numbered item 1A</item>
+											</nlist>
+										</item>
+										<item>Numbered item 1</item>
+									</nlist>
+								</block>
+							</block>
+						</fragment>
+					</section>
+				</document>
+			</blockxref>
+		</xref-fragment>
+	</section>
+</document>

@@ -226,12 +226,31 @@
 </xsl:function>
 
 <!--
-  Returns the confirmation of creation a table of contents or not at PSML toc level.
+  Returns whether to create a table of contents on the root document.
 
   @return true or false
 -->
 <xsl:function name="config:generate-toc" as="xs:boolean">
   <xsl:sequence select="$config-doc/config/toc/@generate = 'true'" />
+</xsl:function>
+
+<!--
+  Returns whether to create a table of contents on a non-root document.
+
+  @param document-label the document label
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc-for-document-label" as="xs:boolean">
+  <xsl:param name="document-label"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/toc/@generate">
+      <xsl:sequence select="$config-doc/config/elements[@label = $document-label]/toc/@generate = 'true'" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:sequence select="$config-doc/config/elements[not(@label)]/toc/@generate = 'true'" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
@@ -244,12 +263,50 @@
 </xsl:function>
 
 <!--
+  Returns whether to create a table of contents headings on a non-root document.
+
+  @param document-label the document label
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc-headings-for-document-label" as="xs:boolean">
+  <xsl:param name="document-label"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/toc/headings/@generate">
+      <xsl:sequence select="$config-doc/config/elements[@label = $document-label]/toc/headings/@generate = 'true'" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:sequence select="$config-doc/config/elements[not(@label)]/toc/headings/@generate = 'true'" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the values of the heading values for Table of contents.
 
   @return value of heading levels
 -->
 <xsl:function name="config:toc-heading-values" as="xs:string">
   <xsl:value-of select="string($config-doc/config/toc/headings/@select)"/>
+</xsl:function>
+
+<!--
+  Returns table of contents headings values on a non-root document.
+
+  @param document-label the document label
+
+  @return value of heading levels
+-->
+<xsl:function name="config:toc-heading-values-for-document-label" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/toc/headings/@generate = 'true'">
+      <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/headings/@select)"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="string($config-doc/config/elements[not(@label)]/headings/@select)"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
@@ -262,12 +319,50 @@
 </xsl:function>
 
 <!--
+  Returns whether to create a table of contents outline on a non-root document.
+
+  @param document-label the document label
+
+  @return true or false
+-->
+<xsl:function name="config:generate-toc-outline-for-document-label" as="xs:boolean">
+  <xsl:param name="document-label"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/toc/outline/@generate">
+      <xsl:sequence select="$config-doc/config/elements[@label = $document-label]/toc/outline/@generate = 'true'" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:sequence select="$config-doc/config/elements[not(@label)]/toc/outline/@generate = 'true'" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the values of the outline level values for Table of contents.
 
   @return value of outline levels
 -->
 <xsl:function name="config:toc-outline-values" as="xs:string">
   <xsl:value-of select="string($config-doc/config/toc/outline/@select)" />
+</xsl:function>
+
+<!--
+  Returns table of contents outline values on a non-root document.
+
+  @param document-label the document label
+
+  @return value of outline levels
+-->
+<xsl:function name="config:toc-outline-values-for-document-label" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/toc/outline/@generate = 'true'">
+      <xsl:value-of select="string($config-doc/config/elements[@label = $document-label]/outline/@select)"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="string($config-doc/config/elements[not(@label)]/outline/@select)"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--

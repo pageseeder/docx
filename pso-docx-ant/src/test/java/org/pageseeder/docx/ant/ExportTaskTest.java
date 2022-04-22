@@ -490,6 +490,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testTocTrueMultiple() throws IOException, SAXException {
+    testIndividual("toc-true-multiple");
+  }
+
+  @Test
   public void testTocTrueOutlineFalse() throws IOException, SAXException {
     testIndividual("toc-true-outline-false");
   }

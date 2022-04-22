@@ -241,6 +241,7 @@
 		<xs:complexType>
 			<xs:all>
 				<xs:element ref="document" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="toc" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="block" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="image" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />
