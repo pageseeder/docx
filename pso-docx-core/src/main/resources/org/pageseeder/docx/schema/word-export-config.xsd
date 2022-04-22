@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.27">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.28">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -203,7 +203,14 @@
 
   <xs:element name="xrefs">
     <xs:complexType>
-      <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
+      <xs:attribute name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="cross-reference" />
+						<xs:enumeration value="hyperlink" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
       <xs:attribute name="hyperlinkstyle" type="xs:string" />
       <xs:attribute name="referencestyle" type="xs:string" />
     </xs:complexType>

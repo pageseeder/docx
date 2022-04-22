@@ -493,6 +493,15 @@
 </xsl:function>
 
 <!--
+Indicate whether hyperlinks should be generated.
+
+@return true or false
+-->
+<xsl:function name="config:generate-hyperlinks" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/default/xrefs/@type = 'hyperlink'"/>
+</xsl:function>
+
+<!--
   Returns the style ID for the configured hyperlink style.
 
   @return the style ID

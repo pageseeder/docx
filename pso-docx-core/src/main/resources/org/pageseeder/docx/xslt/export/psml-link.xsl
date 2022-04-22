@@ -20,7 +20,7 @@
 -->
 <xsl:template name="xref-content">
   <xsl:param name="labels" tunnel="yes" />
-  
+
   <xsl:choose>
 
     <!-- Cross-reference to a footnote -->
@@ -127,7 +127,7 @@
     <xsl:otherwise>
       <xsl:choose>
         <!-- if dynamic link text generate updatable reference -->
-        <xsl:when test="@display='template' and
+        <xsl:when test="@display='template' and not(config:generate-hyperlinks()) and
             (contains(@title,'{prefix}') or contains(@title,'{parentnumber}') or contains(@title,'{heading}'))">
           <!-- if link text contains {heading} or {parentnumber} add link for numbering -->
           <xsl:if test="contains(@title,'{prefix}') or contains(@title,'{parentnumber}')">
