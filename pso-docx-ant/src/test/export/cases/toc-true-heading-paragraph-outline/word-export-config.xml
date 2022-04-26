@@ -10,4 +10,9 @@
       <style value="List Number 3" indent="3" />
     </paragraph>
   </toc>
+  <elements>
+    <heading>
+      <level value="1" wordstyle="heading 1"/>
+    </heading>
+  </elements>
 </config>

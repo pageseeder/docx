@@ -17,20 +17,37 @@
 <!--
   Handle Table of Contents (`toc`) marker.
 
-  Create initial toc paragraphs only if the `$create-toc` global variable is `true`.
 -->
-<xsl:template match="toc[not(preceding::toc)]" mode="psml">
-  <xsl:if test="config:generate-toc()">
+<xsl:template match="toc" mode="psml">
+  <xsl:param name="labels" tunnel="yes" />
+  <xsl:param name="document-bookmark-name" tunnel="yes" />
+  <xsl:variable name="toc-config" as="element(toc)?">
+    <xsl:choose>
+      <xsl:when test="../ancestor::document">
+        <xsl:sequence select="config:generate-toc-for-document-label($labels)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="config:generate-toc()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:if test="$toc-config">
     <xsl:variable name="toc-text">
       <xsl:text>TOC </xsl:text>
-      <xsl:if test="config:generate-toc-headings() and config:toc-heading-values() != ''">
-        <xsl:text>\o "</xsl:text><xsl:value-of select="config:toc-heading-values()"/><xsl:text>" </xsl:text>
+      <xsl:if test="../ancestor::document">
+        <xsl:text>\b </xsl:text><xsl:value-of select="$document-bookmark-name" /><xsl:text> </xsl:text>
       </xsl:if>
-      <xsl:if test="config:generate-toc-outline() and config:toc-outline-values() != ''">
-        <xsl:text>\u "</xsl:text><xsl:value-of select="config:toc-outline-values()"/><xsl:text>" </xsl:text>
-      </xsl:if>
-      <xsl:if test="config:generate-toc-paragraphs()">
-       <xsl:text>\t "</xsl:text><xsl:value-of select="config:toc-paragraph-values()"/><xsl:text>" </xsl:text>
+      <xsl:choose>
+        <xsl:when test="config:generate-toc-outline($toc-config) and config:toc-outline-values($toc-config) != ''">
+          <xsl:text>\o "</xsl:text><xsl:value-of select="config:toc-outline-values($toc-config)"/><xsl:text>" </xsl:text>
+        </xsl:when>
+        <!-- FOR BACKWARD COMPATIBILITY ONLY -->
+        <xsl:when test="config:generate-toc-headings($toc-config) and config:toc-heading-values($toc-config) != ''">
+          <xsl:text>\o "</xsl:text><xsl:value-of select="config:toc-heading-values($toc-config)"/><xsl:text>" </xsl:text>
+        </xsl:when>
+      </xsl:choose>
+      <xsl:if test="config:generate-toc-paragraphs($toc-config)">
+       <xsl:text>\t "</xsl:text><xsl:value-of select="config:toc-paragraph-values($toc-config)"/><xsl:text>" </xsl:text>
       </xsl:if>
     </xsl:variable>
     <w:p>

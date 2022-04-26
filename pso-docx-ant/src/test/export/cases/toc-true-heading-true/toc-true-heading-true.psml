@@ -8,8 +8,8 @@
 	<toc/>
 	<section id="title">
 		<fragment id="title">
-			<para>Test Case 1</para>
+			<heading level="1">Test Case 1</heading>
 			<para>Basic Document without any configuration.</para>
 		</fragment>
-	</section>	
+	</section>
 </document>

@@ -23,7 +23,7 @@
   </elements>
   <elements label="appendix">
     <toc generate="true">
-      <heading generate="true" select="3-4" />
+      <outline generate="true" select="3-4" />
     </toc>
   </elements>
 </config>

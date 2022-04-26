@@ -82,7 +82,7 @@
 							</nlist>
 							<block label="block1">
 								<block label="block2">
-									<heading level="4">A heading</heading>
+									<heading level="4">B heading</heading>
 									<para>A para</para>
 									<blockxref id="108288" frag="2" reversefrag="2"
 														 reversetitle="" reverselink="true" reversetype="none" display="document"
@@ -155,7 +155,7 @@
 					<toc />
 					<section id="61097-content">
 						<fragment id="61097-2">
-							<heading level="3">A heading</heading>
+							<heading level="3">C heading</heading>
 							<para>A para</para>
 							<block label="block1">
 								<para>Block 1 para</para>
@@ -178,7 +178,7 @@
 							</nlist>
 							<block label="block1">
 								<block label="block2">
-									<heading level="4">A heading</heading>
+									<heading level="4">D heading</heading>
 									<para>A para</para>
 									<blockxref id="108288" frag="2" reversefrag="2"
 														 reversetitle="" reverselink="true" reversetype="none" display="document"

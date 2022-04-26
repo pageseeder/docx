@@ -113,6 +113,7 @@
       <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
       <xsl:apply-templates mode="psml" >
         <xsl:with-param name="labels" select="$labels" tunnel="yes"/>
+        <xsl:with-param name="document-bookmark-name" select="concat('f-', @id)" tunnel="yes"/>
       </xsl:apply-templates>
       <w:bookmarkEnd w:id="{$bookmark-id}"/>
       <xsl:call-template name="add-section">
