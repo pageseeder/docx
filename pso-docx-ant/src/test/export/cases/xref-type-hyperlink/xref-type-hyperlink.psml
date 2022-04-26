@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document id="28508" schemaversion="0.10" date="2017-08-18T12:22:36+10:00"
+  version="current" level="portable">
+  <section id="title">
+    <fragment id="28508-0">
+      <heading level="1">Xref type="cross-refernce"</heading>
+    </fragment>
+  </section>
+  <section id="content">
+    <fragment id="28508-101">
+      <heading level="4">XRefs to numbered para</heading>
+      <para><xref id="64977" title="{prefix}" frag="103" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-103" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2</xref> Referencing 2.</para>
+      <para><xref id="64977" title="{parentnumber}{prefix}" frag="105" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-105" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2(a)(i)</xref> Referencing 2(a)(i).</para>
+      <para><xref id="64977" title="{parentnumber}{prefix}" frag="106" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-106" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2(b)</xref> Referencing 2(b).</para>
+      <para><xref id="64977" title="{prefix} {heading}" frag="107" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-107" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1.1 Numbered Target</xref> Referencing 1.1 Numbered Target</para>
+      <para><xref id="64977" title="{heading}" frag="107" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-107" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Numbered Target</xref> Referencing Numbered Target</para>
+      <para><xref id="64977" title="{heading}" frag="108" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="template" type="none" uriid="28508"
+            href="#28508-108" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Missing Target</xref> Referencing Missing Target</para>
+    </fragment>
+    <xref-fragment id="content">
+      <blockxref uriid="28509" title="Test" frag="default" display="document"
+        type="embed" reverselink="true" reversetitle="" reversetype="none"
+        href="test.psml">
+        <document id="28509" level="processed">
+          <section id="28509-content">
+            <fragment id="28509-title"><para>Embedded content</para></fragment>
+          </section>
+        </document>
+      </blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true"
+            mediatype="application/vnd.pageseeder.psml+xml">External block xref</blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn" config="field"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal field block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true" config="field"
+            mediatype="application/vnd.pageseeder.psml+xml">External field block xref</blockxref>
+      <blockxref id="64977" title="Internal block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn" config="term"
+            mediatype="application/vnd.pageseeder.psml+xml">Internal term block xref</blockxref>
+      <blockxref id="649771" title="External block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="http://example.org" urititle="fn" external="true" config="term"
+            mediatype="application/vnd.pageseeder.psml+xml">External term block xref</blockxref>
+      <blockxref id="649772" title="Binary block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="myimage.gif" urititle="My image"
+            mediatype="application/vnd.pageseeder.psml+xml">Binary block xref</blockxref>
+      <blockxref id="649773" title="PSML block xref" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="mydoc.psml" urititle="My doc"
+            mediatype="application/vnd.pageseeder.psml+xml">PSML block xref</blockxref>
+    </xref-fragment>
+    <fragment id="28508-2">
+      <heading level="4">Xref with Sup</heading>
+      <para>
+        <sup>example</sup>
+        <sup><xref id="64977" title="1" frag="1" reversefrag="2"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">1</xref></sup>
+      </para>
+    </fragment>
+    <fragment id="28508-3">
+      <heading level="4">Xref with Bold</heading>
+      <para>
+        <bold>example</bold>
+        <bold><xref id="64982" title="2" frag="1" reversefrag="3"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">2</xref></bold>
+      </para>
+    </fragment>
+    <fragment id="28508-4">
+      <heading level="4">Xref with Italic</heading>
+      <para>
+        <italic>example</italic>
+        <italic><xref id="64987" title="3" frag="1" reversefrag="4"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">3</xref></italic>
+      </para>
+    </fragment>
+    <fragment id="28508-5">
+      <heading level="4">Xref with Underline</heading>
+      <para>
+        <underline>example</underline>
+        <underline><xref id="64993" title="4" frag="1" reversefrag="5"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508-1" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">4</xref></underline>
+      </para>
+    </fragment>
+    <fragment id="28508-11">
+      <heading level="4">Xref with Italic and bold</heading>
+      <para>
+        <italic>example</italic>
+        <italic><bold><xref id="64987" title="3" frag="1" reversefrag="4"
+              reversetitle="" reverselink="true" reversetype="none"
+              display="manual" type="none" uriid="28508"
+              href="#28508-1" urititle="fn"
+              mediatype="application/vnd.pageseeder.psml+xml">3</xref></bold></italic>
+      </para>
+    </fragment>
+    <fragment id="28508-6">
+      <heading level="4">Xref with Sup inside of Table</heading>
+      <table width="200px" height="200px">
+        <col />
+        <col />
+        <row>
+          <cell>
+            <sup>
+              Example
+              <xref id="64997" title="5" frag="1" reversefrag="6"
+                reversetitle="" reverselink="true" reversetype="none"
+                display="manual" type="none" uriid="28508"
+                href="#28508-1" urititle="fn"
+                mediatype="application/vnd.pageseeder.psml+xml">5</xref>
+            </sup>
+          </cell>
+          <cell>
+            <sup>Example</sup>
+          </cell>
+        </row>
+        <row>
+          <cell>
+            <sup>Example</sup>
+          </cell>
+          <cell>
+            <sup>Example</sup>
+          </cell>
+        </row>
+      </table>
+    </fragment>
+    <fragment id="28508-7">
+      <heading level="4">Xref with Bold inside of Table</heading>
+      <table width="200px" height="200px">
+        <col />
+        <col />
+        <row>
+          <cell>
+            <bold>
+              Example
+              <xref id="65022" title="6" frag="1" reversefrag="7"
+                reversetitle="" reverselink="true" reversetype="none"
+                display="manual" type="none" uriid="28508"
+                href="#28508-1" urititle="fn"
+                mediatype="application/vnd.pageseeder.psml+xml">6</xref>
+            </bold>
+          </cell>
+          <cell>
+            <bold>Example</bold>
+          </cell>
+        </row>
+        <row>
+          <cell>
+            <bold>Example</bold>
+          </cell>
+          <cell>
+            <bold>Example</bold>
+          </cell>
+        </row>
+      </table>
+    </fragment>
+    <fragment id="28508-8">
+      <heading level="4">Xref with Italic inside of Table</heading>
+      <table width="200px" height="200px">
+        <col />
+        <col />
+        <row>
+          <cell>
+            <italic>
+              Example
+              <xref id="65020" title="7" frag="1" reversefrag="8"
+                reversetitle="" reverselink="true" reversetype="none"
+                display="manual" type="none" uriid="28508"
+                href="#28508-1" urititle="fn"
+                mediatype="application/vnd.pageseeder.psml+xml">7</xref>
+            </italic>
+          </cell>
+          <cell>
+            <italic>Example</italic>
+          </cell>
+        </row>
+        <row>
+          <cell>
+            <italic>Example</italic>
+          </cell>
+          <cell>
+            <italic>Example</italic>
+          </cell>
+        </row>
+      </table>
+    </fragment>
+    <fragment id="28508-9">
+      <heading level="4">Xref with Underline inside of Table
+      </heading>
+      <table width="200px" height="200px">
+        <col />
+        <col />
+        <row>
+          <cell>
+            <underline>
+              Example
+              <xref id="65018" title="8" frag="1" reversefrag="9"
+                reversetitle="" reverselink="true" reversetype="none"
+                display="manual" type="none" uriid="28508"
+                href="#28508-1" urititle="fn"
+                mediatype="application/vnd.pageseeder.psml+xml">8</xref>
+            </underline>
+          </cell>
+          <cell>
+            <underline>Example</underline>
+          </cell>
+        </row>
+        <row>
+          <cell>
+            <underline>Example</underline>
+          </cell>
+          <cell>
+            <underline>Example</underline>
+          </cell>
+        </row>
+      </table>
+    </fragment>
+    <fragment id="28508-10">
+      <heading level="4">Xref with Sup inside of Block Label
+      </heading>
+      <block label="example9">
+        <para><sup>Example
+          <xref id="65025" title="9" frag="1" reversefrag="10"
+              reversetitle="Xref with Sup inside of Block Label"
+              reverselink="true" reversetype="none" display="manual"
+              type="none" uriid="28508" href="#28508-1"
+              urititle="fn" mediatype="application/vnd.pageseeder.psml+xml">9</xref></sup></para>
+      </block>
+    </fragment>
+    <fragment id="28508-12">
+      <heading level="4">Xref with Sup inside of Inline Label
+      </heading>
+      <para><inline label="example10"><sup>Example
+        <xref id="65030" title="10" frag="default" reversefrag="11"
+            reversetitle="" reverselink="true" reversetype="none"
+            display="manual" type="none" uriid="28508"
+            href="#28508" urititle="fn"
+            mediatype="application/vnd.pageseeder.psml+xml">10</xref></sup></inline></para>
+    </fragment>
+    <fragment id="28508-1">
+      <para>Target</para>
+    </fragment>
+    <fragment id="28508-102">
+      <para indent="1" numbered="true">Outline Level 1 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-103">
+      <para indent="1" numbered="true">Outline Level 1 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-104">
+      <para indent="2" numbered="true">Outline Level 2 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-105">
+      <para indent="3" numbered="true">Outline Level 3 – Index 1 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-106">
+      <para indent="2" numbered="true">Outline Level 2 – Index 2 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</para>
+    </fragment>
+    <fragment id="28508-107">
+      <heading level="2" numbered="true">Numbered Target</heading>
+      <heading level="2" numbered="true">Another Heading</heading>
+      <para>Some text.</para>
+      <heading level="2" numbered="true">Another Heading</heading>
+      <para><anchor name="mytest1" /></para>
+    </fragment>
+    <fragment id="28508-108">
+      <para>Some text.</para>
+      <heading level="2" numbered="true">Another Heading</heading>
+    </fragment>
+    <fragment id="28508-109">
+      <heading level="2" numbered="true"><anchor name="mytest2" />Another Target</heading>
+    </fragment>
+  </section>
+</document>

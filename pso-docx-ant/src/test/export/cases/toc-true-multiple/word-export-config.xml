@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<config>
+	<toc generate="true">
+    <paragraph generate="true">
+      <style value="heading 2" indent="1" />
+      <style value="heading 3" indent="2" />
+      <style value="heading 4" indent="3" />
+    </paragraph>
+  </toc>
+  <elements>
+    <toc generate="true">
+      <paragraph generate="true">
+        <style value="heading 3" indent="1" />
+      </paragraph>
+    </toc>
+    <heading>
+      <level value="1" wordstyle="heading 1"/>
+      <level value="2" wordstyle="heading 2"/>
+      <level value="3" wordstyle="heading 3"/>
+      <level value="4" wordstyle="heading 4"/>
+    </heading>
+  </elements>
+  <elements label="appendix">
+    <toc generate="true">
+      <outline generate="true" select="3-4" />
+    </toc>
+  </elements>
+</config>

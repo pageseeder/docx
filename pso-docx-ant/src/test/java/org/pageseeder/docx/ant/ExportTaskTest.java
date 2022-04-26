@@ -490,6 +490,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testTocTrueMultiple() throws IOException, SAXException {
+    testIndividual("toc-true-multiple");
+  }
+
+  @Test
   public void testTocTrueOutlineFalse() throws IOException, SAXException {
     testIndividual("toc-true-outline-false");
   }
@@ -559,6 +564,11 @@ public final class ExportTaskTest {
   @Test
   public void testXrefTypeCrossReference() throws IOException, SAXException {
     testIndividual("xref-type-cross-reference");
+  }
+
+  @Test
+  public void testXrefTypeHyperlink() throws IOException, SAXException {
+    testIndividual("xref-type-hyperlink");
   }
 
   public void testAll() throws IOException, SAXException {

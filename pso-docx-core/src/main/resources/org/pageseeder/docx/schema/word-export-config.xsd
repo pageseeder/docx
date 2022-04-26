@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.27">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.8.28">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -93,17 +93,17 @@
 				<xs:element ref="paragraph" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="generate" type="xs:boolean"/>
-			<xs:attribute name="style" type="xs:string"/>
+			<xs:attribute name="style" type="xs:string"/> <!-- DEPRECATED -->
 		</xs:complexType>
 	</xs:element>
 
+	<!-- DEPRECATED use outline instead -->
 	<xs:element name="headings">
 		<xs:complexType>
 			<xs:attribute name="generate" type="xs:boolean"/>
 			<xs:attribute name="select">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:pattern value="[0-9]"/>
 						<xs:pattern value="[0-9]-[0-9]"/>
 					</xs:restriction>
 				</xs:simpleType>
@@ -117,7 +117,6 @@
 			<xs:attribute name="select">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:pattern value="[0-9]"/>
             <xs:pattern value="[0-9]-[0-9]"/>
           </xs:restriction>
         </xs:simpleType>
@@ -203,7 +202,14 @@
 
   <xs:element name="xrefs">
     <xs:complexType>
-      <xs:attribute name="type" type="xs:string" fixed="cross-reference"/>
+      <xs:attribute name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="cross-reference" />
+						<xs:enumeration value="hyperlink" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
       <xs:attribute name="hyperlinkstyle" type="xs:string" />
       <xs:attribute name="referencestyle" type="xs:string" />
     </xs:complexType>
@@ -234,6 +240,7 @@
 		<xs:complexType>
 			<xs:all>
 				<xs:element ref="document" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="toc" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="block" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="image" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="inline" minOccurs="0" maxOccurs="1" />

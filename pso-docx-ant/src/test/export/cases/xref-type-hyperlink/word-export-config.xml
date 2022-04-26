@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+  <default>
+    <xrefs type="hyperlink" />
+  </default>
+  <elements>
+    <block default="none">
+      <label wordstyle="Heading1" value="example9"/>
+    </block>
+    <inline default="none">
+      <label wordstyle="Heading1Char" value="example10"/>
+    </inline>
+    <heading>
+      <level value="1" numbered="true" wordstyle="heading 1"/>
+      <level value="2" numbered="true" wordstyle="heading 2"/>
+    </heading>
+    <para>
+      <indent level="1" numbered="true" wordstyle="List Number"/>
+      <indent level="2" numbered="true" wordstyle="List Number 2"/>
+      <indent level="3" numbered="true" wordstyle="List Number 3"/>
+      <indent level="4" numbered="true" wordstyle="List Number 4"/>
+      <indent level="5" numbered="true" wordstyle="List Number 5"/>
+      <indent level="6" numbered="true" wordstyle="List Number 6"/>
+      <indent level="7" numbered="true" wordstyle="List Number 7"/>
+      <indent level="8" numbered="true" wordstyle="List Number 8"/>
+      <indent level="9" numbered="true" wordstyle="List Number 9"/>
+    </para>
+    <xref>
+      <xrefconfig name="field"
+          hyperlinkstyle="My Field Link" referencestyle="My Field Reference" />
+      <xrefconfig name="term"
+          hyperlinkstyle="My Term Link" />
+    </xref>
+  </elements>
+</config>

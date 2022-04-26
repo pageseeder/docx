@@ -226,67 +226,106 @@
 </xsl:function>
 
 <!--
-  Returns the confirmation of creation a table of contents or not at PSML toc level.
+  Returns config to create a table of contents on the root document.
 
-  @return true or false
+  @return toc element or empty
 -->
-<xsl:function name="config:generate-toc" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/toc/@generate = 'true'" />
+<xsl:function name="config:generate-toc" as="element(toc)?">
+  <xsl:sequence select="$config-doc/config/toc[@generate = 'true']" />
+</xsl:function>
+
+<!--
+  Returns config to create a table of contents on a non-root document.
+
+  @param document-label the document label
+
+  @return toc element or empty
+-->
+<xsl:function name="config:generate-toc-for-document-label" as="element(toc)?">
+  <xsl:param name="document-label"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/toc[@generate]">
+      <xsl:sequence select="$config-doc/config/elements[@label = $document-label]/toc[@generate = 'true']" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:sequence select="$config-doc/config/elements[not(@label)]/toc[@generate = 'true']" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
   Returns the confirmation of creation a table of contents with headings or not.
+  FOR BACKWARD COMPATIBILITY ONLY.
+
+  @param toc-config the toc config element
 
   @return true or false
 -->
 <xsl:function name="config:generate-toc-headings" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/toc/headings/@generate = 'true'"/>
+  <xsl:param name="toc-config" as="element(toc)" />
+  <xsl:sequence select="$toc-config/headings/@generate = 'true'"/>
 </xsl:function>
 
 <!--
   Returns the values of the heading values for Table of contents.
+  FOR BACKWARD COMPATIBILITY ONLY.
+
+  @param toc-config the toc config element
 
   @return value of heading levels
 -->
 <xsl:function name="config:toc-heading-values" as="xs:string">
-  <xsl:value-of select="string($config-doc/config/toc/headings/@select)"/>
+  <xsl:param name="toc-config" as="element(toc)" />
+  <xsl:value-of select="string($toc-config/headings/@select)"/>
 </xsl:function>
 
 <!--
   Returns the confirmation of creation a table of contents with outline levels or not.
 
+  @param toc-config the toc config element
+
   @return true or false
 -->
 <xsl:function name="config:generate-toc-outline" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/toc/outline/@generate = 'true'"/>
+  <xsl:param name="toc-config" as="element(toc)" />
+  <xsl:sequence select="$toc-config/outline/@generate = 'true'"/>
 </xsl:function>
 
 <!--
   Returns the values of the outline level values for Table of contents.
 
+  @param toc-config the toc config element
+
   @return value of outline levels
 -->
 <xsl:function name="config:toc-outline-values" as="xs:string">
-  <xsl:value-of select="string($config-doc/config/toc/outline/@select)" />
+  <xsl:param name="toc-config" as="element(toc)" />
+  <xsl:value-of select="string($toc-config/outline/@select)" />
 </xsl:function>
 
 <!--
   Returns the confirmation of creation a table of contents with paragraph styles or not.
 
+  @param toc-config the toc config element
+
   @return true or false
 -->
 <xsl:function name="config:generate-toc-paragraphs" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/toc/paragraph/@generate = 'true'" />
+  <xsl:param name="toc-config" as="element(toc)" />
+  <xsl:sequence select="$toc-config/paragraph/@generate = 'true'" />
 </xsl:function>
 
 <!--
   Returns the values of the paragraph styles values for Table of contents.
 
+  @param toc-config the toc config element
+
   @return list of paragraph styles and indent value
 -->
 <xsl:function name="config:toc-paragraph-values">
-  <!-- TODO Looks like this function's return type is `xs:string*`, but used in `xslvalue-of` -->
-  <xsl:for-each select="$config-doc/config/toc/paragraph/style">
+  <!-- TODO Looks like this function's return type is `xs:string*`, but used in `xsl:value-of` -->
+  <xsl:param name="toc-config" as="element(toc)" />
+  <xsl:for-each select="$toc-config/paragraph/style">
     <xsl:choose>
       <xsl:when test="position() = last()">
         <xsl:value-of select="concat(@value, ',', @indent)"/>
@@ -490,6 +529,15 @@
 -->
 <xsl:function name="config:generate-cross-references" as="xs:boolean">
   <xsl:sequence select="$config-doc/config/default/xrefs/@type = 'cross-reference'"/>
+</xsl:function>
+
+<!--
+Indicate whether hyperlinks should be generated.
+
+@return true or false
+-->
+<xsl:function name="config:generate-hyperlinks" as="xs:boolean">
+  <xsl:sequence select="$config-doc/config/default/xrefs/@type = 'hyperlink'"/>
 </xsl:function>
 
 <!--

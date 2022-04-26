@@ -4,4 +4,9 @@
 	<toc generate="true" style="TOC1">
     <outline generate="true" select="1-9" />
   </toc>
+  <elements>
+    <heading>
+      <level value="1" wordstyle="heading 1"/>
+    </heading>
+  </elements>
 </config>

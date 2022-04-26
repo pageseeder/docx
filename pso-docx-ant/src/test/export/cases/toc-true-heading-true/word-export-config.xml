@@ -2,6 +2,11 @@
 
 <config>
 	<toc generate="true" style="TOC1">
-    <headings generate="true" select="1" />
+    <headings generate="true" select="1-1" />
   </toc>
+  <elements>
+    <heading>
+      <level value="1" wordstyle="heading 1"/>
+    </heading>
+  </elements>
 </config>
