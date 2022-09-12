@@ -4,7 +4,6 @@
 	<elements>
 		<block default="List Bullet">
 			<label wordstyle="ListNumber" value="TestPara1"/>
-			<label wordstyle="ListNumber2" value="TestPara1"/>
 		</block>
 	</elements>
 </config>
