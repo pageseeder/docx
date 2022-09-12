@@ -8,4 +8,9 @@
       <index label="index" />
     </inline>
   </elements>
+  <elements label="xyz">
+    <inline>
+      <index label="index2" />
+    </inline>
+  </elements>
 </config>

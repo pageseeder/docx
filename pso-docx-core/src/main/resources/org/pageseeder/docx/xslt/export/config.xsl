@@ -699,7 +699,7 @@ Indicate whether hyperlinks should be generated.
 </xsl:function>
 
 <!--
-  Returns the list of default inline labels to transform to fieldcodes.
+  Returns the list of default inline index labels to transform to fieldcodes.
 
   @return the list of inline labels
 -->
@@ -708,13 +708,22 @@ Indicate whether hyperlinks should be generated.
 </xsl:function>
 
 <!--
-  Returns the list of a specific document label inline labels to transform to fieldcodes.
+  Returns the list of a specific document label inline index labels to transform to fieldcodes.
 
   @return the list of inline labels
 -->
 <xsl:function name="config:inline-index-labels-with-document-label" as="xs:string">
   <xsl:param name="document-label"/>
   <xsl:value-of select="fn:items-to-regex($config-doc/config/elements[@label = $document-label]/inline/index/@label)"/>
+</xsl:function>
+
+<!--
+  Returns the list of all inline index labels
+
+  @return the list of inline labels
+-->
+<xsl:function name="config:all-inline-index-labels" as="xs:string*">
+  <xsl:sequence select="$config-doc/config/elements/inline/index/@label"/>
 </xsl:function>
 
 <!--
