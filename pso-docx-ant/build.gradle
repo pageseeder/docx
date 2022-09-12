@@ -5,6 +5,10 @@ dependencies {
   // DOCX module dependencies
   implementation project(':pso-docx-core')
 
+  implementation(
+    "org.slf4j:slf4j-api:1.7.36"
+  )
+
   compileOnly (
     "org.apache.ant:ant:$antVersion"
   )

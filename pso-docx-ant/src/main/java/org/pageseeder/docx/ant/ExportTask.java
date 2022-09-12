@@ -8,6 +8,7 @@ import org.apache.tools.ant.Task;
 import org.pageseeder.docx.util.Files;
 import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
+import org.slf4j.Logger;
 
 import javax.xml.transform.Templates;
 
@@ -236,7 +237,8 @@ public final class ExportTask extends Task {
     File newSourceDocument = new File(this.working, "unnested/document-unnested.psml");
     newSourceDocument.getParentFile().mkdir();
     Map<String, String> noParameters = Collections.emptyMap();
-    XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters);
+    Logger logger = AntLogger.newInstance(this);
+    XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters, logger);
 
     // 6. Process the files
     log("Processing with XSLT");
@@ -260,7 +262,7 @@ public final class ExportTask extends Task {
     }
 
     // Transform
-    XSLT.transform(newSourceDocument, document, templates, parameters);
+    XSLT.transform(newSourceDocument, document, templates, parameters, logger);
 
     // 7. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {

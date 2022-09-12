@@ -8,6 +8,7 @@ import org.apache.tools.ant.Task;
 import org.pageseeder.docx.util.Files;
 import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
+import org.slf4j.Logger;
 
 import javax.xml.transform.Templates;
 
@@ -231,17 +232,18 @@ public final class ImportTask extends Task {
     File document = new File(unpacked, "word/document.xml");
     File newDocument = new File(unpacked, "word/new-document.xml");
     //Map<String, String> noParameters = Collections.emptyMap();
-    XSLT.transform(document, newDocument, unnest, parameters);
+    Logger logger = AntLogger.newInstance(this);
+    XSLT.transform(document, newDocument, unnest, parameters, logger);
 
     // 3.1 Unnest Endnotes file if it exists
     File endnotes = new File(unpacked, "word/endnotes.xml");
     if(endnotes.canRead()){
-    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters);
+    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters, logger);
     }
     // 3.2 Unnest Footnotes file if it exists
     File footnotes = new File(unpacked, "word/footnotes.xml");
     if(footnotes.canRead()){
-    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
+    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters, logger);
     }
 
 	// 4. copy the media files
@@ -250,7 +252,7 @@ public final class ImportTask extends Task {
 
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
-    XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters, logger);
   }
 
   // Helpers

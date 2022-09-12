@@ -135,7 +135,7 @@ public final class DOCXProcessor {
     File newSourceDocument = new File(this._builder.working(), "unnested/document-unnested.psml");
     newSourceDocument.getParentFile().mkdir();
     Map<String, String> noParameters = Collections.emptyMap();
-    XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters);
+    XSLT.transform(sourceDocument, newSourceDocument, unnest, noParameters, null);
 
     // 6. Process the files
     log("Process with XSLT");
@@ -156,7 +156,7 @@ public final class DOCXProcessor {
     parameters.putAll(this._builder.params());
 
     // Transform
-    XSLT.transform(newSourceDocument, document, templates, parameters);
+    XSLT.transform(newSourceDocument, document, templates, parameters, null);
 
     // 7. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
