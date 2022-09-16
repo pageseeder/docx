@@ -60,7 +60,7 @@
             <fragment id="61095-2">
               <heading level="2">A heading<inline label="index">heading</inline></heading>
               <para>Some content some content some content<inline label="index">content</inline> some content some content.</para>
-              <para>Sub entry 1<inline label="index">entry:sub1</inline>
+              <para>Sub entry 1<inline label="index">entry: sub1</inline>
                 sub entry 2<inline label="index">entry:sub2
                   <xref id="1082882" frag="3" reversefrag="2"
                         reversetitle="" reverselink="true" reversetype="none" display="document"
