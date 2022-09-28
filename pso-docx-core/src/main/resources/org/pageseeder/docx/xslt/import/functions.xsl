@@ -14,6 +14,25 @@
                 exclude-result-prefixes="#all">
 
 <!--
+  Make image filenames lowercase (except for encoded chars) and encode these chareters: !'()~
+  Word doesn't like these encoded for some reason but PageSeeder requires it.
+  Also it doesn't like dot encoded or unencoded so %25 was used
+  which is encoded % that is not allowed in PageSeeder filenames
+  so there is no clash.
+
+  @param filename
+
+  @return the encoded filename
+-->
+<xsl:function name="fn:encode-image-filename" as="xs:string">
+  <xsl:param name="filename" as="xs:string" />
+  <xsl:variable name="lower" select="replace(replace(replace(replace(replace(replace(lower-case($filename),
+    '(%\d)a', '$1A'), '(%\d)b', '$1B'), '(%\d)c', '$1C'), '(%\d)d', '$1D'), '(%\d)e', '$1E'), '(%\d)f', '$1F')" />
+  <xsl:value-of select="replace(replace(replace(replace(replace(replace($lower,
+    '!', '%21'), '''', '%27'), '\(', '%28'), '\)', '%29'), '~', '%7E'), '%25', '.')" />
+</xsl:function>
+
+<!--
   Returns the list of document label specific ignore inline labels.
 
   @param document-label the value of the document label

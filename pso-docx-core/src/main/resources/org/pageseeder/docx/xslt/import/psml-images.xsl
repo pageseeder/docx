@@ -63,8 +63,8 @@
     <xsl:param name="component" select="false()" tunnel="yes"/>
     <xsl:variable name="rid" select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed" />
     <xsl:variable name="count-images-element" select="count($rid)" />
-    <xsl:variable name="target" select="replace(
-       $relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target, '%25', '.')" />
+    <xsl:variable name="target" select="fn:encode-image-filename(
+       $relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target)" />
     <xsl:variable name="alt" >
       <xsl:choose>
         <xsl:when test="wp:inline">
@@ -95,7 +95,7 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <image src="{concat(if ($component) then '../' else '', $media-folder-name, lower-case(substring-after($target, 'media')))}" alt="{$alt}">
+    <image src="{concat(if ($component) then '../' else '', $media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
       <xsl:apply-templates select="." mode="drawing-element" />
     </image>
   </xsl:template>
@@ -155,11 +155,11 @@
     </xsl:for-each>
     <xsl:if test="v:imagedata/@r:id">
       <xsl:variable name="rid" select="v:imagedata/@r:id" />
-      <xsl:variable name="target" select="replace(
-          $relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target, '%25', '.')" />
+      <xsl:variable name="target" select="fn:encode-image-filename(
+          $relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target)" />
       <xsl:variable name="alt" select="substring-after($target, 'media/')" />
 
-      <image src="{concat(if ($component) then '../' else '', $media-folder-name, lower-case(substring-after($target, 'media')))}" alt="{$alt}">
+      <image src="{concat(if ($component) then '../' else '', $media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
         <xsl:apply-templates select="." mode="pict-group" />
       </image>
     </xsl:if>
