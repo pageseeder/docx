@@ -79,8 +79,15 @@ public class Files {
   }
 
   /**
+   * Copy directory and clean encoded image filenames by unencoded these chareters: !'()~
+   * Word doesn't like these encoded for some reason.
+   * Also it doesn't like dot encoded or unencoded so replace it with %25
+   * which is encoded % that is not allowed in PageSeeder filenames
+   * so there is no clash.
+   *
    * @param source The source folder
    * @param target The target folder
+   *
    * @throws IOException when I/O error occur.
    */
   public static void copyDirectory(File source, File target) throws IOException {
@@ -94,7 +101,13 @@ public class Files {
       String[] children = source.list();
       if (children != null) {
         for (String aChildren : children) {
-          copyDirectory(new File(source, aChildren), new File(target, aChildren));
+          int dot = aChildren.lastIndexOf('.');
+          String base = (dot == -1) ? aChildren : aChildren.substring(0, dot);
+          String extension = (dot == -1) ? "" : aChildren.substring(dot);
+          String newfilename = base.replace("%21", "!").replace( "%27",
+              "'").replace("%28", "(").replace("%29", ")").replace("%7E",
+              "~").replace(".", "%25") + extension;
+          copyDirectory(new File(source, aChildren), new File(target, newfilename));
         }
       }
     } else {

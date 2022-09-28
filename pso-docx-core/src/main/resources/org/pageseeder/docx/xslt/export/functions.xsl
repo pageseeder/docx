@@ -58,6 +58,25 @@
 </xsl:function>
 
 <!--
+  Clean encoded image filenames by unencoded these chareters: !'()~
+  Word doesn't like these encoded for some reason.
+  Also it doesn't like dot encoded or unencoded so replace it with %25
+  which is encoded % that is not allowed in PageSeeder filenames
+  so there is no clash.
+
+  @param filename
+
+  @return the clean filename
+-->
+<xsl:function name="fn:clean-image-filename" as="xs:string">
+  <xsl:param name="filename" as="xs:string" />
+  <xsl:variable name="noext" select="replace($filename,'\.[^\.]*$', '')" />
+  <xsl:value-of select="concat(replace(replace(replace(replace(replace(replace($noext,
+      '%21', '!'), '%27', ''''), '%28', '('), '%29', ')'), '%7E', '~'), '\.', '%25'),
+      '.', tokenize($filename, '\.')[last()])" />
+</xsl:function>
+
+<!--
   Returns type of Word numbering style based on the current pageseeder list style.
 
   @param list-style the PSML list style

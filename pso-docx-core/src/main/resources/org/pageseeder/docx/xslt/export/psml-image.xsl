@@ -98,7 +98,7 @@
     <wp:inline distT="0" distB="0" distL="0" distR="0">
       <wp:extent cx="{$width}" cy="{$height}" />
       <!-- Currently `@descr` is read by the docxcreator to find the target image in the image folder -->
-      <wp:docPr id="{$id}" name="{substring-before(@src, '.')}" descr="" title="{$title}"/>
+      <wp:docPr id="{$id}" name="{substring-before(fn:clean-image-filename(@src), '.')}" descr="" title="{$title}"/>
       <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
         <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
           <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">

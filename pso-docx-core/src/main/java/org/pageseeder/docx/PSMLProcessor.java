@@ -178,7 +178,9 @@ public final class PSMLProcessor {
           // don't import template images
           if (!m.getName().startsWith(DOCXProcessor.MEDIA_PREFIX)) {
             // decode filename because the image/@src will be decoded by PageSeeder
-            Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
+            // %25 is used for dot because word doesn't like dot encoded or unencoded
+            Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName().replace("%25","."),
+                "UTF-8").toLowerCase()));
           }
         }
       }

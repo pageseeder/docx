@@ -69,7 +69,7 @@
         </xsl:if>
       </xsl:for-each>
       <!-- TODO: Extension should probably look for last '.' -->
-      <xsl:for-each select="distinct-values($current-document//image/upper-case(substring-after(@src, '.')))">
+      <xsl:for-each select="distinct-values($current-document//image/upper-case(tokenize(@src, '\.')[last()]))">
         <xsl:if test="not(matches(., $current-default-extension))">
           <Default ContentType="{concat('image/', .)}" Extension="{.}" />
         </xsl:if>
@@ -223,7 +223,7 @@
         <xsl:for-each select="//image">
           <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + $word-documents + position()))}"
                         Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
-                        Target="{concat('media/',@src)}" />
+                        Target="{concat('media/',fn:clean-image-filename(@src))}" />
         </xsl:for-each>
       </Relationships>
     </xsl:result-document>

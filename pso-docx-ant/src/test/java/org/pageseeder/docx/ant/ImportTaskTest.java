@@ -177,7 +177,7 @@ public class ImportTaskTest {
     testIndividual("empty-configuration-images");
     File result = new File(RESULTS, "empty-configuration-images");
     Assert.assertTrue("Image 1 missing", new File(result, "images/image1.jpg").exists());
-    Assert.assertTrue("Image 2 missing", new File(result, "images/image 2.jpeg").exists());
+    Assert.assertTrue("Image 2 missing", new File(result, "images/image .2.jpeg").exists());
   }
 
   @Test
