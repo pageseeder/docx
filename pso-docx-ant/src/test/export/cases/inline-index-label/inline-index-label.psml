@@ -61,7 +61,8 @@
               <heading level="2">A heading<inline label="index">heading</inline></heading>
               <para>Some content some content some content<inline label="index">content</inline> some content some content.</para>
               <para>Sub entry 1<inline label="index">entry: sub1</inline>
-                sub entry 2<inline label="index">entry:sub2
+                sub entry 2<inline label="index">entry:sub2</inline>.</para>
+              <!--
                   <xref id="1082882" frag="3" reversefrag="2"
                         reversetitle="" reverselink="true" reversetype="none" display="document"
                         type="none" uriid="61095" href="#61095-3"
@@ -106,6 +107,7 @@
             </fragment>
             <fragment id="61095-3">
               <para>Sub entry 2 end</para>
+            -->
             </fragment>
           </section>
         </document>

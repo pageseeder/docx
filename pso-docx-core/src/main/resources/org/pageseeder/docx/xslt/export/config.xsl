@@ -721,10 +721,10 @@ Indicate whether hyperlinks should be generated.
   Returns the list of all inline index labels
 
   @return the list of inline labels
--->
+
 <xsl:function name="config:all-inline-index-labels" as="xs:string*">
   <xsl:sequence select="$config-doc/config/elements/inline/index/@label"/>
-</xsl:function>
+</xsl:function> -->
 
 <!--
   Returns the document label specific fieldcode value for a specific inline label.
