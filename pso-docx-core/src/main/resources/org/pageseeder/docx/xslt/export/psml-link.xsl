@@ -22,6 +22,9 @@
   <xsl:param name="labels" tunnel="yes" />
 
   <xsl:choose>
+    <!-- index xrefs are handled elsewhere
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-index-labels-with-document-label($labels)) or
+        matches(ancestor::inline[1]/@label, config:default-inline-index-labels())" /> -->
 
     <!-- Cross-reference to a footnote -->
     <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@xref=current()/@id]">

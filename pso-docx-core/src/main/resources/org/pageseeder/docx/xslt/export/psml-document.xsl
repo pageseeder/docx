@@ -188,6 +188,12 @@
     <xsl:apply-templates mode="psml">
       <xsl:with-param name="fragment-id" tunnel="yes" select="@id" />
     </xsl:apply-templates>
+    <!-- add bookmark end for each index entry pointing to this fragment
+    <xsl:variable name="xrefs" select="//inline[@label=config:all-inline-index-labels()]/xref[@href=concat('#', current()/@id)]" />
+    <xsl:for-each select="$xrefs">
+      <xsl:variable name="bookmark" select="10000000 + count(preceding::inline)" />
+      <w:bookmarkEnd  w:id="{$bookmark}" />
+    </xsl:for-each> -->
   <w:bookmarkEnd  w:id="{$bookmark-id}" />
 </xsl:template>
 

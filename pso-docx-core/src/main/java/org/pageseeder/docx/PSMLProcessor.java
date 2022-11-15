@@ -136,17 +136,17 @@ public final class PSMLProcessor {
     Templates unnest = XSLT.getTemplatesFromResource("org/pageseeder/docx/xslt/import-unnest.xsl");
     File document = new File(unpacked, "word/document.xml");
     File newDocument = new File(unpacked, "word/new-document.xml");
-    XSLT.transform(document, newDocument, unnest, parameters);
+    XSLT.transform(document, newDocument, unnest, parameters, null);
 
     // 3.1 Unnest Endnotes file if it exists
     File endnotes = new File(unpacked, "word/endnotes.xml");
     if(endnotes.canRead()){
-    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters);
+    	XSLT.transform(endnotes, new File(unpacked, "word/new-endnotes.xml"), unnest, parameters, null);
     }
     // 3.2 Unnest Footnotes file if it exists
     File footnotes = new File(unpacked, "word/footnotes.xml");
     if(footnotes.canRead()){
-    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters);
+    	XSLT.transform(footnotes, new File(unpacked, "word/new-footnotes.xml"), unnest, parameters, null);
     }
 
 	// 4. copy the media files
@@ -155,7 +155,7 @@ public final class PSMLProcessor {
 
     // 5. Process the files
     log("Process with XSLT (this may take several minutes)");
-    XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters);
+    XSLT.transform(contentTypes, new File(folder, filename + ".psml"), templates, parameters, null);
 
   }
 
@@ -178,7 +178,9 @@ public final class PSMLProcessor {
           // don't import template images
           if (!m.getName().startsWith(DOCXProcessor.MEDIA_PREFIX)) {
             // decode filename because the image/@src will be decoded by PageSeeder
-            Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName(), "UTF-8").toLowerCase()));
+            // %25 is used for dot because word doesn't like dot encoded or unencoded
+            Files.copy(m, new File(mediaOut, URLDecoder.decode(m.getName().replace("%25","."),
+                "UTF-8").toLowerCase()));
           }
         }
       }

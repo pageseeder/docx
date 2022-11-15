@@ -3,6 +3,10 @@ description = "Core DOCX API"
 
 dependencies {
 
+  implementation (
+    "org.slf4j:slf4j-api:1.7.36"
+  )
+
   testImplementation (
     "xmlunit:xmlunit:$xmlunitVersion",
     "junit:junit:$junitVersion"

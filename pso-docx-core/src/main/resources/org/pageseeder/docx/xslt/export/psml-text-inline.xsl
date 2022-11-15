@@ -60,21 +60,21 @@
         <w:tab/>
       </w:r>
     </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-index-labels-with-document-label($labels))">
+    <xsl:when test="matches(ancestor::inline[1]/@label, config:inline-index-labels-with-document-label($labels)) or
+        matches(ancestor::inline[1]/@label, config:default-inline-index-labels())">
       <xsl:variable name="quote">"</xsl:variable>
-      <w:r>
-        <w:t><xsl:value-of select="$text"/></w:t>
-        <w:fldChar w:fldCharType="begin"/>
-        <w:instrText><xsl:value-of select="concat(' XE ', $quote,$text,$quote, ' ')"/></w:instrText>
-        <w:fldChar w:fldCharType="separate"/>
-        <w:fldChar w:fldCharType="end"/>
-      </w:r>
-    </xsl:when>
-    <xsl:when test="matches(ancestor::inline[1]/@label, config:default-inline-index-labels())">
-      <xsl:variable name="quote">"</xsl:variable>
+      <!--
+      <xsl:variable name="xref" select="following-sibling::xref"/>
+      <xsl:variable name="bookmark" select="if (starts-with($xref/@href, '#')) then
+        10000000 + count(preceding::inline) else ''" />
+      <xsl:if test="starts-with($xref/@href, '#')">
+        <w:bookmarkStart w:id="{$bookmark}" w:name="x-{$bookmark}"/>
+      </xsl:if>
+      -->
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
         <w:instrText><xsl:value-of select="concat(' XE ', $quote, $text, $quote, ' ')"/></w:instrText>
+        <!-- (if (starts-with($xref/@href, '#')) then concat(' \r ', $quote, 'x-', $bookmark, $quote) else ' '))"/></w:instrText> -->
         <w:fldChar w:fldCharType="separate"/>
         <w:fldChar w:fldCharType="end"/>
       </w:r>

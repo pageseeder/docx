@@ -4,6 +4,7 @@
 package org.pageseeder.docx.util;
 
 import org.pageseeder.docx.DOCXException;
+import org.slf4j.Logger;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
@@ -84,10 +85,12 @@ public final class XSLT {
    * @param result     The Result XHTML data.
    * @param templates  The XSLT templates to use.
    * @param parameters Parameters to transmit to the transformer for use by the stylesheet (optional)
+   * @param logger     The error logger (optional)
    *
    * @throws DOCXException For XSLT Transformation errors or XSLT configuration errors
    */
-  public static void transform(File source, File result, Templates templates, Map<String, String> parameters) {
+  public static void transform(File source, File result, Templates templates,
+                               Map<String, String> parameters, Logger logger) {
     try (InputStream in = new FileInputStream(source);
          OutputStream out = new FileOutputStream(result)) {
       // Prepare the input & output
@@ -95,7 +98,7 @@ public final class XSLT {
       Result res = new StreamResult(new BufferedOutputStream(out));
 
       // Transform
-      transform(src, res, templates, parameters);
+      transform(src, res, templates, parameters, logger);
 
     } catch (IOException ex) {
       throw new DOCXException(ex);
@@ -111,13 +114,20 @@ public final class XSLT {
    * @param result     The Result data.
    * @param templates  The XSLT templates to use.
    * @param parameters Parameters to transmit to the transformer for use by the stylesheet (optional)
+   * @param logger     The error logger (optional)
    *
    * @throws DOCXException For XSLT Transformation errors or XSLT configuration errors
    */
-  public static void transform(Source source, Result result, Templates templates, Map<String, String> parameters) {
+  public static void transform(Source source, Result result, Templates templates,
+                               Map<String, String> parameters, Logger logger) {
     try {
       // Create a transformer from the templates
       Transformer transformer = templates.newTransformer();
+
+      // Set error listener
+      if (logger != null) {
+        transformer.setErrorListener(new XSLTErrorListener(logger));
+      }
 
       // Transmit the properties to the transformer
       if (parameters != null) {
@@ -183,6 +193,41 @@ public final class XSLT {
       throw new DOCXException("IO error while trying to load XSLT templates"+ url.toString(), ex);
     }
     return templates;
+  }
+
+  /**
+   * An XSLT error listener .
+   *
+   * @author Philip Rutherford
+   */
+  private static class XSLTErrorListener implements ErrorListener {
+
+    /**
+     * For logging errors
+     */
+    private final Logger log;
+
+    /**
+     * Creates a new XSLT error listener wrapping the specified listener.
+     */
+    XSLTErrorListener(Logger log) {
+      this.log = log;
+    }
+
+    @Override
+    public void fatalError(TransformerException exception) throws TransformerException {
+      this.log.error("Transformer fatal error: {}", exception.getMessageAndLocation());
+    }
+
+    @Override
+    public void warning(TransformerException exception) throws TransformerException {
+      this.log.warn("Transformer warning: {}", exception.getMessageAndLocation());
+    }
+
+    @Override
+    public void error(TransformerException exception) throws TransformerException {
+      this.log.error("Transformer error: {}", exception.getMessageAndLocation());
+    }
   }
 
 }

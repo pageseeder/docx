@@ -22,7 +22,11 @@
       <block label="Caption">Figure 1 Caption</block>
       <para>Image without caption:</para>
       <para>
-        <image src="image2.jpeg"
+        <!-- minimum encoded chars is image%20!%23$&amp;'()+,-;=@%5B%5D%5E_%60%7B%7D~2.jpeg
+             word doesn't like the following encoded for some reason !'()~
+             it doesn't like dot encoded or unencoded so we use %25
+             so the following will be encoded as image%20!%23%24%26'()%2B%2C-%3B%3D%40%5B%5D%5E_%60%7B%7D~%252.jpeg -->
+        <image src="image%20%21%23%24%26%27%28%29%2B%2C-%3B%3D%40%5B%5D%5E_%60%7B%7D%7E.2.jpeg"
           alt="image2.jpeg" width="261" height="196" />
       </para>
       <para>Big image:</para>

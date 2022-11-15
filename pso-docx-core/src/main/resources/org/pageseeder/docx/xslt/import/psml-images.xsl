@@ -26,7 +26,7 @@
   Generate a PSML `image` from a Word `w:drawing`.
 -->
   <xsl:template match="w:drawing[1]" mode="drawing-element">
-    <!-- Height and Width of the image --> 
+    <!-- Height and Width of the image -->
     <xsl:variable name="height" as="xs:integer">
       <xsl:choose>
         <xsl:when test="wp:anchor">
@@ -63,7 +63,8 @@
     <xsl:param name="component" select="false()" tunnel="yes"/>
     <xsl:variable name="rid" select=".//a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed" />
     <xsl:variable name="count-images-element" select="count($rid)" />
-    <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
+    <xsl:variable name="target" select="fn:encode-image-filename(
+       $relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target)" />
     <xsl:variable name="alt" >
       <xsl:choose>
         <xsl:when test="wp:inline">
@@ -94,24 +95,24 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <image src="{concat(if ($component) then '../' else '', $media-folder-name, lower-case(substring-after($target, 'media')))}" alt="{$alt}">
+    <image src="{concat(if ($component) then '../' else '', $media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
       <xsl:apply-templates select="." mode="drawing-element" />
     </image>
   </xsl:template>
 
   <!--
-  Generate a PSML `image` from a Word `w:pict`. When exists this kind of image inside the 
-  one v:group element (transform by one formula the words images size together with only one reference)  
+  Generate a PSML `image` from a Word `w:pict`. When exists this kind of image inside the
+  one v:group element (transform by one formula the words images size together with only one reference)
 -->
   <xsl:template match="v:shape[1][ancestor::w:pict/v:group or ancestor::w:object/v:group]" mode="pict-group">
     <xsl:variable name="height-file" select="if (contains(substring-after(ancestor::w:pict/v:group/@style,'height:'),';')) then substring-before(substring-after(ancestor::w:pict/v:group/@style,'height:'),';') else substring-after(ancestor::w:pict/v:group/@style,'height:')" />
 
-    <xsl:variable name="height" as="xs:string" select="if (contains($height-file,'pt')) then 
+    <xsl:variable name="height" as="xs:string" select="if (contains($height-file,'pt')) then
              format-number(number(substring-before($height-file,'pt'))*1.3334,'#') else if (contains($height-file,'in')) then format-number(number(substring-before($height-file,'in'))*96,'#') else format-number(number($height-file),'#')" />
 
     <xsl:variable name="width-file" select="if (contains(substring-after(ancestor::w:pict/v:group/@style,'width:'),';')) then substring-before(substring-after(ancestor::w:pict/v:group/@style,'width:'),';') else substring-after(ancestor::w:pict/v:group/@style,'width:')" />
 
-    <xsl:variable name="width" as="xs:string" select="if (contains($width-file,'pt')) then 
+    <xsl:variable name="width" as="xs:string" select="if (contains($width-file,'pt')) then
              format-number(number(substring-before($width-file,'pt'))*1.3334,'#') else if (contains($width-file,'in')) then format-number(number(substring-before($width-file,'in'))*96,'#') else format-number(number($width-file),'#')" />
 
     <xsl:if test="number($width) gt 0">
@@ -119,18 +120,18 @@
     </xsl:if>
     <xsl:if test="number($height) gt 0">
       <xsl:attribute name="height" select="number($height)" />
-    </xsl:if>   
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="v:shape[ancestor::w:pict[not(v:group)] or ancestor::w:object[not(v:group)]]" mode="pict-group">
     <xsl:variable name="height-file" select="if (contains(substring-after(@style,'height:'),';')) then substring-before(substring-after(@style,'height:'),';') else substring-after(@style,'height:')" />
 
-    <xsl:variable name="height" as="xs:string" select="if (contains($height-file,'pt')) then 
+    <xsl:variable name="height" as="xs:string" select="if (contains($height-file,'pt')) then
              format-number(number(substring-before($height-file,'pt'))*1.3334,'#') else if (contains($height-file,'in')) then format-number(number(substring-before($height-file,'in'))*96,'#') else format-number(number($height-file),'#')" />
 
     <xsl:variable name="width-file" select="if (contains(substring-after(@style,'width:'),';')) then substring-before(substring-after(@style,'width:'),';') else substring-after(@style,'width:')" />
 
-    <xsl:variable name="width" as="xs:string" select="if (contains($width-file,'pt')) then 
+    <xsl:variable name="width" as="xs:string" select="if (contains($width-file,'pt')) then
              format-number(number(substring-before($width-file,'pt'))*1.3334,'#') else if (contains($width-file,'in')) then format-number(number(substring-before($width-file,'in'))*96,'#') else format-number(number($width-file),'#')" />
 
     <xsl:if test="number($width) gt 0">
@@ -138,8 +139,8 @@
     </xsl:if>
     <xsl:if test="number($height) gt 0">
       <xsl:attribute name="height" select="number($height)" />
-    </xsl:if>   
-  </xsl:template> 
+    </xsl:if>
+  </xsl:template>
 
   <!--
   Generate a PSML `image` from a Word `w:pict`.
@@ -154,10 +155,11 @@
     </xsl:for-each>
     <xsl:if test="v:imagedata/@r:id">
       <xsl:variable name="rid" select="v:imagedata/@r:id" />
-      <xsl:variable name="target" select="$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target" />
+      <xsl:variable name="target" select="fn:encode-image-filename(
+          $relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target)" />
       <xsl:variable name="alt" select="substring-after($target, 'media/')" />
 
-      <image src="{concat(if ($component) then '../' else '', $media-folder-name, lower-case(substring-after($target, 'media')))}" alt="{$alt}">
+      <image src="{concat(if ($component) then '../' else '', $media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
         <xsl:apply-templates select="." mode="pict-group" />
       </image>
     </xsl:if>
