@@ -13,23 +13,10 @@
           i)  plain text or
           ii) inline element with character style name as a label
 
-  2) Document Split according to:
-     a) Selected Section Break
-     b) Selected Outline Level
-     c) Selected Paragraph Style
-
-     Naming of each file is defined as '[docx_filename]-[document-split-counter]'
-
-  3) Section Split according to:
-     a) Selected Section Break
-     b) Selected Outline Level
-     c) Selected Paragraph Style
-     d) ALWAYS break for bookmark ( so that if there is any reference, there will be a section to point to
-
-  4) Table of Contents:
+  2) Table of Contents:
       Option to convert or not word TOC ( will be converted as normal sections,paragraphs,xrefs for bookmarks, etc...)
 
-  5) Paragraph Styles
+  3) Paragraph Styles
       Can be converted into:
         a) Headings
         b) Block elements
@@ -38,15 +25,15 @@
         d) Inline elements
         e) Any defined element in the configuration file ( title, etc...)
 
-  6) numbering
+  4) numbering
      A function for picking up manual numbering is now available [a),b),c);(i),(ii),(iii);1.,2.,3.;etc...]
      used to number paragraphs and set prefix
 
-  7) smartTags are converted and can be:
+  5) smartTags are converted and can be:
      a) normal text
      b) inline label
 
-  8) Text runs can be conveted with:
+  6) Text runs can be conveted with:
      a) bold
      b) italic
      c) underline
@@ -57,19 +44,18 @@
           i)  A specific inline label
           ii) A pre-defined inline label
 
-  9) hyperlinks and bookmarks are converted into xrefs
+  7) hyperlinks and bookmarks are converted into xrefs
 
-  10) table styles are saved under the [@role] attribute
+  8) table styles are saved under the [@role] attribute
 
-  11) lists are supported
+  9) lists are supported
         TODO: support for named list style as block label
 
-  12) images are supported
+  10) images are supported
 
   @author Hugo Inacio
   @author Christophe Lauret
 
-  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -81,10 +67,6 @@
 <xsl:import href="import/config.xsl" />
 <xsl:import href="import/variables.xsl" />
 <xsl:import href="import/functions.xsl" />
-
-<!-- Splitting -->
-<xsl:import href="import/document-split-default.xsl" />
-<xsl:import href="import/section-split.xsl" />
 
 <!-- Mapping to PSML elements -->
 <xsl:import href="import/psml-document.xsl" />

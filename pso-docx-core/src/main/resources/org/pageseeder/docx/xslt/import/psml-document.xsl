@@ -19,18 +19,17 @@
 <xsl:template match="w:document" mode="content">
 
   <document level="portable">
-    <xsl:if test="config:document-type-for-main-document() != ''">
-      <xsl:attribute name="type" select="config:document-type-for-main-document()"/>
-    </xsl:if>
     <documentinfo>
       <uri title="{$document-title}">
         <displaytitle><xsl:value-of select="$document-title" /></displaytitle>
-        <xsl:if test="config:document-label-for-main-document() != ''">
-          <labels><xsl:value-of select="config:document-label-for-main-document()"/></labels>
-        </xsl:if>
       </uri>
     </documentinfo>
-    <xsl:apply-templates select="w:body" mode="content" />
+    <xsl:variable name="body" as="element(body)">
+      <body>
+        <xsl:apply-templates select="w:body/*" mode="bodycopy" />
+      </body>
+    </xsl:variable>
+    <xsl:apply-templates select="$body" mode="sections"/>
   </document>
 
   <xsl:if test="config:generate-index-files()">
@@ -48,6 +47,19 @@
   <xsl:if test="doc-available($endnotes-file) and config:convert-endnotes()">
     <xsl:apply-templates select="document($endnotes-file)" mode="endnotes"/>
   </xsl:if>
+</xsl:template>
+
+<xsl:template match="body" mode="sections">
+  <section id="title">
+    <fragment id="title">
+      <xsl:apply-templates select="*[1]" mode="content"/>
+    </fragment>
+  </section>
+  <section id="1">
+    <fragment id="1">
+      <xsl:apply-templates select="*[position() != 1]" mode="content"/>
+    </fragment>
+  </section>
 </xsl:template>
 
 </xsl:stylesheet>

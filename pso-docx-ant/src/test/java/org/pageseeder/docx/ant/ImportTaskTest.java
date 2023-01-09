@@ -58,101 +58,6 @@ public class ImportTaskTest {
   }
 
   @Test
-  public void testDocumentSplitDocumentFalse() throws IOException, SAXException {
-    testIndividual("document-split-document-false");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentFalseNumberingFalse() throws IOException, SAXException {
-    testIndividual("document-split-document-false-numbering-false");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentFalseNumberingTrue() throws IOException, SAXException {
-    testIndividual("document-split-document-false-numbering-true");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentTrueNumberingTrueMultipleOutlineLevel() throws IOException, SAXException {
-    testIndividual("document-split-document-true-numbering-true-multiple-outline-level");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentTrueNumberingTrueMultipleParagraphStyles() throws IOException, SAXException {
-    testIndividual("document-split-document-true-numbering-true-multiple-paragraph-styles");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentTrueNumberingFalseOutlineLevel() throws IOException, SAXException {
-    testIndividual("document-split-document-true-numbering-false-outline-level");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentTrueNumberingTrueOutlineLevel() throws IOException, SAXException {
-    testIndividual("document-split-document-true-numbering-true-outline-level");
-  }
-
-  @Test
-  public void testDocumentSplitDocumentTrueNumberingTrueParagraphStyles() throws IOException, SAXException {
-    testIndividual("document-split-document-true-numbering-true-paragraph-styles");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleOutlineLevel() throws IOException, SAXException {
-    testIndividual("document-split-multiple-outline-level");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleParagraphStyle() throws IOException, SAXException {
-    testIndividual("document-split-multiple-paragraph-style");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleParagraphStyleWithMultipleLabels() throws IOException, SAXException {
-    testIndividual("document-split-multiple-paragraph-style-with-multiple-labels");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleParagraphStyleWithMultipleTypes() throws IOException, SAXException {
-    testIndividual("document-split-multiple-paragraph-style-with-multiple-types");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleParagraphStyleWithOneLabel() throws IOException, SAXException {
-    testIndividual("document-split-multiple-paragraph-style-with-one-label");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleParagraphStyleWithOneType() throws IOException, SAXException {
-    testIndividual("document-split-multiple-paragraph-style-with-one-type");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleSplitValues1() throws IOException, SAXException {
-    testIndividual("document-split-multiple-split-values-1");
-  }
-
-  @Test
-  public void testDocumentSplitMultipleSplitValues2() throws IOException, SAXException {
-    testIndividual("document-split-multiple-split-values-2");
-  }
-
-  @Test
-  public void testDocumentSplitOutlineLevel() throws IOException, SAXException {
-    testIndividual("document-split-outline-level");
-  }
-
-  @Test
-  public void testDocumentSplitParagraphStyle() throws IOException, SAXException {
-    testIndividual("document-split-paragraph-style");
-  }
-
-  @Test
-  public void testDocumentSplitSplitstyle() throws IOException, SAXException {
-    testIndividual("document-split-splitstyle");
-  }
-
-  @Test
   public void testDocumentTitleDcTitle() throws IOException, SAXException {
     testIndividual("document-title-dc-title");
   }
@@ -368,11 +273,6 @@ public class ImportTaskTest {
   @Test
   public void testListsHyperlink() throws IOException, SAXException {
     testIndividual("lists-hyperlink");
-  }
-
-  @Test
-  public void testListsLinkedListStylesSplit() throws IOException, SAXException {
-    testIndividual("lists-linked-list-styles-split");
   }
 
   @Test
@@ -611,46 +511,6 @@ public class ImportTaskTest {
   }
 
   @Test
-  public void testSectionSplitDocumentFalse() throws IOException, SAXException {
-    testIndividual("section-split-document-false");
-  }
-
-  @Test
-  public void testSectionSplitMultipleOutlineLevel() throws IOException, SAXException {
-    testIndividual("section-split-multiple-outline-level");
-  }
-
-  @Test
-  public void testSectionSplitMultipleParagraphStyle() throws IOException, SAXException {
-    testIndividual("section-split-multiple-paragraph-style");
-  }
-
-  @Test
-  public void testSectionSplitMultipleSplitValues1() throws IOException, SAXException {
-    testIndividual("section-split-multiple-split-values-1");
-  }
-
-  @Test
-  public void testSectionSplitMultipleSplitValues2() throws IOException, SAXException {
-    testIndividual("section-split-multiple-split-values-2");
-  }
-
-  @Test
-  public void testSectionSplitOutlineLevel() throws IOException, SAXException {
-    testIndividual("section-split-outline-level");
-  }
-
-  @Test
-  public void testSectionSplitParagraphStyle() throws IOException, SAXException {
-    testIndividual("section-split-paragraph-style");
-  }
-
-  @Test
-  public void testSectionSplitSplitstyle() throws IOException, SAXException {
-    testIndividual("section-split-splitstyle");
-  }
-
-  @Test
   public void testSmartTagFalse() throws IOException, SAXException {
     testIndividual("smart-tag-false");
   }
@@ -710,10 +570,7 @@ public class ImportTaskTest {
 
     // validate config file
     File import_config = new File(test, "word-import-config.xml");
-    // if not using deprecated split element then validate config
-    if (!test.getName().contains("split")) {
-      Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
-    }
+    Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
 
     task.setConfig(import_config);
 

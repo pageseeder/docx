@@ -18,12 +18,6 @@
 <!-- Ignore any paragraphs that have their style marked to ignore in the config -->
 <xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val, config:ignore-paragraph-match-list-string())]" mode="content" priority="100"/>
 
-<!-- Ignore any paragraphs that have their style marked up as specific for fragment split in the config -->
-<xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val, config:section-specific-split-styles-string())]" mode="content"  priority="100"/>
-
-<!-- Ignore any paragraphs that have their style marked up as specific for document split in the config -->
-<xsl:template match="w:p[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())]" mode="content"  priority="100"/>
-
 <!-- Ignore any paragraphs that have their style marked up as specific for heading in the config but have no content -->
 <xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val),'heading') and string-join((.//w:r|.//w:hyperlink)//text(), '') = '']" mode="content"  priority="100"/>
 
