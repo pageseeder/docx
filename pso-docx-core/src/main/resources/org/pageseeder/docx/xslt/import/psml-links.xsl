@@ -104,20 +104,7 @@
     <xsl:otherwise>
       <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
             title="{string-join($current//w:t//text(), '')}"
-            frag="{if (config:split-by-sections()) then fn:get-fragment-position($bookmark-ref) else 'default'}">
-        <xsl:attribute name="href">
-          <xsl:choose>
-            <xsl:when test="config:split-by-documents()">
-              <xsl:variable name="document-number">
-                <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
-              </xsl:variable>
-              <xsl:value-of select="encode-for-uri(concat($filename, '-' ,format-number($document-number, $zeropadding), '.psml'))" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="encode-for-uri(concat($filename, '.psml'))" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
+            frag="default" href="{encode-for-uri(concat($filename,'.psml'))}">
         <xsl:value-of select="$text"/>
       </xref>
     </xsl:otherwise>
@@ -150,30 +137,8 @@
     </xsl:when>
     <xsl:when test="$bookmark-ref != ''">
       <xref display="manual" type="none" reverselink="true" reversetitle="" reversetype="none"
-            title="{string-join(.//w:t//text(), '')}">
-        <xsl:attribute name="frag">
-          <xsl:choose>
-            <xsl:when test="config:split-by-sections() and $bookmark-ref != ''">
-              <xsl:value-of select="fn:get-fragment-position($bookmark-ref)" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="'default'" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <xsl:attribute name="href">
-          <xsl:choose>
-            <xsl:when test="config:split-by-documents()">
-              <xsl:variable name="document-number">
-                <xsl:value-of select="fn:get-document-position($bookmark-ref)" />
-              </xsl:variable>
-              <xsl:value-of select="encode-for-uri(concat($filename, '-', format-number($document-number, $zeropadding), '.psml'))" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="encode-for-uri(concat($filename, '.psml'))" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
+            title="{string-join(.//w:t//text(), '')}"
+            frag="default" href="{encode-for-uri(concat($filename,'.psml'))}">
         <xsl:value-of select="$text"/>
       </xref>
     </xsl:when>

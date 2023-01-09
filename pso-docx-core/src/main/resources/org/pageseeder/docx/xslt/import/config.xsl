@@ -9,8 +9,6 @@
   @author Christophe Lauret
   @author Philip Rutherford
   @author Hugo Inacio
-
-  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -85,11 +83,6 @@
   </xsl:choose>
 </xsl:function>
 
-<!-- String of list of numbering regular expressions to be captured in the config file -->
-<xsl:function name="config:document-split-styles-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/document/wordstyle/@select)"/>
-</xsl:function>
-
 <!-- TODO Create function (might need to use backing field) -->
 
 <!-- default value of the character styles input -->
@@ -116,42 +109,6 @@
   </xsl:choose>
 </xsl:variable>
 
-<!--
-  Indicate if the current node matches a paragraph style document break or not.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="config:matches-document-split-styles" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <!-- TODO document what type of node/context it applies to -->
-  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:document-split-styles-string())][not(fn:matches-ignore-paragraph-match-list(.))])"/>
-</xsl:function>
-
-<!-- String of list of numbering regular expressions to be captured in the config file -->
-<xsl:function name="config:document-specific-split-styles-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/document/splitstyle/@select)"/>
-</xsl:function>
-
-<!--
-  Returns the boolean if the current node matches a paragraph style document break or not.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="config:matches-document-specific-split-styles" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <!-- TODO document what type of node/context it applies to -->
-  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())])"/>
-</xsl:function>
-
-<!-- String of list of bookmark start ids defined to split at fragment level -->
-<xsl:function name="config:bookmark-start-section-split-regex-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/section/bookmark/@select)"/>
-</xsl:function>
-
 <!-- String of list of paragraph styles that are set to transform into headings in the configuration file -->
 <xsl:function name="config:heading-paragraphs-list-string" as="xs:string">
   <xsl:sequence select="fn:items-to-regex($config-doc/config/styles/wordstyle[@psmlelement='heading']/@name)"/>
@@ -163,26 +120,6 @@
   <xsl:sequence select="fn:items-to-regex($config-doc/config/styles/wordstyle[@psmlelement='para']/@name)"/>
 </xsl:function>
 
-<!-- String of list of paragraph styles that are set to split sections in the configuration file -->
-<xsl:function name="config:section-split-styles-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/section/wordstyle/@select)"/>
-</xsl:function>
-
-<!-- String of list of paragraph styles that are only used set to split sections in the configuration file; the content of these is then deleted -->
-<xsl:function name="config:section-specific-split-styles-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/section/splitstyle/@select)"/>
-</xsl:function>
-
-<!-- String of list of outline levels that are set to split sections in the configuration file -->
-<xsl:function name="config:section-split-outline-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/section/outlinelevel/@select)"/>
-</xsl:function>
-
-<!-- String of list of sectionbreak styles that are set to split sections in the configuration file -->
-<xsl:function name="config:section-split-sectionbreak-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/section/sectionbreak/@select)"/>
-</xsl:function>
-
 <!-- String of list of paragraph styles to ignore -->
 <xsl:function name="config:ignore-paragraph-match-list-string" as="xs:string">
   <xsl:sequence select="fn:items-to-regex($config-doc/config/styles/ignore/wordstyle/@value)"/>
@@ -192,16 +129,6 @@
 <xsl:function name="fn:matches-ignore-paragraph-match-list" as="xs:boolean">
   <xsl:param name="current" as="node()" />
   <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:ignore-paragraph-match-list-string())])"/>
-</xsl:function>
-
-<!-- String of list of outline levels defined to split at document level -->
-<xsl:function name="config:document-split-outline-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/document/outlinelevel/@select)"/>
-</xsl:function>
-
-<!-- String of list of section breaks defined to split at document level -->
-<xsl:function name="config:document-split-sectionbreak-string" as="xs:string">
-  <xsl:sequence select="fn:items-to-regex($config-doc/config/split/document/sectionbreak/@select)"/>
 </xsl:function>
 
 <!-- string of lis of convert manual numbering matching regular expressions -->
@@ -229,30 +156,6 @@
 </xsl:function>
 
 <!--
-  Returns the boolean if the current node matches a section break bookmark start position.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="config:matches-section-split-bookmarkstart" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:sequence select="exists($current[w:bookmarkStart[matches(@w:name, config:bookmark-start-section-split-regex-string())]])"/>
-</xsl:function>
-
-<!--
-  Returns the boolean if the current node matches a paragraph style section break or not. The content of this paragraph is ignored
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="config:matches-section-specific-split-styles" as="xs:boolean">
-  <xsl:param name="current" as="node()"/>
-  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:section-specific-split-styles-string())])"/>
-</xsl:function>
-
-<!--
   Checks if the the convert numbered paragraphs is set in configuration
 
   @return true or false
@@ -262,30 +165,12 @@
 </xsl:function>
 
 <!--
-  Checks if the split fragments is set in configuration
-
-  @return true or false
--->
-<xsl:function name="config:split-by-sections" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/section/@select='true'"/>
-</xsl:function>
-
-<!--
   Checks if the generate real titles for file names is set in configuration
 
   @return true or false
 -->
 <xsl:function name="config:generate-titles" as="xs:boolean">
   <xsl:sequence select="$config-doc/config/split/document/@use-real-titles='true'"/>
-</xsl:function>
-
-<!--
-  Checks if the split documents is set in configuration
-
-  @return true or false
--->
-<xsl:function name="config:split-by-documents" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/document/@select='true'"/>
 </xsl:function>
 
 <!--
@@ -424,125 +309,6 @@
 </xsl:function>
 
 <!--
-  Returns the label that the current element should have.
-
-  @param style-name the current word style name
-
-  @return label value
--->
-<!-- TODO Unused ! -->
-<xsl:function name="config:get-label-from-psml-element" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:value-of select="string($config-doc/config/styles/wordstyle[@name=$style-name]/label/@value)" />
-</xsl:function>
-
-<!--
-  Returns the document label that the main references document has.
-
-  @return document label value
--->
-<xsl:function name="config:document-label-for-main-document"  as="xs:string">
-  <xsl:value-of select="string($config-doc/config/split/main/label)"/>
-</xsl:function>
-
-<!--
-  Returns the document type that the main references document has.
-
-  @return document type value
--->
-<xsl:function name="config:document-type-for-main-document"  as="xs:string">
-  <xsl:value-of select="string($config-doc/config/split/main/type)"/>
-</xsl:function>
-
-<!--
-  Returns the document label that the split style should have.
-
-  @param style-name the current word style name
-
-  @return document label value
--->
-<xsl:function name="config:document-label-for-split-style"  as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle[@select=$style-name]/label">
-      <xsl:value-of select="$config-doc/config/split/document/wordstyle[@select=$style-name]/label" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/splitstyle[@select=$style-name]/label">
-      <xsl:value-of select="$config-doc/config/split/document/splitstyle[@select=$style-name]/label" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the document type that the split style should have.
-
-  @param style-name the current word style name
-
-  @return document type value
--->
-<xsl:function name="config:document-type-for-split-style" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/document/wordstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/splitstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/document/splitstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the blockxref level that the split style should have.
-
-  @param style-name the current word style name
-
-  @return blockxref level value
--->
-<xsl:function name="config:document-level-for-split-style" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/document/wordstyle[@select=$style-name]/level/@value">
-      <xsl:value-of select="$config-doc/config/split/document/wordstyle[@select=$style-name]/level/@value" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/document/splitstyle[@select=$style-name]/level/@value">
-      <xsl:value-of select="$config-doc/config/split/document/splitstyle[@select=$style-name]/level/@value" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the fragment type that the split style should have.
-
-  @param style-name the current word style name
-
-  @return fragment type value
--->
-<xsl:function name="config:fragment-type-for-split-style" as="xs:string">
-  <xsl:param name="style-name" />
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/wordstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/section/wordstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:when test="$config-doc/config/split/section/splitstyle[@select=$style-name]/type">
-      <xsl:value-of select="$config-doc/config/split/section/splitstyle[@select=$style-name]/type" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="''" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
   Returns the inline label from style name.
 
   @param style-name the current word style name
@@ -664,21 +430,16 @@
   Returns the heading level for a specific style name.
 
   @param style-name the current word style name
-  @param document-level the current document level
 
   @return psml heading level
 -->
 <xsl:function name="config:get-heading-level" as="xs:string">
   <xsl:param name="style-name" />
-  <xsl:param name="document-level" />
-  <!--     <xsl:message select="$document-level"/> -->
   <xsl:choose>
-    <xsl:when test="$document-level != '0'">
-      <xsl:value-of select="if(number($config-doc/config/styles/wordstyle[@name=$style-name]/level/@value) - number($document-level) &gt; 0) then ($config-doc/config/styles/wordstyle[@name=$style-name]/level/@value - number($document-level)) else $config-doc/config/styles/wordstyle[@name=$style-name]/level/@value" />
-    </xsl:when>
-    <xsl:otherwise>
+    <xsl:when test="$config-doc/config/styles/wordstyle[@name=$style-name]/level/@value">
       <xsl:value-of select="$config-doc/config/styles/wordstyle[@name=$style-name]/level/@value" />
-    </xsl:otherwise>
+    </xsl:when>
+    <xsl:otherwise>1</xsl:otherwise>
   </xsl:choose>
 </xsl:function>
 

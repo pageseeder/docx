@@ -6,8 +6,6 @@
 
   @author Hugo Inacio
   @author Christophe Lauret
-
-  @version 0.6.0
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
@@ -72,26 +70,10 @@
   </xsl:choose>
 </xsl:variable>
 
-<!-- Count of total number of files: used to be referenced from xrefs, and also numbering split files -->
-<xsl:variable name="number-of-splits" select="count($main-document//w:p[config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)][string-join(w:r//text(), '') != '']|$main-document//w:p[config:matches-document-specific-split-styles(.)]) + 1"  as="xs:integer"/>
-
-<!-- TODO move function to fn namespace ?-->
-<!-- Variable used to sort output files -->
-<xsl:variable name="zeropadding" as="xs:string">
-  <xsl:choose>
-    <xsl:when test="$number-of-splits &lt; 10">0</xsl:when>
-    <xsl:when test="$number-of-splits &lt; 100">00</xsl:when>
-    <xsl:when test="$number-of-splits &lt; 1000">000</xsl:when>
-    <xsl:otherwise>0000</xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
 <!--
   variable used to do calculations of document position of:
   1. Lists
   2. xrefs
-  3. document splits
-  4. section splits
  -->
 <xsl:variable name="list-paragraphs" as="element()">
   <w:body xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -99,7 +81,7 @@
           xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
           xmlns:xs="http://www.w3.org/2001/XMLSchema"
           xmlns:fn="http://pageseeder.org/docx/function">
-    <xsl:for-each select="$main-document//w:p[not(parent::w:tc)][not(matches(w:pPr/w:pStyle/@w:val, config:ignore-paragraph-match-list-string()))][string-join(w:r//text(), '') != '']|$main-document//w:bookmarkStart|$main-document//w:tc|$main-document//w:p[matches(w:pPr/w:pStyle/@w:val, config:document-specific-split-styles-string())]|$main-document//w:p[matches(w:pPr/w:pStyle/@w:val, config:section-specific-split-styles-string())]">
+    <xsl:for-each select="$main-document//w:p[not(parent::w:tc)][not(matches(w:pPr/w:pStyle/@w:val, config:ignore-paragraph-match-list-string()))][string-join(w:r//text(), '') != '']|$main-document//w:bookmarkStart|$main-document//w:tc">
       <xsl:element name="{name()}">
         <xsl:attribute name="id" select="generate-id(.)" />
         <xsl:copy-of select="@*" />
@@ -206,33 +188,6 @@
 </root>
 </xsl:variable>
 
-<!--  List of bookmark end ids defined to split at fragment level -->
-<xsl:variable name="bookmark-end-section-split-regex-ids" as="xs:string *">
-  <xsl:choose>
-    <xsl:when test="$config-doc/config/split/section/bookmark/@select = ''">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:when test="not($config-doc/config/split/section/bookmark)">
-      <xsl:value-of select="concat('^','No Submitted Value','$')" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:for-each select="$main-document//w:bookmarkStart[matches(@w:name, config:bookmark-start-section-split-regex-string())]">
-        <xsl:choose>
-          <xsl:when test="position() = last()">
-            <xsl:value-of select="concat('^',@w:id,'$')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat('^',@w:id,'$','|')" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<!-- String of list of bookmark end ids defined to split at fragment level -->
-<xsl:variable name="bookmark-end-section-split-regex-ids-string" select="string-join($bookmark-end-section-split-regex-ids,'')" as="xs:string"/>
-
 <!-- String of list of paragraph styles that belong to a list -->
 <xsl:variable name="numbering-paragraphs-list-string" as="xs:string">
   <xsl:sequence select="fn:items-to-regex($numbering-document/w:numbering/w:abstractNum//w:pStyle/@w:val)"/>
@@ -251,210 +206,6 @@
 <!-- List of valid roman numbering values -->
 <xsl:variable name="numbering-roman" as="xs:string*"
   select="'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv', 'xvi', 'xvii', 'xviii', 'xix', 'xx', 'xxi', 'xxii', 'xxiii', 'xxiv', 'xxv', 'xxvi', 'xxvii', 'xxviii', 'xxix', 'xxx', 'xxxi', 'xxxii', 'xxxiii', 'xxxiv', 'xxxv', 'xxxvi', 'xxxvii', 'xxxviii', 'xxxix', 'xl', 'xli', 'xlii', 'xliii', 'xliv', 'xlv', 'xlvi', 'xlvii', 'xlviii', 'xlix', 'l', 'li', 'lii', 'liii', 'liv', 'lv', 'lvi', 'lvii', 'lviii', 'lvix', 'lx', 'lxi', 'lxii', 'lxiii', 'lxiv', 'lxv', 'lxvi', 'lxvii', 'lxviii', 'lxix', 'lxx', 'lxxi', 'lxxii', 'lxxiii', 'lxxiv', 'lxxv', 'lxxvi', 'lxxvii', 'lxxviii', 'lxxix', 'lxxx', 'lxxxi', 'lxxxii', 'lxxxiii', 'lxxxiv', 'lxxxv', 'lxxxvi', 'lxxxvii', 'lxxxviii', 'lxxxix', 'xc', 'xci', 'xcii', 'xciii', 'xciv', 'xcv', 'xcvi', 'xcvii', 'xcviii', 'xcix', 'c'" />
-
-<!--
-Returns the boolean if the current node matches a section document break or not.
-
-@param current the current node
-
-@return true or false
--->
-<xsl:function name="fn:matches-document-split-sectionbreak" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:sequence select="exists($current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val,config:document-split-sectionbreak-string())]][not(fn:matches-ignore-paragraph-match-list(.))])"/>
-</xsl:function>
-
-<!--
-Returns the boolean if the current node matches a outline level document break or not.
-
-@param current the current node
-
-@return true or false
--->
-<xsl:function name="fn:matches-document-split-outline" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:choose>
-    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
-      <xsl:sequence select="true()" />
-    </xsl:when>
-    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[w:basedOn/@w:val][not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
-      <xsl:variable name="basedon" select="$styles-document/w:styles/w:style[@w:styleId = $current/w:pPr/w:pStyle/@w:val]/w:basedOn/@w:val" />
-      <xsl:choose>
-        <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
-          <xsl:sequence select="true()" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:sequence select="false()" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
-      <xsl:sequence select="false()" />
-    </xsl:when>
-    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:document-split-outline-string())]/@w:styleId]][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:sequence select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:sequence select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the boolean if the current node matches a section section break or not.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="fn:matches-section-split-sectionbreak" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:sequence select="exists($current[w:pPr/w:sectPr][w:pPr/w:sectPr/w:type[matches(@w:val, config:section-split-sectionbreak-string())]][not(fn:matches-ignore-paragraph-match-list(.))])"/>
-</xsl:function>
-
-<!--
-  Returns the boolean if the current node matches a outline level section break or not.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="fn:matches-section-split-outline" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:choose>
-    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]]">
-      <xsl:sequence select="true()" />
-    </xsl:when>
-    <xsl:when test="$current[w:pPr/w:pStyle[@w:val = $styles-document/w:styles/w:style[w:basedOn/@w:val][not(w:pPr/w:outlineLvl/@w:val)]/@w:styleId]]">
-      <xsl:variable name="basedon" select="$styles-document/w:styles/w:style[@w:styleId = $current/w:pPr/w:pStyle/@w:val]/w:basedOn/@w:val" />
-      <xsl:choose>
-        <xsl:when test="$current[$basedon = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
-          <xsl:sequence select="true()" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:sequence select="false()" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:when test="$current[w:pPr/w:pStyle/@w:val = $styles-document/w:styles/w:style[matches(w:pPr/w:outlineLvl/@w:val, config:section-split-outline-string())]/@w:styleId][not(fn:matches-ignore-paragraph-match-list(.))]">
-      <xsl:sequence select="true()" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:sequence select="false()" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-
-
-<!--
-  Returns the boolean if the current node matches a paragraph style section break or not.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="fn:matches-section-split-styles" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:sequence select="exists($current[matches(w:pPr/w:pStyle/@w:val, config:section-split-styles-string())
-                              or matches(w:bookmarkstart/@w:name, config:bookmark-start-section-split-regex-string())]
-                                [not(fn:matches-ignore-paragraph-match-list(.))])"/>
-</xsl:function>
-
-<!--
-  Returns the boolean if the preceding node matches a paragraph section break or not.
-
-  @param current the current node
-
-  @return true or false
--->
-<xsl:function name="fn:matches-preceding-paragraph-as-split-level" as="xs:boolean">
-  <xsl:param name="current" as="node()" />
-  <xsl:sequence select="exists($current/preceding::w:p[1][
-        config:matches-document-specific-split-styles(.)
-     or fn:matches-document-split-outline(.)
-     or config:matches-document-split-styles(.)
-     or matches(w:bookmarkstart/@w:name, config:bookmark-start-section-split-regex-string())
-   ])"/>
-</xsl:function>
-
-<!--
-  Returns the number of preceding split documents.
-
-  @param currentid the current id of the current node
-
-  @return number of documents
--->
-<xsl:function name="fn:count-preceding-documents"  as="xs:integer">
-  <xsl:param name="currentid" />
-  <xsl:variable name="currentCounter" select="count($list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[config:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
-  <xsl:choose>
-    <xsl:when test="$list-paragraphs//*[@id=$currentid]/following::*[1]/preceding::w:p[not(config:matches-document-specific-split-styles(.) or fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
-      <xsl:value-of select="number($currentCounter) + 1" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="number($currentCounter) + 1" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the number of preceding fragments in the curremtn document.
-
-  @param bookmarkRefId the current bookmark reference id of the current node
-
-  @return number of fragments
--->
-<xsl:function name="fn:get-fragment-position" as="xs:string">
-  <xsl:param name="bookmarkRefId" />
-  <xsl:variable name="precedingDocumentNodeId"
-    select="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p
-  [fn:matches-document-split-sectionbreak(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.) or config:matches-document-specific-split-styles(.) or w:bookmarkEnd[matches(@w:id,$bookmark-end-section-split-regex-ids-string)]][1]/@id" />
-  <xsl:variable name="fragment-position">
-    <xsl:choose>
-      <xsl:when test="$precedingDocumentNodeId = ''">
-        <xsl:variable name="ending-position" select="count($list-paragraphs//w:p[1]/following::w:p[fn:matches-section-split-sectionbreak(.) or w:bookmarkEnd[matches(@w:id,$bookmark-end-section-split-regex-ids-string)]]) + 1"/>
-        <xsl:variable name="starting-position" select="count($list-paragraphs//w:p[1]/following::w:p[config:matches-section-specific-split-styles(.) or fn:matches-section-split-styles(.)][not(preceding::w:bookmarkStart[@w:id=$bookmarkRefId])]) + 1"/>
-        <xsl:value-of select="concat($ending-position,'-',$starting-position)" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:variable name="ending-position" select="count($list-paragraphs//w:p[@id = $precedingDocumentNodeId]/following::w:p[fn:matches-section-split-sectionbreak(.) or w:bookmarkEnd[matches(@w:id,$bookmark-end-section-split-regex-ids-string)]]) + 1"/>
-        <xsl:variable name="starting-position" select="count($list-paragraphs//w:p[@id = $precedingDocumentNodeId]/following::w:p[config:matches-section-specific-split-styles(.) or fn:matches-section-split-styles(.)][not(preceding::w:bookmarkStart[@w:name=$bookmarkRefId])]) + 1"/>
-        <xsl:value-of select="concat($ending-position,'-',$starting-position)" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-
-  <xsl:choose>
-    <xsl:when test="$fragment-position = '1-1'">
-      <xsl:value-of select="'title'" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$fragment-position" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
-  Returns the number of preceding documents in the current document.
-
-  @param bookmarkrefid the current bookmark reference id of the current node
-
-  @return number of documents
--->
-<xsl:function name="fn:get-document-position" as="xs:string">
-  <xsl:param name="bookmarkRefId" />
-
-  <xsl:variable name="currentCounter" select="count($list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[fn:matches-document-split-sectionbreak(.) or config:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.)])" />
-  <xsl:choose>
-    <xsl:when test="$list-paragraphs//w:bookmarkStart[@w:name=$bookmarkRefId]/preceding::w:p[not(fn:matches-document-split-sectionbreak(.) or config:matches-document-specific-split-styles(.) or config:matches-document-split-styles(.) or fn:matches-document-split-outline(.))]">
-      <xsl:value-of select="number($currentCounter) + 1" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="number($currentCounter)" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
 
 <!--
   Checks if the current style name has a word numbering format

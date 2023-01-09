@@ -18,18 +18,16 @@
   Match styles that are configured to transform into a PSML heading.
 -->
 <xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val), 'heading') and not(ancestor::w:tbl)]" mode="content">
-  <xsl:param name="document-level" tunnel="yes" />
   <xsl:call-template name="create-heading">
     <xsl:with-param name="style-name" select="w:pPr/w:pStyle/@w:val" />
     <xsl:with-param name="current" select="current()" />
     <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
     <xsl:with-param name="has-numbering-format" select="fn:has-numbering-format(w:pPr/w:pStyle/@w:val,current())" />
-    <xsl:with-param name="document-level" select="$document-level" />
   </xsl:call-template>
 </xsl:template>
 
 
-<!-- 
+<!--
   Template to match all paragraphs and ,according to the configuration file:
   1. Creates Headings
   2. Creates Block labels
@@ -41,13 +39,12 @@
   <xsl:param name="current"/>
   <xsl:param name="full-text"/>
   <xsl:param name="has-numbering-format"/>
-  <xsl:param name="document-level"/>
 
   <xsl:choose>
     <xsl:when test="config:get-heading-block-label($style-name) != ''">
       <block label="{config:get-heading-block-label($style-name)}">
         <xsl:element name="heading">
-          <xsl:attribute name="level" select="config:get-heading-level($style-name,$document-level)" />
+          <xsl:attribute name="level" select="config:get-heading-level($style-name)" />
           <xsl:if test="$current/w:pPr/w:numPr/w:numId or matches($style-name, $numbering-paragraphs-list-string)">
             <xsl:variable name="currentNumId" select="fn:get-numid-from-style($current)" />
             <xsl:variable name="currentLevel" select="fn:get-level-from-element($current)" />
@@ -118,7 +115,7 @@
     </xsl:when>
     <xsl:otherwise>
       <xsl:element name="heading">
-        <xsl:attribute name="level" select="config:get-heading-level($style-name,$document-level)" />
+        <xsl:attribute name="level" select="config:get-heading-level($style-name)" />
 
         <xsl:if test="$current/w:pPr/w:numPr/w:numId or matches($style-name,$numbering-paragraphs-list-string)">
 

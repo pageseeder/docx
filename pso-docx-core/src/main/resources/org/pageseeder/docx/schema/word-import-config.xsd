@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="0.6.3">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.0.0">
 
   <xs:element name="config">
     <xs:complexType>
@@ -14,9 +14,6 @@
   <xs:element name="split">
     <xs:complexType>
       <xs:sequence>
-        <!-- <xs:element ref="main" minOccurs="0" maxOccurs="1" /> deprecated -->
-        <!-- <xs:element ref="document" minOccurs="0" maxOccurs="1" /> deprecated -->
-        <!-- <xs:element ref="section" minOccurs="0" maxOccurs="1" /> deprecated -->
         <xs:element ref="mathml" minOccurs="0" maxOccurs="1" />
         <xs:element ref="footnotes" minOccurs="0" maxOccurs="1" />
         <xs:element ref="endnotes" minOccurs="0" maxOccurs="1" />
@@ -66,78 +63,6 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-
-  <!-- deprecated
-  <xs:element name="main">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="type" minOccurs="0" maxOccurs="1" type="xs:string" />
-        <xs:element name="label" minOccurs="0" maxOccurs="1" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="document">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="sectionbreak" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="outlinelevel" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="wordstyle" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="splitstyle" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-      <xs:attribute name="select" type="xs:boolean" />
-      <xs:attribute name="use-real-titles" type="xs:boolean" />
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="section">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="sectionbreak" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="outlinelevel" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="wordstyle" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="splitstyle" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-      <xs:attribute name="select" type="xs:boolean" />
-      <xs:attribute name="use-real-titles" type="xs:boolean" />
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="sectionbreak">
-    <xs:complexType>
-      <xs:attribute name="select">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="evenPage" />
-            <xs:enumeration value="oddPage" />
-            <xs:enumeration value="continuous" />
-            <xs:enumeration value="nextColumn" />
-            <xs:enumeration value="nextPage" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="outlinelevel">
-    <xs:complexType>
-      <xs:attribute name="select">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:pattern value="[0-8]" />
-            <xs:pattern value="[0-8]-[0-8]" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="splitstyle">
-    <xs:complexType>
-      <xs:attribute name="select" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  -->
 
   <xs:element name="lists">
     <xs:complexType>
