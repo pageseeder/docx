@@ -88,11 +88,11 @@
         <xsl:value-of select="config:properties-value-style-name($labels, $props/@type)" />
       </xsl:when>
 
-      <!-- Paragraphs within table -->
-      <xsl:when test="self::para and ancestor::table">
+      <!-- Paragraphs or empty cells within table -->
+      <xsl:when test="(self::para and ancestor::table) or self::cell or self::hcell">
         <xsl:variable name="table" select="ancestor::table[1]" />
         <xsl:variable name="row" select="ancestor::row[1]" />
-        <xsl:variable name="cell" select="(ancestor::*[name()='cell' or name()='hcell'])[1]" />
+        <xsl:variable name="cell" select="(ancestor-or-self::*[name()='cell' or name()='hcell'])[1]" />
         <!-- TODO how should colspan and rowspan be handled for header? -->
         <xsl:variable name="header" select="$row/@part='header' or
             $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />
