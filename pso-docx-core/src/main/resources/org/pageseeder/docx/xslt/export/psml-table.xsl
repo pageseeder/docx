@@ -258,8 +258,12 @@
                 </xsl:apply-templates>
               </xsl:when>
               <!-- If no content, generate a dummy paragraph anyway -->
-              <xsl:when test="not(child::node())">
-                <w:p />
+              <xsl:when test="not(child::*) and normalize-space(.) = ''">
+                <w:p>
+                  <w:pPr>
+                    <xsl:call-template name="apply-style" />
+                  </w:pPr>
+                </w:p>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:apply-templates mode="psml" >
@@ -325,8 +329,13 @@
                           </xsl:apply-templates>
                         </xsl:when>
                         <!-- If no content, generate a dummy paragraph anyway -->
-                        <xsl:when test="not(child::node())">
-                          <w:p />
+                        <!-- If no content, generate a dummy paragraph anyway -->
+                        <xsl:when test="not(child::*) and normalize-space(.) = ''">
+                          <w:p>
+                            <w:pPr>
+                              <xsl:call-template name="apply-style" />
+                            </w:pPr>
+                          </w:p>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:apply-templates mode="psml"  >

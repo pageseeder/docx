@@ -87,7 +87,7 @@
           <cell>C</cell>
           <cell>D</cell>
           <cell>E</cell>
-          <cell>F</cell>
+          <cell></cell>
         </row>
         <row>
           <cell>G</cell>
@@ -98,12 +98,12 @@
           <cell>L</cell>
         </row>
         <row>
-          <cell>M</cell>
+          <cell></cell>
           <cell>N</cell>
           <cell>O</cell>
           <cell>P</cell>
           <cell>Q</cell>
-          <cell>R</cell>
+          <cell></cell>
         </row>
       </table>
       <para> </para>
