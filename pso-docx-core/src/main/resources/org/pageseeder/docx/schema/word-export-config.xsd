@@ -345,6 +345,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="properties-fragment" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ignore" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

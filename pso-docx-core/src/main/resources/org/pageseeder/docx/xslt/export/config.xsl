@@ -991,6 +991,36 @@ Indicate whether hyperlinks should be generated.
 </xsl:function>
 
   <!--
+    Returns the document label specific fieldcode value for a specific inline label.
+
+    @param fragment-label the value of the fragment label
+    @param document-label the value of the document label
+
+    @return the value of the fieldcode
+  -->
+<xsl:function name="config:properties-label-ignore" as="xs:boolean">
+  <xsl:param name="fragment-label" as="xs:string*"/>
+  <xsl:param name="document-label" as="xs:string*"/>
+  <xsl:choose>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/properties-fragments/ignore[not(@label)]">
+      <xsl:value-of select="true()" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[not(@label)]/properties-fragments/ignore[@label = $fragment-label]">
+      <xsl:value-of select="true()" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/properties-fragments/ignore[not(@label)]">
+      <xsl:value-of select="true()" />
+    </xsl:when>
+    <xsl:when test="$config-doc/config/elements[@label = $document-label]/properties-fragments/ignore[@label = $fragment-label]">
+      <xsl:value-of select="true()" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="false()" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+  <!--
     Returns the default table style.
 
     @return the word table style

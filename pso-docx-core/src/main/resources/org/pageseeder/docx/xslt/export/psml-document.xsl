@@ -222,35 +222,37 @@
 <!-- Template to match properties fragment and transform it into a table -->
 <xsl:template match="properties-fragment" mode="psml">
   <xsl:param name="labels" tunnel="yes" />
-  <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
-  <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
-  <w:tbl>
-    <w:tblPr>
-      <xsl:variable name="styleid" select="config:properties-table-style($labels, @type)" />
-      <xsl:choose>
-        <xsl:when test="$styleid != ''">
-          <w:tblStyle w:val="{$styleid}" />
-        </xsl:when>
-        <xsl:otherwise>
-          <w:tblBorders>
-            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto" />
-            <w:left w:val="single" w:sz="4" w:space="0" w:color="auto" />
-            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto" />
-            <w:right w:val="single" w:sz="4" w:space="0" w:color="auto" />
-            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto" />
-            <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
-          </w:tblBorders>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:if test="config:properties-table-width($labels, @type) != '' and
-                    config:properties-table-width-type($labels, @type) != ''">
-        <w:tblW w:w="{config:properties-table-width($labels, @type)}"
-                w:type="{config:properties-table-width-type($labels, @type)}" />
-      </xsl:if>
-    </w:tblPr>
-    <xsl:apply-templates mode="psml" />
-  </w:tbl>
-  <w:bookmarkEnd w:id="{$bookmark-id}"/>
+  <xsl:if test="not(config:properties-label-ignore(tokenize(@labels,','), $labels))">
+    <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
+    <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
+    <w:tbl>
+      <w:tblPr>
+        <xsl:variable name="styleid" select="config:properties-table-style($labels, @type)" />
+        <xsl:choose>
+          <xsl:when test="$styleid != ''">
+            <w:tblStyle w:val="{$styleid}" />
+          </xsl:when>
+          <xsl:otherwise>
+            <w:tblBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="auto" />
+              <w:left w:val="single" w:sz="4" w:space="0" w:color="auto" />
+              <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto" />
+              <w:right w:val="single" w:sz="4" w:space="0" w:color="auto" />
+              <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto" />
+              <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto" />
+            </w:tblBorders>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="config:properties-table-width($labels, @type) != '' and
+                      config:properties-table-width-type($labels, @type) != ''">
+          <w:tblW w:w="{config:properties-table-width($labels, @type)}"
+                  w:type="{config:properties-table-width-type($labels, @type)}" />
+        </xsl:if>
+      </w:tblPr>
+      <xsl:apply-templates mode="psml" />
+    </w:tbl>
+    <w:bookmarkEnd w:id="{$bookmark-id}"/>
+  </xsl:if>
 </xsl:template>
 
 <!-- Template to handle each `property` -->
