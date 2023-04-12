@@ -245,64 +245,6 @@
 </xsl:function>
 
 <!--
-  Returns the generated document title based on position and title definitions
-
-  @param body the current document node
-
-  @return the current document title.
--->
-<xsl:function name="fn:generate-document-title" as="xs:string">
-  <xsl:param name="body" />
-
-  <!-- Title prefix will depend on first paragraph and numbering values -->
-  <xsl:variable name="title-prefix">
-    <xsl:variable name="style-name" select="$body/w:p[1]/w:pPr/w:pStyle/@w:val" />
-    <xsl:variable name="has-numbering-format" as="xs:boolean">
-      <xsl:choose>
-        <xsl:when test="matches($style-name,$numbering-paragraphs-list-string)">
-          <xsl:variable name="current-num-id">
-            <xsl:value-of select="fn:get-abstract-num-id-from-element($body/w:p[1])" />
-          </xsl:variable>
-          <xsl:variable name="current-level">
-            <xsl:value-of select="fn:get-level-from-element($body/w:p[1])" />
-          </xsl:variable>
-          <xsl:choose>
-            <xsl:when test="$numbering-document/w:numbering/w:abstractNum[@w:abstractNumId=$current-num-id]/w:lvl[@w:ilvl=$current-level]/w:numFmt/@w:val='bullet'">
-              <xsl:sequence select="false()" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:sequence select="true()" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:sequence select="false()" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="config:number-document-title() and matches($style-name,$numbering-paragraphs-list-string)">
-        <xsl:if test="$has-numbering-format">
-          <xsl:value-of select="fn:get-numbering-value-from-paragraph-style($body/w:p[1],$style-name)" />
-          <xsl:text> </xsl:text>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  <xsl:choose>
-    <xsl:when test="string-length(string-join($body/w:p[1]//w:t/text(),'')) &gt; (249 - string-length($title-prefix))">
-      <xsl:value-of select="concat($title-prefix,'',substring(string-join($body/w:p[1]//w:t/text(),''),1,(249 - string-length($title-prefix))))" />
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="concat($title-prefix,'',string-join($body/w:p[1]//w:t/text(),''))" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:function>
-
-<!--
   Returns the level of the numbered paragraph for pageseeder heading levels.
 
   @param current the node

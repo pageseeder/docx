@@ -5,37 +5,11 @@
 <config version="0.4.18">
   <!-- =======================SPLIT PROPERTIES======================= -->
   <split>
-    <document select="true">
-      <!--<sectionbreak select="continuous" />
-       Values accepted: continuous,evenPage,oddPage,  -->
-      <outlinelevel select="0" />
-      <outlinelevel select="1" />
-      <!-- Values accepted: outlineLevel[0-5], -->
-      <wordstyle  select="Heading1" />
-      <wordstyle  select="Heading2" />
-      <!-- Values accepted: name of style available in word file, -->
-    </document>
-    <section select="true">
-      <!--<sectionbreak select="continuous|evenPage" />
-       Values accepted: continuous, evenPage, oddPage,  -->
-      <outlinelevel select="0" />
-      <outlinelevel select="1" />
-      <outlinelevel select="2" />
-      <outlinelevel select="3" />
-      
-      <wordstyle  select="Heading1" />
-      <wordstyle  select="Heading2" />
-      <wordstyle  select="Heading3" />
-      <wordstyle  select="Heading4" />
-      <!-- Values accepted: outlineLevel[0-5],  -->
-      <!-- Values accepted: name of style available in word file,  -->
-    </section>
   </split>
 
   <!--  <toc convert="false" /> Values accepted: true() or false() -->
 
   <lists>
-    <add-numbering-to-document-titles select="true"/>
     <convert-to-list-roles select="false"/>
     <!-- generate numbered attribute to paragraphs for lists -->
     <convert-to-numbered-paragraphs select="false">
@@ -62,7 +36,7 @@
         <inline label="numbering-roman" />
         <!--<list role="[list role]"/> -->
       </value>
-    </convert-manual-numbering> 
+    </convert-manual-numbering>
   </lists>
 
   <!-- =======================STYLE PROPERTIES======================= -->
@@ -115,7 +89,7 @@
     <wordstyle name="Heading6" psmlelement="heading">
       <level value="6" />
     </wordstyle>
-    
+
     <wordstyle name="Bodytext" psmlelement="para"/>
   </styles>
 

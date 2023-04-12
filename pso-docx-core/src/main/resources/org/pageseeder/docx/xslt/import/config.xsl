@@ -165,24 +165,6 @@
 </xsl:function>
 
 <!--
-  Checks if the generate real titles for file names is set in configuration
-
-  @return true or false
--->
-<xsl:function name="config:generate-titles" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/split/document/@use-real-titles='true'"/>
-</xsl:function>
-
-<!--
-  Checks if the number documents is set in configuration
-
-  @return true or false
--->
-<xsl:function name="config:number-document-title" as="xs:boolean">
-  <xsl:sequence select="$config-doc/config/lists/add-numbering-to-document-titles/@select='true'"/>
-</xsl:function>
-
-<!--
   Checks if the convert list styles into list roles is set in configuration
 
   @return true or false

@@ -75,6 +75,7 @@
     </xs:complexType>
   </xs:element>
 
+  <!-- Deprecated -->
   <xs:element name="add-numbering-to-document-titles">
     <xs:complexType>
       <xs:attribute name="select" type="xs:boolean" />
