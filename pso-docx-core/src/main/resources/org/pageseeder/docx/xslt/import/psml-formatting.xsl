@@ -44,6 +44,7 @@
   <xsl:variable name="inline-value" select="config:get-inline-label-from-psml-element($character-style-name)" />
 
   <!-- bold italic, underline, subscript and superscript are processed recursively -->
+
   <xsl:variable name="monospace" select="if (config:get-psml-element($character-style-name) = 'monospace') then 'true' else 'false'" />
   <xsl:variable name="bold" select="if (current()[w:rPr/w:b[not(@w:val = '0')]]) then 'true' else 'false'" />
   <xsl:variable name="italic" select="if (current()[w:rPr/w:i[not(@w:val = '0')]]) then 'true' else 'false'" />
@@ -51,7 +52,6 @@
   <xsl:variable name="sub" select="if (current()[w:rPr/w:vertAlign[not(@w:val = '0')][@w:val='subscript']]) then 'true' else 'false'" />
   <xsl:variable name="sup" select="if (current()[w:rPr/w:vertAlign[not(@w:val = '0')][@w:val='superscript']]) then 'true' else 'false'" />
   <xsl:variable name="in-hyperlink" select="if (current()[ancestor::*[name() = 'w:hyperlink']]) then 'true' else 'false'" />
-
   <xsl:for-each select="*">
     <!-- Check if the w:r and containing w:p are numbered -->
     <!-- TODO Simplify -->
@@ -222,6 +222,7 @@
   <xsl:param name="in-heading" />
   <xsl:param name="in-hyperlink" />
   <xsl:param name="in-link" />
+  <xsl:variable name="psml-element" select="config:get-psml-element($style)" />
   <xsl:choose>
     <xsl:when test="$inline-value!=''">
       <inline label="{$inline-value}">
@@ -242,7 +243,8 @@
         </xsl:call-template>
       </inline>
     </xsl:when>
-    <xsl:when test="($style!='' and $character-styles = 'inline' and $monospace = 'false')">
+    <xsl:when test="($style!='' and $character-styles = 'inline' and $monospace = 'false' and
+        $psml-element != 'bold' and $psml-element != 'italic' and $psml-element != 'underline')">
       <inline label="{$style}">
         <xsl:call-template name="apply-wr-style">
           <xsl:with-param name="style" select="''" />
@@ -261,10 +263,10 @@
         </xsl:call-template>
       </inline>
     </xsl:when>
-    <xsl:when test="$bold='true'">
+    <xsl:when test="$bold='true' or $psml-element = 'bold'">
       <bold>
         <xsl:call-template name="apply-wr-style">
-          <xsl:with-param name="style" select="$style" />
+          <xsl:with-param name="style" select="if ($psml-element = 'bold') then '' else $style" />
           <xsl:with-param name="text" select="$text" />
           <xsl:with-param name="bold" select="'false'" />
           <xsl:with-param name="italic" select="$italic" />
@@ -280,10 +282,10 @@
         </xsl:call-template>
       </bold>
     </xsl:when>
-    <xsl:when test="$italic='true'">
+    <xsl:when test="$italic='true' or $psml-element = 'italic'">
       <italic>
         <xsl:call-template name="apply-wr-style">
-          <xsl:with-param name="style" select="$style" />
+          <xsl:with-param name="style" select="if ($psml-element = 'italic') then '' else $style" />
           <xsl:with-param name="text" select="$text" />
           <xsl:with-param name="bold" select="$bold" />
           <xsl:with-param name="italic" select="'false'" />
@@ -299,10 +301,10 @@
         </xsl:call-template>
       </italic>
     </xsl:when>
-    <xsl:when test="$underline='true'">
+    <xsl:when test="$underline='true' or $psml-element = 'underline'">
       <underline>
         <xsl:call-template name="apply-wr-style">
-          <xsl:with-param name="style" select="$style" />
+          <xsl:with-param name="style" select="if ($psml-element = 'underline') then '' else $style" />
           <xsl:with-param name="text" select="$text" />
           <xsl:with-param name="bold" select="$bold" />
           <xsl:with-param name="italic" select="$italic" />

@@ -66,7 +66,7 @@
 </xsl:template>
 
 <!--
-  Handle any styles that are mapped for transformation into monospace elements
+  Handle any paragraph styles that are mapped for transformation into monospace elements
 -->
 <xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val), 'monospace')]" mode="content" as="element(para)">
   <para>
@@ -75,6 +75,48 @@
         <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
       </xsl:apply-templates>
     </monospace>
+    <xsl:sequence select="fn:generate-anchors(.)" />
+  </para>
+</xsl:template>
+
+<!--
+  Handle any paragraph styles that are mapped for transformation into bold elements
+-->
+<xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val), 'bold')]" mode="content" as="element(para)">
+  <para>
+    <bold>
+      <xsl:apply-templates select="*" mode="content">
+        <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
+      </xsl:apply-templates>
+    </bold>
+    <xsl:sequence select="fn:generate-anchors(.)" />
+  </para>
+</xsl:template>
+
+<!--
+  Handle any paragraph styles that are mapped for transformation into italic elements
+-->
+<xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val), 'italic')]" mode="content" as="element(para)">
+  <para>
+    <italic>
+      <xsl:apply-templates select="*" mode="content">
+        <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
+      </xsl:apply-templates>
+    </italic>
+    <xsl:sequence select="fn:generate-anchors(.)" />
+  </para>
+</xsl:template>
+
+<!--
+  Handle any paragraph styles that are mapped for transformation into underline elements
+-->
+<xsl:template match="w:p[matches(config:get-psml-element(w:pPr/w:pStyle/@w:val), 'underline')]" mode="content" as="element(para)">
+  <para>
+    <underline>
+      <xsl:apply-templates select="*" mode="content">
+        <xsl:with-param name="full-text" select="fn:get-current-full-text(current())" />
+      </xsl:apply-templates>
+    </underline>
     <xsl:sequence select="fn:generate-anchors(.)" />
   </para>
 </xsl:template>
