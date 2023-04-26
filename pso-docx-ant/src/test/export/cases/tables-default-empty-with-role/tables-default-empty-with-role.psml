@@ -17,7 +17,7 @@
 	</section>
 	<section id="1">
 		<fragment id="1">
-			<para>Table with no colspans or rowspans:</para>
+			<para>Table A with no colspans or rowspans:</para>
 			<table width="200" role="tablea">
 				<row>
 					<cell> A</cell>
@@ -69,7 +69,7 @@
 				</row>
 			</table>
 			<para> </para>
-			<para>Table with 1 colspan:</para>
+			<para>Table A with 1 colspan:</para>
 			<table role="tablea">
 				<row>
 					<cell colspan="2">AB</cell>
@@ -594,7 +594,63 @@
 					<cell>0</cell>
 				</row>
 			</table>
-			<para> </para>
+			<para>Table with the following marked up cells:</para>
+			<para indent="1">B H</para>
+			<list>
+				<item>C1 I1</item>
+				<item>C1 I2</item>
+			</list>
+			<table>
+				<col part="header"/>
+				<col />
+				<col />
+				<row part="header">
+					<hcell>A</hcell>
+					<hcell><para indent="1">B</para></hcell>
+					<hcell>
+						<list>
+							<item>C1</item>
+							<item>C2</item>
+						</list>
+					</hcell>
+				</row>
+				<row>
+					<cell>G</cell>
+					<cell><para indent="1">H</para></cell>
+					<cell>
+						<list>
+							<item>I1</item>
+							<item>I2</item>
+						</list>
+					</cell>
+				</row>
+			</table>
+			<para>Table A with marked up cells</para>
+			<table role="tablea">
+				<col part="header"/>
+				<col />
+				<col />
+				<row part="header">
+					<hcell>A</hcell>
+					<hcell><para indent="1">B</para></hcell>
+					<hcell>
+						<list>
+							<item>C1</item>
+							<item>C2</item>
+						</list>
+					</hcell>
+				</row>
+				<row>
+					<cell>G</cell>
+					<cell><para indent="1">H</para></cell>
+					<cell>
+						<list>
+							<item>I1</item>
+							<item>I2</item>
+						</list>
+					</cell>
+				</row>
+			</table>
 		</fragment>
 	</section>
 </document>

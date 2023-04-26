@@ -28,6 +28,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testBoldItalicUnderlineCharacterStyle() throws IOException, SAXException {
+    testIndividual("bold-italic-underline-character-style");
+  }
+
+  @Test
   public void testDefaultCharacterStyleInline() throws IOException, SAXException {
     testIndividual("default-character-style-inline");
   }

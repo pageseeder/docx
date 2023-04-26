@@ -3,7 +3,11 @@
 <config>
 	<elements>
 		<tables>
-			<table  role="tablea" tablestyle="Table Grid 2"/>
+			<table role="tablea" tablestyle="PS Table" headstyle="PS Table Header" bodystyle="PS Table Body"/>
 		</tables>
+		<para>
+			<indent level="1" wordstyle="List Continue"/>
+		</para>
+		<list liststyle="Bulleted List" />
 	</elements>
 </config>

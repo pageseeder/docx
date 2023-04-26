@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config>
+	<styles>
+		<wordstyle name="Heading1" psmlelement="italic"/>
+		<wordstyle name="Heading2" psmlelement="bold"/>
+		<wordstyle name="Heading3" psmlelement="underline"/>
+		<wordstyle name="Emphasis" psmlelement="italic"/>
+		<wordstyle name="Strong" psmlelement="bold"/>
+		<wordstyle name="IntenseEmphasis" psmlelement="underline"/>
+	</styles>
+</config>

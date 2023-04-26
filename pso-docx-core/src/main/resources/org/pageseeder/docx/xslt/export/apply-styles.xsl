@@ -89,7 +89,9 @@
       </xsl:when>
 
       <!-- Paragraphs or empty cells within table -->
-      <xsl:when test="(self::para and ancestor::table) or self::cell or self::hcell">
+      <xsl:when test="((self::para and ancestor::table) or self::cell or self::hcell) and
+                       (config:table-head-style($labels, ancestor::table[1]/@role) != $default-paragraph-style or
+                       config:table-body-style($labels, ancestor::table[1]/@role) != $default-paragraph-style)">
         <xsl:variable name="table" select="ancestor::table[1]" />
         <xsl:variable name="row" select="ancestor::row[1]" />
         <xsl:variable name="cell" select="(ancestor-or-self::*[name()='cell' or name()='hcell'])[1]" />

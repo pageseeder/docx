@@ -9,6 +9,7 @@
                             titlestyle="Table Header" valuestyle="Table Body">
         <width type="pct" value="100%" />
       </properties-fragment>
+      <ignore label="test1" />
     </properties-fragments>
   </elements>
 </config>

@@ -12,15 +12,15 @@ ext {
 
   //Allette Opensource
   psoCobleVersion = '0.3.2'
-  psoOXVersion = '2.2.65'
+  psoOXVersion = '2.2.86'
   psoSchematronVersion = '1.2.3'
   psoXMLWriterVersion = '1.0.4'
 
-  //Third part
+  //Third party
   antVersion = '1.10.13'
   junitVersion = '4.13.1'
   saxonHEVersion = '10.1'
-  slf4jAPIVersion = '1.7.12'
+  slf4jAPIVersion = '1.7.36'
   xmlunitVersion = '1.6'
 
 }
