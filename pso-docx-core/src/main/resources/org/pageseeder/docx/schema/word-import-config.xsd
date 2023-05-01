@@ -233,7 +233,6 @@
         <xs:attribute name="psmlelement">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="title" />
                 <xs:enumeration value="para" />
                 <xs:enumeration value="heading" />
                 <xs:enumeration value="block" />
