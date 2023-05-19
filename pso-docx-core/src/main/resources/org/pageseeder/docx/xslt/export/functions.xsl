@@ -124,7 +124,7 @@
   <!-- TODO Use regex and simplify code -->
   <xsl:choose>
     <xsl:when test="$name='para' or $name='item' or $name='block' or $name='preformat' or $name='blockxref' or
-                    $name='heading' or $name='title' or $name='cell' or $name='hcell'">
+                    $name='heading' or $name='title' or $name='cell' or $name='hcell' or $name='media-fragment'">
       <xsl:value-of select="'block'" />
     </xsl:when>
     <xsl:when test="$name='table'">
