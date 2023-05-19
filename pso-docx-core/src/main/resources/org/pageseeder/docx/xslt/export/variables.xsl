@@ -49,13 +49,13 @@
 
 <xsl:variable name="footnote-ids">
   <xsl:for-each select="$root-document//xref[@documenttype=config:footnotes-documenttype()]/fragment">
-    <footnote xref="{../@id}" id="{position()}" />
+    <footnote xref="{generate-id(..)}" id="{position()}" />
   </xsl:for-each>
 </xsl:variable>
 
 <xsl:variable name="endnote-ids">
   <xsl:for-each select="$root-document//xref[@documenttype=config:endnotes-documenttype()]/fragment">
-    <endnote xref="{../@id}" id="{position()}" />
+    <endnote xref="{generate-id(..)}" id="{position()}" />
   </xsl:for-each>
 </xsl:variable>
 

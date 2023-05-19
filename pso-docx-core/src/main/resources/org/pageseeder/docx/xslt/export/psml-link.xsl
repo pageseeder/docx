@@ -27,22 +27,22 @@
         matches(ancestor::inline[1]/@label, config:default-inline-index-labels())" /> -->
 
     <!-- Cross-reference to a footnote -->
-    <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@xref=current()/@id]">
+    <xsl:when test="@documenttype = config:footnotes-documenttype() and $footnote-ids/footnote[@xref=generate-id(current())]">
       <w:r>
         <w:rPr>
             <w:rStyle w:val="{config:footnote-reference-styleid($labels)}"/>
         </w:rPr>
-        <w:footnoteReference w:id="{$footnote-ids/footnote[@xref=current()/@id]/@id}"/>
+        <w:footnoteReference w:id="{$footnote-ids/footnote[@xref=generate-id(current())]/@id}"/>
       </w:r>
     </xsl:when>
 
     <!-- Cross-reference to a endnote -->
-    <xsl:when test="@documenttype = config:endnotes-documenttype() and $endnote-ids/endnote[@xref=current()/@id]">
+    <xsl:when test="@documenttype = config:endnotes-documenttype() and $endnote-ids/endnote[@xref=generate-id(current())]">
       <w:r>
         <w:rPr>
             <w:rStyle w:val="{config:endnote-reference-styleid($labels)}"/>
         </w:rPr>
-        <w:endnoteReference w:id="{$endnote-ids/endnote[@xref=current()/@id]/@id}"/>
+        <w:endnoteReference w:id="{$endnote-ids/endnote[@xref=generate-id(current())]/@id}"/>
       </w:r>
     </xsl:when>
 

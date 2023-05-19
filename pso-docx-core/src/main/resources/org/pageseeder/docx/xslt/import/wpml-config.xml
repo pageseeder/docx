@@ -58,8 +58,6 @@
       <!--  <property name="prefix" value="true" /> possible values: 'false' or 'true' -->
     </default>
 
-    <wordstyle name="Title" psmlelement="title" />
-
     <!-- Values accepted: name of style available in word file -->
     <wordstyle name="Heading1" psmlelement="heading">
       <level value="1" />

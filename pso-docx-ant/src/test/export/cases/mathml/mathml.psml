@@ -83,5 +83,27 @@
           </media-fragment>
         </xref>.</para>
     </fragment>
+    <fragment id="28508-1">
+      <para>Media fragment:</para>
+    </fragment>
+    <media-fragment id="28508-2"
+                    mediatype="application/mathml+xml">
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mi>y</mi>
+        <mo>=</mo>
+        <mfrac>
+          <mrow>
+            <msup>
+              <mi>x</mi>
+              <mn>2</mn>
+            </msup>
+            <mo>+</mo>
+            <mo> </mo>
+            <mn>3</mn>
+          </mrow>
+          <mn>2</mn>
+        </mfrac>
+      </math>
+    </media-fragment>
   </section>
 </document>

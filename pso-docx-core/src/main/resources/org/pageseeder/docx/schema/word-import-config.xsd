@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.0.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.1.0">
 
   <xs:element name="config">
     <xs:complexType>
@@ -233,7 +233,6 @@
         <xs:attribute name="psmlelement">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="title" />
                 <xs:enumeration value="para" />
                 <xs:enumeration value="heading" />
                 <xs:enumeration value="block" />

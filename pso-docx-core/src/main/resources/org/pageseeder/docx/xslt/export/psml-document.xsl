@@ -214,7 +214,19 @@
   <xsl:variable name="bookmark-id" select="fn:bookmark-id(.)"/>
   <w:bookmarkStart w:name="f-{@id}" w:id="{$bookmark-id}"/>
     <xsl:if test="@mediatype='application/mathml+xml'">
-      <xsl:apply-templates mode="mml" />
+      <xsl:choose>
+        <xsl:when test="parent::section">
+          <w:p>
+            <w:pPr>
+              <xsl:call-template name="apply-style" />
+            </w:pPr>
+            <xsl:apply-templates mode="mml" />
+          </w:p>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates mode="mml" />
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
   <w:bookmarkEnd w:id="{$bookmark-id}" />
 </xsl:template>
