@@ -1,5 +1,6 @@
 package org.pageseeder.docx.ant;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pageseeder.docx.util.Files;
@@ -36,6 +37,9 @@ public class AsposeTaskTest {
       if (new File(dir, dir.getName() + ".docx").exists()) {
         System.out.println(dir.getName());
         File result_dir = new File(RESULTS, dir.getName());
+        if (result_dir.exists()) {
+          FileUtils.deleteDirectory(result_dir);
+        }
         result_dir.mkdirs();
         File result = new File(result_dir, dir.getName() + ".pdf");
         File actual = process(dir, result);

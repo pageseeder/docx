@@ -130,8 +130,15 @@ public final class AsposeTask extends Task {
     WordsApi wordsApi = new WordsApi(apiClient);
     try {
       byte[] requestDocument = Files.readAllBytes(this.source.toPath());
-      ConvertDocumentRequest convertRequest = new ConvertDocumentRequest(requestDocument, "pdf", null, null, null, null, null, null, null);
-      Files.write(this.destination.toPath(), wordsApi.convertDocument(convertRequest));
+      PdfSaveOptionsData requestSaveOptionsData = new PdfSaveOptionsData();
+      String temp_result = System.nanoTime() + "/" + this.destination.getName();
+      requestSaveOptionsData.setFileName(temp_result);
+      OutlineOptionsData outlineOptions = new OutlineOptionsData();
+      outlineOptions.headingsOutlineLevels(6);
+      requestSaveOptionsData.outlineOptions(outlineOptions);
+      SaveAsOnlineRequest request = new SaveAsOnlineRequest(requestDocument, requestSaveOptionsData,null, null,null,null);
+      SaveAsOnlineResponse result = wordsApi.saveAsOnline(request);
+      Files.write(this.destination.toPath(),result.getDocument().get(temp_result));
     } catch (IOException | MessagingException | ApiException ex) {
       throw new BuildException(ex);
     }
