@@ -69,6 +69,11 @@ public final class AsposeTask extends Task {
    */
   private String clientSecret;
 
+  /**
+   * Whether to update DOCX fields
+   */
+  private boolean updateFields = false;
+
   // Set properties
   // ----------------------------------------------------------------------------------------------
 
@@ -110,6 +115,13 @@ public final class AsposeTask extends Task {
     this.clientSecret = secret;
   }
 
+  /**
+   * @param update whether to update DOCX fields
+   */
+  public void setUpdateFields(boolean update) {
+    this.updateFields = update;
+  }
+
   // Execute
   // ----------------------------------------------------------------------------------------------
 
@@ -130,13 +142,22 @@ public final class AsposeTask extends Task {
     WordsApi wordsApi = new WordsApi(apiClient);
     try {
       byte[] requestDocument = Files.readAllBytes(this.source.toPath());
+      long temp_folder = System.nanoTime();
+      if (this.updateFields) {
+        String temp_result = temp_folder + "/" + this.source.getName();
+        UpdateFieldsOnlineRequest request = new UpdateFieldsOnlineRequest(requestDocument,
+            null, null, null, temp_result);
+        UpdateFieldsOnlineResponse result = wordsApi.updateFieldsOnline(request);
+        requestDocument = result.getDocument().get(temp_result);
+      }
       PdfSaveOptionsData requestSaveOptionsData = new PdfSaveOptionsData();
-      String temp_result = System.nanoTime() + "/" + this.destination.getName();
+      String temp_result = temp_folder + "/" + this.destination.getName();
       requestSaveOptionsData.setFileName(temp_result);
       OutlineOptionsData outlineOptions = new OutlineOptionsData();
       outlineOptions.headingsOutlineLevels(6);
       requestSaveOptionsData.outlineOptions(outlineOptions);
-      SaveAsOnlineRequest request = new SaveAsOnlineRequest(requestDocument, requestSaveOptionsData,null, null,null,null);
+      SaveAsOnlineRequest request = new SaveAsOnlineRequest(requestDocument,
+          requestSaveOptionsData,null, null,null,null);
       SaveAsOnlineResponse result = wordsApi.saveAsOnline(request);
       Files.write(this.destination.toPath(),result.getDocument().get(temp_result));
     } catch (IOException | MessagingException | ApiException ex) {

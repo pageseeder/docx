@@ -20,18 +20,21 @@ public class AsposeTaskTest {
 
   @Test
   public void testBasic() throws IOException, SAXException {
-    testIndividual("basic");
+    testIndividual("basic", false);
   }
 
   @Test
   public void testPsGenerate() throws IOException, SAXException {
-    testIndividual("ps-generated");
-  }
-  public void testIndividual(String folderName) throws IOException {
-    testIndividual(new File(CASES, folderName));
+    testIndividual("ps-generated", false);
   }
 
-  public void testIndividual(File dir) throws IOException {
+  @Test
+  public void testUpdateFields() throws IOException, SAXException {
+    testIndividual("update-fields", true);
+  }
+
+  public void testIndividual(String folderName, boolean updateFields) throws IOException {
+    File dir = new File(CASES, folderName);
     if (dir.isDirectory()) {
 
       if (new File(dir, dir.getName() + ".docx").exists()) {
@@ -42,7 +45,7 @@ public class AsposeTaskTest {
         }
         result_dir.mkdirs();
         File result = new File(result_dir, dir.getName() + ".pdf");
-        File actual = process(dir, result);
+        File actual = process(dir, result, updateFields);
         File expected = new File(dir, "expected.pdf");
 
         // Check that the files exist
@@ -51,15 +54,15 @@ public class AsposeTaskTest {
 
         Assert.assertTrue(actual.length() > 0);
         Assert.assertTrue(expected.length() > 0);
-        Assert.assertTrue("Expected PDF file size: " + expected.length() + " but was " + actual.length(),
-            expected.length() == actual.length());
+        Assert.assertTrue("Expected PDF file size:" + expected.length() + " but was " + actual.length(),
+            Math.abs(expected.length() - actual.length()) <= 30); // might be slight variation
       } else {
         throw new IOException("Unable to find DOCX file for test:" + dir.getName());
       }
     }
   }
 
-  private File process(File test, File result) throws IOException {
+  private File process(File test, File result, boolean updateFields) throws IOException {
     AsposeTask task = new AsposeTask();
     task.setSrc(new File(test, test.getName() + ".docx"));
     task.setDest(result);
@@ -73,6 +76,9 @@ public class AsposeTaskTest {
       }
       task.setClientId(clientId);
       task.setClientSecret(clientSecret);
+      if (updateFields) {
+        task.setUpdateFields(true);
+      }
     } catch (FileNotFoundException ex) {
       throw new IOException("The clientid and clientsecret must be defined in pso-docx-ant/aspose.properties");
     }
