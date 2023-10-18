@@ -83,6 +83,30 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testEmptyConfigurationFootnotes() throws IOException, SAXException {
+    String folder = "empty-configuration-footnotes";
+    testIndividual(folder);
+    // check footnotes
+    File actual = new File(RESULTS, folder + "/components/footnotes.psml");
+    File expected = new File(CASES, folder + "/components/footnotes.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/components"));
+  }
+
+  @Test
+  public void testEmptyConfigurationEndnotes() throws IOException, SAXException {
+    String folder = "empty-configuration-endnotes";
+    testIndividual(folder);
+    // check endnotes
+    File actual = new File(RESULTS, folder + "/components/endnotes.psml");
+    File expected = new File(CASES, folder + "/components/endnotes.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/components"));
+  }
+
+  @Test
   public void testEmptyConfigurationImages() throws IOException, SAXException {
     testIndividual("empty-configuration-images");
     File result = new File(RESULTS, "empty-configuration-images");
@@ -123,6 +147,56 @@ public class ImportTaskTest {
   @Test
   public void testEmptyConfigurationTables() throws IOException, SAXException {
     testIndividual("empty-configuration-tables");
+  }
+
+  @Test
+  public void testEndnotesDisabled() throws IOException, SAXException {
+    String folder = "endnotes-disabled";
+    testIndividual(folder);
+    // check no footnotes
+    Assert.assertFalse(new File(RESULTS, folder + "/components/endnotes.psml").exists());
+  }
+
+  @Test
+  public void testEndnotesGenerateFiles() throws IOException, SAXException {
+    String folder = "endnotes-generate-files";
+    testIndividual(folder);
+    // check footnotes
+    File actual = new File(RESULTS, folder + "/endnotes/endnotes1.psml");
+    File expected = new File(CASES, folder + "/endnotes/endnotes1.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/endnotes"));
+    actual = new File(RESULTS, folder + "/endnotes/endnotes2.psml");
+    expected = new File(CASES, folder + "/endnotes/endnotes2.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/endnotes"));
+  }
+
+  @Test
+  public void testFootnotesDisabled() throws IOException, SAXException {
+    String folder = "footnotes-disabled";
+    testIndividual(folder);
+    // check no footnotes
+    Assert.assertFalse(new File(RESULTS, folder + "/components/footnotes.psml").exists());
+  }
+
+  @Test
+  public void testFootnotesGenerateFiles() throws IOException, SAXException {
+    String folder = "footnotes-generate-files";
+    testIndividual(folder);
+    // check footnotes
+    File actual = new File(RESULTS, folder + "/footnotes/footnotes1.psml");
+    File expected = new File(CASES, folder + "/footnotes/footnotes1.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/footnotes"));
+    actual = new File(RESULTS, folder + "/footnotes/footnotes2.psml");
+    expected = new File(CASES, folder + "/footnotes/footnotes2.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/footnotes"));
   }
 
   @Test
@@ -327,12 +401,46 @@ public class ImportTaskTest {
 
   @Test
   public void testMathmlGenerateFiles() throws IOException, SAXException {
-    testIndividual("mathml-generate-files");
+    String folder = "mathml-generate-files";
+    testIndividual(folder);
+    // check footnotes
+    File actual = new File(RESULTS, folder + "/mathml/mathml-9766.mml");
+    File expected = new File(CASES, folder + "/mathml/mathml-9766.mml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
+    actual = new File(RESULTS, folder + "/mathml/mathml-32322.mml");
+    expected = new File(CASES, folder + "/mathml/mathml-32322.mml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
+    actual = new File(RESULTS, folder + "/mathml/mathml-53849.mml");
+    expected = new File(CASES, folder + "/mathml/mathml-53849.mml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
   }
 
   @Test
   public void testMathmlGenerateFragments() throws IOException, SAXException {
-    testIndividual("mathml-generate-fragments");
+    String folder = "mathml-generate-fragments";
+    testIndividual(folder);
+    // check footnotes
+    File actual = new File(RESULTS, folder + "/mathml/mathml-9766.psml");
+    File expected = new File(CASES, folder + "/mathml/mathml-9766.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
+    actual = new File(RESULTS, folder + "/mathml/mathml-32322.psml");
+    expected = new File(CASES, folder + "/mathml/mathml-32322.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
+    actual = new File(RESULTS, folder + "/mathml/mathml-53849.psml");
+    expected = new File(CASES, folder + "/mathml/mathml-53849.psml");
+    Assert.assertTrue(actual.exists());
+    Assert.assertTrue(expected.exists());
+    assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
   }
 
   @Test
@@ -564,7 +672,7 @@ public class ImportTaskTest {
         Assert.assertTrue(expected.length() > 0);
         assertXMLEqual(expected, actual, result);
       } else {
-        System.out.println("Unable to find DOCX file for test:" + dir.getName());
+        throw new IOException("Unable to find DOCX file for test:" + dir.getName());
       }
     }
   }

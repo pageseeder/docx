@@ -6,7 +6,9 @@ dependencies {
   implementation project(':pso-docx-core')
 
   implementation(
-    "org.slf4j:slf4j-api:1.7.36"
+    "org.slf4j:slf4j-api:1.7.36",
+    "com.aspose:aspose-words-cloud:23.5.0",
+    "com.google.code.gson:gson:2.8.9"
   )
 
   compileOnly (
@@ -20,7 +22,8 @@ dependencies {
     'org.hamcrest:java-hamcrest:2.0.0.0',
     'org.hamcrest:hamcrest-junit:2.0.0.0',
     'org.xmlunit:xmlunit-core:2.3.0',
-    'org.xmlunit:xmlunit-matchers:2.3.0'
+    'org.xmlunit:xmlunit-matchers:2.3.0',
+    'commons-io:commons-io:2.13.0'
   )
 
   testRuntimeOnly (
