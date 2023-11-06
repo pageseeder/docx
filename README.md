@@ -2,12 +2,3 @@
 
 # docx
 DOCX import and export API
-
-To run AsposeTaskTest create a `pso-docx-ant/aspose.properties` file containing
-
-```
-clientid=
-clientsecret=
-```
-
-with values generated from https://dashboard.aspose.cloud/
