@@ -5,5 +5,4 @@
 <antlib>
   <taskdef name="import-docx"  classname="org.pageseeder.docx.ant.ImportTask"/>
   <taskdef name="export-docx"  classname="org.pageseeder.docx.ant.ExportTask"/>
-  <taskdef name="aspose-words"  classname="org.pageseeder.docx.ant.AsposeTask"/>
 </antlib>

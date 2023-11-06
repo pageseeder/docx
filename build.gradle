@@ -43,8 +43,6 @@ subprojects {
     // Takes our libraries immediately as the maven central should take hours to get synchronized.
     maven { url 'https://s01.oss.sonatype.org/content/groups/public/' }
 
-    maven { url 'https://releases.aspose.cloud/java/repo/' }
-
 //    ivy {
 //      url 'http://ivy.pageseeder.com/shared'
 //      allowInsecureProtocol true
