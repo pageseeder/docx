@@ -221,10 +221,20 @@
               <xsl:call-template name="apply-style" />
             </w:pPr>
             <xsl:apply-templates mode="mml" />
+            <!-- force inline mode -->
+            <w:r>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
           </w:p>
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates mode="mml" />
+          <!-- if no sibling text force inline mode -->
+          <xsl:if test="ancestor::para[1][not(text())]">
+            <w:r>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>

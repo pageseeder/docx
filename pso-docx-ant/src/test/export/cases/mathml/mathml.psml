@@ -41,6 +41,13 @@
             </math>
           </media-fragment>
         </xref>.</para>
+      <para>On its own line:</para>
+    </fragment>
+    <fragment id="55578-2">
+      <para><xref frag="media" type="math" config="mathml"><media-fragment id="media" mediatype="application/mathml+xml">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow>
+        </math></media-fragment></xref></para>
     </fragment>
     <fragment id="55578-9">
       <para>Search equations from a library <xref id="97069" frag="1" reversefrag="9"
