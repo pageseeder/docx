@@ -483,7 +483,7 @@
             <xsl:value-of select="$current/ancestor::w:hyperlink/@title" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="string-join($current/ancestor::w:hyperlink//w:t//text(),'')" />
+            <xsl:value-of select="$text" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -492,7 +492,7 @@
         <xsl:when test="$current/ancestor::w:hyperlink/@r:id">
           <xsl:variable name="rid" select="$current/ancestor::w:hyperlink/@r:id" />
           <link href="{$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target}">
-            <xsl:value-of select="$current/ancestor::w:hyperlink/w:r/w:t" />
+            <xsl:value-of select="$htext" />
           </link>
         </xsl:when>
         <xsl:when test="$bookmark-ref != '' and config:references-as-links()">

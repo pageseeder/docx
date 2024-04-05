@@ -12,7 +12,7 @@ ext {
 
   //Allette Opensource
   psoCobleVersion = '0.3.2'
-  psoOXVersion = '2.2.86'
+  psoOXVersion = '2.2.88'
   psoSchematronVersion = '1.2.3'
   psoXMLWriterVersion = '1.0.4'
 
