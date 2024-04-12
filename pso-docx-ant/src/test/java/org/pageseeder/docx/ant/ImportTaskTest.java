@@ -129,6 +129,12 @@ public class ImportTaskTest {
     testIndividual("empty-configuration-images-pict-element");
   }
 
+
+  @Test
+  public void testEmptyConfigurationMultilevelListStyles() throws IOException, SAXException {
+    testIndividual("empty-configuration-multilevel-list-styles");
+  }
+
   @Test
   public void testEmptyConfigurationMultilevelLists() throws IOException, SAXException {
     testIndividual("empty-configuration-multilevel-lists");
@@ -687,6 +693,10 @@ public class ImportTaskTest {
 
     task.setConfig(import_config);
 
+    //File working = new File(result, "working");
+    //if (working.exists()) deleteDir(working);
+    //task.setWorking(working);
+
     task.setDest(result);
     Parameter parameter = task.createParam();
     parameter.setName("generate-processed-psml");
@@ -698,6 +708,16 @@ public class ImportTaskTest {
     Assert.assertThat(actual, XML.validates("psml-processed.xsd"));
 
     return actual;
+  }
+
+  private static void deleteDir(File file) {
+    File[] contents = file.listFiles();
+    if (contents != null) {
+      for (File f : contents) {
+        deleteDir(f);
+      }
+    }
+    file.delete();
   }
 
   private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {

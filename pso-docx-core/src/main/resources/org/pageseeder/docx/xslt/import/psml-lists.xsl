@@ -106,7 +106,7 @@
   <xsl:choose>
     <xsl:when test="not(config:convert-to-numbered-paragraphs())">
       <xsl:choose>
-        <xsl:when test="preceding-sibling::w:p[1][./w:pPr/w:numPr/w:numId/@w:val]" />
+        <xsl:when test="preceding::w:p[1][./w:pPr/w:numPr/w:numId/@w:val]" />
         <xsl:otherwise>
           <xsl:call-template name="list">
             <xsl:with-param name="abstract-id" select="$numbering-document/w:numbering/w:num[@w:numId=$listID]/w:abstractNumId/@w:val" />
@@ -158,7 +158,7 @@
   <xsl:variable name="level" select="fn:get-level-from-element(.)" />
   <xsl:variable name="abstract-num-id" select="fn:get-abstract-num-id-from-element(.)" />
   <xsl:variable name="nested-list"
-    select="following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
+    select="following::w:p[1][fn:get-level-from-element(.) &gt; $level][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
   <item>
     <xsl:apply-templates  mode="content"/>
     <xsl:for-each select="$nested-list">
@@ -179,17 +179,17 @@
     <xsl:when test="$nested-list">
       <!-- skip to next item at this level just after nested list -->
       <xsl:apply-templates
-        select="following-sibling::w:p
+        select="following::w:p
             [fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id][1]
-            [fn:get-level-from-element(preceding-sibling::w:p[1]) &gt; $level]"
+            [fn:get-level-from-element(preceding::w:p[1]) &gt; $level]"
         mode="inside-list">
       </xsl:apply-templates>
     </xsl:when>
     <xsl:otherwise>
       <!-- get next item if it is at the same level -->
       <xsl:apply-templates
-        select="following-sibling::*[1]
-            [self::w:p and fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
+        select="following::w:p[1]
+            [fn:get-level-from-element(.)=$level][fn:get-abstract-num-id-from-element(.)=$abstract-num-id]"
         mode="inside-list">
       </xsl:apply-templates>
     </xsl:otherwise>
@@ -231,7 +231,7 @@
             <xsl:when test="preceding::w:p[fn:get-abstract-num-id-from-element(.) = $abstract-id][1][fn:get-level-from-element(.) &lt; $level]">
               <xsl:value-of select="'1'"/>
             </xsl:when>
-            <xsl:when test="preceding-sibling::w:p[fn:get-abstract-num-id-from-element(.) = $abstract-id][fn:get-level-from-element(.)=$level][$list-paragraphs//*[@id = $id]]">
+            <xsl:when test="preceding::w:p[fn:get-abstract-num-id-from-element(.) = $abstract-id][fn:get-level-from-element(.)=$level][$list-paragraphs//*[@id = $id]]">
               <xsl:call-template name="get-numbering-value-from-node">
                 <xsl:with-param name="current-node" select="$list-paragraphs//*[@id = $id]"/>
               </xsl:call-template>
@@ -265,7 +265,7 @@
   <xsl:variable name="current-num-id" select="fn:get-numid-from-style($current)" />
   <xsl:variable name="level" select="fn:get-level-from-element($current)" />
   <xsl:variable name="current-paragraph-style" select="$current/w:pPr/w:pStyle/@w:val" />
-  <xsl:variable name="nested-list" select="$current/following-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-numid-from-style(.) = $current-num-id][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
+  <xsl:variable name="nested-list" select="$current/following::w:p[1][fn:get-level-from-element(.) &gt; $level][fn:get-numid-from-style(.) = $current-num-id][not(matches(config:get-psml-element-from-paragraph(.),'para'))]" />
 
   <para>
     <xsl:attribute name="indent" select="$level" />
@@ -282,14 +282,14 @@
   <xsl:choose>
     <xsl:when test="$nested-list">
       <xsl:if
-        test="$current/following-sibling::w:p
+        test="$current/following::w:p
              [fn:get-level-from-element(.)=$level][fn:get-numid-from-style(.)=$current-num-id][1]
-            [preceding-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level]]">
+            [preceding::w:p[1][fn:get-level-from-element(.) &gt; $level]]">
         <xsl:call-template name="create-item">
           <xsl:with-param name="current"
-            select="$current/following-sibling::w:p
+            select="$current/following::w:p
             [fn:get-level-from-element(.)=$level][fn:get-numid-from-style(.)=$current-num-id][1]
-            [preceding-sibling::w:p[1][fn:get-level-from-element(.) &gt; $level]]" />
+            [preceding::w:p[1][fn:get-level-from-element(.) &gt; $level]]" />
         </xsl:call-template>
       </xsl:if>
     </xsl:when>
