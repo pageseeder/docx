@@ -555,6 +555,11 @@ public class ImportTaskTest {
   }
 
   @Test
+  public void testParaMultilevelListStyles() throws IOException, SAXException {
+    testIndividual("para-multilevel-list-styles");
+  }
+
+  @Test
   public void testParaMultipleParagraphStyles() throws IOException, SAXException {
     testIndividual("para-multiple-paragraph-styles");
   }

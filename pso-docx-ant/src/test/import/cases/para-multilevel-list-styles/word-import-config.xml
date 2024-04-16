@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!-- This configuration transforms DocX into PSML -->
+
+<config version="1.1.0">
+    <styles>
+        <wordstyle name="ParaIndent" psmlelement="para">
+            <indent value="1" />
+            <numbering select="true" value="prefix" />
+        </wordstyle>
+
+        <wordstyle name="ParaIndent2" psmlelement="para">
+            <indent value="2" />
+            <numbering select="true" value="prefix" />
+        </wordstyle>
+    </styles>
+</config>
