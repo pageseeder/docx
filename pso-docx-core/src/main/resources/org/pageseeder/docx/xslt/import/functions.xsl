@@ -289,101 +289,110 @@
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:variable name="current-list-node" select="$list-paragraphs/w:p[@id = $current-node//@id]" as="element()"/>
+  <xsl:variable name="current-list-node" select="$list-paragraphs/w:p[@id = $current-node//@id]" />
 
-  <xsl:variable name="parent-position">
-    <xsl:for-each select="$numbering-document//*[w:pStyle[@w:val = $style]]/preceding-sibling::w:lvl">
-      <xsl:sort select="position()" data-type="number" order="ascending" />
-      <xsl:variable name="parent-style" select="w:pStyle/@w:val" />
-      <xsl:variable name="parent-level" select="@w:ilvl" />
+  <xsl:choose>
+    <!-- may not be found for empty paras -->
+    <xsl:when test="not($current-list-node)">
+      <xsl:text></xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:variable name="parent-position">
+        <xsl:for-each select="$numbering-document//*[w:pStyle[@w:val = $style]]/preceding-sibling::w:lvl">
+          <xsl:sort select="position()" data-type="number" order="ascending" />
+          <xsl:variable name="parent-style" select="w:pStyle/@w:val" />
+          <xsl:variable name="parent-level" select="@w:ilvl" />
 
-      <xsl:choose>
-        <xsl:when test="$current-list-node/preceding::w:p[w:pPr/w:pStyle[@w:val=$parent-style]]">
-          <xsl:variable name="current-parent-node" select="$current-list-node/preceding::w:p[w:pPr/w:pStyle[@w:val=$parent-style]][1]" as="node()" />
+          <xsl:choose>
+            <xsl:when test="$current-list-node/preceding::w:p[w:pPr/w:pStyle[@w:val=$parent-style]]">
+              <xsl:variable name="current-parent-node" select="$current-list-node/preceding::w:p[w:pPr/w:pStyle[@w:val=$parent-style]][1]" as="node()" />
 
-          <xsl:call-template name="get-numbering-value-from-node">
-            <xsl:with-param name="current-node" select="$current-parent-node" />
-          </xsl:call-template>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="''" />
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:value-of select="','" />
-    </xsl:for-each>
-  </xsl:variable>
+              <xsl:call-template name="get-numbering-value-from-node">
+                <xsl:with-param name="current-node" select="$current-parent-node" />
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="''" />
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:value-of select="','" />
+        </xsl:for-each>
+      </xsl:variable>
 
-  <xsl:variable name="current-position">
-    <xsl:call-template name="get-numbering-value-from-node">
-      <xsl:with-param name="current-node" select="$current-list-node" />
-    </xsl:call-template>
-  </xsl:variable>
+      <xsl:variable name="current-position">
+        <xsl:call-template name="get-numbering-value-from-node">
+          <xsl:with-param name="current-node" select="$current-list-node" />
+        </xsl:call-template>
+      </xsl:variable>
 
-  <xsl:variable name="format-style" select="$numbering-document//*[w:pStyle[not(ancestor::w:lvlOverride)][@w:val = $style][1]][1]/w:lvlText/@w:val[1]" />
-  <xsl:analyze-string regex="([^%]*)%(\d)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)" select="$format-style">
-    <xsl:matching-substring>
-      <xsl:value-of select="regex-group(1)" />
-      <xsl:value-of
-        select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(2))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(2),$current-list),fn:get-format-value-from-level-value(regex-group(2),$current-list))" />
-      <xsl:value-of select="regex-group(3)" />
-      <xsl:if test="regex-group(4) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(4))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(4),$current-list),fn:get-format-value-from-level-value(regex-group(4),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(5) != ''">
-        <xsl:value-of select="regex-group(5)" />
-      </xsl:if>
-      <xsl:if test="regex-group(6) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(6))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(6),$current-list),fn:get-format-value-from-level-value(regex-group(6),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(7) != ''">
-        <xsl:value-of select="regex-group(7)" />
-      </xsl:if>
-      <xsl:if test="regex-group(8) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(8))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(8),$current-list),fn:get-format-value-from-level-value(regex-group(8),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(9) != ''">
-        <xsl:value-of select="regex-group(9)" />
-      </xsl:if>
-      <xsl:if test="regex-group(10) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(10))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(10),$current-list),fn:get-format-value-from-level-value(regex-group(10),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(11) != ''">
-        <xsl:value-of select="regex-group(11)" />
-      </xsl:if>
-      <xsl:if test="regex-group(12) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(12))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(12),$current-list),fn:get-format-value-from-level-value(regex-group(12),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(13) != ''">
-        <xsl:value-of select="regex-group(13)" />
-      </xsl:if>
-      <xsl:if test="regex-group(14) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(14))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(14),$current-list),fn:get-format-value-from-level-value(regex-group(14),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(15) != ''">
-        <xsl:value-of select="regex-group(15)" />
-      </xsl:if>
-      <xsl:if test="regex-group(16) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(16))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(16),$current-list),fn:get-format-value-from-level-value(regex-group(16),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(17) != ''">
-        <xsl:value-of select="regex-group(17)" />
-      </xsl:if>
-      <xsl:if test="regex-group(18) != ''">
-        <xsl:value-of
-          select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(18))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(18),$current-list),fn:get-format-value-from-level-value(regex-group(18),$current-list))" />
-      </xsl:if>
-      <xsl:if test="regex-group(19) != ''">
-        <xsl:value-of select="regex-group(19)" />
-      </xsl:if>
-    </xsl:matching-substring>
-  </xsl:analyze-string>
+      <xsl:variable name="format-style" select="$numbering-document//*[w:pStyle[not(ancestor::w:lvlOverride)][@w:val = $style][1]][1]/w:lvlText/@w:val[1]" />
+      <xsl:analyze-string regex="([^%]*)%(\d)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)%?(\d?)([^%]*)" select="$format-style">
+        <xsl:matching-substring>
+          <xsl:value-of select="regex-group(1)" />
+          <xsl:value-of
+                  select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(2))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(2),$current-list),fn:get-format-value-from-level-value(regex-group(2),$current-list))" />
+          <xsl:value-of select="regex-group(3)" />
+          <xsl:if test="regex-group(4) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(4))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(4),$current-list),fn:get-format-value-from-level-value(regex-group(4),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(5) != ''">
+            <xsl:value-of select="regex-group(5)" />
+          </xsl:if>
+          <xsl:if test="regex-group(6) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(6))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(6),$current-list),fn:get-format-value-from-level-value(regex-group(6),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(7) != ''">
+            <xsl:value-of select="regex-group(7)" />
+          </xsl:if>
+          <xsl:if test="regex-group(8) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(8))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(8),$current-list),fn:get-format-value-from-level-value(regex-group(8),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(9) != ''">
+            <xsl:value-of select="regex-group(9)" />
+          </xsl:if>
+          <xsl:if test="regex-group(10) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(10))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(10),$current-list),fn:get-format-value-from-level-value(regex-group(10),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(11) != ''">
+            <xsl:value-of select="regex-group(11)" />
+          </xsl:if>
+          <xsl:if test="regex-group(12) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(12))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(12),$current-list),fn:get-format-value-from-level-value(regex-group(12),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(13) != ''">
+            <xsl:value-of select="regex-group(13)" />
+          </xsl:if>
+          <xsl:if test="regex-group(14) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(14))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(14),$current-list),fn:get-format-value-from-level-value(regex-group(14),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(15) != ''">
+            <xsl:value-of select="regex-group(15)" />
+          </xsl:if>
+          <xsl:if test="regex-group(16) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(16))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(16),$current-list),fn:get-format-value-from-level-value(regex-group(16),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(17) != ''">
+            <xsl:value-of select="regex-group(17)" />
+          </xsl:if>
+          <xsl:if test="regex-group(18) != ''">
+            <xsl:value-of
+                    select="fn:get-formatted-value-by-style(tokenize(string($parent-position), ',')[number(regex-group(18))],$current-position,$style,$current-node,fn:get-paragraph-value-from-level-value(regex-group(18),$current-list),fn:get-format-value-from-level-value(regex-group(18),$current-list))" />
+          </xsl:if>
+          <xsl:if test="regex-group(19) != ''">
+            <xsl:value-of select="regex-group(19)" />
+          </xsl:if>
+        </xsl:matching-substring>
+      </xsl:analyze-string>
+
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:function>
 
 <!--
