@@ -25,7 +25,7 @@
   <!--
   Generate a PSML `image` from a Word `w:drawing`.
 -->
-  <xsl:template match="w:drawing[1]" mode="drawing-element">
+  <xsl:template name="drawing-element">
     <!-- Height and Width of the image -->
     <xsl:variable name="height" as="xs:integer">
       <xsl:choose>
@@ -96,7 +96,7 @@
       </xsl:choose>
     </xsl:variable>
     <image src="{concat(if ($component) then '../' else '', $media-folder-name, substring-after($target, 'media'))}" alt="{$alt}">
-      <xsl:apply-templates select="." mode="drawing-element" />
+      <xsl:call-template name="drawing-element" />
     </image>
   </xsl:template>
 
