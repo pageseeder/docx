@@ -234,15 +234,15 @@
 	<!-- Add all bookmarkStart out of w:p element ancestor to the next w:p element -->
 	<xsl:if test="self::w:p[not(ancestor::w:p) and preceding-sibling::*[1][self::w:bookmarkStart]]">
 	  <xsl:variable name="bookmark-starts">
-      <xsl:choose>
-        <xsl:when test="preceding-sibling::w:p[1]">
-          <xsl:variable name="first-not-bookmark-id" select="generate-id(preceding-sibling::w:p[1])" />
-          <xsl:copy-of select="preceding-sibling::w:bookmarkStart[preceding-sibling::*[$first-not-bookmark-id = generate-id(.)]]" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="preceding-sibling::w:bookmarkStart"/>
-        </xsl:otherwise>
-      </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="preceding-sibling::w:p[1]">
+            <xsl:variable name="first-not-bookmark-id" select="generate-id(preceding-sibling::w:p[1])" />
+            <xsl:copy-of select="preceding-sibling::w:bookmarkStart[preceding-sibling::*[$first-not-bookmark-id = generate-id(.)]]" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="preceding-sibling::w:bookmarkStart"/>
+          </xsl:otherwise>
+        </xsl:choose>
 	  </xsl:variable>
 	  <xsl:copy-of select="$bookmark-starts/w:bookmarkStart" />
 	</xsl:if>
@@ -251,6 +251,7 @@
       <xsl:for-each-group select="current-group()" group-ending-with="w:r[w:fldChar[@w:fldCharType='end']]">
         <xsl:choose>
           <xsl:when test="current-group()[w:fldChar[@w:fldCharType='end']]">
+            <xsl:apply-templates select="current-group()[self::w:bookmarkStart or self::w:bookmarkEnd]" mode="simplify"/>
             <w:r>
               <xsl:choose>
                 <xsl:when test="current-group()/w:rPr">
