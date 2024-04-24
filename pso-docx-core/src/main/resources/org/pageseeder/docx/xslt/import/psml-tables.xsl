@@ -28,7 +28,7 @@
 
     <xsl:if test="w:tblPr/w:tblW/@w:w!='' and w:tblPr/w:tblW/@w:type != 'auto'">
       <xsl:attribute name="width">
-        <xsl:value-of select="if(w:tblPr/w:tblW/@w:type = 'pct') then format-number((number(w:tblPr/w:tblW/@w:w) idiv 5000), '#%') else (number(w:tblPr/w:tblW/@w:w) idiv 15)" />
+        <xsl:value-of select="if(w:tblPr/w:tblW/@w:type = 'pct') then concat((number(w:tblPr/w:tblW/@w:w) idiv 50), '%') else (number(w:tblPr/w:tblW/@w:w) idiv 15)" />
       </xsl:attribute>
     </xsl:if>
 
@@ -97,7 +97,7 @@
       <xsl:attribute name="part" select="'footer'"/>
     </xsl:if>
     <xsl:apply-templates select="w:tc" mode="content" />
-    <xsl:if test="count(w:tc) = 0">
+    <xsl:if test="count(w:tc) = 0 or count(w:tc/w:tcPr/w:vMerge[not(@w:val)]) = count(w:tc)">
       <cell />
     </xsl:if>
   </row>

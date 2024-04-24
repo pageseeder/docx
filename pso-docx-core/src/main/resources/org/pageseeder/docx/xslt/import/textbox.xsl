@@ -23,6 +23,7 @@
      <xsl:for-each select="w:txbxContent/w:p[normalize-space(.)!='']">
        <para><xsl:value-of select="." /></para>
      </xsl:for-each>
+       <xsl:message>.2=<xsl:copy-of select="."/></xsl:message>
    </block>
  </xsl:template> 
  
