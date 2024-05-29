@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <config>
-	<toc generate="true" style="TOC1">
+	<toc generate="true">
     <outline generate="false"/>
   </toc>
 </config>
