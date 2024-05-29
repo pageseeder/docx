@@ -17,7 +17,7 @@
     <revision select="1" />
   </core>
 
-  <toc generate="true" style="TOC2">
+  <toc generate="true">
     <headings generate="true" select="1-9" /> <!-- 1|1-2|5-9|etc from 1 up to 9-->
     <outline generate="true" select="1-9" /> <!-- 1|1-2|5-9|etc from 1 up to 9-->
     <paragraph generate="false">
