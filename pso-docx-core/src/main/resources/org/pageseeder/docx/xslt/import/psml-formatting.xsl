@@ -153,16 +153,18 @@
         <xsl:text>-</xsl:text>
       </xsl:when>
       <!-- When is a graphic, create image -->
-      <xsl:when test="current()/name() = 'w:drawing' and not($in-heading)">
-        <xsl:apply-templates select="current()" mode="content" />
-      </xsl:when>
-
-      <xsl:when test="current()/name() = 'w:object' and not($in-heading)">
-        <xsl:apply-templates select="current()" mode="content" />
-      </xsl:when>
-      <!-- When is a pict, create image -->
-      <xsl:when test="current()/name() = 'w:pict' and not($in-heading)">
-        <xsl:apply-templates select="current()" mode="content" />
+      <xsl:when test="(current()/name() = 'w:drawing' or current()/name() = 'w:object' or current()/name() = 'w:pict')
+                      and not($in-heading)">
+        <xsl:choose>
+          <xsl:when test="$inline-value!=''">
+            <inline label="{$inline-value}">
+              <xsl:apply-templates select="current()" mode="content" />
+            </inline>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="current()" mode="content" />
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="current()/name() = 'w:footnoteReference' and config:convert-footnotes()">
         <xsl:choose>
