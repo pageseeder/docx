@@ -1032,8 +1032,22 @@
     </xsl:variable>
     <xsl:variable name="blocklabel" select="(ancestor::block)[last()]/@label" />
     <xsl:variable name="fragmentlabel" select="tokenize((ancestor::fragment)[last()]/@labels,',')" />
+    <xsl:variable name="table" select="ancestor::table[1]" />
+    <xsl:variable name="row" select="ancestor::row[1]" />
+    <xsl:variable name="cell" select="(ancestor-or-self::*[name()='cell' or name()='hcell'])[1]" />
+    <!-- TODO how should colspan and rowspan be handled for header? -->
+    <xsl:variable name="header" select="$row/@part='header' or
+            $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />
     <xsl:variable name="list-style-name" >
       <xsl:choose>
+        <xsl:when test="$table and not($role) and $header and
+            config:table-head-lists-style($labels, $table/@role, $list-type) != ''">
+          <xsl:value-of select="config:table-head-lists-style($labels, $table/@role, $list-type)"/>
+        </xsl:when>
+        <xsl:when test="$table and not($role) and not($header) and
+            config:table-body-lists-style($labels, $table/@role, $list-type) != ''">
+          <xsl:value-of select="config:table-body-lists-style($labels, $table/@role, $list-type)"/>
+        </xsl:when>
         <xsl:when test="config:list-style-for-block-label-document-label($blocklabel,$labels,$role,$list-type) != ''">
           <xsl:value-of select="config:list-style-for-block-label-document-label($blocklabel,$labels,$role,$list-type)"/>
         </xsl:when>

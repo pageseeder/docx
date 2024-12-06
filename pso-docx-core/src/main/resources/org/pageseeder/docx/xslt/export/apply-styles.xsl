@@ -88,17 +88,35 @@
         <xsl:value-of select="config:properties-value-style-name($labels, $props/@type)" />
       </xsl:when>
 
-      <!-- Paragraphs or empty cells within table -->
+      <!-- Paragraphs or empty cells within table and not list with role -->
       <xsl:when test="((self::para and ancestor::table) or self::cell or self::hcell) and
                        (config:table-head-style($labels, ancestor::table[1]/@role) != $default-paragraph-style or
-                       config:table-body-style($labels, ancestor::table[1]/@role) != $default-paragraph-style)">
+                       config:table-body-style($labels, ancestor::table[1]/@role) != $default-paragraph-style) and
+                       not(ancestor::*[name() = 'list' or name() = 'nlist'][last()]/@role)">
         <xsl:variable name="table" select="ancestor::table[1]" />
         <xsl:variable name="row" select="ancestor::row[1]" />
         <xsl:variable name="cell" select="(ancestor-or-self::*[name()='cell' or name()='hcell'])[1]" />
         <!-- TODO how should colspan and rowspan be handled for header? -->
         <xsl:variable name="header" select="$row/@part='header' or
             $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />
+        <xsl:variable name="list-style">
+          <xsl:choose>
+            <xsl:when test="ancestor::item[1]">
+              <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
+              <xsl:value-of select="if ($header) then
+                   config:table-head-lists-style($labels, $table/@role, $list-type) else
+                   config:table-body-lists-style($labels, $table/@role, $list-type)" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="''"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
         <xsl:choose>
+          <xsl:when test="$list-style != ''">
+            <xsl:variable name="list-level" select="count(ancestor::list)+count(ancestor::nlist)"/>
+            <xsl:value-of select="config:list-paragraphstyle-for-list-style($list-style, $list-level)" />
+          </xsl:when>
           <xsl:when test="$header">
             <xsl:value-of select="config:table-head-style($labels, $table/@role)" />
           </xsl:when>

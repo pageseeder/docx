@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.2.0">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -376,14 +376,18 @@
 
 	<xs:element name="table">
 		<xs:complexType>
-      <xs:sequence>
-        <xs:element ref="width" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
+			<xs:sequence>
+				<xs:element ref="width" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
 			<xs:attribute name="default" type="xs:string"/>
 			<xs:attribute name="role" type="xs:string"/>
 			<xs:attribute name="tablestyle" type="xs:string"/>
-      <xs:attribute name="headstyle" type="xs:string"/>
-      <xs:attribute name="bodystyle" type="xs:string"/>
+			<xs:attribute name="headstyle" type="xs:string"/>
+			<xs:attribute name="headliststyle" type="xs:string"/>
+			<xs:attribute name="headnliststyle" type="xs:string"/>
+			<xs:attribute name="bodystyle" type="xs:string"/>
+			<xs:attribute name="bodyliststyle" type="xs:string"/>
+			<xs:attribute name="bodynliststyle" type="xs:string"/>
 			<xs:attribute name="layout">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">

@@ -1,0 +1,149 @@
+<document id="186961" schemaversion="0.8" date="2014-03-24T15:28:19+11:00" version="current" level="portable">
+	<documentinfo>
+		<uri id="186961" scheme="https" host="ps.pageseeder.com" port="443" path="/ps/dev/docx/Documents/Test_Files/1.psml" decodedpath="/ps/dev/docx/Documents/Test_Files/1.psml" mediatype="application/vnd.pageseeder.psml+xml" created="2013-01-25T16:59:17+11:00" title="Tables">
+			<displaytitle>Tables</displaytitle>
+		</uri>
+		<reversexrefs>
+			<reversexref uriid="186960" href="/ps/dev/docx/Documents/Test_Files/Test_Files.psml" frag="1" urititle="Test Files – Master" id="455189" title="Test Files" type="none" forwardtype="embed"/>
+		</reversexrefs>
+	</documentinfo>
+	<fragmentinfo>
+		<locator id="103093" fragment="1" editid="466348" modified="2013-04-22T15:40:15+10:00"/>
+	</fragmentinfo>
+	<section id="title">
+		<fragment id="title">
+			<heading level="1">Tables</heading>
+		</fragment>
+	</section>
+	<section id="1">
+		<fragment id="1">
+			<para>Table with the following marked up cells:</para>
+			<para indent="1">B H</para>
+			<list>
+				<item>C1 I1</item>
+				<item>C2 I2
+					<list>
+						<item>C3 I3</item>
+					</list>
+				</item>
+			</list>
+			<nlist>
+				<item>D1 J1</item>
+				<item>D2 J2
+					<list>
+						<item>D3 J3</item>
+					</list>
+				</item>
+			</nlist>
+			<table>
+				<col part="header"/>
+				<col />
+				<col />
+				<col />
+				<row part="header">
+					<hcell>A</hcell>
+					<hcell><para indent="1">B</para></hcell>
+					<hcell>
+						<list>
+							<item>C1</item>
+							<item>C2
+								<list>
+									<item>C3</item>
+								</list>
+							</item>
+						</list>
+					</hcell>
+					<hcell>
+						<nlist>
+							<item>D1</item>
+							<item>D2
+								<nlist>
+									<item>D3</item>
+								</nlist>
+							</item>
+						</nlist>
+					</hcell>
+				</row>
+				<row>
+					<cell>G</cell>
+					<cell><para indent="1">H</para></cell>
+					<cell>
+						<list>
+							<item>I1</item>
+							<item>I2
+								<list>
+									<item>I3</item>
+								</list>
+							</item>
+						</list>
+					</cell>
+					<cell>
+						<nlist>
+							<item>J1</item>
+							<item>J2
+								<nlist>
+									<item>J3</item>
+								</nlist>
+							</item>
+						</nlist>
+					</cell>
+				</row>
+			</table>
+			<para>Table A with marked up cells</para>
+			<table role="tablea">
+				<col part="header"/>
+				<col />
+				<col />
+				<col />
+				<row part="header">
+					<hcell>A</hcell>
+					<hcell><para indent="1">B</para></hcell>
+					<hcell>
+						<list>
+							<item>C1</item>
+							<item>C2
+								<list>
+									<item>C3</item>
+								</list>
+							</item>
+						</list>
+					</hcell>
+					<hcell>
+						<nlist>
+							<item>D1</item>
+							<item>D2
+								<nlist>
+									<item>D3</item>
+								</nlist>
+							</item>
+						</nlist>
+					</hcell>
+				</row>
+				<row>
+					<cell>G</cell>
+					<cell><para indent="1">H</para></cell>
+					<cell>
+						<list>
+							<item>I1</item>
+							<item>I2
+								<list>
+									<item>I3</item>
+								</list>
+							</item>
+						</list>
+					</cell>
+					<cell>
+						<nlist>
+							<item>J1</item>
+							<item>J2
+								<nlist>
+									<item>J3</item>
+								</nlist>
+							</item>
+						</nlist>
+					</cell>
+				</row>
+			</table>
+		</fragment>
+	</section>
+</document>

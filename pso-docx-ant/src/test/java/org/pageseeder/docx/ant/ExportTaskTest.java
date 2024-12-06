@@ -440,6 +440,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testTablesLists() throws IOException, SAXException {
+    testIndividual("tables-lists");
+  }
+
+  @Test
   public void testTablesRoleWithWidthAuto() throws IOException, SAXException {
     testIndividual("tables-role-with-width-auto");
   }
@@ -453,11 +458,6 @@ public final class ExportTaskTest {
   public void testTablesRoleWithWidthPct() throws IOException, SAXException {
     testIndividual("tables-role-with-width-pct");
   }
-
-  //@Test
-  //public void testTemplateLists() throws IOException, SAXException {
-  //  testIndividual("template-lists", "document,numbering");
-  //}
 
   @Test
   public void testTocFalse() throws IOException, SAXException {
