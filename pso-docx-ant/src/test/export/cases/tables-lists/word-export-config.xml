@@ -10,8 +10,10 @@
 				   tablestyle="PS Table"
 				   headstyle="PS Table Header"
 				   headliststyle="Table Bulleted List"
+				   headnliststyle="Table Numbered List"
 				   bodystyle="PS Table Body"
-				   bodyliststyle="Table Bulleted List"/>
+				   bodyliststyle="Table Bulleted List"
+				   bodynliststyle="Table Numbered List"/>
 		</tables>
 		<para>
 			<indent level="1" wordstyle="List Continue"/>
