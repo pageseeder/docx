@@ -25,15 +25,26 @@
 <xsl:template match="document" mode="psml">
   <xsl:variable name="labels" select="tokenize(documentinfo/uri/labels,',')" as="xs:string*"/>
   <xsl:variable name="current-sec-num" select="config:section-number($labels)" />
+  <xsl:variable name="previous-doc" select="preceding::*[not(self::toc)][1]/ancestor::document[1]" />
   <xsl:variable name="previous-sec-num" select="config:section-number(
-          tokenize(preceding::*[1]/ancestor::document[1]/documentinfo/uri/labels,','))" />
+          tokenize($previous-doc/documentinfo/uri/labels,','))" />
+  <xsl:variable name="previous-doc2" select="$previous-doc/preceding::document[
+          config:section-number(tokenize(documentinfo/uri/labels,',')) != $previous-sec-num][1]" />
+  <xsl:variable name="previous2-sec-num" select="config:section-number(
+          tokenize($previous-doc2/documentinfo/uri/labels,','))" />
   <xsl:if test="$current-sec-num != $previous-sec-num and ancestor::document">
+    <!-- <xsl:message><xsl:value-of select="concat('$previous2-sec-num=',$previous2-sec-num,
+       ', $previous-sec-num=',$previous-sec-num,'=',not($previous-doc2))"/></xsl:message> -->
     <xsl:variable name="section-properties" select="(document(
           concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=$previous-sec-num]"/>
     <xsl:if test="$section-properties">
       <w:p>
         <w:pPr>
-          <xsl:copy-of select="$section-properties"/>
+          <xsl:apply-templates select="$section-properties" mode="section-properties">
+            <!-- only allow page number restart if this section is after previous in template -->
+            <xsl:with-param name="page-start"
+                 select="$previous-sec-num &gt; $previous2-sec-num or not($previous-doc2)" tunnel="yes" />
+          </xsl:apply-templates>
         </w:pPr>
       </w:p>
     </xsl:if>
@@ -125,9 +136,10 @@
 
 <xsl:template name="add-section">
   <xsl:param name="labels" tunnel="yes"/>
-  <!-- Add section properties only if there's not a document directly after and not at the end of the content -->
+  <!-- Add section properties only if there's not a document or toc directly after and not at the end of the content -->
   <!-- NOTE: Text between <document> elements that is not in it’s own element will not trigger a section break -->
-  <xsl:if test="not(following::*[1]/descendant-or-self::document) and
+  <!-- Also <toc> must be followed by a <section><xref-fragment> -->
+  <xsl:if test="not(following::*[1]/(descendant-or-self::document|descendant-or-self::toc)) and
       not(.//document[not(following::*)])">
     <xsl:variable name="current-sec-num" select="config:section-number($labels)" />
     <xsl:variable name="next-sec-num" select="config:section-number(
@@ -135,17 +147,35 @@
     <!-- If this section is different from the next or at the end of the document add section properties -->
     <xsl:if test="$current-sec-num != $next-sec-num or not(following::*)">
       <xsl:variable name="section-properties" select="(document(
-      concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=$current-sec-num]"/>
+          concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=$current-sec-num]"/>
       <xsl:if test="$section-properties">
+        <xsl:variable name="current-doc2" select=".//document[
+          config:section-number(tokenize(documentinfo/uri/labels,',')) != $current-sec-num]" />
+        <xsl:variable name="previous-doc2" select="preceding::document[
+          config:section-number(tokenize(documentinfo/uri/labels,',')) != $current-sec-num][1]" />
+        <xsl:variable name="previous2-sec-num" select="config:section-number(
+          tokenize($previous-doc2/documentinfo/uri/labels,','))" />
+        <!-- <xsl:message><xsl:value-of select="concat('$previous2-sec-num=',$previous2-sec-num,
+           ', $current-sec-num=',$current-sec-num,'-',not($current-doc2))"/></xsl:message> -->
         <xsl:choose>
           <xsl:when test="not(following::*)">
             <!-- no para for last section -->
-            <xsl:copy-of select="$section-properties"/>
+            <xsl:apply-templates select="$section-properties" mode="section-properties">
+              <!-- only allow page number restart if this section is after previous in template and no other changes -->
+              <xsl:with-param name="page-start"
+                   select="($current-sec-num &gt; $previous2-sec-num or not($previous-doc2))
+                   and not($current-doc2)" tunnel="yes" />
+            </xsl:apply-templates>
           </xsl:when>
           <xsl:otherwise>
             <w:p>
               <w:pPr>
-                <xsl:copy-of select="$section-properties"/>
+                <xsl:apply-templates select="$section-properties" mode="section-properties">
+                  <!-- only allow page number restart if this section is after previous in template and no other changes -->
+                  <xsl:with-param name="page-start"
+                       select="($current-sec-num &gt; $previous2-sec-num or not($previous-doc2))
+                       and not($current-doc2)" tunnel="yes" />
+                </xsl:apply-templates>
               </w:pPr>
             </w:p>
           </xsl:otherwise>
@@ -153,6 +183,26 @@
       </xsl:if>
     </xsl:if>
   </xsl:if>
+</xsl:template>
+
+<!-- copy all other elements unchanged -->
+<xsl:template match="w:pgNumType" mode="section-properties">
+  <xsl:param name="page-start" tunnel="yes" />
+  <!-- <xsl:message><xsl:value-of select="$page-start"/></xsl:message> -->
+  <xsl:copy>
+    <xsl:copy-of select="@*[not(local-name()='start')]"/>
+    <xsl:if test="$page-start and @w:start">
+      <xsl:attribute name="w:start" select="@w:start" />
+    </xsl:if>
+    <xsl:apply-templates select="node()" mode="section-properties"/>
+  </xsl:copy>
+</xsl:template>
+
+<!-- copy all other elements unchanged -->
+<xsl:template match="@*|node()" mode="section-properties">
+  <xsl:copy>
+    <xsl:apply-templates select="@*|node()" mode="section-properties"/>
+  </xsl:copy>
 </xsl:template>
 
 <!--
