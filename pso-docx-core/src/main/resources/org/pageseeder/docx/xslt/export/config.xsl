@@ -1107,6 +1107,111 @@ Indicate whether hyperlinks should be generated.
 </xsl:function>
 
 <!--
+  Returns the document label and table role specific table head list style
+  otherwise the document label specific table head list style
+  otherwise the document role specific table head list style
+  otherwise the default table head list style
+  otherwise empty string.
+
+  @param document-label the document label
+  @param role the table role
+  @param list-type 'list' or 'nlist'
+
+  @return the word list style name
+  -->
+<xsl:function name="config:table-head-lists-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:param name="list-type"/>
+
+  <xsl:choose>
+    <xsl:when test="$list-type='list'">
+      <xsl:value-of select="config:table-head-list-style($document-label, $role)" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="config:table-head-nlist-style($document-label, $role)" />
+    </xsl:otherwise>
+  </xsl:choose>
+
+</xsl:function>
+
+<!--
+  Returns the document label and table role specific table head list style
+  otherwise the document label specific table head list style
+  otherwise the document role specific table head list style
+  otherwise the default table head list style
+  otherwise empty string.
+
+  @param document-label the document label
+  @param role the table role
+
+  @return the word list style name
+-->
+<xsl:function name="config:table-head-list-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@headliststyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@headliststyle"/>
+  <xsl:variable name="role-style" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@headliststyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@headliststyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-style != ''">
+      <xsl:value-of select="$label-role-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$role-style != ''">
+      <xsl:value-of select="$role-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+Returns the document label and table role specific table head nlist style
+otherwise the document label specific table head nlist style
+otherwise the document role specific table head nlist style
+otherwise the default table head nlist style
+otherwise empty string.
+
+@param document-label the document label
+@param role the table role
+
+@return the word nlist style name
+-->
+<xsl:function name="config:table-head-nlist-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@headnliststyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@headnliststyle"/>
+  <xsl:variable name="role-style" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@headnliststyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@headnliststyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-style != ''">
+      <xsl:value-of select="$label-role-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$role-style != ''">
+      <xsl:value-of select="$role-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
   Returns the document label and table role specific table body style
   otherwise the document label specific table body style
   otherwise the document role specific table body style
@@ -1140,6 +1245,111 @@ Indicate whether hyperlinks should be generated.
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="$default-paragraph-style" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+  Returns the document label and table role specific table body list style
+  otherwise the document label specific table body list style
+  otherwise the document role specific table body list style
+  otherwise the default table body list style
+  otherwise empty string.
+
+  @param document-label the document label
+  @param role the table role
+  @param list-type 'list' or 'nlist'
+
+  @return the word list style name
+  -->
+<xsl:function name="config:table-body-lists-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:param name="list-type"/>
+
+  <xsl:choose>
+    <xsl:when test="$list-type='list'">
+      <xsl:value-of select="config:table-body-list-style($document-label, $role)" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="config:table-body-nlist-style($document-label, $role)" />
+    </xsl:otherwise>
+  </xsl:choose>
+
+</xsl:function>
+
+<!--
+Returns the document label and table role specific table body list style
+otherwise the document label specific table body list style
+otherwise the document role specific table body list style
+otherwise the default table body list style
+otherwise empty string.
+
+@param document-label the document label
+@param role the table role
+
+@return the word list style name
+-->
+<xsl:function name="config:table-body-list-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@bodyliststyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@bodyliststyle"/>
+  <xsl:variable name="role-style" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@bodyliststyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@bodyliststyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-style != ''">
+      <xsl:value-of select="$label-role-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$role-style != ''">
+      <xsl:value-of select="$role-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:function>
+
+<!--
+Returns the document label and table role specific table body nlist style
+otherwise the document label specific table body nlist style
+otherwise the document role specific table body nlist style
+otherwise the default table body nlist style
+otherwise empty string.
+
+@param document-label the document label
+@param role the table role
+
+@return the word nlist style name
+-->
+<xsl:function name="config:table-body-nlist-style" as="xs:string">
+  <xsl:param name="document-label"/>
+  <xsl:param name="role"/>
+  <xsl:variable name="label-role-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@role = $role]/@bodynliststyle"/>
+  <xsl:variable name="label-style" select="$config-doc/config/elements[@label = $document-label]/tables/table[@default]/@bodynliststyle"/>
+  <xsl:variable name="role-style" select="$config-doc/config/elements[not(@label)]/tables/table[@role = $role]/@bodynliststyle"/>
+  <xsl:variable name="default-style" select="$config-doc/config/elements[not(@label)]/tables/table[@default]/@bodynliststyle"/>
+  <xsl:choose>
+    <xsl:when test="$label-role-style != ''">
+      <xsl:value-of select="$label-role-style" />
+    </xsl:when>
+    <xsl:when test="$label-style != ''">
+      <xsl:value-of select="$label-style" />
+    </xsl:when>
+    <xsl:when test="$role-style != ''">
+      <xsl:value-of select="$role-style" />
+    </xsl:when>
+    <xsl:when test="$default-style != ''">
+      <xsl:value-of select="$default-style" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="''" />
     </xsl:otherwise>
   </xsl:choose>
 </xsl:function>

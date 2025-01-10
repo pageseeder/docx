@@ -1,12 +1,23 @@
 <?xml version="1.0"?>
 <config>
-  <elements>
-    <document wordsection="3" />
-  </elements>
-  <elements label="appendix">
+  <toc generate="true">
+    <outline generate="true" select="1-9" />
+  </toc>
+  <elements label="references">
     <document wordsection="1" />
   </elements>
-  <elements label="landscape">
+  <elements label="front">
     <document wordsection="2" />
+  </elements>
+  <elements label="landscape">
+    <document wordsection="4" />
+  </elements>
+  <elements>
+    <document wordsection="3" />
+    <heading>
+      <level value="1" wordstyle="Heading Unnum 1"/>
+      <level value="2" wordstyle="Heading Unnum 2"/>
+      <level value="3" wordstyle="Heading Unnum 3"/>
+    </heading>
   </elements>
 </config>

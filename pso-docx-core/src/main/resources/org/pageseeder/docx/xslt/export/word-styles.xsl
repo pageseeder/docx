@@ -25,33 +25,38 @@
 
 <!-- template to generate the styles.xml file -->
 <xsl:template match="w:styles" mode="styles">
- <xsl:param name="inline-labels" as="element()"/>
- <xsl:param name="block-labels" as="element()"/>
+  <xsl:param name="inline-labels" as="element()"/>
+  <xsl:param name="block-labels" as="element()"/>
+  <xsl:variable name="styles" select="." />
   <xsl:copy>
     <xsl:copy-of select="@*" />
     <xsl:apply-templates mode="styles"/>
     <xsl:for-each select="$inline-labels/label">
-     <xsl:variable name="id" select="concat('ps_inl_', @name)"/>
-      <w:style w:type="character" w:styleId="{$id}">
-        <w:name w:val="{$id}" />
-        <w:basedOn w:val="Normal" />
-        <w:rPr><w:bdr w:val="single" w:sz="4" w:space="0" w:color="D99594" w:themeColor="accent2" w:themeTint="99"/></w:rPr>
-      </w:style>
+      <xsl:variable name="id" select="concat('ps_inl_', @name)"/>
+      <xsl:if test="not($styles/w:style/w:name[@w:val=$id])">
+        <w:style w:type="character" w:styleId="{$id}">
+          <w:name w:val="{$id}" />
+          <w:basedOn w:val="Normal" />
+          <w:rPr><w:bdr w:val="single" w:sz="4" w:space="0" w:color="D99594" w:themeColor="accent2" w:themeTint="99"/></w:rPr>
+        </w:style>
+      </xsl:if>
     </xsl:for-each>
     <xsl:for-each select="$block-labels/label">
       <xsl:variable name="id" select="concat('ps_blk_', @name)"/>
-      <w:style w:type="paragraph" w:styleId="{$id}">
-        <w:name w:val="{$id}" />
-        <w:basedOn w:val="Normal" />
-        <w:pPr>
-          <w:pBdr>
-            <w:top w:val="single" w:sz="4" w:space="1" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
-            <w:left w:val="single" w:sz="4" w:space="4" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
-            <w:bottom w:val="single" w:sz="4" w:space="1" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
-            <w:right w:val="single" w:sz="4" w:space="4" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
-          </w:pBdr>
-        </w:pPr>
-      </w:style>
+      <xsl:if test="not($styles/w:style/w:name[@w:val=$id])">
+        <w:style w:type="paragraph" w:styleId="{$id}">
+          <w:name w:val="{$id}" />
+          <w:basedOn w:val="Normal" />
+          <w:pPr>
+            <w:pBdr>
+              <w:top w:val="single" w:sz="4" w:space="1" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
+              <w:left w:val="single" w:sz="4" w:space="4" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
+              <w:bottom w:val="single" w:sz="4" w:space="1" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
+              <w:right w:val="single" w:sz="4" w:space="4" w:color="8DB3E2" w:themeColor="text2" w:themeTint="66" />
+            </w:pBdr>
+          </w:pPr>
+        </w:style>
+      </xsl:if>
     </xsl:for-each>
   </xsl:copy>
 </xsl:template>

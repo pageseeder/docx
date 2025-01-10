@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<config>
+	<elements>
+		<tables>
+			<table default="PS Table"
+				   headstyle="PS Table Header"
+				   bodystyle="PS Table Body"/>
+			<table role="tablea"
+				   tablestyle="PS Table"
+				   headstyle="PS Table Header"
+				   headliststyle="Table Bulleted List"
+				   headnliststyle="Table Numbered List"
+				   bodystyle="PS Table Body"
+				   bodyliststyle="Table Bulleted List"
+				   bodynliststyle="Table Numbered List"/>
+		</tables>
+		<para>
+			<indent level="1" wordstyle="List Continue"/>
+		</para>
+		<list liststyle="Bulleted List" />
+		<nlist liststyle="Numbered List" />
+	</elements>
+</config>

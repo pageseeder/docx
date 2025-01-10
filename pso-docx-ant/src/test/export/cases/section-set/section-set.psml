@@ -8,6 +8,7 @@
       documenttype="references" created="2018-06-19T14:45:38+10:00"
       modified="2018-11-07T09:46:34+11:00" title="XRef-footnotes">
       <displaytitle>XRef-footnotes</displaytitle>
+      <labels>references</labels>
     </uri>
   </documentinfo>
   <fragmentinfo>
@@ -18,6 +19,42 @@
   <section id="61094-title">
     <fragment id="61094-1">
       <heading level="1">XRef-footnotes</heading>
+      <blockxref id="108288" frag="default" reversefrag="2"
+                 reversetitle="" reverselink="true" reversetype="none" display="document"
+                 type="embed" uriid="161095" href="front-matter.psml"
+                 urititle="Front matter" mediatype="application/vnd.pageseeder.psml+xml">
+        <document id="161095" schemaversion="0.12"
+                  date="2018-11-07T09:45:39+11:00" version="current" level="processed">
+          <documentinfo>
+            <uri id="161095" scheme="http" host="localhost" port="80"
+                 path="/ps/report/local1/test/front-matter.psml"
+                 decodedpath="/ps/report/local1/test/front-matter.psml"
+                 external="false" mediatype="application/vnd.pageseeder.psml+xml"
+                 created="2018-06-19T14:46:34+10:00" modified="2018-11-07T09:45:39+11:00"
+                 title="Front matter">
+              <displaytitle>Footnotes-content</displaytitle>
+              <labels>front</labels>
+            </uri>
+            <reversexrefs>
+              <reversexref uriid="61094" href="xref-footnotes.psml"
+                           frag="2" urititle="XRef-footnotes" mediatype="application/vnd.pageseeder.psml+xml"
+                           documenttype="references" id="108288" title="" type="none"
+                           forwardtype="embed" forwarddisplay="document"
+                           forwardfrag="default" />
+            </reversexrefs>
+          </documentinfo>
+          <fragmentinfo>
+            <locator id="45270" fragment="161095-2" editid="165858"
+                     modified="2018-11-07T09:45:39+11:00" />
+          </fragmentinfo>
+          <metadata />
+          <section id="161095-title">
+            <fragment id="161095-1">
+              <heading level="1">Front matter</heading>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
     </fragment>
   </section>
   <toc />
@@ -140,7 +177,7 @@
       <blockxref id="108305" frag="default" reversefrag="2"
         reversetitle="" reverselink="true" reversetype="none" display="document"
         type="embed" uriid="61097" href="footnotes-content2.psml"
-        urititle="Footnotes-content2" urilabels="appendix"
+        urititle="Footnotes-content2"
         mediatype="application/vnd.pageseeder.psml+xml">
         <document id="61097" schemaversion="0.12"
           date="2018-11-07T09:46:13+11:00" version="current" level="processed">
@@ -152,7 +189,6 @@
               created="2018-06-20T13:17:59+10:00" modified="2018-11-07T09:46:13+11:00"
               title="Footnotes-content2">
               <displaytitle>Footnotes-content2</displaytitle>
-              <labels>test,appendix</labels>
             </uri>
             <reversexrefs>
               <reversexref uriid="61094" href="xref-footnotes.psml"
@@ -213,7 +249,7 @@
                              created="2018-06-20T13:17:59+10:00" modified="2018-11-07T09:46:13+11:00"
                              title="Footnotes-transcluded">
                           <displaytitle>Footnotes-transcluded</displaytitle>
-                          <labels>landscape</labels>
+                          <labels>test,landscape</labels>
                         </uri>
                       </documentinfo>
                       <section id="title">
@@ -255,4 +291,5 @@
       </blockxref>
     </xref-fragment>
   </section>
+  <!-- <toc /> -->
 </document>
