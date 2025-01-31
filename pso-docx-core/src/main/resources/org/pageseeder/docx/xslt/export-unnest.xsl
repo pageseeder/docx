@@ -55,6 +55,12 @@
 <xsl:template match="item|cell|hcell" mode="unnest">
   <xsl:copy>
     <xsl:copy-of select="@*"/>
+    <!-- Word doesn't like the first node in a list item to be a table -->
+    <xsl:if test="self::item and
+        (node()[1][not(self::text())] or normalize-space(text()[1]) = '') and
+        (.//item | .//para | .//block | .//table | .//preformat)[1][self::table]">
+      <para/>
+    </xsl:if>
     <!-- Adjacent text, text with double <br/>, inline elements and image must be wrapped -->
     <xsl:for-each-group select="node()"
                         group-adjacent="if  (self::list or self::nlist or self::para or self::block
@@ -79,6 +85,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each-group>
+    <!-- Word doesn't like the last node in a cell to be a table -->
+    <xsl:if test="(self::cell or self::hcell) and
+        (node()[last()][not(self::text())] or normalize-space(text()[last()]) = '') and
+        (.//item | .//para | .//block | .//table | .//preformat)[last()][self::table]">
+      <para/>
+    </xsl:if>
+
   </xsl:copy>
 </xsl:template>
 

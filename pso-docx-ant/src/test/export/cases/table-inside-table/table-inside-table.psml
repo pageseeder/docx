@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><document id="21106" schemaversion="1.4" date="2025-01-29T10:24:36+11:00" version="current" level="processed"><documentinfo><uri id="21106" external="false" mediatype="application/vnd.pageseeder.psml+xml" created="2025-01-29T10:17:22+11:00" modified="2025-01-29T10:24:36+11:00" scheme="http" host="localhost" port="80" path="/ps/test/local1/documents/tables/table_1.psml" decodedpath="/ps/test/local1/documents/tables/table_1.psml" title="Table 1"><displaytitle>Table 1</displaytitle></uri></documentinfo><fragmentinfo><locator id="117172" fragment="21106-2" editid="231970" modified="2025-01-29T10:24:36+11:00"/></fragmentinfo><metadata/><section id="21106-title"><fragment id="21106-1">
+      <heading level="1">Table 1</heading>
+    </fragment></section><section id="21106-content"><fragment id="21106-2"><table><col/><col/><row><cell>1</cell><cell>2</cell></row><row><cell>3</cell><cell>
+<nlist><item>One
+    <blockxref id="231969" frag="2" reversefrag="2" reversetitle="   1 2   3        5 6   " reverselink="true" reversetype="none" display="document" type="transclude" uriid="21107" href="table_2.psml" urititle="Table 2" mediatype="application/vnd.pageseeder.psml+xml"><locator id="117174" fragment="21107-2" editid="231968" modified="2025-01-29T10:23:49+11:00"><reversexrefs><reversexref uriid="21106" href="table_1.psml" frag="2" urititle="Table 1" mediatype="application/vnd.pageseeder.psml+xml" id="231969" title="   1 2   3        5 6   " type="none" forwardtype="transclude" forwarddisplay="document" forwardfrag="2"/></reversexrefs></locator>
+        <fragment id="21107-2"><table><col/><col/><row><cell>a</cell><cell>b</cell></row><row><cell>c</cell><cell>d</cell></row></table></fragment>
+    </blockxref>
+</item></nlist>Para
+</cell></row><row><cell>5</cell><cell>6</cell></row></table></fragment>
+<fragment id="21106-3"><para>Table 2</para><table><col/><col/><row><cell>1</cell><cell>2</cell></row><row><cell>3</cell><cell>
+    <nlist><item>
+        <blockxref id="231970" frag="3" reversefrag="2" reversetitle="   1 2   3        5 6   " reverselink="true" reversetype="none" display="document" type="transclude" uriid="21107" href="table_2.psml" urititle="Table 2" mediatype="application/vnd.pageseeder.psml+xml"><locator id="117174" fragment="21107-2" editid="231968" modified="2025-01-29T10:23:49+11:00"><reversexrefs><reversexref uriid="21106" href="table_1.psml" frag="2" urititle="Table 1" mediatype="application/vnd.pageseeder.psml+xml" id="231969" title="   1 2   3        5 6   " type="none" forwardtype="transclude" forwarddisplay="document" forwardfrag="2"/></reversexrefs></locator>
+            <fragment id="21107-3"><table><col/><col/><row><cell>a</cell><cell>b</cell></row><row><cell>c</cell><cell>d</cell></row></table></fragment>
+        </blockxref>
+    </item></nlist>
+</cell></row><row><cell>5</cell><cell>6</cell></row></table></fragment>
+<fragment id="21106-4"><para>Table 3</para><table><col/><col/><row><cell>1</cell><cell>2</cell></row><row><cell>3</cell><cell>
+    <blockxref id="231971" frag="4" reversefrag="2" reversetitle="   1 2   3        5 6   " reverselink="true" reversetype="none" display="document" type="transclude" uriid="21107" href="table_2.psml" urititle="Table 2" mediatype="application/vnd.pageseeder.psml+xml"><locator id="117174" fragment="21107-2" editid="231968" modified="2025-01-29T10:23:49+11:00"><reversexrefs><reversexref uriid="21106" href="table_1.psml" frag="2" urititle="Table 1" mediatype="application/vnd.pageseeder.psml+xml" id="231969" title="   1 2   3        5 6   " type="none" forwardtype="transclude" forwarddisplay="document" forwardfrag="2"/></reversexrefs></locator>
+        <fragment id="21107-4"><table><col/><col/><row><cell>a</cell><cell>b</cell></row><row><cell>c</cell><cell>d</cell></row></table></fragment>
+    </blockxref>
+</cell></row><row><cell>5</cell><cell>6</cell></row></table></fragment>
+<fragment id="21106-5"><para>Table 4</para><table><col/><col/><row><cell>1</cell><cell>2</cell></row><row><cell>3</cell><cell>
+    <nlist><item>
+        <blockxref id="231970" frag="5" reversefrag="2" reversetitle="   1 2   3        5 6   " reverselink="true" reversetype="none" display="document" type="transclude" uriid="21107" href="table_2.psml" urititle="Table 2" mediatype="application/vnd.pageseeder.psml+xml"><locator id="117174" fragment="21107-2" editid="231968" modified="2025-01-29T10:23:49+11:00"><reversexrefs><reversexref uriid="21106" href="table_1.psml" frag="2" urititle="Table 1" mediatype="application/vnd.pageseeder.psml+xml" id="231969" title="   1 2   3        5 6   " type="none" forwardtype="transclude" forwarddisplay="document" forwardfrag="2"/></reversexrefs></locator>
+            <fragment id="21107-5"><table><col/><col/><row><cell>a</cell><cell>b</cell></row><row><cell>c</cell><cell>d</cell></row></table></fragment>
+        </blockxref>
+    </item>
+    <item>Two</item>
+    </nlist>
+</cell></row><row><cell>5</cell><cell>6</cell></row></table></fragment>
+<fragment id="21106-10">
+    <para>Table 5</para>
+    <nlist><item><table><col/><col/><row><cell>a</cell><cell>b</cell></row><row><cell>c</cell><cell>d</cell></row></table>aa</item>
+    <item>Two</item></nlist></fragment>
+</section></document>
