@@ -39,6 +39,12 @@
 <!-- location of the relationship file from the input docx -->
 <xsl:variable name="rels" select="concat($_rootfolder,'word/_rels/document.xml.rels')"  as="xs:string?"/>
 
+<!-- location of the footnotes relationship file from the input docx -->
+<xsl:variable name="f-rels" select="concat($_rootfolder,'word/_rels/footnotes.xml.rels')"  as="xs:string?"/>
+
+<!-- location of the endnotes relationship file from the input docx -->
+<xsl:variable name="e-rels" select="concat($_rootfolder,'word/_rels/endnotes.xml.rels')"  as="xs:string?"/>
+
 <!-- document node of the main document.xml file of the docx input document  -->
 <xsl:variable name="main-document" select="document($main)" as="node()"/>
 
@@ -50,6 +56,12 @@
 
 <!-- node of relationship document -->
 <xsl:variable name="relationship-document" select="document($rels)" as="node()"/>
+
+<!-- node of footnotes relationship document -->
+<xsl:variable name="f-relationship-document" select="document($f-rels)" as="node()"/>
+
+<!-- node of endnotes relationship document -->
+<xsl:variable name="e-relationship-document" select="document($e-rels)" as="node()"/>
 
 <!-- Footnote  file path -->
 <xsl:variable name="footnotes-file" select="concat($_rootfolder,'/word/new-footnotes.xml')"/>
