@@ -196,8 +196,8 @@
     <xsl:call-template name="create-rows-recursively">
       <xsl:with-param name="row-position" select="1" />
       <xsl:with-param name="previous-position" select="0" />
-      <xsl:with-param name="previous-row" select=".//row[1]" as="element()" />
-      <xsl:with-param name="row" select=".//row[1]" as="node()" />
+      <xsl:with-param name="previous-row" select="(.//row)[1]" as="element()" />
+      <xsl:with-param name="row" select="(.//row)[1]" as="node()" />
       <xsl:with-param name="column-properties" select="$column-properties" as="element()" />
     </xsl:call-template>
   </w:tbl>
@@ -371,7 +371,7 @@
       <xsl:with-param name="row-position" select="count($row/following-sibling::row[1]/preceding-sibling::row) + 1" />
       <xsl:with-param name="previous-position" select="count($row/following-sibling::row[1]/preceding-sibling::row)" />
       <xsl:with-param name="previous-row" select="$previous-row" as="element()" />
-      <xsl:with-param name="row" select="$row/following-sibling::row[1]" as="node()" />
+      <xsl:with-param name="row" select="($row/following-sibling::row)[1]" as="node()" />
       <xsl:with-param name="column-properties" select="$column-properties" as="element()" />
     </xsl:call-template>
 
@@ -479,7 +479,7 @@
         <xsl:with-param name="row-position" select="number($row-position) + 1" />
         <xsl:with-param name="previous-position" select="$previous-position" />
         <xsl:with-param name="previous-row" select="$currentRow" as="element()" />
-        <xsl:with-param name="row" select="$row/ancestor::table[1]//row[$row-position + 1]" as="node()" />
+        <xsl:with-param name="row" select="($row/ancestor::table[1]//row)[$row-position + 1]" as="node()" />
       </xsl:call-template>
     </xsl:when>
 
@@ -560,7 +560,7 @@
         <xsl:with-param name="row-position" select="number($row-position) + 1" />
         <xsl:with-param name="previous-position" select="$previous-position" />
         <xsl:with-param name="previous-row" select="$currentRow" as="element()" />
-        <xsl:with-param name="row" select="$row/ancestor::table[1]/row[$row-position + 1]" as="node()" />
+        <xsl:with-param name="row" select="($row/ancestor::table[1]/row)[$row-position + 1]" as="node()" />
       </xsl:call-template>
     </xsl:otherwise>
   </xsl:choose>

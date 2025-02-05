@@ -493,7 +493,10 @@
       <xsl:choose>
         <xsl:when test="$current/ancestor::w:hyperlink/@r:id">
           <xsl:variable name="rid" select="$current/ancestor::w:hyperlink/@r:id" />
-          <link href="{$relationship-document/rs:Relationships/rs:Relationship[@Id=$rid]/@Target}">
+          <xsl:variable name="rdoc" select="if ($current/ancestor::w:footnote)
+              then $f-relationship-document else if ($current/ancestor::w:endnote)
+              then $e-relationship-document else $relationship-document" />
+          <link href="{$rdoc/rs:Relationships/rs:Relationship[@Id=$rid]/@Target}">
             <xsl:value-of select="$htext" />
           </link>
         </xsl:when>

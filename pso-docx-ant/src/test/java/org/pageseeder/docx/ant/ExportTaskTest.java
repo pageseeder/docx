@@ -390,6 +390,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testTableInsideTable() throws IOException, SAXException {
+    testIndividual("table-inside-table", true);
+  }
+
+  @Test
   public void testTablesColRowHcellCellRole() throws IOException, SAXException {
     testIndividual("tables-col-row-hcell-cell-role");
   }

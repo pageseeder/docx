@@ -20,7 +20,7 @@ ext {
   antVersion = '1.10.13'
   junitVersion = '4.13.1'
   saxonHEVersion = '10.1'
-  slf4jAPIVersion = '1.7.36'
+  slf4jAPIVersion = '2.0.9'
   xmlunitVersion = '1.6'
 
 }

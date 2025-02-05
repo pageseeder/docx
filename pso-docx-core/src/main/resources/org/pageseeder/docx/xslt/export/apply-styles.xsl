@@ -101,7 +101,7 @@
             $table/col[position()=(count($cell/preceding-sibling::*)+1)]/@part='header'" />
         <xsl:variable name="list-style">
           <xsl:choose>
-            <xsl:when test="ancestor::item[1]">
+            <xsl:when test="parent::item">
               <xsl:variable name="list-type" select="ancestor::*[name() = 'list' or name() = 'nlist'][1]/name()"/>
               <xsl:value-of select="if ($header) then
                    config:table-head-lists-style($labels, $table/@role, $list-type) else

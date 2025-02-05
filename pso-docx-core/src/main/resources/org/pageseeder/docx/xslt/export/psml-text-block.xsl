@@ -148,7 +148,7 @@
         </w:rPr>
       </xsl:if>
       <xsl:choose>
-        <xsl:when test="ancestor::item">
+        <xsl:when test="parent::item">
           <xsl:choose>
             <xsl:when test="position()=1">
               <xsl:call-template name="apply-style" />

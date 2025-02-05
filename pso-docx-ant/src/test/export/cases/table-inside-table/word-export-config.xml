@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+	<elements>
+		<document wordsection="3"/>
+		<tables>
+			<table default="PS Table"
+				   headstyle="PS Table Header"
+				   bodystyle="PS Table Body"
+				   bodyliststyle="Table Bulleted List"
+				   bodynliststyle="Table Numbered List">
+				<width type="pct" value="5000"/>
+			</table>
+		</tables>
+	</elements>
+</config>
