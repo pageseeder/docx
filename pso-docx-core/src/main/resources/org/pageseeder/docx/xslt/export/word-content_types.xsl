@@ -112,6 +112,8 @@
                 </xsl:for-each>
               </xsl:when>
               <xsl:otherwise>
+                <xsl:copy-of
+                    select="document(concat($_dotxfolder,'/docProps/core.xml'))/cp:coreProperties/cp:contentStatus" />
                 <xsl:if test="config:creator() != ''">
                   <dc:creator>
                     <xsl:value-of select="config:ps-token(config:creator())" />
