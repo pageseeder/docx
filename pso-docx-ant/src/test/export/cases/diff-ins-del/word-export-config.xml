@@ -11,7 +11,7 @@
 				   bodystyle="PS Table Body"
 				   bodyliststyle="Table Bulleted List"
 				   bodynliststyle="Table Numbered List">
-				<width type="pct" value="5000"/>
+				<width type="pct" value="100%"/>
 			</table>
 		</tables>
 	</elements>
