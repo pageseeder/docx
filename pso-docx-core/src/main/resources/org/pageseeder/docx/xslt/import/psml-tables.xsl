@@ -26,9 +26,13 @@
       </xsl:attribute>
     </xsl:if>
 
-    <xsl:if test="w:tblPr/w:tblW/@w:w!='' and w:tblPr/w:tblW/@w:type != 'auto'">
+    <xsl:variable name="w" select="w:tblPr/w:tblW/@w:w" />
+    <xsl:variable name="wtype" select="w:tblPr/w:tblW/@w:type" />
+    <xsl:if test="$w != '' and $wtype != 'auto'">
       <xsl:attribute name="width">
-        <xsl:value-of select="if(w:tblPr/w:tblW/@w:type = 'pct') then concat((number(w:tblPr/w:tblW/@w:w) idiv 50), '%') else (number(w:tblPr/w:tblW/@w:w) idiv 15)" />
+        <xsl:value-of select="if ($wtype = 'pct') then
+            (if (contains($w,'%')) then $w else concat(number($w) idiv 50, '%'))
+            else (number($w) idiv 15)" /><!-- pixels = dxa / 15 and in Word 2006 percent = pct / 50 -->
       </xsl:attribute>
     </xsl:if>
 
