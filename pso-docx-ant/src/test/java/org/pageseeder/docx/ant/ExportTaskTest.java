@@ -1,13 +1,15 @@
 package org.pageseeder.docx.ant;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 import org.xmlunit.matchers.CompareMatcher;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Test cases for export task
@@ -336,7 +338,7 @@ public final class ExportTaskTest {
     long end = System.currentTimeMillis();
     long time = end - start;
     System.out.println("Large PSML time (ms): " + time);
-    Assert.assertTrue(40000 > time); // 40 seconds
+    Assertions.assertTrue(40000 > time); // 40 seconds
   }
 
   @Test
@@ -621,11 +623,11 @@ public final class ExportTaskTest {
           File expected = new File(dir, name + ".xml");
 
           // Check that the files exist
-          Assert.assertTrue(actual.exists());
-          Assert.assertTrue(expected.exists());
+          Assertions.assertTrue(actual.exists());
+          Assertions.assertTrue(expected.exists());
 
-          Assert.assertTrue(actual.length() > 0);
-          Assert.assertTrue(expected.length() > 0);
+          Assertions.assertTrue(actual.length() > 0);
+          Assertions.assertTrue(expected.length() > 0);
           assertXMLEqual(expected, actual, result);
         }
       } else {
@@ -642,13 +644,13 @@ public final class ExportTaskTest {
     // validate test PSML
     File psml = new File(test, test.getName() + ".psml");
     if (!test.getName().startsWith("diff")) {
-      Assert.assertThat(psml, XML.validates("psml-processed.xsd"));
+      assertThat(psml, XML.validates("psml-processed.xsd"));
     }
     task.setSrc(psml);
 
     // validate config file
     File export_config = new File(test, "word-export-config.xml");
-    Assert.assertThat(export_config, XML.validates("word-export-config.xsd"));
+    assertThat(export_config, XML.validates("word-export-config.xsd"));
     task.setConfig(export_config);
 
     File template = new File(test, "word-export-template.dotx");
@@ -696,7 +698,7 @@ public final class ExportTaskTest {
 
   private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
     try {
-      Assert.assertThat(actual, CompareMatcher.isIdenticalTo(expected));
+      assertThat(actual, CompareMatcher.isIdenticalTo(expected));
     } catch (AssertionError error) {
       File expfile = new File(result, "expected-" + actual.getName());
       File actfile = new File(result, "actual-" + actual.getName());

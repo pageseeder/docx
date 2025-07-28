@@ -36,7 +36,7 @@ public final class XML {
   /**
    * Generate the DOM Source instance from the response content.
    *
-   * @param response The response from PageSeeder
+   * @param xml The response from PageSeeder
    *
    * @return The corresponding DOM source
    */
@@ -47,7 +47,7 @@ public final class XML {
   /**
    * Generate the DOM Source instance from the response content.
    *
-   * @param response The response from PageSeeder
+   * @param xml The response from PageSeeder
    *
    * @return The corresponding DOM source
    */

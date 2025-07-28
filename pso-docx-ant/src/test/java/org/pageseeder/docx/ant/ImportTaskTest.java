@@ -1,7 +1,7 @@
 package org.pageseeder.docx.ant;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.pageseeder.docx.util.Files;
 import org.xml.sax.SAXException;
 import org.xmlunit.matchers.CompareMatcher;
@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ImportTaskTest {
 
@@ -89,8 +91,8 @@ public class ImportTaskTest {
     // check footnotes
     File actual = new File(RESULTS, folder + "/components/footnotes.psml");
     File expected = new File(CASES, folder + "/components/footnotes.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/components"));
   }
 
@@ -101,8 +103,8 @@ public class ImportTaskTest {
     // check endnotes
     File actual = new File(RESULTS, folder + "/components/endnotes.psml");
     File expected = new File(CASES, folder + "/components/endnotes.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/components"));
   }
 
@@ -110,8 +112,8 @@ public class ImportTaskTest {
   public void testEmptyConfigurationImages() throws IOException, SAXException {
     testIndividual("empty-configuration-images");
     File result = new File(RESULTS, "empty-configuration-images");
-    Assert.assertTrue("Image 1 missing", new File(result, "images/image1.jpg").exists());
-    Assert.assertTrue("Image 2 missing", new File(result, "images/image +!'()~.2.jpeg").exists());
+    Assertions.assertTrue(new File(result, "images/image1.jpg").exists(), "Image 1 missing");
+    Assertions.assertTrue(new File(result, "images/image +!'()~.2.jpeg").exists(), "Image 2 missing");
   }
 
   @Test
@@ -160,7 +162,7 @@ public class ImportTaskTest {
     String folder = "endnotes-disabled";
     testIndividual(folder);
     // check no footnotes
-    Assert.assertFalse(new File(RESULTS, folder + "/components/endnotes.psml").exists());
+    Assertions.assertFalse(new File(RESULTS, folder + "/components/endnotes.psml").exists());
   }
 
   @Test
@@ -170,13 +172,13 @@ public class ImportTaskTest {
     // check footnotes
     File actual = new File(RESULTS, folder + "/endnotes/endnotes1.psml");
     File expected = new File(CASES, folder + "/endnotes/endnotes1.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/endnotes"));
     actual = new File(RESULTS, folder + "/endnotes/endnotes2.psml");
     expected = new File(CASES, folder + "/endnotes/endnotes2.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/endnotes"));
   }
 
@@ -185,7 +187,7 @@ public class ImportTaskTest {
     String folder = "footnotes-disabled";
     testIndividual(folder);
     // check no footnotes
-    Assert.assertFalse(new File(RESULTS, folder + "/components/footnotes.psml").exists());
+    Assertions.assertFalse(new File(RESULTS, folder + "/components/footnotes.psml").exists());
   }
 
   @Test
@@ -195,13 +197,13 @@ public class ImportTaskTest {
     // check footnotes
     File actual = new File(RESULTS, folder + "/footnotes/footnotes1.psml");
     File expected = new File(CASES, folder + "/footnotes/footnotes1.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/footnotes"));
     actual = new File(RESULTS, folder + "/footnotes/footnotes2.psml");
     expected = new File(CASES, folder + "/footnotes/footnotes2.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/footnotes"));
   }
 
@@ -412,18 +414,18 @@ public class ImportTaskTest {
     // check footnotes
     File actual = new File(RESULTS, folder + "/mathml/mathml-9766.mml");
     File expected = new File(CASES, folder + "/mathml/mathml-9766.mml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
     actual = new File(RESULTS, folder + "/mathml/mathml-32322.mml");
     expected = new File(CASES, folder + "/mathml/mathml-32322.mml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
     actual = new File(RESULTS, folder + "/mathml/mathml-53849.mml");
     expected = new File(CASES, folder + "/mathml/mathml-53849.mml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
   }
 
@@ -434,18 +436,18 @@ public class ImportTaskTest {
     // check footnotes
     File actual = new File(RESULTS, folder + "/mathml/mathml-9766.psml");
     File expected = new File(CASES, folder + "/mathml/mathml-9766.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
     actual = new File(RESULTS, folder + "/mathml/mathml-32322.psml");
     expected = new File(CASES, folder + "/mathml/mathml-32322.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
     actual = new File(RESULTS, folder + "/mathml/mathml-53849.psml");
     expected = new File(CASES, folder + "/mathml/mathml-53849.psml");
-    Assert.assertTrue(actual.exists());
-    Assert.assertTrue(expected.exists());
+    Assertions.assertTrue(actual.exists());
+    Assertions.assertTrue(expected.exists());
     assertXMLEqual(expected, actual, new File(RESULTS, folder + "/mathml"));
   }
 
@@ -676,11 +678,11 @@ public class ImportTaskTest {
         File expected = new File(dir, "expected.psml");
 
         // Check that the files exist
-        Assert.assertTrue(actual.exists());
-        Assert.assertTrue(expected.exists());
+        Assertions.assertTrue(actual.exists());
+        Assertions.assertTrue(expected.exists());
 
-        Assert.assertTrue(actual.length() > 0);
-        Assert.assertTrue(expected.length() > 0);
+        Assertions.assertTrue(actual.length() > 0);
+        Assertions.assertTrue(expected.length() > 0);
         assertXMLEqual(expected, actual, result);
       } else {
         throw new IOException("Unable to find DOCX file for test:" + dir.getName());
@@ -694,7 +696,7 @@ public class ImportTaskTest {
 
     // validate config file
     File import_config = new File(test, "word-import-config.xml");
-    Assert.assertThat(import_config, XML.validates("word-import-config.xsd"));
+    assertThat(import_config, XML.validates("word-import-config.xsd"));
 
     task.setConfig(import_config);
 
@@ -710,7 +712,7 @@ public class ImportTaskTest {
 
     // validate result PSML
     File actual = new File(result, test.getName() + ".psml");
-    Assert.assertThat(actual, XML.validates("psml-processed.xsd"));
+    assertThat(actual, XML.validates("psml-processed.xsd"));
 
     return actual;
   }
@@ -727,7 +729,7 @@ public class ImportTaskTest {
 
   private static void assertXMLEqual(File expected, File actual, File result) throws IOException, SAXException {
     try {
-      Assert.assertThat(actual, CompareMatcher.isIdenticalTo(expected));
+      assertThat(actual, CompareMatcher.isIdenticalTo(expected));
     } catch (AssertionError error) {
       //System.err.println("Expected:");
       //copyToSystemErr(expected);
