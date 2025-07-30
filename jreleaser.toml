@@ -1,0 +1,37 @@
+[project]
+name = "docx"
+description = "DOCX import and export API"
+tags = ["xml", "psml", "docx", "pageseeder", "java"]
+authors = ["Carlos Cabral", "Christophe Lauret", "Jean-Baptiste Reure", "Philip Rutherford"]
+license = "Apache-2.0"
+inceptionYear = "2016"
+vendor = "Allette Systems"
+
+# Organization info
+[project.links]
+homepage = "https://github.com/pageseeder/docx"
+documentation = "https://dev.pageseeder.com"
+license = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+
+# Java-specific configuration
+[project.languages.java]
+groupId = "org.pageseeder"
+
+# Git configuration
+[release.github]
+owner = "pageseeder"
+name = "docx"
+username = "pageseeder"
+branch = "master"
+
+# Signing configuration
+[signing]
+active = "ALWAYS"
+armored = true
+mode = "FILE"
+
+# Maven deployment configuration
+[deploy.maven.mavenCentral.sonatype]
+active = "ALWAYS"
+url = "https://central.sonatype.com/api/v1/publisher"
+stagingRepositories = ["build/staging-deploy"]

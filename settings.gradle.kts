@@ -3,3 +3,12 @@ rootProject.name = "pso-docx"
 include(":pso-docx-core")
 include(":pso-docx-ant")
 include(":pso-docx-ox")
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+
