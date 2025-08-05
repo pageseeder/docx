@@ -41,7 +41,8 @@ xmlunit-matchers = { module = "org.xmlunit:xmlunit-matchers", version.ref = "xml
 junit = [
     "junit-jupiter-api",
     "junit-platform-launcher",
-    "junit-platform-engine"
+    "junit-platform-engine",
+    "junit-jupiter-engine"
 ]
 
 [plugins]

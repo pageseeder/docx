@@ -5,7 +5,7 @@ dependencies {
   // DOCX module dependencies
   implementation(project(":pso-docx-core"))
   implementation(libs.slf4j.api)
-  implementation(libs.slf4j.api)
+  implementation(libs.pso.xmlwriter)
   implementation(libs.ox)
 
   testRuntimeOnly(libs.schematron)

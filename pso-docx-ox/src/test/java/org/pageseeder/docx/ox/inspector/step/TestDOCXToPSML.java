@@ -7,15 +7,17 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.pageseeder.docx.ox.step.DOCXToPSML;
 import org.pageseeder.ox.OXConfig;
 import org.pageseeder.ox.api.Result;
 import org.pageseeder.ox.core.Model;
 import org.pageseeder.ox.core.PackageData;
 import org.pageseeder.ox.core.StepInfoImpl;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Ciber Cai
@@ -24,20 +26,22 @@ import org.pageseeder.ox.core.StepInfoImpl;
 public class TestDOCXToPSML {
   private final File file = new File("src/test/resources/models/m1/Sample.docx");
 
-  @Before
-  public void init() {
+  @BeforeAll
+  public static void init() {
     File modelDir = new File("src/test/resources/models");
     OXConfig config = OXConfig.get();
     config.setModelsDirectory(modelDir);
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testEmpty() {
-    String output = "output/empty";
-    String modelName = "docx-to-psml";
-    PackageData data = PackageData.newPackageData(modelName, this.file);
+    assertThrows(NullPointerException.class, () -> {
+      String output = "output/empty";
+      String modelName = "docx-to-psml";
+      PackageData data = PackageData.newPackageData(modelName, this.file);
 
-    process(data, null, output, modelName, "to-psml", null);
+      process(data, null, output, modelName, "to-psml", null);
+    });
   }
 
   @Test
@@ -51,14 +55,14 @@ public class TestDOCXToPSML {
     Result result = process(data, null, output, modelName, "to-psml", parameters);
 
 
-    Assert.assertNotNull(result);
-    Assert.assertEquals("OK", result.status().name());
+    Assertions.assertNotNull(result);
+    Assertions.assertEquals("OK", result.status().name());
 
 
 
     File psml = data.getFile(output);
-    Assert.assertTrue(psml.exists());
-    Assert.assertTrue(psml.length() > 1);
+    Assertions.assertTrue(psml.exists());
+    Assertions.assertTrue(psml.length() > 1);
   }
 
   @Test
@@ -72,14 +76,14 @@ public class TestDOCXToPSML {
     Result result = process(data, null, output, modelName, "to-psml", parameters);
 
 
-    Assert.assertNotNull(result);
-    Assert.assertEquals("OK", result.status().name());
+    Assertions.assertNotNull(result);
+    Assertions.assertEquals("OK", result.status().name());
 
 
 
     File psml = new File (data.getFile(output),"Sample.psml");
-    Assert.assertTrue(psml.exists());
-    Assert.assertTrue(psml.length() > 1);
+    Assertions.assertTrue(psml.exists());
+    Assertions.assertTrue(psml.length() > 1);
   }
 
   protected Result process (String modelName, String stepName){

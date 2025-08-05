@@ -1,7 +1,8 @@
 plugins {
   id("java-library")
   id("maven-publish")
-  alias(libs.plugins.jreleaser).apply(false)
+  alias(libs.plugins.jreleaser)
+    //.apply(false)
 //  id("org.jreleaser") version "1.18.0" apply false
 //  id("io.codearte.nexus-staging") version "0.30.0"
 }
@@ -19,7 +20,8 @@ subprojects {
   version = rootProject.version
 
   apply(plugin = "java")
-  apply(plugin = "org.jreleaser")
+  apply(plugin = "maven-publish")
+  //apply(plugin = "org.jreleaser")
 
 //  apply(from = "$rootDir/gradle/publish-mavencentral.gradle.kts")
 
@@ -30,6 +32,7 @@ subprojects {
     toolchain {
       languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withJavadocJar()
     withSourcesJar()
   }
 
@@ -37,9 +40,12 @@ subprojects {
     mavenCentral()
   }
 
-//  TODO javadoc {
-//    failOnError= false
-//  }
+  tasks.javadoc {
+    options.encoding = "UTF-8"
+    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+//    failOnError = false
+  }
+
 
   tasks.test {
     useJUnitPlatform()
@@ -91,12 +97,27 @@ subprojects {
     }
     repositories {
       maven {
-        url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
+        url = rootProject.layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
       }
     }
   }
+}
 
-  jreleaser {
-    configFile.set(file("jreleaser.toml"))
+jreleaser {
+  configFile.set(file("jreleaser.toml"))
+  distributions {
+    subprojects.forEach { subproject ->
+      register(subproject.name) {
+        artifact {
+          path.set(subproject.layout.buildDirectory.file("libs/${subproject.name}-${project.version}.jar"))
+        }
+        artifact {
+          path.set(subproject.layout.buildDirectory.file("libs/${subproject.name}-${project.version}-sources.jar"))
+        }
+        artifact {
+          path.set(subproject.layout.buildDirectory.file("libs/${subproject.name}-${project.version}-javadoc.jar"))
+        }
+      }
+    }
   }
 }

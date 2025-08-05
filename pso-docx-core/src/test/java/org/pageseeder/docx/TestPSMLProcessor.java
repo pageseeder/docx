@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestPSMLProcessor {
 
@@ -41,10 +41,10 @@ public class TestPSMLProcessor {
       System.out.println(process.getLog());
     } catch (IOException ex) {
       ex.printStackTrace();
-      Assert.fail();
+      Assertions.fail();
     }
 
-    Assert.assertTrue(destination.exists());
+    Assertions.assertTrue(destination.exists());
   }
 
 }
