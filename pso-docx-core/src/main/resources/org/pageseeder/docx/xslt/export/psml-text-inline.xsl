@@ -146,7 +146,7 @@
 
 <!-- Match inserted content: only used when diffx is applied -->
 <xsl:template match="diff:ins" mode="psml">
-  <w:ins w:author="Pageseeder" w:date="{fn:get-current-date()}">
+  <w:ins w:author="PageSeeder">
     <xsl:attribute name="w:id" select="count(preceding::diff:ins) + count(preceding::diff:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
     <xsl:apply-templates mode="psml"/>
   </w:ins>
@@ -154,7 +154,7 @@
 
 <!-- Match deleted content: only used when diffx is applied -->
 <xsl:template match="diff:del" mode="psml">
-  <w:del w:author="Pageseeder" w:date="{fn:get-current-date()}">
+  <w:del w:author="PageSeeder">
     <xsl:attribute name="w:id" select="count(preceding::diff:ins) + count(preceding::diff:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
     <xsl:apply-templates mode="psml"/>
   </w:del>
@@ -162,7 +162,7 @@
 
 <!-- Match inserted content: only used when diffx is applied - for backward compatibility -->
 <xsl:template match="dfx:ins" mode="psml">
-<w:ins w:author="Pageseeder" w:date="{fn:get-current-date()}">
+<w:ins w:author="PageSeeder">
   <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
   <xsl:apply-templates mode="psml"/>
 </w:ins>
@@ -170,7 +170,7 @@
 
 <!-- Match deleted content: only used when diffx is applied - for backward compatibility -->
 <xsl:template match="dfx:del" mode="psml">
-  <w:del w:author="Pageseeder" w:date="{fn:get-current-date()}">
+  <w:del w:author="PageSeeder">
     <xsl:attribute name="w:id" select="count(preceding::dfx:ins) + count(preceding::dfx:del) + count(preceding::fragment) + count(ancestor::fragment) +count(preceding::xref) + count(preceding::document) + count(ancestor::document) + count(preceding::link[@name])"/>
     <xsl:apply-templates mode="psml"/>
   </w:del>

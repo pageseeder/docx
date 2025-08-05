@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?><document id="11069" schemaversion="1.4" date="2025-07-18T16:45:19+10:00" version="current" level="portable"><documentinfo><uri id="11069" external="false" mediatype="application/vnd.pageseeder.psml+xml" created="2025-07-15T11:17:48+10:00" modified="2025-07-18T16:45:19+10:00" scheme="http" host="localhost" port="80" path="/ps/test/local2/documents/media/psml/lorem_ipsum.psml" decodedpath="/ps/test/local2/documents/media/psml/lorem_ipsum.psml"><displaytitle>lorem_ipsum.psml</displaytitle></uri></documentinfo><fragmentinfo><locator id="14785" fragment="2.1441"/><locator id="14786" fragment="1"/><locator id="14787" fragment="2.1771"/><locator id="14812" fragment="2.1691" editid="50067" modified="2025-07-18T16:45:19+10:00"/><locator id="14782" fragment="2.1871"/></fragmentinfo><metadata/><section id="1"><fragment id="1">
+      <heading level="1">Lorem ipsum</heading>
+    </fragment></section><toc/><section id="2"><fragment id="2">
+      <para>The purpose of this document is to demonstrate the visual presentation of a typical <inline label="HeaderLabel">PageSeeder document</inline>,
+      in order to make it easier to adjust the font, typography, and layout.</para>
+    </fragment><fragment id="2.1251">
+      <heading level="1">heading level="1"</heading>
+      <heading level="2">heading level="2"</heading>
+      <heading level="3">heading level="3"</heading>
+      <heading level="4">heading level="4"</heading>
+      <heading level="5">heading level="5"</heading>
+      <heading level="6">heading level="6"</heading>
+      <para> </para>
+      <heading level="1" numbered="true">heading level="1"</heading>
+      <heading level="2" numbered="true">heading level="2"</heading>
+      <heading level="3" numbered="true">heading level="3"</heading>
+      <heading level="4" numbered="true">heading level="4"</heading>
+      <heading level="5" numbered="true">heading level="5"</heading>
+      <heading level="6" numbered="true">heading level="6"</heading>
+      <para> </para>
+    </fragment><fragment id="2.1441">
+      <heading level="1">Paragraph</heading>
+      <para>
+        Lorem ipsum dolor sit amet, 
+        <link href="http://pageseeder.com/" uriid="7960">test link</link>
+         adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui.
+        Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis,
+        massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor
+        <xref id="49922" title="test xlink" frag="1" reversefrag="2.1441" reverselink="false" display="manual" type="none" uriid="11069" href="/ps/test/local2/documents/media/psml/lorem_ipsum.psml" urititle="lorem_ipsum.psml" mediatype="application/vnd.pageseeder.psml+xml">test xlink</xref>.
+        Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo
+        vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+      </para>
+      <para>
+        Lorem ipsum dolor sit amet,
+        <bold>bold</bold>
+        consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+        suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+        Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+        Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+        consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+      </para>
+      <para>
+        Lorem ipsum dolor sit amet,
+        <italic>italic</italic>
+        consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+        suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+        Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+        Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+        consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+      </para>
+      <block label="block1">Lorem ipsum dolor sit amet, code consectetuer adipiscing elit end code. Nullam dignissim convallis est.
+        Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at,
+        tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo,
+        eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris
+        a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+      </block>
+      <block label="block2">Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+        gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+      </block>
+    </fragment><fragment id="2.1581">
+      <heading level="1">List Types</heading>
+      <heading level="2">Ordered List</heading>
+      <nlist>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
+        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
+        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+          eget metus.</item>
+      </nlist>
+      <heading level="2">Unordered List</heading>
+      <list>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
+        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
+        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+          eget metus.</item>
+      </list>
+      <para>
+      </para>
+      <heading level="2">List Indentation</heading>
+      <para> </para>
+      <nlist>
+        <item>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          <nlist>
+            <item>
+              Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+              <nlist>
+                <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                  gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
+                  volutpat enim diam eget metus.</item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
+      </nlist>
+      <para> </para>
+      <list>
+        <item>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          <list>
+            <item>
+              Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+              <list>
+                <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                  gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
+                  volutpat enim diam eget metus.</item>
+              </list>
+            </item>
+          </list>
+        </item>
+      </list>
+      <para>
+      </para>
+      <para> </para>
+      <para> </para>
+    </fragment><fragment id="2.1691"><heading level="1">Tables2</heading><para>Horizontal Header with Caption</para><table width="400"><caption>Caption: Lorem ipsum dolor sit amet</caption><row><hcell>Header</hcell><hcell>Horizontal</hcell></row><row><cell>Cell1</cell><cell>Cell2</cell></row><row><cell>Cell3</cell><cell>Cell4</cell></row></table><heading level="2">Vertical header (no caption)</heading><table width="800"><col align="left"/><col align="right" width="140px"/><col align="right" width="140px"/><col align="right" width="140px"/><row><hcell align="left">Header</hcell><cell align="right">Cell1</cell><cell align="right">Cell2</cell><cell align="right">Cell3</cell></row><row><hcell align="left">vertical</hcell><cell align="right">Cell4</cell><cell align="right">Cell5</cell><cell align="right">Cell6</cell></row></table><heading level="2">Vertical header and col/rowspan (no caption)</heading><table><col part="header"/><col/><col/><col/><row><hcell>Test</hcell><cell>CellA</cell><cell>CellB</cell><cell>CellC</cell></row><row><hcell>Header</hcell><cell>Cell1</cell><cell colspan="2" rowspan="2">Cell2,3,5,6</cell></row><row><hcell>vertical</hcell><cell>Cell4</cell></row></table><heading level="2">Horizontal and vertical header (no caption)</heading><table width="200"><col part="header"/><col/><col/><col/><row part="header"><cell>Header</cell><cell>Horizontal1</cell><cell>Horizontal3</cell><cell>Horizontal3</cell></row><row><hcell>vertical</hcell><cell>Cell4</cell><cell>Cell5</cell><cell>Cell6</cell></row></table><heading level="2">Complex table 1</heading><table width="100%"><col width="21%"/><col width="38%"/><col width="40%"/><row part="header"><cell><bold>Medicinal products by therapeutic areas</bold></cell><cell><bold>Interaction</bold></cell><cell><bold>Recommendations concerning</bold> <bold>co-administration</bold></cell></row><row part="header"><cell colspan="3"><bold>ANTI-INFECTIVES</bold></cell></row><row part="header"><cell colspan="3"><bold>Antiretrovirals</bold></cell></row><row><cell colspan="3">
+<para><bold><italic>Nucleoside reverse transcriptase inhibitors (NRTIs)</italic></bold></para>
+</cell></row><row><cell>
+<para>Didanosine<br/>100-150 mg BID</para>
+</cell><cell>
+<para>Didanosine AUC ↔<br/>Didanosine C<sub>min</sub> §<br/>Didanosine C<sub>max</sub> ↔</para>
+</cell><cell>
+<para>No dosage adjustments are required when Viramune is taken in combination with didanosine.</para>
+</cell></row></table></fragment><fragment id="2.1771">
+      <heading level="1">Misc formatting</heading>
+      <para>
+        Sed ut
+        <bold>perspiciatis</bold>
+        , unde
+        <italic>omnis</italic>
+        iste
+        <italic>
+          <bold>natus</bold>
+        </italic>
+        error sit
+        <underline>voluptatem</underline>
+        accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et
+        <sup>quasi</sup>
+        architecto
+        <sub>beatae</sub>
+        vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed
+        quia consequuntur magni dolores eos, qui
+        <link href="http://pageseeder.com/" uriid="7960">ratione</link>
+        voluptatem sequi nesciunt, neque porro quisquam est, qui
+        <xref id="49924" title="dolorem ipsum" frag="1" reversefrag="2.1771" reverselink="false" display="manual" type="none" uriid="11069" href="/ps/test/local2/documents/media/psml/lorem_ipsum.psml" urititle="lorem_ipsum.psml" mediatype="application/vnd.pageseeder.psml+xml">dolorem ipsum</xref>
+        , quia dolor sit amet, consectetur, adipisci[ng] velit, sed quia non numquam [do] eius modi tempora
+        inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum
+        exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum
+        iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum
+        fugiat, quo voluptas nulla pariatur?
+      </para>
+    </fragment><fragment id="2.1831">
+      <heading level="1">Preformatted</heading>
+      <preformat>
+        At vero eos et accusamus et
+        iusto odio dignissimos ducimus,
+        qui blanditiis praesentium
+        voluptatum deleniti atque corrupti,
+        quos dolores et quas molestias excepturi sint,
+        obcaecati cupiditate non provident,
+        similique sunt in culpa,
+        <bold>qui officia deserunt mollit</bold>
+        ia
+        <bold>anim</bold>
+        i,
+        <bold>id est laborum</bold>
+        et dolorum fuga.
+      </preformat>
+      <para> </para>
+    </fragment></section></document>

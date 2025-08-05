@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="21106" schemaversion="1.4" date="2025-01-29T10:24:36+11:00" version="current" level="processed"
+          xmlns:diff="https://www.pageseeder.org/diffx">
+    <section id="21106-title">
+    <fragment id="21106-1">
+        <heading level="1">Diff <diff:ins>ins</diff:ins> and <diff:del>del</diff:del></heading>
+        <para>Some <diff:ins>inserted</diff:ins> and <diff:del>deleted</diff:del> text.</para>
+        <list>
+            <item>Some</item>
+            <item><diff:ins>inserted</diff:ins></item>
+            <item>and</item>
+            <item><diff:del>deleted</diff:del></item>
+            <item>items.</item>
+        </list>
+        <table>
+            <row part="header">
+                <hcell>Some</hcell>
+                <hcell><diff:ins>inserted</diff:ins></hcell>
+                <hcell>and</hcell>
+                <hcell><diff:del>deleted</diff:del></hcell>
+                <hcell>hcells.</hcell>
+            </row>
+            <row>
+                <cell>Some</cell>
+                <cell>more <diff:ins>inserted</diff:ins> content</cell>
+                <cell>and</cell>
+                <cell>more <diff:del>deleted</diff:del> content</cell>
+                <cell>in cells.</cell>
+            </row>
+        </table>
+    </fragment></section></document>

@@ -1,0 +1,49 @@
+[versions]
+junit = "5.13.2"
+junit-platform = "1.13.2"
+slf4j = "2.0.17"
+xmlunit = "2.10.0"
+
+#Allette Opensource
+cobble = "0.3.2"
+ox = "2.2.88"
+schematron = "1.2.3"
+xmlwriter = "1.0.4"
+
+#Third party
+ant = "1.10.13"
+#junit = "4.13.1"
+saxon = "10.1"
+#slf4j = "2.0.9"
+#xmlunit = "1.6"
+
+[libraries]
+annotations = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version = "2.3.100" }
+ant = { module = "org.apache.ant:ant", version.ref = "ant" }
+cobble = { module = "org.pageseeder.cobble:pso-cobble", version.ref = "cobble" }
+commons-io = { module = "commons-io:commons-io", version = "2.19.0" }
+hamcrest = { module = "org.hamcrest:hamcrest", version = "2.2"}
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-platform" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+ox = { module = "org.pageseeder.ox:pso-ox-core", version.ref = "ox" }
+pso-xmlwriter = { module = "org.pageseeder.xmlwriter:pso-xmlwriter", version.ref = "xmlwriter" }
+schematron = { module = "org.pageseeder.schematron:pso-schematron", version.ref = "schematron" }
+saxon-he = { module ="net.sf.saxon:Saxon-HE", version.ref = "saxon" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+xmlunit-core = { module = "org.xmlunit:xmlunit-core", version.ref = "xmlunit"}
+xmlunit-matchers = { module = "org.xmlunit:xmlunit-matchers", version.ref = "xmlunit"}
+
+[bundles]
+junit = [
+    "junit-jupiter-api",
+    "junit-platform-launcher",
+    "junit-platform-engine",
+    "junit-jupiter-engine"
+]
+
+[plugins]
+jreleaser = { id = "org.jreleaser", version = "1.18.0" }

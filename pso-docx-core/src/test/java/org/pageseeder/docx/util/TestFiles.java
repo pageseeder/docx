@@ -6,17 +6,19 @@ package org.pageseeder.docx.util;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.pageseeder.docx.DOCXException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestFiles {
 
   private File testingFolder1;
   private File testingFolder2;
 
-  @Before
+  @BeforeEach
   public void init() throws IOException {
     this.testingFolder1 = new File("test/c1/source");
     this.testingFolder2 = new File("test/c1/target");
@@ -49,21 +51,25 @@ public class TestFiles {
   public void copyDir() throws IOException {
     Files.copyDirectory(this.testingFolder1, this.testingFolder2);
 
-    Assert.assertEquals(this.testingFolder2.exists(), true);
-    Assert.assertEquals(new File(this.testingFolder2, "folder").exists(), true);
+    Assertions.assertEquals(this.testingFolder2.exists(), true);
+    Assertions.assertEquals(new File(this.testingFolder2, "folder").exists(), true);
 
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void copyNullDir() throws IOException {
-    Files.copyDirectory(null, null);
+    assertThrows(NullPointerException.class, () -> {
+      Files.copyDirectory(null, null);
+    });
   }
 
-  @Test(expected = DOCXException.class)
+  @Test
   public void copyDirToFile() throws IOException {
-    File file = new File(this.testingFolder2, "file");
-    file.createNewFile();
+    assertThrows(DOCXException.class, () -> {
+      File file = new File(this.testingFolder2, "file");
+      file.createNewFile();
 
-    Files.copyDirectory(this.testingFolder1, file);
+      Files.copyDirectory(this.testingFolder1, file);
+    });
   }
 }

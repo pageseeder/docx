@@ -1,8 +1,8 @@
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-apply plugin: 'io.codearte.nexus-staging'
+apply plugin: "maven-publish"
+apply plugin: "signing"
+apply plugin: "io.codearte.nexus-staging"
 
-javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+javadoc.options.addStringOption("Xdoclint:none", "-quiet")
 
 java {
   withJavadocJar()
@@ -23,14 +23,14 @@ publishing {
 
           licenses {
             license {
-              name 'The Apache Software License, Version 2.0'
-              url  'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              name "The Apache Software License, Version 2.0"
+              url  "http://www.apache.org/licenses/LICENSE-2.0.txt"
             }
           }
 
           organization {
-            name 'Allette Systems'
-            url  'https://www.allette.com.au'
+            name "Allette Systems"
+            url  "https://www.allette.com.au"
           }
 
           scm {
@@ -41,19 +41,19 @@ publishing {
 
           developers {
             developer {
-              id 'clauret'
-              name 'Christophe Lauret'
-              email 'clauret@weborganic.com'
+              id "clauret"
+              name "Christophe Lauret"
+              email "clauret@weborganic.com"
             }
             developer {
-              id 'jbreure'
-              name 'Jean-Baptiste'
-              email 'jbreure@weborganic.com'
+              id "jbreure"
+              name "Jean-Baptiste"
+              email "jbreure@weborganic.com"
             }
             developer {
-              id 'ccabral'
-              name 'Carlos Cabral'
-              email 'ccabral@allette.com.au'
+              id "ccabral"
+              name "Carlos Cabral"
+              email "ccabral@allette.com.au"
             }
           }
         }
@@ -69,8 +69,8 @@ publishing {
       url = version.endsWith("SNAPSHOT") ? snapshotRepoUrl : releaseRepoUrl
       name = "sonatype"
       credentials {
-        username findProperty('sonatypeUsername')
-        password findProperty('sonatypePassword')
+        username findProperty("sonatypeUsername")
+        password findProperty("sonatypePassword")
       }
     }
   }
@@ -82,8 +82,8 @@ signing {
 
 nexusStaging {
   packageGroup = group
-  stagingProfileId = findProperty('sonatypeStagingProfileId')
+  stagingProfileId = findProperty("sonatypeStagingProfileId")
   serverUrl = "https://s01.oss.sonatype.org/service/local/"
-  username = findProperty('sonatypeUsername')
-  password = findProperty('sonatypePassword')
+  username = findProperty("sonatypeUsername")
+  password = findProperty("sonatypePassword")
 }
