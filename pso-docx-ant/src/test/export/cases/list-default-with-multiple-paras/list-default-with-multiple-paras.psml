@@ -86,6 +86,67 @@
           </list>
         </item>
       </list>
+      <heading level="3">Maximum multi-level numbered list with multiple paras</heading>
+      <nlist>
+        <item>
+          <para>Bananas</para>
+          <para>Bananas2</para>
+          <nlist>
+            <item>
+              Strawberries
+              <para>Strawberries2</para>
+              <nlist>
+                <item>
+                  Apples<br/><br/>
+                  Apples2
+                  <nlist>
+                    <item>
+                      Oranges<br/>
+                      <br/>
+                      Oranges2
+                      <nlist>
+                        <item>
+                          <para>Pineapples<br/>
+                            <br/>
+                            Pineapples2</para>
+                          <nlist>
+                            <item>
+                              Mangoes 6<br/>
+                              <br/>
+                              mangoes2<br/>
+                              same para<br/>
+                              <br/>
+                              mangoes3
+                              <nlist>
+                                <item>
+                                  <para>Oranges 7</para>
+                                  <para>Oranges2</para>
+                                  <para>Oranges3</para>
+                                  <nlist>
+                                    <item>
+                                      Pineapples 8
+                                      <nlist>
+                                        <item>
+                                          Mangoes 9
+                                        </item>
+                                      </nlist>
+                                    </item>
+                                  </nlist>
+                                </item>
+                              </nlist>
+                            </item>
+                          </nlist>
+                        </item>
+                      </nlist>
+                    </item>
+                  </nlist>
+                </item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
+      </nlist>
+      <heading level="3">Manually numbered list with multiple paras</heading>
       <para prefix="1" indent="2">Pineapples</para>
       <para prefix="1" indent="2">Pineapples<br/>test</para>
       <para prefix="1" indent="2">Pineapples<br/>
