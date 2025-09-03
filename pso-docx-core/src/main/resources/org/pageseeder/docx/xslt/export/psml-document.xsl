@@ -320,6 +320,11 @@
           <w:tblW w:w="{config:properties-table-width($labels, @type)}"
                   w:type="{config:properties-table-width-type($labels, @type)}" />
         </xsl:if>
+        <!-- Required to correctly format header/footer columns/rows -->
+        <w:tblLook w:firstRow="0"
+                   w:lastRow="0"
+                   w:firstColumn="1"
+                   w:lastColumn="0"/>
       </w:tblPr>
       <xsl:apply-templates mode="psml" />
     </w:tbl>
