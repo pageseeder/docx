@@ -36,7 +36,12 @@ public class Files {
     try {
       source = new FileInputStream(from).getChannel();
       destination = new FileOutputStream(to).getChannel();
-      destination.transferFrom(source, 0, source.size());
+      long size = source.size();
+      long position = 0;
+      while (position < size) {
+        position += destination.transferFrom(source, position, size);
+      }
+      destination.transferFrom(source, 0, size);
     } finally {
       if (source != null) {
         source.close();
