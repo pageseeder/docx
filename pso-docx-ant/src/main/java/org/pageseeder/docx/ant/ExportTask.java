@@ -5,6 +5,7 @@ package org.pageseeder.docx.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.pageseeder.docx.DOCXException;
 import org.pageseeder.docx.util.Files;
 import org.pageseeder.docx.util.XSLT;
 import org.pageseeder.docx.util.ZipUtils;
@@ -222,8 +223,8 @@ public final class ExportTask extends Task {
       }
       // prefix template media files with a random string to avoid clashes with PSML images
       mediaPrefix = MEDIA_PREFIX;
-      Files.renameFiles(mediaFolder, mediaPrefix);
       try {
+        Files.renameFiles(mediaFolder, mediaPrefix);
         Files.copyDirectory(this.media, mediaFolder);
       } catch (IOException e) {
         log("Failed to copy media files: " + e.getMessage());
@@ -267,7 +268,8 @@ public final class ExportTask extends Task {
     // 7. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
       log("Moving");
-      prepacked.renameTo(this.destination);
+      if (!prepacked.renameTo(this.destination))
+        throw new DOCXException("Unable to move expanded DOCX");
     // for backward compatibility
     } else if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
       log("Copying processed PSML");
@@ -301,21 +303,14 @@ public final class ExportTask extends Task {
     File tmp = new File(working, "default.dotx");
     try {
       ClassLoader loader = ExportTask.class.getClassLoader();
-      InputStream in = loader.getResourceAsStream("org/pageseeder/docx/resource/default.dotx");
-      try {
-        FileOutputStream out = new FileOutputStream(tmp);
-        try {
-          final byte[] buffer = new byte[1024];
-          int n;
-          while ((n = in.read(buffer)) != -1) {
-            out.write(buffer, 0, n);
-          }
-        } finally {
-          out.close();
+        try (InputStream in = loader.getResourceAsStream("org/pageseeder/docx/resource/default.dotx");
+           FileOutputStream out = new FileOutputStream(tmp)) {
+              final byte[] buffer = new byte[1024];
+              int n;
+              while ((n = in.read(buffer)) != -1) {
+                  out.write(buffer, 0, n);
+              }
         }
-      } finally {
-        in.close();
-      }
     } catch (IOException ex) {
       throw new BuildException("Unable to extract default word template", ex);
     }

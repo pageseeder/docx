@@ -27,24 +27,36 @@ public class Files {
    */
   public static void copy(File from, File to) throws IOException {
     Files.ensureDirectoryExists(to.getParentFile());
-    if (!to.exists()) {
-      to.createNewFile();
-    }
+    if (!to.exists() && !to.createNewFile())
+        throw new IOException("Unable to create file: " + to.getName());
 
-    FileChannel source = null;
-    FileChannel destination = null;
-    try {
-      source = new FileInputStream(from).getChannel();
-      destination = new FileOutputStream(to).getChannel();
-      destination.transferFrom(source, 0, source.size());
-    } finally {
-      if (source != null) {
-        source.close();
+    try (FileChannel source = new FileInputStream(from).getChannel();
+         FileChannel destination = new FileOutputStream(to).getChannel()) {
+      long size = source.size();
+      long position = 0;
+      while (position < size) {
+        position += destination.transferFrom(source, position, size);
       }
-      if (destination != null) {
-        destination.close();
-      }
+      destination.transferFrom(source, 0, size);
     }
+  }
+
+  /**
+   * Creates a new file and ensures it is a descendant of the base folder.
+   *
+   * @param base  the base folder
+   * @param path  the relative path of the new file
+   *
+   * @return the new file
+   *
+   * @throws IOException if the new file is not a descendant of the base folder
+   */
+  public static File descendantFile(File base, String path) throws IOException {
+    File descendant = new File(base, path);
+    if (!descendant.getCanonicalPath().startsWith(base.getCanonicalPath())) {
+      throw new IOException("Path results in a file outside base folder");
+    }
+    return descendant;
   }
 
   /**
@@ -66,13 +78,16 @@ public class Files {
    *
    * @param dir    the directory
    * @param prefix the prefix
+   *
+   * @throws IOException if problem renaming a file
    */
-  public static void renameFiles(File dir, String prefix) {
+  public static void renameFiles(File dir, String prefix) throws IOException {
     if (dir.exists() && dir.isDirectory()) {
       File[] children = dir.listFiles();
       if (children != null) {
         for (File child : children) {
-          child.renameTo(new File(dir, prefix + child.getName()));
+          if (!child.renameTo(new File(dir, prefix + child.getName())))
+            throw new IOException("Unable to rename file: " + child.getName());
         }
       }
     }
