@@ -161,16 +161,16 @@ public final class DOCXProcessor {
     // 7. Move or Zip the generated content
     if (parameters.containsKey("expanded") && parameters.get("expanded").equals("true")) {
       log("Moving");
-      prepacked.renameTo(this._builder.destination());
+      if (!prepacked.renameTo(this._builder.destination()))
+        throw new DOCXException("Unable to move expanded DOCX");
     // for backward compatibility
     } else if (parameters.containsKey("generate-processed-psml") && parameters.get("generate-processed-psml").equals("true")) {
       log("Debug Mode");
       File newDestinationDocument = new File(this._builder.destination().getParentFile() + "/document.xml");
       try {
         Files.copy(document, newDestinationDocument);
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      } catch (IOException ex) {
+        throw new DOCXException(ex);
       }
       this._builder.destination().getParentFile().mkdirs();
       ZipUtils.zip(prepacked, this._builder.destination());
@@ -406,16 +406,13 @@ public final class DOCXProcessor {
       try {
         ClassLoader loader = DOCXProcessor.class.getClassLoader();
         try (InputStream in = loader.getResourceAsStream("org/pageseeder/docx/resource/default.dotx")) {
-          FileOutputStream out = new FileOutputStream(tmp);
-          try {
-            final byte[] buffer = new byte[1024];
-            int n;
-            while ((n = in.read(buffer)) != -1) {
-              out.write(buffer, 0, n);
+            try (FileOutputStream out = new FileOutputStream(tmp)) {
+                final byte[] buffer = new byte[1024];
+                int n;
+                while ((n = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, n);
+                }
             }
-          } finally {
-            out.close();
-          }
         }
       } catch (IOException ex) {
         throw new DOCXException("Unable to extract default word template", ex);

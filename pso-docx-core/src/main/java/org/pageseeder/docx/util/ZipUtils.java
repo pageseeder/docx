@@ -45,7 +45,7 @@ public final class ZipUtils {
           // Ensure that the folder exists
           if (name.indexOf('/') > 0) {
             String folder = name.substring(0, name.lastIndexOf('/'));
-            File dir = new File(dest, folder);
+            File dir = Files.descendantFile(dest, folder);
             if (!dir.exists()) {
               dir.mkdirs();
             }
@@ -55,20 +55,19 @@ public final class ZipUtils {
             BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
             int count;
             byte[] data = new byte[BUFFER];
-            File f = new File(dest, name);
+            File f = Files.descendantFile(dest, name);
             FileOutputStream fos = new FileOutputStream(f);
-            BufferedOutputStream out = new BufferedOutputStream(fos, BUFFER);
-            while ((count = is.read(data, 0, BUFFER)) != -1) {
-              out.write(data, 0, count);
+            try (BufferedOutputStream out = new BufferedOutputStream(fos, BUFFER)) {
+              while ((count = is.read(data, 0, BUFFER)) != -1) {
+                out.write(data, 0, count);
+              }
+              out.flush();
+              is.close();
             }
-            out.flush();
-            out.close();
-            is.close();
           }
         }
       }
     } catch (IOException ex) {
-      ex.printStackTrace();
       throw new DOCXException(ex);
     }
   }
@@ -97,7 +96,6 @@ public final class ZipUtils {
       }
 
     } catch (IOException ex) {
-      ex.printStackTrace();
       throw new DOCXException(ex);
     }
   }
@@ -131,9 +129,7 @@ public final class ZipUtils {
         while ((count = origin.read(data, 0, BUFFER)) != -1) {
           out.write(data, 0, count);
         }
-        origin.close();
       } catch (IOException ex) {
-        ex.printStackTrace();
         throw new DOCXException(ex);
       }
     }
