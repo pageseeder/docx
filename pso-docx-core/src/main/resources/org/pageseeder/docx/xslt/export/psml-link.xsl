@@ -251,13 +251,19 @@
   Handles blockxref transformations
 -->
 <xsl:template match="blockxref" mode="psml">
+  <xsl:param name="labels" tunnel="yes"/>
   <xsl:choose>
-    <xsl:when test="@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' and $manual-master = 'true'">
+    <xsl:when test="@mediatype = $docx-mediatype and $manual-master = 'true'">
+      <xsl:variable name="previous-subdoc" select="preceding::blockxref[@mediatype = $docx-mediatype]" />
       <w:p>
         <w:pPr>
-          <xsl:copy-of select="document(concat($_dotxfolder, '/word/document.xml'))//w:body/w:sectPr[last()]"/>
+          <!-- use default section for subdocs -->
+          <xsl:copy-of select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=config:section-number(
+              if ($previous-subdoc) then () else $labels)]"/>
         </w:pPr>
-        <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])))}"/>
+      </w:p>
+      <w:p>
+        <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = $docx-mediatype])))}"/>
       </w:p>
     </xsl:when>
     <xsl:when test="document | fragment | media-fragment | xref-fragment | properties-fragment">

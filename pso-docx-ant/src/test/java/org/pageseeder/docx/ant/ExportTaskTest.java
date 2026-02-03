@@ -367,6 +367,11 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testMasterDefault() throws IOException, SAXException {
+    testIndividual("master-default");
+  }
+
+  @Test
   public void testPlaceholder() throws IOException, SAXException {
     testIndividual("placeholder");
   }
@@ -637,7 +642,7 @@ public final class ExportTaskTest {
   }
 
 
-  private void process(File test, File result, boolean saveWorking) {
+  private void process(File test, File result, boolean saveWorking) throws IOException {
 
     ExportTask task = new ExportTask();
 
@@ -681,9 +686,17 @@ public final class ExportTaskTest {
     parameter3.setName("manual-core");
     parameter3.setValue("Config");
 
+    Parameter parameter4 = task.createParam();
+    parameter4.setName("manual-master");
+    parameter4.setValue("true");
+
     task.execute();
 
-    return;
+    // copy sub documents
+    File subdocs = new File(test, "subdocs");
+    if (subdocs.exists()) {
+      Files.copyDirectory(subdocs, result);
+    }
   }
 
   private static void deleteDir(File file) {
