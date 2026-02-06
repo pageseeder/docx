@@ -22,13 +22,13 @@
 	<section id="xrefs" edit="false">
 		<xref-fragment id="2">
 			<blockxref id="1160254" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
-								 display="document" type="embed" uriid="45503" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-1.docx"
-								 urititle="0131 Preliminaries" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-								 documenttype="wsp">Sub document 1</blockxref>
+								 display="document" type="embed" uriid="123" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-1.docx"
+								 urititle="Sub* document 1%" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 documenttype="wsp">Sub* document 1%</blockxref>
 			<blockxref id="1160255" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
-								 display="document" type="embed" uriid="45504" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-2.docx"
-								 urititle="0131 Preliminaries" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-								 documenttype="wsp">Sub document 2</blockxref>
+								 display="document" type="embed" uriid="456" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-2.docx"
+								 urititle="Sub* document 2%" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 documenttype="wsp">Sub* document 2%</blockxref>
 		</xref-fragment>
 	</section>
 </document>

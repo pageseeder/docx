@@ -367,8 +367,18 @@ public final class ExportTaskTest {
   }
 
   @Test
-  public void testMasterDefault() throws IOException, SAXException {
-    testIndividual("master-default");
+  public void testMasterFilename() throws IOException, SAXException {
+    testIndividual("master-filename", "document,document.xml.rels");
+  }
+
+  @Test
+  public void testMasterUriid() throws IOException, SAXException {
+    testIndividual("master-uriid", "document,document.xml.rels");
+  }
+
+  @Test
+  public void testMasterUrititle() throws IOException, SAXException {
+    testIndividual("master-urititle", "document,document.xml.rels");
   }
 
   @Test
@@ -686,9 +696,9 @@ public final class ExportTaskTest {
     parameter3.setName("manual-core");
     parameter3.setValue("Config");
 
-    Parameter parameter4 = task.createParam();
-    parameter4.setName("manual-master");
-    parameter4.setValue("true");
+    //Parameter parameter4 = task.createParam();
+    //parameter4.setName("manual-master");
+    //parameter4.setValue("true");
 
     task.execute();
 

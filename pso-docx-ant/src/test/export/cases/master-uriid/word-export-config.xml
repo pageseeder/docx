@@ -4,6 +4,9 @@
 	<toc generate="true">
    <headings generate="true" select="1-9" />
   </toc>
+  <default>
+    <master select="uriid" />
+  </default>
   <elements label="spec">
     <document wordsection="1" />
     <heading>

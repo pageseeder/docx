@@ -1,0 +1,34 @@
+<document id="45634" schemaversion="1.4" type="spec" date="2026-01-19T11:10:30+11:00" version="current" level="portable">
+	<documentinfo>
+		<uri id="45634" external="false" mediatype="application/vnd.pageseeder.psml+xml" documenttype="spec"
+				 created="2026-01-19T11:10:20+11:00" modified="2026-01-19T11:10:30+11:00"
+				 scheme="http" host="test.pageseeder.com" port="80" path="/ps/test/group1/specification/specification.psml"
+				 decodedpath="/ps/test/group1/specification/specification.psml" title="Master test">
+			<displaytitle>Master test</displaytitle>
+			<labels>spec</labels>
+		</uri>
+	</documentinfo>
+	<fragmentinfo>
+		<locator id="458272" fragment="2"/>
+	</fragmentinfo>
+	<metadata />
+	<section id="title">
+		<fragment id="1">
+			<heading level="1">Master test</heading>
+			<heading level="3">Contents</heading>
+		</fragment>
+	</section>
+	<toc/>
+	<section id="xrefs" edit="false">
+		<xref-fragment id="2">
+			<blockxref id="1160254" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
+								 display="document" type="embed" uriid="123" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-1.docx"
+								 urititle="Sub* document 1%" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 documenttype="wsp">Sub* document 1%</blockxref>
+			<blockxref id="1160255" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
+								 display="document" type="embed" uriid="456" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-2.docx"
+								 urititle="Sub* document 2%" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 documenttype="wsp">Sub* document 2%</blockxref>
+		</xref-fragment>
+	</section>
+</document>

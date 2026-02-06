@@ -253,13 +253,16 @@
 <xsl:template match="blockxref" mode="psml">
   <xsl:param name="labels" tunnel="yes"/>
   <xsl:choose>
-    <xsl:when test="@mediatype = $docx-mediatype and $manual-master = 'true'">
-      <xsl:variable name="previous-subdoc" select="preceding::blockxref[@mediatype = $docx-mediatype]" />
+    <xsl:when test="@mediatype = $docx-mediatype and $generate-master">
+      <xsl:variable name="previous-subdocs" select="count(preceding::blockxref[@mediatype = $docx-mediatype])" />
       <w:p>
         <w:pPr>
           <!-- use default section for subdocs -->
-          <xsl:copy-of select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=config:section-number(
-              if ($previous-subdoc) then () else $labels)]"/>
+          <xsl:apply-templates select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=config:section-number(
+              if ($previous-subdocs gt 0) then () else $labels)]" mode="section-properties">
+            <!-- only allow page number restart for first subdoc -->
+            <xsl:with-param name="page-start" select="$previous-subdocs le 1" tunnel="yes" />
+          </xsl:apply-templates>
         </w:pPr>
       </w:p>
       <w:p>

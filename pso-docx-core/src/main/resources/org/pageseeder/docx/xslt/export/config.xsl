@@ -622,12 +622,13 @@ Indicate whether hyperlinks should be generated.
 </xsl:function>
 
 <!--
-  Returns the naming of docx files on export master (for backward compatibility only).
+  Returns the naming of docx files on export master.
+  Manual master is disabled for unsupported values.
 
-  @return type of export: 'uriid' or ''
+  @return type of export: supports 'filename' or 'uriid' or 'urititle'
 -->
 <xsl:function name="config:master-select" as="xs:string">
-  <xsl:value-of select="if ($config-doc/config/default/master/@select = 'uriid') then 'uriid' else ''" />
+  <xsl:value-of select="$config-doc/config/default/master/@select" />
 </xsl:function>
 
 <!--
