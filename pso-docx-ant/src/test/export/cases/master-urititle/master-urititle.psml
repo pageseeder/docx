@@ -23,12 +23,16 @@
 		<xref-fragment id="2">
 			<blockxref id="1160254" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
 								 display="document" type="embed" uriid="123" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-1.docx"
-								 urititle="Sub* document 1%" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 urititle="Sub* document 1%" urilabels="test,sub" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 								 documenttype="wsp">Sub* document 1%</blockxref>
 			<blockxref id="1160255" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
 								 display="document" type="embed" uriid="456" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-2.docx"
-								 urititle="Sub* document 2%" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 urititle="Sub* document 2%" urilabels="test" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 								 documenttype="wsp">Sub* document 2%</blockxref>
+			<blockxref id="1160256" frag="default" reversefrag="2" reversetitle="" reverselink="true" reversetype="none"
+								 display="document" type="embed" uriid="789" href="/ps/test/group1/specification/test/01/013/0131/mysubdoc-2.docx"
+								 urititle="Sub* document 3%" urilabels="test,sub" mediatype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								 documenttype="wsp">Sub* document 3%</blockxref>
 		</xref-fragment>
 	</section>
 </document>

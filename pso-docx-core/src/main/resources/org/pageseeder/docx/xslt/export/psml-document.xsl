@@ -141,10 +141,12 @@
   <!-- Also <toc> must be followed by a <section><xref-fragment> -->
   <xsl:if test="not(following::*[1]/(descendant-or-self::document|descendant-or-self::toc)) and
       not(.//document[not(following::*)])">
-    <!-- use default section for subdocs -->
+    <!-- use correct section for subdocs -->
     <!-- NOTE: After expanding subdocs the last section is taken from the last subdoc -->
-    <xsl:variable name="after-subdoc" select="not(following::*) and //blockxref[@mediatype = $docx-mediatype]" />
-    <xsl:variable name="current-sec-num" select="config:section-number(if ($after-subdoc) then () else $labels)" />
+    <xsl:variable name="last-subdoc" select="(//blockxref[@mediatype = $docx-mediatype])[last()]" />
+    <xsl:variable name="after-subdoc" select="not(following::*) and $last-subdoc" />
+    <xsl:variable name="current-sec-num" select="config:section-number(
+      if ($after-subdoc) then tokenize($last-subdoc/@urilabels,',') else $labels)" />
     <xsl:variable name="next-sec-num" select="config:section-number(
       tokenize(following::*[1]/ancestor::document[1]/documentinfo/uri/labels,','))" />
     <!-- If this section is different from the next or at the end of the document add section properties -->

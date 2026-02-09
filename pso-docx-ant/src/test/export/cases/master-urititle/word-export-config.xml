@@ -15,6 +15,9 @@
       <level value="3" wordstyle="TOC Heading"/>
     </heading>
   </elements>
+  <elements label="sub">
+    <document wordsection="4" />
+  </elements>
   <elements>
     <document wordsection="3" />
   </elements>

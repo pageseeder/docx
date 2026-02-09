@@ -254,19 +254,20 @@
   <xsl:param name="labels" tunnel="yes"/>
   <xsl:choose>
     <xsl:when test="@mediatype = $docx-mediatype and $generate-master">
+      <xsl:variable name="previous-subdoc" select="preceding::blockxref[@mediatype = $docx-mediatype][1]" />
       <xsl:variable name="previous-subdocs" select="count(preceding::blockxref[@mediatype = $docx-mediatype])" />
       <w:p>
         <w:pPr>
-          <!-- use default section for subdocs -->
+          <!-- use correct section for subdocs -->
           <xsl:apply-templates select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=config:section-number(
-              if ($previous-subdocs gt 0) then () else $labels)]" mode="section-properties">
+              if ($previous-subdocs gt 0) then tokenize($previous-subdoc/@urilabels,',') else $labels)]" mode="section-properties">
             <!-- only allow page number restart for first subdoc -->
             <xsl:with-param name="page-start" select="$previous-subdocs le 1" tunnel="yes" />
           </xsl:apply-templates>
         </w:pPr>
       </w:p>
       <w:p>
-        <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + count(preceding::blockxref[@mediatype = $docx-mediatype])))}"/>
+        <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + $previous-subdocs))}"/>
       </w:p>
     </xsl:when>
     <xsl:when test="document | fragment | media-fragment | xref-fragment | properties-fragment">
