@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.3.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.4.0">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -153,6 +153,7 @@
 				<xs:element ref="xrefs" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="placeholders" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="indexdoc" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="master" minOccurs="0" maxOccurs="1" />
 			</xs:all>
 		</xs:complexType>
 	</xs:element>
@@ -230,6 +231,20 @@
 					<xs:restriction base="xs:integer">
 						<xs:minInclusive value="1"/>
 						<xs:maxInclusive value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="master">
+		<xs:complexType>
+			<xs:attribute name="select">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="filename" />
+						<xs:enumeration value="uriid" />
+						<xs:enumeration value="urititle" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>

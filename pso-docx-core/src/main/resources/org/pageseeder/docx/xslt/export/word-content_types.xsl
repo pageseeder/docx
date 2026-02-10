@@ -212,13 +212,15 @@
         </xsl:if>
 
         <!-- TODO Counting blockxrefs to word documents?? -->
-        <xsl:variable name="word-documents" select="if($manual-master = 'true') then count(.//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']) else 0"/>
+        <xsl:variable name="word-documents" select="if ($generate-master) then count(.//blockxref[@mediatype = $docx-mediatype]) else 0"/>
 
-        <xsl:if test="$manual-master = 'true'">
-          <xsl:for-each select="//blockxref[@mediatype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']">
+        <xsl:if test="$generate-master">
+          <xsl:for-each select="//blockxref[@mediatype = $docx-mediatype]">
             <Relationship Id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 1 + position()))}"
                           Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument"
-                          Target="{if (config:master-select() = 'uriid') then concat(@uriid,'.docx') else tokenize(@href,'/')[last()]}"
+                          Target="{if (config:master-select() = 'uriid') then concat(@uriid,'.docx')
+                          else if (config:master-select() = 'urititle') then concat(translate(@urititle,'–/\?%*:|&lt;&gt;&#34;','-__________'),'.docx')
+                          else tokenize(@href,'/')[last()]}"
                           TargetMode="External"/>
           </xsl:for-each>
         </xsl:if>

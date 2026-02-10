@@ -26,6 +26,13 @@
 
 <!-- FIXME Many functions erroneously use `xsl:value-of` in place of `xsl:sequence` to return boolean values: check usage and use appropriate XSLT instruction -->
 
+<!-- The media type for xrefs to DOCX documents -->
+<xsl:variable name="docx-mediatype" select="'application/vnd.openxmlformats-officedocument.wordprocessingml.document'" />
+
+<!-- Whether to generate subdocuments from blockxrefs with docx mediatype -->
+<xsl:variable name="generate-master" select="$manual-master = 'true' or
+     config:master-select() = ('filename','uriid','urititle')" as="xs:boolean"/>
+
 <!-- The location of the Content_Types.xml file -->
 <xsl:variable name="_content-types-template" select="concat($_dotxfolder, encode-for-uri('[Content_Types].xml'))" as="xs:string"/>
 

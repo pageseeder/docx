@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<config>
+	<toc generate="true">
+   <headings generate="true" select="1-9" />
+  </toc>
+  <default>
+    <master select="urititle" />
+  </default>
+  <elements label="spec">
+    <document wordsection="1" />
+    <heading>
+      <!-- Unnumbered headings -->
+      <level value="1" wordstyle="Title"/>
+      <level value="3" wordstyle="TOC Heading"/>
+    </heading>
+  </elements>
+  <elements label="sub">
+    <document wordsection="4" />
+  </elements>
+  <elements>
+    <document wordsection="3" />
+  </elements>
+</config>

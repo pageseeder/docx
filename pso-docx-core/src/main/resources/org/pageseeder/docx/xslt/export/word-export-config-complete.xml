@@ -51,7 +51,7 @@
     <endnotes generate="true|false" xref-labels=""/>
     <footnotes generate="true|false" xref-labels=""/>
      -->
-    <master select="uriid|urititle"/>
+    <master select="filename|uriid|urititle"/>
   </default>
 
 

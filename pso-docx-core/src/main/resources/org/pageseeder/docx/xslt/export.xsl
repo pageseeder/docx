@@ -41,6 +41,7 @@
 <xsl:param name="resourcefolder"/>
 
 <!-- Parameter that chooses to generate master document or not -->
+<!-- DEPRECATED: Use <master select="filename|uriid|urititle"/> in config instead-->
 <xsl:param name="manual-master" select="'false'"/>
 
 <!-- Parameter that sets the core property in word -->

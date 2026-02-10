@@ -367,6 +367,21 @@ public final class ExportTaskTest {
   }
 
   @Test
+  public void testMasterFilename() throws IOException, SAXException {
+    testIndividual("master-filename", "document,document.xml.rels");
+  }
+
+  @Test
+  public void testMasterUriid() throws IOException, SAXException {
+    testIndividual("master-uriid", "document,document.xml.rels");
+  }
+
+  @Test
+  public void testMasterUrititle() throws IOException, SAXException {
+    testIndividual("master-urititle", "document,document.xml.rels");
+  }
+
+  @Test
   public void testPlaceholder() throws IOException, SAXException {
     testIndividual("placeholder");
   }
@@ -637,7 +652,7 @@ public final class ExportTaskTest {
   }
 
 
-  private void process(File test, File result, boolean saveWorking) {
+  private void process(File test, File result, boolean saveWorking) throws IOException {
 
     ExportTask task = new ExportTask();
 
@@ -681,9 +696,17 @@ public final class ExportTaskTest {
     parameter3.setName("manual-core");
     parameter3.setValue("Config");
 
+    //Parameter parameter4 = task.createParam();
+    //parameter4.setName("manual-master");
+    //parameter4.setValue("true");
+
     task.execute();
 
-    return;
+    // copy sub documents
+    File subdocs = new File(test, "subdocs");
+    if (subdocs.exists()) {
+      Files.copyDirectory(subdocs, result);
+    }
   }
 
   private static void deleteDir(File file) {
