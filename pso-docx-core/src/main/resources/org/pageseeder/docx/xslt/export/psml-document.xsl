@@ -142,8 +142,8 @@
   <xsl:if test="not(following::*[1]/(descendant-or-self::document|descendant-or-self::toc)) and
       not(.//document[not(following::*)])">
     <!-- use correct section for subdocs -->
-    <!-- NOTE: After expanding subdocs the last section is taken from the last subdoc -->
-    <xsl:variable name="last-subdoc" select="(//blockxref[@mediatype = $docx-mediatype])[last()]" />
+    <xsl:variable name="subdocs" select="//blockxref[@mediatype = $docx-mediatype]" />
+    <xsl:variable name="last-subdoc" select="($subdocs)[last()]" />
     <xsl:variable name="after-subdoc" select="not(following::*) and $last-subdoc" />
     <xsl:variable name="current-sec-num" select="config:section-number(
       if ($after-subdoc) then tokenize($last-subdoc/@urilabels,',') else $labels)" />
@@ -170,6 +170,9 @@
               <xsl:with-param name="page-start"
                    select="($current-sec-num &gt; $previous2-sec-num or not($previous-doc2))
                    and not($current-doc2)" tunnel="yes" />
+              <!-- if more than 1 subdoc link last section -->
+              <xsl:with-param name="linked" select="count($subdocs) gt 1" tunnel="yes" />
+              <xsl:with-param name="continuous" select="$subdocs" tunnel="yes" />
             </xsl:apply-templates>
           </xsl:when>
           <xsl:otherwise>
@@ -190,7 +193,24 @@
   </xsl:if>
 </xsl:template>
 
-<!-- copy all other elements unchanged -->
+<!-- To stop Word replacing last section with section from subdocument add double section with continuous -->
+<xsl:template match="w:sectPr" mode="section-properties">
+  <xsl:param name="continuous" tunnel="yes" />
+  <xsl:copy>
+    <xsl:apply-templates select="@*" mode="section-properties"/>
+    <xsl:choose>
+      <xsl:when test="$continuous">
+        <w:type w:val="continuous" />
+        <xsl:apply-templates select="*[not(local-name()='type')]" mode="section-properties"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="*" mode="section-properties"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:copy>
+</xsl:template>
+
+<!-- modify section page numbering -->
 <xsl:template match="w:pgNumType" mode="section-properties">
   <xsl:param name="page-start" tunnel="yes" />
   <!-- <xsl:message><xsl:value-of select="$page-start"/></xsl:message> -->
@@ -201,6 +221,16 @@
     </xsl:if>
     <xsl:apply-templates select="node()" mode="section-properties"/>
   </xsl:copy>
+</xsl:template>
+
+<!-- modify section link with previous -->
+<xsl:template match="w:headerReference|w:footerReference" mode="section-properties">
+  <xsl:param name="linked" tunnel="yes" />
+  <xsl:if test="not($linked)">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="section-properties"/>
+    </xsl:copy>
+  </xsl:if>
 </xsl:template>
 
 <!-- copy all other elements unchanged -->

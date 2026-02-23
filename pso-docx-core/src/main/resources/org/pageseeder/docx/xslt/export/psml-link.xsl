@@ -263,10 +263,24 @@
               if ($previous-subdocs gt 0) then tokenize($previous-subdoc/@urilabels,',') else $labels)]" mode="section-properties">
             <!-- only allow page number restart for first subdoc -->
             <xsl:with-param name="page-start" select="$previous-subdocs le 1" tunnel="yes" />
+            <!-- link sections after first subdoc -->
+            <xsl:with-param name="linked" select="$previous-subdocs gt 1" tunnel="yes" />
           </xsl:apply-templates>
         </w:pPr>
       </w:p>
       <w:p>
+        <!-- To stop Word replacing last section with section from subdocument add double section here -->
+        <xsl:if test="not(following::blockxref[@mediatype = $docx-mediatype])">
+          <w:pPr>
+            <xsl:apply-templates select="(document(concat($_dotxfolder, '/word/document.xml'))//w:sectPr)[position()=config:section-number(
+                tokenize(current()/@urilabels,','))]" mode="section-properties">
+              <!-- only allow page number restart for first subdoc -->
+              <xsl:with-param name="page-start" select="$previous-subdocs = 0" tunnel="yes" />
+              <!-- link sections after first subdoc -->
+              <xsl:with-param name="linked" select="$previous-subdocs gt 0" tunnel="yes" />
+            </xsl:apply-templates>
+          </w:pPr>
+        </xsl:if>
         <w:subDoc r:id="{concat('rId',(count(document($_document-relationship)//*[name() = 'Relationship']) + 2 + $previous-subdocs))}"/>
       </w:p>
     </xsl:when>
