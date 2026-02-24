@@ -3,26 +3,52 @@
 <config>
 	<lists>
 	  <convert-manual-numbering select="true">
-		<value match="Schedule&#160;[0-9]+">
-	      <prefix />
+			<value match="(Schedule&#160;[0-9]+)\s">
+					<prefix level="5"/>
+				</value>
+			<value match="(Part&#160;[0-9]+)\s">
+					<prefix />
+			</value>
+			<value match="Section&#160;[0-9]+\s">
+				<prefix />
+			</value>
+			<value match="\s*[0-9]+\s">
+					<prefix />
+			</value>
+		  <value match="\s*(\([0-9A-Z]+\))\s*">
+	      <prefix level="1"/>
 	    </value>
-		<value match="Part&#160;[0-9]+">
-	      <prefix />
+		  <value match="\s*(\([a-z]+\))\s*">
+	      <prefix level="2"/>
 	    </value>
-		<value match="\s*[0-9]+\s">
-	      <prefix />
-		</value>
-		<value match="\s*\([0-9A-Z]+\)">
-	      <prefix />
-	    </value>
-		<value match="\s*\([a-z]+\)">
-	      <prefix />
-	    </value>
+			<value match="\s*([^\|]+)\|\t\s*">
+				<prefix level="1"/>
+			</value>
+			<value match="\s*([^\|]+)\|\|\t\s*">
+				<prefix level="2"/>
+			</value>
 	  </convert-manual-numbering> 
   </lists>
   <styles>
-	<default>
+	  <default>
       <paragraphStyles value="para" />
+			<characterStyles value="none" />
     </default>
+		<wordstyle name="ActHead6" psmlelement="heading">
+			<level value="1" />
+		</wordstyle>
+		<wordstyle name="ActHead7" psmlelement="heading">
+			<level value="2" />
+		</wordstyle>
+		<wordstyle name="ActHead9" psmlelement="heading">
+			<level value="3" />
+		</wordstyle>
+		<wordstyle name="subsection" psmlelement="para">
+			<indent value="3" />
+			<label type="block" value="sub" />
+		</wordstyle>
+		<wordstyle name="paragraph" psmlelement="para">
+			<indent value="4" />
+		</wordstyle>
   </styles>
 </config>

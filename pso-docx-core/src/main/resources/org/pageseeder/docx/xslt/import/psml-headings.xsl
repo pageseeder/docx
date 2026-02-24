@@ -136,12 +136,13 @@
           <xsl:attribute name="numbered" select="'true'" />
         </xsl:if>
 
-        <xsl:if test="config:numbering-list-prefix-exists()">
-          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="$full-text">
-            <xsl:matching-substring>
-              <xsl:attribute name="prefix" select="regex-group(1)" />
-            </xsl:matching-substring>
-          </xsl:analyze-string>
+        <xsl:if test="config:numbering-list-prefix-exists() and
+	            matches($full-text, config:numbering-match-list-prefix-string())">
+          <xsl:variable name="prefix" select="config:numbering-match-list-prefix-indent($full-text)" />
+          <xsl:attribute name="prefix" select="$prefix[1]"/>
+          <xsl:if test="$prefix[2]!='0'">
+            <xsl:attribute name="level" select="$prefix[2]"/>
+          </xsl:if>
         </xsl:if>
 
         <xsl:if test="config:numbering-list-autonumbering-exists()">

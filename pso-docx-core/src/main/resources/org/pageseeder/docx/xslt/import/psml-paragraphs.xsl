@@ -175,12 +175,13 @@
             </xsl:if>
           </xsl:if>
 
-          <xsl:if test="config:numbering-list-prefix-exists()">
-            <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="$full-text">
-              <xsl:matching-substring>
-                <xsl:attribute name="prefix" select="regex-group(1)" />
-              </xsl:matching-substring>
-            </xsl:analyze-string>
+          <xsl:if test="config:numbering-list-prefix-exists() and
+	            matches($full-text, config:numbering-match-list-prefix-string())">
+            <xsl:variable name="prefix" select="config:numbering-match-list-prefix-indent($full-text)" />
+            <xsl:attribute name="prefix" select="$prefix[1]"/>
+            <xsl:if test="$prefix[2]!='0'">
+              <xsl:attribute name="indent" select="$prefix[2]"/>
+            </xsl:if>
           </xsl:if>
 
           <xsl:if test="config:numbering-list-autonumbering-exists()">
@@ -275,12 +276,13 @@
           </xsl:if>
         </xsl:if>
 
-        <xsl:if test="config:numbering-list-prefix-exists()">
-          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="$full-text">
-            <xsl:matching-substring>
-              <xsl:attribute name="prefix" select="regex-group(1)" />
-            </xsl:matching-substring>
-          </xsl:analyze-string>
+        <xsl:if test="config:numbering-list-prefix-exists() and
+	            matches($full-text, config:numbering-match-list-prefix-string())">
+          <xsl:variable name="prefix" select="config:numbering-match-list-prefix-indent($full-text)" />
+          <xsl:attribute name="prefix" select="$prefix[1]"/>
+          <xsl:if test="$prefix[2]!='0'">
+            <xsl:attribute name="indent" select="$prefix[2]"/>
+          </xsl:if>
         </xsl:if>
 
         <xsl:if test="config:numbering-list-autonumbering-exists()">
@@ -366,24 +368,26 @@
       <xsl:apply-templates mode="textbox" />
     </xsl:when>
     <xsl:otherwise>
+      <xsl:variable name="full-content" select="fn:get-current-full-text($current)" />
       <xsl:variable name="content-para">
 	      <para>
-	        <xsl:if test="config:numbering-list-prefix-exists()">
-	          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="fn:get-current-full-text($current)">
-	            <xsl:matching-substring>
-	              <xsl:attribute name="prefix" select="regex-group(1)"/>
-	            </xsl:matching-substring>
-	          </xsl:analyze-string>
+	        <xsl:if test="config:numbering-list-prefix-exists() and
+	            matches($full-content, config:numbering-match-list-prefix-string())">
+            <xsl:variable name="prefix" select="config:numbering-match-list-prefix-indent($full-content)" />
+            <xsl:attribute name="prefix" select="$prefix[1]"/>
+            <xsl:if test="$prefix[2]!='0'">
+              <xsl:attribute name="indent" select="$prefix[2]"/>
+            </xsl:if>
 	        </xsl:if>
 	        <xsl:if test="config:numbering-list-autonumbering-exists()">
-	          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="fn:get-current-full-text($current)">
+	          <xsl:analyze-string regex="({config:numbering-match-list-autonumbering-string()})(.*)" select="$full-content">
 	            <xsl:matching-substring>
 	              <xsl:attribute name="numbered" select="'true'"/>
 	            </xsl:matching-substring>
 	          </xsl:analyze-string>
 	        </xsl:if>
 	        <xsl:apply-templates select="*" mode="content">
-	          <xsl:with-param name="full-text" select="fn:get-current-full-text($current)" />
+	          <xsl:with-param name="full-text" select="$full-content" />
 	        </xsl:apply-templates>
           <xsl:sequence select="fn:generate-anchors(.)" />
 	      </para>

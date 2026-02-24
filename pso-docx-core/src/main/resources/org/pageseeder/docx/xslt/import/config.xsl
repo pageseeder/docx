@@ -149,6 +149,31 @@
   <xsl:sequence select="if ($manual-numbering/@select='true') then fn:items-to-start-regex($manual-numbering/value[prefix]/@match) else fn:items-to-start-regex(())"/>
 </xsl:function>
 
+<!-- The value elements of prefix manual conversion regular expressions -->
+<xsl:function name="config:numbering-match-list-prefix-values" as="element(value)*">
+  <xsl:variable name="manual-numbering" select="$config-doc/config/lists/convert-manual-numbering"/>
+  <xsl:sequence select="if ($manual-numbering/@select='true') then $manual-numbering/value[prefix] else ()"/>
+</xsl:function>
+
+<!-- The prefix and level for content matching a prefix manual conversion
+
+  @param content the text content to be matched
+
+  @return the prefix and level number (0 means no level) in that order.
+-->
+<xsl:function name="config:numbering-match-list-prefix-indent" as="xs:string*">
+  <xsl:param name="content" />
+  <xsl:for-each select="config:numbering-match-list-prefix-values()">
+    <xsl:variable name="level" select="if (prefix/@level) then string(prefix/@level) else '0'" />
+    <xsl:analyze-string regex="^{@match}" select="$content">
+      <xsl:matching-substring>
+        <xsl:sequence select="if (regex-group(1)='') then . else regex-group(1)"/>
+        <xsl:sequence select="$level"/>
+      </xsl:matching-substring>
+    </xsl:analyze-string>
+  </xsl:for-each>
+</xsl:function>
+
 <!-- String of list of autonumbering manual conversion regular expressions -->
 <xsl:function name="config:numbering-match-list-autonumbering-string" as="xs:string">
   <xsl:variable name="manual-numbering" select="$config-doc/config/lists/convert-manual-numbering"/>
