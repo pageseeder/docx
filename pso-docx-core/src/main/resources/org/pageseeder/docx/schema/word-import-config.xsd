@@ -1,4 +1,4 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" version="1.5.0">
 
   <xs:element name="config">
     <xs:complexType>
@@ -130,10 +130,23 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="inline" minOccurs="0" maxOccurs="1" />
-        <xs:element name="prefix" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="prefix" minOccurs="0" maxOccurs="1" />
         <xs:element name="autonumbering" minOccurs="0" maxOccurs="1" />
       </xs:sequence>
       <xs:attribute name="match" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="prefix">
+    <xs:complexType>
+      <xs:attribute name="level">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1" />
+            <xs:maxInclusive value="6" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 

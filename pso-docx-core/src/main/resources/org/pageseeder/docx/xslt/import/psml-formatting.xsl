@@ -382,7 +382,8 @@
     <xsl:otherwise>
       <xsl:choose>
         <xsl:when test="config:numbering-list-prefix-exists() and $is-numbered and matches($text/text(),config:numbering-match-list-prefix-string()) ">
-          <xsl:analyze-string regex="({config:numbering-match-list-prefix-string()})(.*)" select="$text">
+          <xsl:analyze-string regex="{config:numbering-match-list-prefix-string()}" select="$text">
+            <!--
             <xsl:matching-substring>
               <xsl:call-template name="process-text-runs">
                 <xsl:with-param name="text" select="regex-group(2)" />
@@ -391,9 +392,10 @@
                 <xsl:with-param name="current" select="current()" />
               </xsl:call-template>
             </xsl:matching-substring>
+            -->
             <xsl:non-matching-substring>
               <xsl:call-template name="process-text-runs">
-                <xsl:with-param name="text" select="$text" />
+                <xsl:with-param name="text" select="." />
                 <xsl:with-param name="in-link" select="$in-link" />
                 <xsl:with-param name="in-hyperlink" select="$in-hyperlink" />
                 <xsl:with-param name="current" select="current()" />
