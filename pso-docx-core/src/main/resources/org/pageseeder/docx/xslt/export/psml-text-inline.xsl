@@ -71,10 +71,44 @@
         <w:bookmarkStart w:id="{$bookmark}" w:name="x-{$bookmark}"/>
       </xsl:if>
       -->
+      <xsl:variable name="index" select="tokenize($text,'\|')" />
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
-        <w:instrText><xsl:value-of select="concat(' XE ', $quote, $text, $quote, ' ')"/></w:instrText>
+        <w:instrText><xsl:value-of select="concat(' XE ', $quote, $index[1], $quote, ' ')"/></w:instrText>
         <!-- (if (starts-with($xref/@href, '#')) then concat(' \r ', $quote, 'x-', $bookmark, $quote) else ' '))"/></w:instrText> -->
+      </w:r>
+      <xsl:if test="$index[2]">
+        <w:r>
+          <w:instrText>\t "</w:instrText>
+        </w:r>
+        <xsl:choose>
+          <xsl:when test="starts-with($index[2], 'See also')">
+            <w:r>
+              <w:rPr><w:i/></w:rPr>
+              <w:instrText>See also</w:instrText>
+            </w:r>
+            <w:r>
+              <w:instrText xml:space="preserve"><xsl:value-of select="concat(substring-after($index[2], 'See also'), $quote, ' ')"/></w:instrText>
+            </w:r>
+          </xsl:when>
+          <xsl:when test="starts-with($index[2], 'See')">
+            <w:r>
+              <w:rPr><w:i/></w:rPr>
+              <w:instrText>See</w:instrText>
+            </w:r>
+            <w:r>
+              <w:instrText xml:space="preserve"><xsl:value-of select="concat(substring-after($index[2], 'See'), $quote, ' ')"/></w:instrText>
+            </w:r>
+          </xsl:when>
+          <xsl:otherwise>
+            <w:r>
+              <w:instrText><xsl:value-of select="concat($index[2], $quote, ' ')"/></w:instrText>
+            </w:r>
+          </xsl:otherwise>
+        </xsl:choose>
+
+      </xsl:if>
+      <w:r>
         <w:fldChar w:fldCharType="separate"/>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
