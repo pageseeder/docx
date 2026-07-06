@@ -58,10 +58,11 @@
           </section>
           <section id="61095-content">
             <fragment id="61095-2">
-              <heading level="2">A heading<inline label="index">heading</inline></heading>
+              <heading level="2">A heading<inline label="index">heading|See also entry</inline></heading>
               <para>Some content some content some content<inline label="index">content</inline> some content some content.</para>
               <para>Sub entry 1<inline label="index">entry: sub1</inline>
-                sub entry 2<inline label="index">entry:sub2</inline>.</para>
+                sub entry 2<inline label="index">entry:sub2|See content</inline>
+                sub entry 3<inline label="index">entry:sub3|content</inline>.</para>
               <!--
                   <xref id="1082882" frag="3" reversefrag="2"
                         reversetitle="" reverselink="true" reversetype="none" display="document"

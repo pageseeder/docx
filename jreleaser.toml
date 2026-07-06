@@ -22,7 +22,7 @@ groupId = "org.pageseeder"
 owner = "pageseeder"
 name = "docx"
 username = "pageseeder"
-branch = "master"
+branch = "main"
 
 # Signing configuration
 [signing]
