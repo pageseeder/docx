@@ -2,6 +2,15 @@
 
 <config>
   <elements>
+    <tables>
+      <table default="PS Table"
+             headstyle="PS Table Header"
+             bodystyle="PS Table Body"
+             bodyliststyle="Table Bulleted List"
+             bodynliststyle="Table Numbered List">
+        <width type="pct" value="100%"/>
+      </table>
+    </tables>
     <para>
       <indent level="2" wordstyle="List Continue 2"/>
       <indent level="2" prefixed="true" wordstyle="List Manual 2"/>

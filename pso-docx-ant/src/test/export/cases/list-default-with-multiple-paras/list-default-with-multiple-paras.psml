@@ -26,6 +26,12 @@
   </section>
   <section id="1">
     <fragment id="1">
+      <heading level="3">List with xref and table</heading>
+      <nlist>
+        <item><xref frag="title" type="none" href="#title">abc</xref><br/>
+          <table><col/><col/><row><cell>1</cell><cell>2</cell></row><row><cell>3</cell><cell>4</cell></row></table>
+        </item>
+        <item>two</item></nlist>
       <heading level="3"> Maximum multi-level un-numbered list with multiple paras</heading>
       <list>
         <item>
