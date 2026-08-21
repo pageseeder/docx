@@ -58,7 +58,7 @@
     <!-- Word doesn't like the first node in a list item to be a table -->
     <xsl:if test="self::item and
         (node()[1][not(self::text())] or normalize-space(text()[1]) = '') and
-        (.//item | .//para | .//block | .//table | .//preformat)[1][self::table]">
+        (.//xref | .//item | .//para | .//block | .//table | .//preformat)[1][self::table]">
       <para/>
     </xsl:if>
     <!-- Adjacent text, text with double <br/>, inline elements and image must be wrapped -->
@@ -88,7 +88,7 @@
     <!-- Word doesn't like the last node in a cell to be a table -->
     <xsl:if test="(self::cell or self::hcell) and
         (node()[last()][not(self::text())] or normalize-space(text()[last()]) = '') and
-        (.//item | .//para | .//block | .//table | .//preformat)[last()][self::table]">
+        (.//xref | .//item | .//para | .//block | .//table | .//preformat)[last()][self::table]">
       <para/>
     </xsl:if>
 
