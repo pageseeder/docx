@@ -19,7 +19,6 @@ groupId = "org.pageseeder"
 
 # Git configuration
 [release.github]
-enabled = false
 owner = "pageseeder"
 name = "docx"
 username = "pageseeder"
