@@ -145,5 +145,49 @@
 				</row>
 			</table>
 		</fragment>
+		<fragment id="2">
+		<para>Table B inside lists:</para>
+		<para indent="1">M P</para>
+		<list>
+			<item>K1</item>
+			<item>K2
+				<table role="tableb">
+					<col part="header"/><col /><col />
+					<row part="header">
+						<hcell>L</hcell>
+						<hcell><para indent="1">M</para></hcell>
+						<hcell><para>N</para></hcell>
+					</row>
+					<row>
+						<cell>O</cell>
+						<cell><para indent="1">P</para></cell>
+						<cell><para>Q</para></cell>
+					</row>
+				</table>
+			</item>
+			<item>K3</item>
+		</list>
+		<nlist>
+			<item>R1</item>
+			<item>R2
+				<table role="tableb">
+					<col part="header"/><col /><col />
+					<row part="header">
+						<hcell>L</hcell>
+						<hcell><para indent="1">M</para></hcell>
+						<hcell><para>N</para>
+							<list><item>I1</item></list></hcell>
+					</row>
+					<row>
+						<cell>O</cell>
+						<cell><para indent="1">P</para></cell>
+						<cell><para>Q</para>
+							<nlist><item>J1</item></nlist></cell>
+					</row>
+				</table>
+			</item>
+			<item>R3</item>
+		</nlist>
+		</fragment>
 	</section>
 </document>
