@@ -269,7 +269,7 @@
       </xsl:when>
 
       <!-- List item -->
-      <xsl:when test="ancestor::item[1]">
+      <xsl:when test="parent::item">
         <xsl:variable name="blocklabel" select="ancestor::*[name() = 'list' or name() = 'nlist'][last()]/(ancestor::block)[last()]/@label" />
         <xsl:variable name="fragmentlabel" select="tokenize(ancestor::*[name() = 'list' or name() = 'nlist'][last()]/(ancestor::fragment)[last()]/@labels,',')" />
         <xsl:variable name="level" select="count(ancestor::list)+count(ancestor::nlist)"/>
