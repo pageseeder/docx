@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.xml.transform.Templates;
 
@@ -117,6 +115,7 @@ public final class DOCXProcessor {
     String mediaPrefix = "";
 
     // 4. (extra) copy everything from the media folder to prepacked folder
+    Set<String> imageExtensions = new HashSet<>();
     if (this._builder.media() != null) {
       log("Copy media files");
       if (!mediaFolder.exists()) {
@@ -125,7 +124,7 @@ public final class DOCXProcessor {
       // prefix template media files with a random string to avoid clashes with PSML images
       mediaPrefix = MEDIA_PREFIX;
       Files.renameFiles(mediaFolder, mediaPrefix);
-      Files.copyDirectory(this._builder.media(), mediaFolder);
+      imageExtensions = Files.copyDirectory(this._builder.media(), mediaFolder);
     }
 
     // 5. Unnest the files
@@ -148,6 +147,7 @@ public final class DOCXProcessor {
     parameters.put("_dotxfolder", dotx.toURI().toString());
     parameters.put("_docxfilename", this._builder.destination().getName());
     parameters.put("_mediaprefix", mediaPrefix);
+    parameters.put("_imageextensions", String.join(",", imageExtensions));
     if (this._builder.config() != null) {
       parameters.put("_configfileurl", this._builder.config().toURI().toString());
     }
