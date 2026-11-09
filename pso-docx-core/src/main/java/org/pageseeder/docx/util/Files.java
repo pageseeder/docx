@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A bunch of IO utility functions.
@@ -103,11 +105,15 @@ public class Files {
    * @param source The source folder
    * @param target The target folder
    *
+   * @returns Set of extensions on files in upper case
+   *
    * @throws IOException when I/O error occur.
    */
-  public static void copyDirectory(File source, File target) throws IOException {
+  public static Set<String> copyDirectory(File source, File target) throws IOException {
     if (source == null) { throw new NullPointerException("source is null"); }
     if (target == null) { throw new NullPointerException("target is null"); }
+
+    Set<String> extensions = new HashSet<>();
 
     if (source.isDirectory()) {
       if (!target.exists()) {
@@ -119,14 +125,24 @@ public class Files {
           int dot = aChildren.lastIndexOf('.');
           String base = (dot == -1) ? aChildren : aChildren.substring(0, dot);
           String extension = (dot == -1) ? "" : aChildren.substring(dot);
-          String newfilename = base.replace("%21", "!").replace( "%27",
-              "'").replace("%28", "(").replace("%29", ")").replace("%7E",
-              "~").replace(".", "%25") + extension;
-          copyDirectory(new File(source, aChildren), new File(target, newfilename));
+          String newfilename = base.replace("%21", "!").replace("%27",
+                  "'").replace("%28", "(").replace("%29", ")").replace("%7E",
+                  "~").replace(".", "%25") + extension;
+
+          File child = new File(source, aChildren);
+          if (!child.isDirectory()) {
+            String ext = extension.isEmpty() ? "" : extension.substring(1);
+            if (!ext.isEmpty()) {
+              extensions.add(ext.toUpperCase());
+            }
+          }
+          extensions.addAll(copyDirectory(child, new File(target, newfilename)));
         }
       }
     } else {
       copy(source, target);
     }
+
+    return extensions;
   }
 }
