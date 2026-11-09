@@ -216,6 +216,7 @@ public final class ExportTask extends Task {
     String mediaPrefix = "";
 
     // 4. (extra) copy everything from the media folder to prepacked folder
+    Set<String> imageExtensions = new HashSet<>();
     if (this.media != null) {
       log("Copying media files");
       if (!mediaFolder.exists()) {
@@ -225,7 +226,7 @@ public final class ExportTask extends Task {
       mediaPrefix = MEDIA_PREFIX;
       try {
         Files.renameFiles(mediaFolder, mediaPrefix);
-        Files.copyDirectory(this.media, mediaFolder);
+        imageExtensions = Files.copyDirectory(this.media, mediaFolder);
       } catch (IOException e) {
         log("Failed to copy media files: " + e.getMessage());
       }
@@ -253,6 +254,7 @@ public final class ExportTask extends Task {
     parameters.put("_dotxfolder", dotx.toURI().toString());
     parameters.put("_docxfilename", this.destination.getName());
     parameters.put("_mediaprefix", mediaPrefix);
+    parameters.put("_imageextensions", String.join(",", imageExtensions));
     if (this.config != null) {
       parameters.put("_configfileurl", this.config.toURI().toString());
     }

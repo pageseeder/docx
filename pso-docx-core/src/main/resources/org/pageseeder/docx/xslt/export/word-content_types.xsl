@@ -68,8 +68,7 @@
           </xsl:if>
         </xsl:if>
       </xsl:for-each>
-      <!-- TODO: Extension should probably look for last '.' -->
-      <xsl:for-each select="distinct-values($current-document//image/upper-case(tokenize(@src, '\.')[last()]))">
+      <xsl:for-each select="tokenize($_imageextensions,',')">
         <xsl:if test="not(matches(., $current-default-extension))">
           <Default ContentType="{concat('image/', .)}" Extension="{.}" />
         </xsl:if>

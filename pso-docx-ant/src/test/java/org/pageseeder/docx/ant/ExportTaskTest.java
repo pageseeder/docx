@@ -238,7 +238,7 @@ public final class ExportTaskTest {
 
   @Test
   public void testImagesStyleSet() throws IOException, SAXException {
-    testIndividual("images-style-set");
+    testIndividual("images-style-set", "document,[Content_Types]");
   }
 
   @Test
@@ -631,6 +631,7 @@ public final class ExportTaskTest {
               ("document".equals(name) ? "" :
                 ("core".equals(name) || "custom".equals(name)) ? "working/prepacked/docProps/" :
                 "item1".equals(name) ? "working/prepacked/customXml/" :
+                "[Content_Types]".equals(name) ? "working/prepacked/" :
                 "working/prepacked/word/") + name + ".xml");
           if (name.endsWith(".rels")) {
             actual = new File(result, "working/prepacked/word/_rels/" + name);

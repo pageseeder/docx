@@ -92,6 +92,9 @@
 <!-- Prefix for template media files to avoid clashes with PSML images -->
 <xsl:param name="_mediaprefix"/>
 
+<!-- Comma separated list of image extensions from media folder in upper case -->
+<xsl:param name="_imageextensions"/>
+
 <!-- The location of the configuration file used -->
 <xsl:param name="_configfileurl"/>
 
