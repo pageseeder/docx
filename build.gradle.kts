@@ -103,6 +103,15 @@ subprojects {
   }
 }
 
+// Maven Central only requires MD5 and SHA-1 checksums; keep SHA-512 and drop the redundant
+// SHA-256 files to reduce the number of files in the deployment bundle.
+tasks.withType<PublishToMavenRepository>().configureEach {
+  val stagingDir = layout.buildDirectory.dir("staging-deploy")
+  doLast {
+    stagingDir.get().asFileTree.matching { include("**/*.sha256") }.forEach { it.delete() }
+  }
+}
+
 jreleaser {
   configFile.set(file("jreleaser.toml"))
   distributions {
